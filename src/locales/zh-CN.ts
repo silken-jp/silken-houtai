@@ -2,6 +2,7 @@ import component from './zh-CN/component';
 import globalHeader from './zh-CN/globalHeader';
 import menu from './zh-CN/menu';
 import pages from './zh-CN/pages';
+import waybill from './zh-CN/waybill';
 
 export default {
   'navBar.lang': '语言',
@@ -12,4 +13,5 @@ export default {
   ...globalHeader,
   ...menu,
   ...component,
+  ...waybill,
 };

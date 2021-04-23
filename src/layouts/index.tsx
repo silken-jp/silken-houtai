@@ -26,6 +26,18 @@ const Index: React.FC = (props) => {
         path: '/waybill',
         name: intl.formatMessage({ id: 'menu.waybill' }),
         icon: <ProfileOutlined />,
+        children: [
+          {
+            path: '/waybill/small-packet',
+            name: intl.formatMessage({ id: 'menu.waybill.smallPacket' }),
+            icon: <ProfileOutlined />,
+          },
+          {
+            path: '/waybill/biz-packet',
+            name: intl.formatMessage({ id: 'menu.waybill.bizPacket' }),
+            icon: <ProfileOutlined />,
+          },
+        ],
       },
       {
         path: '/driver',

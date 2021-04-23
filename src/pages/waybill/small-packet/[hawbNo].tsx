@@ -2,25 +2,23 @@ import React from 'react';
 import { useParams } from 'umi';
 import { Descriptions, Card, Steps, Timeline } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+////
+import { useIntlWaybill } from '@/services/useIntl';
 
 export interface WaybillProps {}
 
 const Waybill: React.FC<WaybillProps> = () => {
   const { hawbNo } = useParams<any>();
+  const intlWaybill = useIntlWaybill();
   return (
     <PageContainer
       header={{
-        title: `分单号：${hawbNo}`,
+        title: `${intlWaybill.hawbNo}：${hawbNo}`,
         breadcrumb: {
           routes: [
-            {
-              path: '/waybill',
-              breadcrumbName: '货物列表',
-            },
-            {
-              path: '',
-              breadcrumbName: '货物详情',
-            },
+            { path: '/waybill/small-packet', breadcrumbName: intlWaybill.home },
+            { path: '', breadcrumbName: intlWaybill.smallPacket },
+            { path: '', breadcrumbName: intlWaybill.info },
           ],
         },
       }}

@@ -3,6 +3,8 @@ import { Select, Form, Table, Input, Button, Row, Col } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
+////
+import { useIntlWaybill } from '@/services/useIntl';
 
 const options = [
   { value: 0, label: '未分配' },
@@ -14,6 +16,7 @@ const options = [
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const intlWaybill = useIntlWaybill();
 
   // apollo
   const getTableData = async (
@@ -39,7 +42,17 @@ const waybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   return (
-    <PageContainer>
+    <PageContainer
+      header={{
+        title: `${intlWaybill.bizPacket}`,
+        breadcrumb: {
+          routes: [
+            { path: '/waybill/biz-packet', breadcrumbName: intlWaybill.home },
+            { path: '', breadcrumbName: intlWaybill.bizPacket },
+          ],
+        },
+      }}
+    >
       <div
         style={{ marginBottom: 16, padding: '24px 24px 0', background: '#fff' }}
       >
