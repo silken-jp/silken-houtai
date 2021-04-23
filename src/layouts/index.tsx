@@ -5,6 +5,7 @@ import {
   DashboardOutlined,
   ProfileOutlined,
   UserOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link, useIntl } from 'umi';
 
@@ -30,12 +31,10 @@ const Index: React.FC = (props) => {
           {
             path: '/waybill/small-packet',
             name: intl.formatMessage({ id: 'menu.waybill.smallPacket' }),
-            icon: <ProfileOutlined />,
           },
           {
             path: '/waybill/biz-packet',
             name: intl.formatMessage({ id: 'menu.waybill.bizPacket' }),
-            icon: <ProfileOutlined />,
           },
         ],
       },
@@ -43,6 +42,17 @@ const Index: React.FC = (props) => {
         path: '/driver',
         name: intl.formatMessage({ id: 'menu.driver' }),
         icon: <UserOutlined />,
+      },
+      {
+        path: '/setting',
+        name: intl.formatMessage({ id: 'menu.setting' }),
+        icon: <SettingOutlined />,
+        children: [
+          {
+            path: '/setting/delivery-area',
+            name: intl.formatMessage({ id: 'menu.setting.deliveryArea' }),
+          },
+        ],
       },
     ],
   };
