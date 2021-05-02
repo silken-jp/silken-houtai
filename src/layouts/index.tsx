@@ -49,8 +49,8 @@ const Index: React.FC = (props) => {
         icon: <SettingOutlined />,
         children: [
           {
-            path: '/setting/delivery-area',
-            name: intl.formatMessage({ id: 'menu.setting.deliveryArea' }),
+            path: '/setting/zip-area',
+            name: intl.formatMessage({ id: 'menu.setting.zipArea' }),
           },
         ],
       },

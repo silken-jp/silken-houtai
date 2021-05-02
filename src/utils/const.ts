@@ -1,1 +1,1 @@
-export const STORAGE_KEY = 'ShiRuKen.';
+export const STORAGE_KEY = 'SILKEN.';

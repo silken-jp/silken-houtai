@@ -51,7 +51,7 @@ const LoginForm: React.FC = () => {
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder="账号"
+              placeholder="账号:admin"
               className={styles.input}
             />
           </Form.Item>
@@ -63,7 +63,7 @@ const LoginForm: React.FC = () => {
             <Input.Password
               prefix={<LockOutlined />}
               type="password"
-              placeholder="密码"
+              placeholder="密码:111111"
               className={styles.input}
             />
           </Form.Item>

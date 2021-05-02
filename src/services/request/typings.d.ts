@@ -22,5 +22,4 @@ declare namespace API {
     address?: string;
     phone?: string;
   };
-
 }
