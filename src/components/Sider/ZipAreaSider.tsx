@@ -1,24 +1,60 @@
-import React from 'react';
-import { useRequest } from 'ahooks';
-import { Menu, Button, Spin } from 'antd';
+import React, { useImperativeHandle } from 'react';
+import { useRequest, useBoolean } from 'ahooks';
+import { Menu, Button, Spin, message } from 'antd';
 
-import { getAllZipAreaNames } from '@/services/request/ziparea';
+import { getZipAreas } from '@/services/request/ziparea';
+import { createZipArea } from '@/services/request/ziparea';
+import ZipAreaForm from '@/components/Form/ZipAreaForm';
 
 export interface ZipAreaSiderProps {
+  value: any;
   onChange: (v: any) => void;
 }
 
-const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
-  const { data, loading, error } = useRequest<any>(getAllZipAreaNames);
+interface ZipAreaSiderHandle {
+  siderData: any[];
+  setSiderData: (v: any) => void;
+}
+
+const ZipAreaSider: React.ForwardRefRenderFunction<
+  ZipAreaSiderHandle,
+  ZipAreaSiderProps
+> = (props, ref) => {
+  const { data, loading, error, mutate } = useRequest<any>(getZipAreas);
+  const [modalVisible, handleModelVisible] = useBoolean();
+
+  useImperativeHandle(ref, () => ({
+    siderData: data,
+    setSiderData: mutate,
+  }));
+
+  const handleSubmit = async (values: any) => {
+    try {
+      const { _id } = await createZipArea({ name: values?.name });
+      mutate([...data, { _id, name: values?.name }]);
+    } catch (error) {
+      message.error(error);
+    }
+  };
+
   if (loading) return <Spin />;
   if (error) return <>error</>;
+
   return (
     <>
-      <Button block>添加</Button>
+      <ZipAreaForm
+        title="新建区域"
+        visible={modalVisible}
+        onSubmit={handleSubmit}
+        onVisibleChange={handleModelVisible.toggle}
+      />
+      <Button onClick={handleModelVisible.setTrue} block>
+        添加
+      </Button>
       <Menu mode="inline">
-        {data?.zipAreas?.map((area: any) => (
+        {data?.map((area: any) => (
           <Menu.Item key={area._id} onClick={() => props.onChange(area)}>
-            {area.name}
+            <span>{area.name}</span>
           </Menu.Item>
         ))}
       </Menu>
@@ -26,4 +62,4 @@ const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
   );
 };
 
-export default ZipAreaSider;
+export default React.forwardRef(ZipAreaSider);
