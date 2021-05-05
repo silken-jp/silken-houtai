@@ -22,7 +22,10 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
   // api
   const zipcodesApi = useRequest<any>(
     () => getZipcodesByState({ state: props?.state }),
-    { refreshDeps: [props?.state] },
+    {
+      refreshDeps: [props?.state],
+      formatResult: (res: any) => res.map(({ _id, ...item }: any) => item),
+    },
   );
   const selectedCodesApi = useRequest<any>(
     () =>
@@ -37,27 +40,21 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
   useImperativeHandle(
     ref,
     () => ({
-      countCities: (state: string) => {
-        if (state !== props.state) return 0;
-        let count = 0;
-        for (const [key, value] of zipcodeMap) {
-          value.length > 0 && count++;
-        }
-        return count;
-      },
       getZipcodes: () => {
         // 根据zipcodeMap值格式化返回选中的zipcodes
-        const codes = [
-          ...zipcodeMap.keys(),
-          ...[...zipcodeMap.values()].flat(),
-        ];
-        const zipcodes: any = codes.map((code) => {
-          const { _id, ...res } = zipcodesApi?.data?.find(
-            (d: any) => d.zipcode === code,
-          );
+        let codes: any[] = [];
+        let count = 0;
+        for (const [key, value] of zipcodeMap) {
+          if (value.length > 0) {
+            codes = [...codes, key, ...value];
+            count++;
+          }
+        }
+        const zipcodes: any[] = codes.map((code) => {
+          const res = zipcodesApi?.data?.find((d: any) => d.zipcode === code);
           return res;
         });
-        return zipcodes;
+        return { zipcodes, count };
       },
       resetSelected: (state: string) => {
         // 通过后台重置选择项

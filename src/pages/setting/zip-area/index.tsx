@@ -32,11 +32,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
       const name = values?.name;
       if (name === areaData?.name) return;
       await updateNameByZipAreaId({ zipAreaId, name });
-      setAreaData({ ...areaData, name });
-      const newSiderData = zipAreasApi?.data?.map((s: any) =>
-        s._id === zipAreaId ? { ...s, name } : s,
-      );
-      zipAreasApi?.mutate(newSiderData);
+      updateZipAreaApi({ ...areaData, name });
     } catch (error) {
       message.error(error);
     }
@@ -59,6 +55,13 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
         }
       },
     });
+  };
+  const updateZipAreaApi = (newAreaData: any) => {
+    setAreaData(newAreaData);
+    const newSiderData = zipAreasApi?.data?.map((s: any) =>
+      s._id === newAreaData?._id ? newAreaData : s,
+    );
+    zipAreasApi?.mutate(newSiderData);
   };
 
   return (
@@ -95,7 +98,10 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
                 </Dropdown>
               }
             >
-              <ZipAreaContent areaData={areaData} />
+              <ZipAreaContent
+                areaData={areaData}
+                updateZipAreaApi={updateZipAreaApi}
+              />
             </Card>
           ) : (
             <Card>

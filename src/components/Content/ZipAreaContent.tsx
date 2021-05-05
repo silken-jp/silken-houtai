@@ -7,6 +7,7 @@ import ZipAreaContentItem from '@/components/Content/ZipAreaContentItem';
 
 export interface ZipAreaContentProps {
   areaData: any;
+  updateZipAreaApi: (v: any) => void;
 }
 
 const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
@@ -20,12 +21,19 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
   async function handleSubmit() {
     try {
       setLoading(true);
-      const zipcodes = ref?.current?.getZipcodes();
+      const { count, zipcodes } = ref?.current?.getZipcodes();
       await updateZipCodesByZipAreaId({
         zipcodes,
         state: stateName,
         zipAreaId: props.areaData?._id,
       });
+      const newAreaData = {
+        ...props.areaData,
+        states: props.areaData.states?.map((s: any) =>
+          s.name === stateName ? { ...s, count } : s,
+        ),
+      };
+      props.updateZipAreaApi(newAreaData);
       handleCancel();
     } catch (error) {
       handleCancel();
@@ -78,11 +86,9 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
               <Row>
                 {item?.states?.map((state, key) => {
                   const cityCount =
-                    ref?.current?.countCities(state) ||
                     props?.areaData?.states?.find(
                       ({ name }: any) => name === state,
-                    )?.count ||
-                    0;
+                    )?.count || 0;
                   const handleOpen = () => {
                     ref?.current?.resetSelected(state);
                     setStateName(state);
