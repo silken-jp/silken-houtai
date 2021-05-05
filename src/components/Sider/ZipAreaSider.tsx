@@ -1,33 +1,21 @@
-import React, { useImperativeHandle } from 'react';
-import { useRequest, useBoolean } from 'ahooks';
+import React from 'react';
+import { useBoolean } from 'ahooks';
 import { Menu, Button, Spin, message } from 'antd';
-
-import { getZipAreas } from '@/services/request/ziparea';
+////
 import { createZipArea } from '@/services/request/ziparea';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
 
 export interface ZipAreaSiderProps {
-  value: any;
+  zipAreasApi: any;
   onChange: (v: any) => void;
 }
 
-interface ZipAreaSiderHandle {
-  siderData: any[];
-  setSiderData: (v: any) => void;
-}
-
-const ZipAreaSider: React.ForwardRefRenderFunction<
-  ZipAreaSiderHandle,
-  ZipAreaSiderProps
-> = (props, ref) => {
-  const { data, loading, error, mutate } = useRequest<any>(getZipAreas);
+const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
+  // props
+  const { data, loading, error, mutate } = props?.zipAreasApi;
+  // state
   const [modalVisible, handleModelVisible] = useBoolean();
-
-  useImperativeHandle(ref, () => ({
-    siderData: data,
-    setSiderData: mutate,
-  }));
-
+  // actions
   const handleSubmit = async (values: any) => {
     try {
       const { _id } = await createZipArea({ name: values?.name });
@@ -39,16 +27,20 @@ const ZipAreaSider: React.ForwardRefRenderFunction<
 
   if (loading) return <Spin />;
   if (error) return <>error</>;
-
   return (
     <>
       <ZipAreaForm
-        title="新建区域"
+        title="添加区域"
         visible={modalVisible}
         onSubmit={handleSubmit}
         onVisibleChange={handleModelVisible.toggle}
       />
-      <Button onClick={handleModelVisible.setTrue} block>
+      <Button
+        size="large"
+        type="dashed"
+        onClick={handleModelVisible.setTrue}
+        block
+      >
         添加
       </Button>
       <Menu mode="inline">
@@ -62,4 +54,4 @@ const ZipAreaSider: React.ForwardRefRenderFunction<
   );
 };
 
-export default React.forwardRef(ZipAreaSider);
+export default ZipAreaSider;

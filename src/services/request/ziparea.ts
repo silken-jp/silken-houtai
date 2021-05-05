@@ -1,5 +1,4 @@
 import { request } from 'umi';
-import Mock from 'mockjs';
 
 // 创建区域 POST /api/zip_areas
 interface CreateZipArea {
@@ -16,11 +15,11 @@ export async function createZipArea(params: CreateZipArea) {
 
 // 修改区域名字 PATCH /api/zip_areas/:id
 interface UpdateNameByZipAreaId {
-  id: string;
+  zipAreaId: string;
   name: string;
 }
 export async function updateNameByZipAreaId(params: UpdateNameByZipAreaId) {
-  return request<any>('/api/zip_areas/' + params.id, {
+  return request<any>('/api/zip_areas/' + params.zipAreaId, {
     method: 'PATCH',
     data: {
       name: params.name,
@@ -30,50 +29,48 @@ export async function updateNameByZipAreaId(params: UpdateNameByZipAreaId) {
 
 // 修改区域名字 DELETE /api/zip_areas/:id
 interface DeleteByZipAreaId {
-  id: string;
+  zipAreaId: string;
 }
 export async function deleteByZipAreaId(params: DeleteByZipAreaId) {
-  return request<any>('/api/zip_areas/' + params.id, {
+  return request<any>('/api/zip_areas/' + params.zipAreaId, {
     method: 'DELETE',
   });
 }
 
-// 区域划分首页数据获取 GET /api/zip_areas
+// 区域划分首页数据获取 GET /api/zip_areas/with_cities
 export async function getZipAreas() {
-  return request<any>('/api/zip_areas', {
+  return request<any>('/api/zip_areas/with_cities', {
     method: 'GET',
   });
 }
 
-// 获取某个区域包含的分区邮编 GET /api/get_state_zip_area_codes
-interface GetStateZipAreaCodes {
+// 获取某个区域包含的分区邮编 GET /api/zip_areas/by_state
+interface getZipAreaCodesByState {
+  zipAreaId: string;
   state: string;
-  zip_area: string;
 }
-export async function getStateZipAreaCodes(params: GetStateZipAreaCodes) {
-  // console.log('getStateZipAreaCodes', params);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(Mock.mock('@range(10)'));
-    }, 500);
+export async function getZipAreaCodesByState(params: getZipAreaCodesByState) {
+  return request<any>('/api/zip_areas/by_filter', {
+    method: 'GET',
+    params: {
+      _id: params.zipAreaId,
+      state: params.state,
+    },
   });
 }
 
-// 更新区域包含的邮编 GET /api/update_zip_area_codes
+// 更新区域包含的邮编 GET /api/zip_areas/update_zipcodes/
 interface UpdateZipAreaCodes {
   state: string;
-  zip_area: string;
+  zipAreaId: string;
   zipcodes: { state: String; city: String; zipcode: String; address: String }[];
 }
 export async function updateZipCodesByZipAreaId(params: UpdateZipAreaCodes) {
-  // console.log('updateZipAreaCodes', params);
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(
-        Mock.mock({
-          'result|1': true,
-        }),
-      );
-    }, 1000);
+  return request<any>('/api/zip_areas/update_zipcodes/' + params.zipAreaId, {
+    method: 'PUT',
+    data: {
+      state: params.state,
+      zipcodes: params.zipcodes,
+    },
   });
 }

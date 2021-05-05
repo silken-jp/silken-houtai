@@ -1,13 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { useBoolean } from 'ahooks';
+import React, { useState } from 'react';
+import { useBoolean, useRequest } from 'ahooks';
 import { Button, Dropdown, Modal, Menu } from 'antd';
-import { Collapse, Row, Col, Card, Empty, message } from 'antd';
-import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { Row, Col, Card, Empty, message } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
 ////
-import { ZIP_STATES } from '@/utils/const';
 import ZipAreaSider from '@/components/Sider/ZipAreaSider';
 import ZipAreaContent from '@/components/Content/ZipAreaContent';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
+
+////
+import { getZipAreas } from '@/services/request/ziparea';
 import {
   updateNameByZipAreaId,
   deleteByZipAreaId,
@@ -16,42 +18,44 @@ import {
 export interface ZipAreaProps {}
 
 const ZipArea: React.FC<ZipAreaProps> = () => {
+  // state
   const [areaData, setAreaData] = useState<any>();
   const [modalVisible, handleModelVisible] = useBoolean();
-  const siderRef = useRef<any>(null);
 
+  // api
+  const zipAreasApi = useRequest<any>(getZipAreas);
+
+  // actions
   const handleSubmit = async (values: any) => {
     try {
+      const zipAreaId = areaData._id;
       const name = values?.name;
       if (name === areaData?.name) return;
-      await updateNameByZipAreaId({ id: areaData._id, name });
+      await updateNameByZipAreaId({ zipAreaId, name });
       setAreaData({ ...areaData, name });
-      const newData = siderRef.current?.siderData?.map((s: any) =>
-        s._id === areaData._id ? { ...s, name } : s,
+      const newSiderData = zipAreasApi?.data?.map((s: any) =>
+        s._id === zipAreaId ? { ...s, name } : s,
       );
-      siderRef.current?.setSiderData(newData);
+      zipAreasApi?.mutate(newSiderData);
     } catch (error) {
       message.error(error);
     }
   };
-
-
   const handleDelete = () => {
     Modal.confirm({
-      title: 'Are you sure delete this task?',
-      content: 'Some descriptions',
+      title: '确定要删除本区域吗?',
+      content: '删除后不可恢复数据',
       onOk: async () => {
         try {
-          const id = areaData?._id;
-          console.log(id)
-          await deleteByZipAreaId({ id });
+          const zipAreaId = areaData?._id;
+          await deleteByZipAreaId({ zipAreaId });
           setAreaData({});
-          const newData = siderRef.current?.siderData?.filter(
-            (s: any) => s._id !== id,
+          const newSiderData = zipAreasApi?.data?.filter(
+            (s: any) => s._id !== zipAreaId,
           );
-          siderRef.current?.setSiderData(newData);
+          zipAreasApi?.mutate(newSiderData);
         } catch (error) {
-          console.log(error);
+          message.error(error);
         }
       },
     });
@@ -68,11 +72,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
       />
       <Row gutter={12} wrap={false}>
         <Col flex="210px">
-          <ZipAreaSider
-            ref={siderRef}
-            value={areaData}
-            onChange={setAreaData}
-          />
+          <ZipAreaSider zipAreasApi={zipAreasApi} onChange={setAreaData} />
         </Col>
         <Col flex="auto">
           {areaData?.name ? (
@@ -94,39 +94,8 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
                   </Button>
                 </Dropdown>
               }
-              actions={[
-                <Button type="primary" disabled={true}>
-                  <EditOutlined />
-                  保存
-                </Button>,
-                <Button disabled={true}>
-                  <DeleteOutlined /> 重置
-                </Button>,
-              ]}
-              bodyStyle={{
-                height: 'calc(100vh - 230px)',
-                overflow: 'auto',
-              }}
             >
-              <Collapse>
-                {ZIP_STATES.map((state, key) => {
-                  const cityCount =
-                    areaData?.states?.find(({ name }: any) => name === state)
-                      ?.cityCount || 0;
-                  return (
-                    <Collapse.Panel
-                      key={key}
-                      header={`${state}（${cityCount}）`}
-                    >
-                      <ZipAreaContent
-                        key={key}
-                        state={state}
-                        areaData={areaData}
-                      />
-                    </Collapse.Panel>
-                  );
-                })}
-              </Collapse>
+              <ZipAreaContent areaData={areaData} />
             </Card>
           ) : (
             <Card>

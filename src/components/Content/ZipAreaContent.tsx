@@ -1,59 +1,108 @@
-import React from 'react';
-import { useRequest } from 'ahooks';
-import { Row, Col, Spin } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Row, Col, Drawer, Button, Descriptions, message } from 'antd';
 
-import { getZipcodesByState } from '@/services/request/zipcode';
-import { getStateZipAreaCodes } from '@/services/request/ziparea';
-import CheckBoxGroup from '../Checkbox/ZipAreaCheckModal';
+import { ZIP_STATES } from '@/utils/const';
+import { updateZipCodesByZipAreaId } from '@/services/request/ziparea';
+import ZipAreaContentItem from '@/components/Content/ZipAreaContentItem';
 
 export interface ZipAreaContentProps {
-  state: string;
   areaData: any;
 }
 
 const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
-  const zipcodesApi = useRequest<any>(
-    () => getZipcodesByState({ state: props?.state }),
-    { refreshDeps: [props?.state] },
-  );
+  // state
+  const ref = useRef<any>();
+  const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [stateName, setStateName] = useState('');
 
-  const selectedCodesApi = useRequest<any>(
-    () =>
-      getStateZipAreaCodes({
-        state: props?.state,
-        zip_area: props?.areaData?._id,
-      }),
-    { refreshDeps: [props?.state, props?.areaData?._id] },
-  );
-
-  const citySource = zipcodesApi?.data?.filter((item: any) => !item.address);
-
-  if (zipcodesApi?.loading || selectedCodesApi?.loading) return <Spin />;
-  if (zipcodesApi?.error || selectedCodesApi?.error) return <>error...</>;
+  // action
+  async function handleSubmit() {
+    try {
+      setLoading(true);
+      const zipcodes = ref?.current?.getZipcodes();
+      await updateZipCodesByZipAreaId({
+        zipcodes,
+        state: stateName,
+        zipAreaId: props.areaData?._id,
+      });
+      handleCancel();
+    } catch (error) {
+      handleCancel();
+      message.error(error);
+    }
+  }
+  function handleCancel() {
+    setLoading(false);
+    setVisible(false);
+  }
 
   return (
-    <Row>
-      {citySource?.map(({ city }: any, key: number) => {
-        const dataSource =
-          zipcodesApi?.data?.filter(
-            (item: any) => item.address && item.city === city,
-          ) || [];
-        const defaultSelected: string[] =
-          selectedCodesApi?.data?.filter((item: any) => {
-            dataSource.some((d: any) => d.zipcode === item);
-          }) || [];
-        const name = `${city} (${defaultSelected.length}/${dataSource?.length})`;
-        return (
-          <Col span={8} key={key}>
-            <CheckBoxGroup
-              name={name}
-              dataSource={dataSource}
-              defaultSelected={defaultSelected}
-            />
-          </Col>
-        );
-      })}
-    </Row>
+    <>
+      <Drawer
+        title={stateName}
+        width={520}
+        closable={false}
+        maskClosable={false}
+        onClose={handleCancel}
+        visible={visible}
+        footer={
+          <div
+            style={{
+              textAlign: 'right',
+            }}
+          >
+            <Button
+              disabled={loading}
+              onClick={handleCancel}
+              style={{ marginRight: 8 }}
+            >
+              取消
+            </Button>
+            <Button loading={loading} onClick={handleSubmit} type="primary">
+              提交
+            </Button>
+          </div>
+        }
+      >
+        <ZipAreaContentItem
+          ref={ref}
+          state={stateName}
+          zipAreaId={props.areaData?._id}
+        />
+      </Drawer>
+      <Descriptions bordered>
+        {ZIP_STATES.map((item, key) => {
+          return (
+            <Descriptions.Item label={item.name} key={key} span={3}>
+              <Row>
+                {item?.states?.map((state, key) => {
+                  const cityCount =
+                    ref?.current?.countCities(state) ||
+                    props?.areaData?.states?.find(
+                      ({ name }: any) => name === state,
+                    )?.count ||
+                    0;
+                  const handleOpen = () => {
+                    ref?.current?.resetSelected(state);
+                    setStateName(state);
+                    setVisible(true);
+                  };
+                  return (
+                    <Col key={key} span={8}>
+                      <Button type="link" onClick={handleOpen} key={key}>
+                        {state}
+                      </Button>
+                      <span>{`（${cityCount}）`}</span>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </Descriptions.Item>
+          );
+        })}
+      </Descriptions>
+    </>
   );
 };
 

@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
-import { Checkbox, Col, Row, Space, Modal } from 'antd';
+import React, { useMemo, useEffect } from 'react';
+import { Checkbox, Col, Row, Space, Drawer } from 'antd';
 import { useSelections, useBoolean } from 'ahooks';
 
 export interface CheckBoxGroupProps {
   name: string;
   dataSource?: any[];
   defaultSelected?: string[];
+  onChange: (values: string[]) => void;
 }
 
 const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
@@ -20,7 +21,18 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
     toggle,
     toggleAll,
     partiallySelected,
+    selected,
   } = useSelections(options, props?.defaultSelected);
+
+  // data format
+  const name =
+    props.name + `（${selected?.length}/${props?.dataSource?.length}）`;
+
+  // effect
+  // 通过双向绑定,向父组件返回组件的selected值
+  useEffect(() => {
+    props.onChange(selected);
+  }, [selected]);
 
   return (
     <div>
@@ -30,18 +42,18 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
           onClick={toggleAll}
           indeterminate={partiallySelected}
         />
-        <a onClick={setTrue}>{props.name}</a>
+        <a onClick={setTrue}>{name}</a>
       </Space>
-      <Modal
-        centered
-        title={props.name}
+      <Drawer
+        title={name}
         visible={visible}
-        onOk={setFalse}
-        onCancel={setFalse}
+        width={320}
+        closable={false}
+        onClose={setFalse}
       >
         <Row style={{ padding: '10px 0' }}>
           {props.dataSource?.map((item) => (
-            <Col span={12} key={item.zipcode}>
+            <Col span={24} key={item.zipcode}>
               <Checkbox
                 checked={isSelected(item.zipcode)}
                 onClick={() => toggle(item.zipcode)}
@@ -51,7 +63,7 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
             </Col>
           ))}
         </Row>
-      </Modal>
+      </Drawer>
     </div>
   );
 };
