@@ -1,11 +1,13 @@
 import { request } from 'umi';
 
+const { ApiURL } = process.env;
+
 // 创建区域 POST /api/zip_areas
 interface CreateZipArea {
   name: string;
 }
 export async function createZipArea(params: CreateZipArea) {
-  return request<any>('/api/zip_areas', {
+  return request<any>(ApiURL + '/zip_areas', {
     method: 'POST',
     data: {
       name: params.name,
@@ -19,7 +21,7 @@ interface UpdateNameByZipAreaId {
   name: string;
 }
 export async function updateNameByZipAreaId(params: UpdateNameByZipAreaId) {
-  return request<any>('/api/zip_areas/' + params.zipAreaId, {
+  return request<any>(ApiURL + '/zip_areas/' + params.zipAreaId, {
     method: 'PATCH',
     data: {
       name: params.name,
@@ -32,14 +34,14 @@ interface DeleteByZipAreaId {
   zipAreaId: string;
 }
 export async function deleteByZipAreaId(params: DeleteByZipAreaId) {
-  return request<any>('/api/zip_areas/' + params.zipAreaId, {
+  return request<any>(ApiURL + '/zip_areas/' + params.zipAreaId, {
     method: 'DELETE',
   });
 }
 
 // 区域划分首页数据获取 GET /api/zip_areas/with_cities
 export async function getZipAreas() {
-  return request<any>('/api/zip_areas/with_cities', {
+  return request<any>(ApiURL + '/zip_areas/with_cities', {
     method: 'GET',
   });
 }
@@ -50,7 +52,7 @@ interface getZipAreaCodesByState {
   state: string;
 }
 export async function getZipAreaCodesByState(params: getZipAreaCodesByState) {
-  return request<any>('/api/zip_areas/by_filter', {
+  return request<any>(ApiURL + '/zip_areas/by_filter', {
     method: 'GET',
     params: {
       _id: params.zipAreaId,
@@ -66,11 +68,14 @@ interface UpdateZipAreaCodes {
   zipcodes: { state: String; city: String; zipcode: String; address: String }[];
 }
 export async function updateZipCodesByZipAreaId(params: UpdateZipAreaCodes) {
-  return request<any>('/api/zip_areas/update_zipcodes/' + params.zipAreaId, {
-    method: 'PUT',
-    data: {
-      state: params.state,
-      zipcodes: params.zipcodes,
+  return request<any>(
+    ApiURL + '/zip_areas/update_zipcodes/' + params.zipAreaId,
+    {
+      method: 'PUT',
+      data: {
+        state: params.state,
+        zipcodes: params.zipcodes,
+      },
     },
-  });
+  );
 }

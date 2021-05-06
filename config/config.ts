@@ -2,11 +2,6 @@
 import { defineConfig } from 'umi';
 
 import defaultSettings from './defaultSettings';
-import proxy from './proxy';
-
-const { REACT_APP_ENV } = process.env;
-
-console.log((proxy as any)[REACT_APP_ENV || 'dev'])
 
 export default defineConfig({
   nodeModulesTransform: {
@@ -33,7 +28,6 @@ export default defineConfig({
     'primary-color': defaultSettings.primaryColor,
   },
   title: false,
-  proxy: (proxy as any)[REACT_APP_ENV || 'dev'],
   // manifest: {
   //   basePath: '/',
   // },
