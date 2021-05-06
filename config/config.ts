@@ -6,6 +6,8 @@ import proxy from './proxy';
 
 const { REACT_APP_ENV } = process.env;
 
+console.log((proxy as any)[REACT_APP_ENV || 'dev'])
+
 export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
