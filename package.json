@@ -2,7 +2,7 @@
   "private": true,
   "homepage": "https://github.com/silken-jp/silken-houtai",
   "scripts": {
-    "dev": "umi dev",
+    "dev": "REACT_APP_ENV=dev umi dev",
     "build": "REACT_APP_ENV=pre umi build",
     "deploy": "gh-pages -d dist",
     "postinstall": "umi generate tmp",

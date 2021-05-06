@@ -7,7 +7,7 @@
  */
 export default {
   dev: {
-    '/api/': {
+    '/api': {
       target: 'http://localhost:3000/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
@@ -15,7 +15,7 @@ export default {
   },
   pre: {
     '/api': {
-      target: 'http://jsonplaceholder.typicode.com/',
+      target: 'http://13.112.93.138:3000/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },
