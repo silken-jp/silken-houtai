@@ -46,7 +46,7 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
         let count = 0;
         for (const [key, value] of zipcodeMap) {
           if (value.length > 0) {
-            codes = [...codes, key, ...value];
+            codes = [...codes, ...value];
             count++;
           }
         }
@@ -73,9 +73,7 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
     <Row>
       {citySource?.map(({ zipcode, city }: any, key: number) => {
         const dataSource =
-          zipcodesApi?.data?.filter(
-            (item: any) => item.address && item.city === city,
-          ) || [];
+          zipcodesApi?.data?.filter((item: any) => item.city === city) || [];
         const defaultSelected: string[] =
           selectedCodesApi?.data?.zipcodes
             ?.filter((item: any) =>
@@ -89,6 +87,7 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
           <Col span={12} key={key}>
             <CheckBoxGroup
               name={city}
+              cityCode={zipcode}
               dataSource={dataSource}
               defaultSelected={defaultSelected}
               onChange={handleChange}

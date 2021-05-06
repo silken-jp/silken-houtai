@@ -49,8 +49,7 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
     <>
       <Drawer
         title={stateName}
-        width={520}
-        closable={false}
+        width={600}
         maskClosable={false}
         onClose={handleCancel}
         visible={visible}
