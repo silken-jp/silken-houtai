@@ -18,13 +18,6 @@ import WaybillForm from '@/components/Form/WaybillForm';
 import { useSKForm } from '@/components/Form/useSKForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
-const options = [
-  { value: 0, label: '未分配' },
-  { value: 1, label: '派送中' },
-  { value: 2, label: '已签收' },
-  { value: 3, label: '未送达' },
-];
-
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
@@ -51,17 +44,9 @@ const waybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   async function onUpload(jsonArr: any) {
-    // const { data } = await createMultiQuestions({
-    //   variables: {
-    //     courseId: courseId,
-    //     name_matrix: jsonArr,
-    //   },
-    // });
-    console.log(jsonArr);
     const res = await createMultiWaybill(jsonArr);
-    console.log(res);
     search.submit();
-    return 0;
+    return res;
   }
 
   // action
@@ -75,9 +60,9 @@ const waybill: React.FC = () => {
       search.submit();
     }
   };
-  const handleAdd = () => {
-    handleOpen({ title: '新建司机', type: 'add', data: null });
-  };
+  // const handleAdd = () => {
+  //   handleOpen({ title: '新建司机', type: 'add', data: null });
+  // };
 
   return (
     <PageContainer
@@ -91,30 +76,15 @@ const waybill: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
           <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-            <Form.Item label="主单号" name="mawb_no">
+            <Form.Item label="日本物流公司单号" name="jp_delivery_no">
               <Input placeholder="主单号" />
             </Form.Item>
           </Col>
           <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-            <Form.Item label="分单号" name="hawb_no">
+            <Form.Item label="中国物流公司单号" name="cn_delivery_no">
               <Input placeholder="分单号" />
             </Form.Item>
           </Col>
-          {/* <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-            <Form.Item label="派送单号" name="tracking_no">
-              <Input placeholder="派送单号" />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-            <Form.Item label="货品状态" name="track_status">
-              <Select placeholder="货品状态" options={options} />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-            <Form.Item label="快递员" name="driverId">
-              <Input placeholder="快递员" />
-            </Form.Item>
-          </Col> */}
           <Col xs={12} sm={12} md={12} lg={8} xxl={12}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Button disabled type="primary" onClick={search.submit}>
@@ -136,28 +106,25 @@ const waybill: React.FC = () => {
         title="运单列表"
         extra={
           <Space>
-            <Button type="primary" onClick={handleAdd}>
+            {/* <Button type="primary" onClick={handleAdd}>
               + 新建
-            </Button>
+            </Button> */}
+            <a
+              href="http://onassets.weixin-jp.com/assets/waybills-import.xlsx"
+              download
+            >
+              导入模板下载
+            </a>
             <UploadXlsx onUpload={onUpload} />
           </Space>
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          {/* <Table.Column title="主单号" dataIndex="mawb_no" />
-          <Table.Column title="分单号" dataIndex="hawb_no" /> */}
-          <Table.Column
-            title="日本物流公司"
-            render={(row) =>
-              `${row?.jp_delivery_company}（${row?.jp_delivery_no}）`
-            }
-          />
-          <Table.Column
-            title="中国物流公司"
-            render={(row) =>
-              `${row?.cn_delivery_company}（${row?.cn_delivery_no}）`
-            }
-          />
+          <Table.Column title="ID" render={(_, __, i) => i + 1} />
+          <Table.Column title="日本物流公司" dataIndex="jp_delivery_company" />
+          <Table.Column title="日本物流公司单号" dataIndex="jp_delivery_no" />
+          <Table.Column title="中国物流公司" dataIndex="cn_delivery_company" />
+          <Table.Column title="中国物流公司单号" dataIndex="cn_delivery_no" />
           <Table.Column title="航班号" dataIndex="flight_no" />
           <Table.Column
             title="单证录入时间"
@@ -176,19 +143,13 @@ const waybill: React.FC = () => {
                 handleOpen({ title: '编辑运单', type: 'edit', data: row });
               };
               const [handleDelete] = deleteConfirm({
-                name: row?.name,
+                name: '运单',
                 submit: async () => {
                   await deleteByWaybillId({ waybillId: row?._id });
                   search.submit();
                 },
               });
-              return (
-                <Actions
-                  iconType="button"
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              );
+              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
             }}
           />
         </Table>

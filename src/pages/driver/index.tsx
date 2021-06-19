@@ -15,12 +15,6 @@ import DriverForm from '@/components/Form/DriverForm';
 import { useSKForm } from '@/components/Form/useSKForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
-const style = {
-  marginBottom: 16,
-  padding: '24px 24px 0',
-  background: '#fff',
-};
-
 const driver: React.FC = () => {
   // state
   const [form] = Form.useForm();
@@ -103,7 +97,7 @@ const driver: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column title="序号" render={(_, __, i) => i + 1} />
+          <Table.Column title="ID" render={(_, __, i) => i + 1} />
           <Table.Column title="名字" dataIndex="name" />
           <Table.Column title="电话" dataIndex="tel" />
           <Table.Column
@@ -119,13 +113,7 @@ const driver: React.FC = () => {
                   search.submit();
                 },
               });
-              return (
-                <Actions
-                  iconType="button"
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              );
+              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
             }}
           />
         </Table>

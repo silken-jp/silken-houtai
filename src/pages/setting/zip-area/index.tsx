@@ -71,7 +71,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
         title: `${intlPage.zipArea}`,
         breadcrumb: {
           routes: [
-            { path: '', breadcrumbName: intlPage.setting },
+            { path: '/setting/zip-area', breadcrumbName: intlPage.setting },
             { path: '', breadcrumbName: intlPage.zipArea },
           ],
         },

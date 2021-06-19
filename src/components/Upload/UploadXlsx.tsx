@@ -4,26 +4,31 @@ import { UploadOutlined } from '@ant-design/icons';
 import XLSX from 'xlsx';
 
 interface UploadXlsxProps {
-  onUpload: (jsonArr: any[]) => Promise<number>;
+  onUpload: (
+    jsonArr: any[],
+  ) => Promise<{ successCount: number; failedNo: any[] }>;
 }
 
 const key = 'uploadXlsx';
 
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   const handleUpload = async (jsonArr: any[]) => {
+    const sum = jsonArr?.length - 1;
     try {
       notification.open({
         key,
         message: `正在导入`,
-        description: `本次导入共计 ${jsonArr?.length} 条数据，请稍作等待`,
+        description: `本次导入共计 ${sum} 条数据，请稍作等待`,
         duration: null,
         placement: 'bottomRight',
       });
-      const res = await props.onUpload(jsonArr);
+      const { successCount, failedNo } = await props.onUpload(jsonArr);
       notification.open({
         key,
         message: '导入完成',
-        description: `已成功导入，并生成了 ${res} 条数据`,
+        description: `已成功导入，并生成了 ${successCount}/${sum} 条数据${
+          failedNo?.length > 0 ? '失败行数：' + failedNo.join(', ') : ''
+        }`,
         placement: 'bottomRight',
       });
     } catch (error) {
@@ -68,7 +73,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       customRequest={customRequest}
     >
       <Button type="dashed">
-        <UploadOutlined /> Excel导入
+        <UploadOutlined /> 导入
       </Button>
     </Upload>
   );

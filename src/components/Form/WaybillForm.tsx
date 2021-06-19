@@ -26,8 +26,6 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        // mawb_no: props?.dataSource?.mawb_no,
-        // hawb_no: props?.dataSource?.hawb_no,
         jp_delivery_no: props?.dataSource?.jp_delivery_no,
         cn_delivery_no: props?.dataSource?.cn_delivery_no,
         jp_delivery_company: props?.dataSource?.jp_delivery_company,
@@ -43,26 +41,6 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
   return (
     <Modal {...modalProps} width={800}>
       <Form name="WaybillForm" {...formItemLayout} {...formProps}>
-        {/* <Form.Item label="主单号" name="mawb_no" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="分单号" name="hawb_no" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item> */}
-        <Form.Item
-          label="日本物流公司单号"
-          name="jp_delivery_no"
-          rules={[{ required: true }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="中国物流公司单号"
-          name="cn_delivery_no"
-          rules={[{ required: true }]}
-        >
-          <Input />
-        </Form.Item>
         <Form.Item
           label="日本物流公司"
           name="jp_delivery_company"
@@ -71,8 +49,22 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
+          label="日本物流公司单号"
+          name="jp_delivery_no"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="中国物流公司"
           name="cn_delivery_company"
+          rules={[{ required: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="中国物流公司单号"
+          name="cn_delivery_no"
           rules={[{ required: true }]}
         >
           <Input />

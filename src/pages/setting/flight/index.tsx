@@ -16,6 +16,10 @@ import FlightForm from '@/components/Form/FlightForm';
 import { useSKForm } from '@/components/Form/useSKForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
+function timeToTime(value: number) {
+  return `+${Math.floor(value / 60)}h${value % 60}min`;
+}
+
 export interface FlightSettingProps {}
 
 const FlightSetting: React.FC<FlightSettingProps> = () => {
@@ -62,7 +66,7 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
         title: `${intlPage.flight}`,
         breadcrumb: {
           routes: [
-            { path: '', breadcrumbName: intlPage.setting },
+            { path: '/setting/flight', breadcrumbName: intlPage.setting },
             { path: '', breadcrumbName: intlPage.flight },
           ],
         },
@@ -103,14 +107,22 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
         <Table {...tableProps} rowKey="_id">
           <Table.Column title="ID" render={(_, __, i) => i + 1} />
           <Table.Column title="航班号" dataIndex="flight_no" />
-          <Table.Column title="日本航班起飞" dataIndex="jp_depart_time" />
-          <Table.Column title="航班到达" dataIndex="arrive_time" />
-          <Table.Column title="通关中" dataIndex="clearance_time" />
+          <Table.Column
+            title="日本航班起飞"
+            render={(row) => timeToTime(row?.jp_depart_time)}
+          />
+          <Table.Column
+            title="航班到达"
+            render={(row) => timeToTime(row?.arrive_time)}
+          />
+          <Table.Column
+            title="通关中"
+            render={(row) => timeToTime(row?.clearance_time)}
+          />
           <Table.Column
             title="修改时间"
-            dataIndex="updatedAt"
-            render={(updatedAt) =>
-              moment(updatedAt).local().format('YYYY-MM-DD HH:mm')
+            render={(row) =>
+              moment(row?.updatedAt)?.local()?.format('YYYY-MM-DD HH:mm')
             }
           />
           <Table.Column
@@ -126,13 +138,7 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
                   search.submit();
                 },
               });
-              return (
-                <Actions
-                  iconType="button"
-                  onEdit={handleEdit}
-                  onDelete={handleDelete}
-                />
-              );
+              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
             }}
           />
         </Table>
