@@ -1,7 +1,7 @@
 export default {
   'menu.title': '物流系统',
   'menu.dashboard': '仪表盘',
-  'menu.waybill': '货物管理',
+  'menu.waybill': '运单管理',
   'menu.waybill.smallPacket': '国际小包',
   'menu.waybill.bizPacket': '商业快件',
   'menu.driver': '司机管理',

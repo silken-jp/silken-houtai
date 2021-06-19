@@ -121,10 +121,10 @@ const waybill: React.FC = () => {
       >
         <Table rowKey="_id" {...tableProps}>
           <Table.Column title="ID" render={(_, __, i) => i + 1} />
-          <Table.Column title="日本物流公司" dataIndex="jp_delivery_company" />
-          <Table.Column title="日本物流公司单号" dataIndex="jp_delivery_no" />
-          <Table.Column title="中国物流公司" dataIndex="cn_delivery_company" />
-          <Table.Column title="中国物流公司单号" dataIndex="cn_delivery_no" />
+          <Table.Column title="日本物流单号" dataIndex="jp_delivery_no" />
+          <Table.Column title="日本快递公司" dataIndex="jp_delivery_company" />
+          <Table.Column title="中国物流单号" dataIndex="cn_delivery_no" />
+          <Table.Column title="中国快递公司" dataIndex="cn_delivery_company" />
           <Table.Column title="航班号" dataIndex="flight_no" />
           <Table.Column
             title="单证录入时间"
