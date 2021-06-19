@@ -3,10 +3,19 @@ import { Form, Table, Input, Button, Row, Col } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
+////
+import { useIntlPage } from '@/services/useIntl';
+
+const style = {
+  marginBottom: 16,
+  padding: '24px 24px 0',
+  background: '#fff',
+};
 
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const intlPage = useIntlPage();
 
   // apollo
   const getTableData = async (
@@ -32,10 +41,15 @@ const waybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   return (
-    <PageContainer>
-      <div
-        style={{ marginBottom: 16, padding: '24px 24px 0', background: '#fff' }}
-      >
+    <PageContainer
+      header={{
+        title: `${intlPage.driver}`,
+        breadcrumb: {
+          routes: [{ path: '', breadcrumbName: intlPage.driver }],
+        },
+      }}
+    >
+      <div style={style}>
         <Form form={form}>
           <Row gutter={16}>
             <Col span={16}>

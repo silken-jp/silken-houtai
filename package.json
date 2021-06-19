@@ -2,7 +2,8 @@
   "private": true,
   "homepage": "https://github.com/silken-jp/silken-houtai",
   "scripts": {
-    "dev": "UMI_ENV=prod umi dev",
+    "dev": "UMI_ENV=host umi dev",
+    "dev:prod": "UMI_ENV=prod umi dev",
     "build": "UMI_ENV=prod umi build",
     "deploy": "gh-pages -d dist",
     "postinstall": "umi generate tmp",

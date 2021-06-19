@@ -33,7 +33,7 @@ export default defineConfig({
   // },
   // 打包优化
   ignoreMomentLocale: true,
-  dynamicImport: {},
+  // dynamicImport: {},
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',

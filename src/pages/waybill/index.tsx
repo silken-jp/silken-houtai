@@ -4,7 +4,7 @@ import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import { useIntlWaybill } from '@/services/useIntl';
+import { useIntlPage } from '@/services/useIntl';
 
 const options = [
   { value: 0, label: '未分配' },
@@ -16,7 +16,7 @@ const options = [
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const intlWaybill = useIntlWaybill();
+  const intlPage = useIntlPage();
 
   // apollo
   const getTableData = async (
@@ -44,12 +44,9 @@ const waybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: `${intlWaybill.bizPacket}`,
+        title: `${intlPage.waybill}`,
         breadcrumb: {
-          routes: [
-            { path: '/waybill/biz-packet', breadcrumbName: intlWaybill.home },
-            { path: '', breadcrumbName: intlWaybill.bizPacket },
-          ],
+          routes: [{ path: '', breadcrumbName: intlPage.waybill }],
         },
       }}
     >

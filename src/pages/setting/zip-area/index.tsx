@@ -3,12 +3,12 @@ import { useBoolean, useRequest } from 'ahooks';
 import { Button, Dropdown, Modal, Menu } from 'antd';
 import { Row, Col, Card, Empty, message } from 'antd';
 import { MoreOutlined } from '@ant-design/icons';
+import { PageContainer } from '@ant-design/pro-layout';
 ////
 import ZipAreaSider from '@/components/Sider/ZipAreaSider';
 import ZipAreaContent from '@/components/Content/ZipAreaContent';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
-
-////
+import { useIntlPage } from '@/services/useIntl';
 import { getZipAreas } from '@/services/request/ziparea';
 import {
   updateNameByZipAreaId,
@@ -21,6 +21,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   // state
   const [areaData, setAreaData] = useState<any>();
   const [modalVisible, handleModelVisible] = useBoolean();
+  const intlPage = useIntlPage();
 
   // api
   const zipAreasApi = useRequest<any>(getZipAreas);
@@ -65,7 +66,17 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   };
 
   return (
-    <>
+    <PageContainer
+      header={{
+        title: `${intlPage.zipArea}`,
+        breadcrumb: {
+          routes: [
+            { path: '', breadcrumbName: intlPage.setting },
+            { path: '', breadcrumbName: intlPage.zipArea },
+          ],
+        },
+      }}
+    >
       <ZipAreaForm
         title="编辑区域"
         dataSource={areaData}
@@ -110,7 +121,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
           )}
         </Col>
       </Row>
-    </>
+    </PageContainer>
   );
 };
 

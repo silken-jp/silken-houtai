@@ -12,3 +12,15 @@ export function useIntlWaybill() {
     hawbNo: intl.formatMessage({ id: 'waybill.hawbNo' }),
   };
 }
+
+export function useIntlPage() {
+  // 国际化
+  const intl = useIntl();
+  return {
+    waybill: intl.formatMessage({ id: 'menu.waybill' }),
+    driver: intl.formatMessage({ id: 'menu.driver' }),
+    setting: intl.formatMessage({ id: 'menu.setting' }),
+    flight: intl.formatMessage({ id: 'menu.setting.flight' }),
+    zipArea: intl.formatMessage({ id: 'menu.setting.zipArea' }),
+  };
+}

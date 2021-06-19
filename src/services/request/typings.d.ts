@@ -2,24 +2,21 @@
 /* eslint-disable */
 
 declare namespace API {
-  type CurrentUser = {
-    name?: string;
-    avatar?: string;
-    userid?: string;
-    email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+  type ID = string;
+  type ZipCode = {
+    _id?: ID;
+    state?: String;
+    city?: String;
+    zipcode?: String;
+    address?: String;
   };
+  type Driver = {};
+  type Flight = {
+    _id?: ID;
+    flight_no: string;
+    jp_depart_time: number;
+    arrive_time: number;
+    clearance_time: number;
+  };
+  type Waybills = {};
 }

@@ -53,49 +53,45 @@ const waybill: React.FC = () => {
         },
       }}
     >
-      <div
-        style={{ marginBottom: 16, padding: '24px 24px 0', background: '#fff' }}
-      >
-        <Form form={form}>
-          <Row gutter={16}>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-              <Form.Item label="主单号" name="mawb_no">
-                <Input placeholder="主单号" />
-              </Form.Item>
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-              <Form.Item label="分单号" name="hawb_no">
-                <Input placeholder="分单号" />
-              </Form.Item>
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-              <Form.Item label="派送单号" name="tracking_no">
-                <Input placeholder="派送单号" />
-              </Form.Item>
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-              <Form.Item label="货品状态" name="track_status">
-                <Select placeholder="货品状态" options={options} />
-              </Form.Item>
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
-              <Form.Item label="快递员" name="driverId">
-                <Input placeholder="快递员" />
-              </Form.Item>
-            </Col>
-            <Col xs={12} sm={12} md={12} lg={8} xxl={18}>
-              <Form.Item style={{ textAlign: 'right' }}>
-                <Button type="primary" onClick={search.submit}>
-                  搜索
-                </Button>
-                <Button onClick={search.reset} style={{ marginLeft: 16 }}>
-                  重置
-                </Button>
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+      <Form form={form} className="sk-table-search">
+        <Row gutter={16}>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
+            <Form.Item label="主单号" name="mawb_no">
+              <Input placeholder="主单号" />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
+            <Form.Item label="分单号" name="hawb_no">
+              <Input placeholder="分单号" />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
+            <Form.Item label="派送单号" name="tracking_no">
+              <Input placeholder="派送单号" />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
+            <Form.Item label="货品状态" name="track_status">
+              <Select placeholder="货品状态" options={options} />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={6}>
+            <Form.Item label="快递员" name="driverId">
+              <Input placeholder="快递员" />
+            </Form.Item>
+          </Col>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={18}>
+            <Form.Item style={{ textAlign: 'right' }}>
+              <Button type="primary" onClick={search.submit}>
+                搜索
+              </Button>
+              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
+                重置
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
       <Table rowKey="id" {...tableProps}>
         <Table.Column title="主单号" />
         <Table.Column title="分单号" />

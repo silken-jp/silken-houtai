@@ -27,7 +27,7 @@ export function onRouteChange() {
   if (isLogin) {
     const pathNames = ['/', '/login'];
     if (pathNames.some((p) => pathname === p)) {
-      return history.replace('/dashboard');
+      return history.replace('/waybill');
     }
   }
 }
