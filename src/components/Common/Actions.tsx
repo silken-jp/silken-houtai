@@ -31,10 +31,20 @@ const Actions: React.FC<ActionsProps> = (props) => {
     );
   const menu = (
     <Menu onClick={handleMenu}>
-      {props?.onEdit && <Menu.Item onClick={props.onEdit}>编辑</Menu.Item>}
-      {props?.onDelete && <Menu.Item onClick={props.onDelete}>删除</Menu.Item>}
+      {props?.onEdit && (
+        <Menu.Item key="edit" onClick={props.onEdit}>
+          编辑
+        </Menu.Item>
+      )}
+      {props?.onDelete && (
+        <Menu.Item key="delete" onClick={props.onDelete}>
+          删除
+        </Menu.Item>
+      )}
       {props?.menus?.map((item) => (
-        <Menu.Item onClick={item.onClick}>{item.label}</Menu.Item>
+        <Menu.Item key={item?.label} onClick={item.onClick}>
+          {item.label}
+        </Menu.Item>
       ))}
     </Menu>
   );

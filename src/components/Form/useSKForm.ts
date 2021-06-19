@@ -82,7 +82,7 @@ export const useSKFormBasic = <T>(props: BasicFormProps<T>) => {
     },
     formProps: {
       form,
-      validateMessages: { required: "'${label}' 是必选字段" },
+      validateMessages: { required: '【${label}】 是必选字段' },
     },
   };
 };

@@ -3,18 +3,19 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 区域划分首页数据获取 GET /api/zip_areas/with_cities
-export async function getZipAreas() {
+interface GetZipAreas {}
+export async function getZipAreas(params?: GetZipAreas) {
   return request<any>(ApiURL + '/zip_areas/with_cities', {
     method: 'GET',
   });
 }
 
 // 获取某个区域包含的分区邮编 GET /api/zip_areas/by_state
-interface getZipAreaCodesByState {
+interface GetZipAreaCodesByState {
   zipAreaId: API.ID;
   state: string;
 }
-export async function getZipAreaCodesByState(params: getZipAreaCodesByState) {
+export async function getZipAreaCodesByState(params: GetZipAreaCodesByState) {
   return request<any>(ApiURL + '/zip_areas/by_filter', {
     method: 'GET',
     params: {

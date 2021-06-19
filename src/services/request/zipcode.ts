@@ -6,11 +6,11 @@ const { ApiURL } = process.env;
 interface GetStateZipcodes {
   state: string;
 }
-export async function getZipcodesByState(option: GetStateZipcodes) {
+export async function getZipcodesByState(params: GetStateZipcodes) {
   return request<any>(ApiURL + '/zipcodes', {
     method: 'GET',
     params: {
-      state: option.state,
+      state: params.state,
     },
   });
 }

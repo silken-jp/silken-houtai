@@ -31,7 +31,7 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
-      const data = await getAllFlights({});
+      const data = await getAllFlights();
       return {
         total: data.length,
         list: data,

@@ -4,7 +4,7 @@ const { ApiURL } = process.env;
 
 // 获取所有航班 GET /api/flights
 interface GetAllFlights {}
-export async function getAllFlights(params: GetAllFlights) {
+export async function getAllFlights(params?: GetAllFlights) {
   return request<any>(ApiURL + '/flights', {
     method: 'GET',
   });
@@ -50,7 +50,7 @@ export async function updateFlight(params: UpdateFlight) {
   });
 }
 
-// 删除航班 DELETE /api/zip_areas/:id
+// 删除航班 DELETE /api/flights/:id
 interface DeleteByFlightId {
   flightId: API.ID;
 }

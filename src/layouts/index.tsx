@@ -79,7 +79,12 @@ const Index: React.FC = (props) => {
     <>{props?.children}</>
   ) : (
     <Layout className={styles['layout']}>
-      <Layout.Sider trigger={null} collapsible collapsed={collapsed}>
+      <Layout.Sider
+        className={styles['slider-layout']}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
         <div className={styles['logo']}>
           <CloudFilled className={styles['icon']} />
           {!collapsed && <span className={styles['text']}>シルケン</span>}
