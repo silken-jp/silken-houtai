@@ -3,10 +3,11 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills {}
+interface GetAllWaybills extends API.Waybill {}
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
     method: 'GET',
+    params: params,
   });
 }
 
@@ -38,10 +39,21 @@ export async function createWaybill(params: CreateWaybill) {
   });
 }
 
-// 批量导入运单 POST /api/waybills/multi
+// 批量创建导入 POST /api/waybills/multi
 interface CreateMultiWaybill extends API.Waybill {}
 export async function createMultiWaybill(params: CreateMultiWaybill) {
   return request<any>(ApiURL + '/waybills/multi', {
+    method: 'POST',
+    data: {
+      waybills: params,
+    },
+  });
+}
+
+// 批量更新导入 POST /api/waybills/update-multi
+interface UpdateMultiWaybill extends API.Waybill {}
+export async function updateMultiWaybill(params: UpdateMultiWaybill) {
+  return request<any>(ApiURL + '/waybills/update-multi', {
     method: 'POST',
     data: {
       waybills: params,

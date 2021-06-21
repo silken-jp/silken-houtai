@@ -1,24 +1,26 @@
 import React from 'react';
-import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
+import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment';
 ////
 import { useIntlPage } from '@/services/useIntl';
-import UploadXlsx from '@/components/Upload/UploadXlsx';
 import {
   getAllWaybills,
-  createMultiWaybill,
-  updateMultiWaybill,
+  createWaybill,
+  updateWaybill,
   deleteByWaybillId,
 } from '@/services/request/waybill';
-import { deleteConfirm } from '@/components/Common/Actions';
+import WaybillForm from '@/components/Form/WaybillForm';
+import { useSKForm } from '@/components/Form/useSKForm';
+import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const intlPage = useIntlPage();
+  const { formType, formProps, handleOpen } = useSKForm<API.Waybill>();
 
   // apollo
   const getTableData = async (_: PaginatedParams[0], formData: Object) => {
@@ -34,49 +36,20 @@ const waybill: React.FC = () => {
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
-  async function onUploadCreate(jsonArr: any) {
-    const { successCount, failedNo } = await createMultiWaybill(jsonArr);
-    search.submit();
-    const success =
-      successCount > 0
-        ? {
-            message: '批量新建导入完成',
-            description: `已成功导入，并生成了 ${successCount}/${
-              jsonArr.length - 1
-            } 条数据`,
-          }
-        : null;
-    const failed =
-      failedNo?.length > 0
-        ? {
-            message: success ? '部分数据新建失败' : '导入失败',
-            description: `新建失败行数：${failedNo.join(', ')}`,
-          }
-        : null;
-    return { success, failed };
-  }
-
-  async function onUploadUpdate(jsonArr: any) {
-    const { successCount, failedNo } = await updateMultiWaybill(jsonArr);
-    search.submit();
-    const success =
-      successCount > 0
-        ? {
-            message: '批量更新导入完成',
-            description: `已成功导入，并更新了 ${successCount}/${
-              jsonArr.length - 1
-            } 条数据`,
-          }
-        : null;
-    const failed =
-      failedNo?.length > 0
-        ? {
-            message: success ? '部分数据更新失败' : '导入失败',
-            description: `更新失败行数：${failedNo.join(', ')}`,
-          }
-        : null;
-    return { success, failed };
-  }
+  // action
+  const handleSubmit = async (v: any) => {
+    if (formType === 'add') {
+      await createWaybill(v);
+      search.submit();
+    }
+    if (formType === 'edit') {
+      await updateWaybill({ waybillId: formProps?.dataSource?._id, ...v });
+      search.submit();
+    }
+  };
+  const handleAdd = () => {
+    handleOpen({ title: '新建司机', type: 'add', data: null });
+  };
 
   return (
     <PageContainer
@@ -126,19 +99,13 @@ const waybill: React.FC = () => {
           </Col>
         </Row>
       </Form>
+      <WaybillForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
         title="运单列表"
         extra={
-          <Space>
-            <a
-              href="http://onassets.weixin-jp.com/assets/waybills-import.xlsx"
-              download
-            >
-              导入模板下载
-            </a>
-            <UploadXlsx onUpload={onUploadCreate} text="批量新建" />
-            <UploadXlsx onUpload={onUploadUpdate} text="批量更新" />
-          </Space>
+          <Button type="primary" onClick={handleAdd}>
+            + 新建
+          </Button>
         }
       >
         <Table rowKey="_id" {...tableProps}>
@@ -167,6 +134,9 @@ const waybill: React.FC = () => {
           <Table.Column
             title="操作"
             render={(row: any) => {
+              const handleEdit = () => {
+                handleOpen({ title: '编辑运单', type: 'edit', data: row });
+              };
               const [handleDelete] = deleteConfirm({
                 name: '运单',
                 submit: async () => {
@@ -174,11 +144,7 @@ const waybill: React.FC = () => {
                   search.submit();
                 },
               });
-              return (
-                <Button type="link" onClick={handleDelete}>
-                  删除
-                </Button>
-              );
+              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
             }}
           />
         </Table>

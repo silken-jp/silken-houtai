@@ -4,14 +4,17 @@ import { UploadOutlined } from '@ant-design/icons';
 import XLSX from 'xlsx';
 
 interface UploadXlsxProps {
-  onUpload: (
-    jsonArr: any[],
-  ) => Promise<{ successCount: number; failedNo: any[] }>;
+  onUpload: (jsonArr: any[]) => Promise<{
+    success?: { message?: string; description?: string } | null;
+    failed?: { message?: string; description?: string } | null;
+  }>;
+  text?: string;
 }
 
 const key = 'uploadXlsx';
 
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
+  const text = props?.text || '导入';
   const handleUpload = async (jsonArr: any[]) => {
     const sum = jsonArr?.length - 1;
     try {
@@ -22,15 +25,22 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
         duration: null,
         placement: 'bottomRight',
       });
-      const { successCount, failedNo } = await props.onUpload(jsonArr);
+      const { success, failed } = await props.onUpload(jsonArr);
       notification.open({
         key,
-        message: '导入完成',
-        description: `已成功导入，并生成了 ${successCount}/${sum} 条数据${
-          failedNo?.length > 0 ? '失败行数：' + failedNo.join(', ') : ''
-        }`,
+        message: success?.message || failed?.message,
+        description: success?.description || failed?.message,
+        duration: null,
         placement: 'bottomRight',
       });
+      if (success && failed) {
+        notification.warning({
+          message: failed?.message,
+          description: failed?.message,
+          duration: null,
+          placement: 'bottomRight',
+        });
+      }
     } catch (error) {
       notification.open({
         key,
@@ -73,7 +83,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       customRequest={customRequest}
     >
       <Button type="dashed">
-        <UploadOutlined /> 导入
+        <UploadOutlined /> {text}
       </Button>
     </Upload>
   );
