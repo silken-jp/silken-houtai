@@ -44,32 +44,36 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
         <Form.Item
           label="日本物流公司"
           name="jp_delivery_company"
-          rules={[{ required: true }]}
+          // rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="日本物流公司单号"
           name="jp_delivery_no"
-          rules={[{ required: true }]}
+          // rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="中国物流公司"
           name="cn_delivery_company"
-          rules={[{ required: true }]}
+          // rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="中国物流公司单号"
           name="cn_delivery_no"
-          rules={[{ required: true }]}
+          // rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
-        <Form.Item label="航班号" name="flight_no" rules={[{ required: true }]}>
+        <Form.Item
+          label="航班号"
+          name="flight_no"
+          // rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item
