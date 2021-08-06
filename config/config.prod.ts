@@ -3,7 +3,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   define: {
     'process.env': {
-      ApiURL: 'http://skapi.weixin-jp.com',
+      ApiURL: 'https://skapi.weixin-jp.com',
     },
   },
 });
