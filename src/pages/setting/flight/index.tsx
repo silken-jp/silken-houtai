@@ -3,9 +3,9 @@ import { Table, Card, Button, Form, Input, Row, Col } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
-import moment from 'moment';
+import dayjs from 'dayjs';
 ////
-import { useIntlPage } from '@/services/useIntl';
+import { useIntlFormat } from '@/services/useIntl';
 import {
   getAllFlights,
   createFlight,
@@ -24,9 +24,10 @@ export interface FlightSettingProps {}
 
 const FlightSetting: React.FC<FlightSettingProps> = () => {
   // state
-  const intlPage = useIntlPage();
   const [form] = Form.useForm();
+  const [intlMenu] = useIntlFormat('menu');
   const { formType, formProps, handleOpen } = useSKForm<API.Flight>();
+
   // api
   const getTableData = async (
     pageData: PaginatedParams[0],
@@ -57,17 +58,17 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
     }
   };
   const handleAdd = () => {
-    handleOpen({ title: '新建航班', type: 'add', data: null });
+    handleOpen({ title: 'Flight', type: 'add', data: null });
   };
 
   return (
     <PageContainer
       header={{
-        title: `${intlPage.flight}`,
+        title: `${intlMenu('setting.flight')}`,
         breadcrumb: {
           routes: [
-            { path: '/setting/flight', breadcrumbName: intlPage.setting },
-            { path: '', breadcrumbName: intlPage.flight },
+            { path: '/setting/flight', breadcrumbName: intlMenu('setting') },
+            { path: '', breadcrumbName: intlMenu('setting.flight') },
           ],
         },
       }}
@@ -75,21 +76,17 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
       <Form form={form} className="sk-table-search">
         <Row>
           <Col span={8}>
-            <Form.Item label="航班号" name="flight_no">
+            <Form.Item label="FlightNo" name="flight_no">
               <Input />
             </Form.Item>
           </Col>
           <Col span={16}>
             <Form.Item style={{ textAlign: 'right' }}>
-              <Button disabled type="primary" onClick={search.submit}>
-                搜索
+              <Button type="primary" onClick={search.submit}>
+                検索
               </Button>
-              <Button
-                disabled
-                onClick={search.reset}
-                style={{ marginLeft: 16 }}
-              >
-                重置
+              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
+                リセット
               </Button>
             </Form.Item>
           </Col>
@@ -97,39 +94,37 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
       </Form>
       <FlightForm {...formProps} onSubmit={handleSubmit} />
       <Card
-        title="航班列表"
+        title="Flightリスト"
         extra={
           <Button type="primary" onClick={handleAdd}>
-            + 新建
+            + 新規
           </Button>
         }
       >
         <Table {...tableProps} rowKey="_id">
           <Table.Column title="ID" render={(_, __, i) => i + 1} />
-          <Table.Column title="航班号" dataIndex="flight_no" />
+          <Table.Column title="FlightNo" dataIndex="flight_no" />
           <Table.Column
-            title="日本航班起飞"
+            title="日本便出発"
             render={(row) => timeToTime(row?.jp_depart_time)}
           />
           <Table.Column
-            title="航班到达"
+            title="日本到着"
             render={(row) => timeToTime(row?.arrive_time)}
           />
           <Table.Column
-            title="通关中"
+            title="通関中"
             render={(row) => timeToTime(row?.clearance_time)}
           />
           <Table.Column
-            title="修改时间"
-            render={(row) =>
-              moment(row?.updatedAt)?.local()?.format('YYYY-MM-DD HH:mm')
-            }
+            title="更新時間"
+            render={(row) => dayjs(row?.updatedAt)?.format('YYYY-MM-DD HH:mm')}
           />
           <Table.Column
             title="操作"
             render={(row: any) => {
               const handleEdit = () => {
-                handleOpen({ title: '编辑航班', type: 'edit', data: row });
+                handleOpen({ title: 'Flight', type: 'edit', data: row });
               };
               const [handleDelete] = deleteConfirm({
                 name: row?.flight_no,

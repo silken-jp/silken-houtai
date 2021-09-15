@@ -30,7 +30,7 @@ const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
   return (
     <>
       <ZipAreaForm
-        title="添加区域"
+        title="新規エリア"
         visible={modalVisible}
         onSubmit={handleSubmit}
         onVisibleChange={handleModelVisible.toggle}
@@ -41,7 +41,7 @@ const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
         onClick={handleModelVisible.setTrue}
         block
       >
-        添加
+        新規
       </Button>
       <Menu mode="inline">
         {data?.map((area: any) => (

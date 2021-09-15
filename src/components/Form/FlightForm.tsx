@@ -39,13 +39,17 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
   return (
     <Modal {...modalProps}>
       <Form name="FlightForm" {...formItemLayout} {...formProps}>
-        <Form.Item label="航班号" name="flight_no" rules={[{ required: true }]}>
+        <Form.Item
+          label="FLIGHT NO"
+          name="flight_no"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item label="日本航班起飞" required>
+        <Form.Item label="日本便出発" required>
           <Space>
             <Form.Item
-              label="日本航班起飞"
+              label="日本便出発"
               name="jp_depart_time"
               rules={[{ required: true }]}
               noStyle
@@ -66,10 +70,10 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
             </Form.Item>
           </Space>
         </Form.Item>
-        <Form.Item label="航班到达" required>
+        <Form.Item label="日本到着" required>
           <Space>
             <Form.Item
-              label="航班到达"
+              label="日本到着"
               name="arrive_time"
               rules={[{ required: true }]}
               noStyle
@@ -88,10 +92,10 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
             </Form.Item>
           </Space>
         </Form.Item>
-        <Form.Item label="通关中" required>
+        <Form.Item label="通関中" required>
           <Space>
             <Form.Item
-              label="通关中"
+              label="通関中"
               name="clearance_time"
               rules={[{ required: true }]}
               noStyle

@@ -8,7 +8,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import ZipAreaSider from '@/components/Sider/ZipAreaSider';
 import ZipAreaContent from '@/components/Content/ZipAreaContent';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
-import { useIntlPage } from '@/services/useIntl';
+import { useIntlFormat } from '@/services/useIntl';
 import { getZipAreas } from '@/services/request/ziparea';
 import {
   updateNameByZipAreaId,
@@ -21,7 +21,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   // state
   const [areaData, setAreaData] = useState<any>();
   const [modalVisible, handleModelVisible] = useBoolean();
-  const intlPage = useIntlPage();
+  const [intlMenu] = useIntlFormat('menu');
 
   // api
   const zipAreasApi = useRequest<any>(getZipAreas);
@@ -68,17 +68,17 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   return (
     <PageContainer
       header={{
-        title: `${intlPage.zipArea}`,
+        title: `${intlMenu('setting.zipArea')}`,
         breadcrumb: {
           routes: [
-            { path: '/setting/zip-area', breadcrumbName: intlPage.setting },
-            { path: '', breadcrumbName: intlPage.zipArea },
+            { path: '/setting/zip-area', breadcrumbName: intlMenu('setting') },
+            { path: '', breadcrumbName: intlMenu('setting.zipArea') },
           ],
         },
       }}
     >
       <ZipAreaForm
-        title="编辑区域"
+        title="区域"
         dataSource={areaData}
         visible={modalVisible}
         onSubmit={handleSubmit}
@@ -97,9 +97,9 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
                   overlay={
                     <Menu>
                       <Menu.Item onClick={handleModelVisible.setTrue}>
-                        编辑
+                        編集
                       </Menu.Item>
-                      <Menu.Item onClick={handleDelete}>删除</Menu.Item>
+                      <Menu.Item onClick={handleDelete}>削除</Menu.Item>
                     </Menu>
                   }
                 >

@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
 import defaultSettings from './defaultSettings';
 
@@ -37,6 +38,9 @@ export default defineConfig({
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
+  },
+  chainWebpack: (config) => {
+    config.plugin('antd-dayjs-webpack-plugin').use(AntdDayjsWebpackPlugin);
   },
   // 引入被 external 库的 scripts
   // 区分 development 和 production，使用不同的产物

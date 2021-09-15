@@ -1,24 +1,27 @@
 import React from 'react';
 import { useParams } from 'umi';
-import { Descriptions, Card, Steps, Timeline } from 'antd';
+import { Descriptions, Card, Timeline } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import { useIntlWaybill } from '@/services/useIntl';
+import { useIntlFormat } from '@/services/useIntl';
 
 export interface WaybillProps {}
 
 const Waybill: React.FC<WaybillProps> = () => {
   const { hawbNo } = useParams<any>();
-  const intlWaybill = useIntlWaybill();
+  const [intlWaybill] = useIntlFormat('waybill');
   return (
     <PageContainer
       header={{
-        title: `${intlWaybill.hawbNo}：${hawbNo}`,
+        title: `${intlWaybill('hawbNo')}：${hawbNo}`,
         breadcrumb: {
           routes: [
-            { path: '/waybill/small-packet', breadcrumbName: intlWaybill.home },
-            { path: '', breadcrumbName: intlWaybill.smallPacket },
-            { path: '', breadcrumbName: intlWaybill.info },
+            {
+              path: '/waybill/cn-to-jp/biz-packet',
+              breadcrumbName: intlWaybill('header.cn-to-jp'),
+            },
+            { path: '/', breadcrumbName: intlWaybill('header.BtoB') },
+            { path: '', breadcrumbName: intlWaybill('header.info') },
           ],
         },
       }}
@@ -33,13 +36,6 @@ const Waybill: React.FC<WaybillProps> = () => {
         </Descriptions>
       }
     >
-      <Card title="货物状态">
-        <Steps size="small" current={1}>
-          <Steps.Step title="未分配" />
-          <Steps.Step title="派送中" />
-          <Steps.Step title="已送达" />
-        </Steps>
-      </Card>
       <br />
       <Card title="寄件人信息">
         <Descriptions column={3} style={{ marginBottom: -16 }}>

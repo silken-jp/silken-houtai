@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, DatePicker } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 ////
 import { useSKFormBasic } from './useSKForm';
 
@@ -31,7 +31,7 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
         jp_delivery_company: props?.dataSource?.jp_delivery_company,
         cn_delivery_company: props?.dataSource?.cn_delivery_company,
         flight_no: props?.dataSource?.flight_no,
-        waybill_input_time: moment(
+        waybill_input_time: dayjs(
           props?.dataSource?.waybill_input_time,
         ).local(),
       });
@@ -70,14 +70,14 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="航班号"
+          label="FLIGHT NO"
           name="flight_no"
           // rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
-          label="单证录入时间"
+          label="単証入力時間"
           name="waybill_input_time"
           rules={[{ required: true }]}
         >

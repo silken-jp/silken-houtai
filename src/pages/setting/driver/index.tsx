@@ -4,7 +4,7 @@ import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import { useIntlPage } from '@/services/useIntl';
+import { useIntlFormat } from '@/services/useIntl';
 import {
   getAllDrivers,
   createDriver,
@@ -18,7 +18,7 @@ import Actions, { deleteConfirm } from '@/components/Common/Actions';
 const driver: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const intlPage = useIntlPage();
+  const [intlMenu] = useIntlFormat('menu');
   const { formType, formProps, handleOpen } = useSKForm<API.Driver>();
 
   // api
@@ -58,30 +58,34 @@ const driver: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: `${intlPage.driver}`,
+        title: `${intlMenu('setting.driver')}`,
         breadcrumb: {
-          routes: [{ path: '', breadcrumbName: intlPage.driver }],
+          routes: [
+            { path: '/setting/driver', breadcrumbName: intlMenu('setting') },
+            { path: '', breadcrumbName: intlMenu('setting.driver') },
+          ],
         },
       }}
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col span={16}>
-            <Form.Item label="司机" name="driverId">
-              <Input placeholder="司机" />
+          <Col span={8}>
+            <Form.Item label="名前" name="name">
+              <Input placeholder="名前" />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="電話番号" name="tel">
+              <Input placeholder="電話番号" />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item style={{ textAlign: 'right' }}>
-              <Button disabled type="primary" onClick={search.submit}>
-                搜索
+              <Button type="primary" onClick={search.submit}>
+                検索
               </Button>
-              <Button
-                disabled
-                onClick={search.reset}
-                style={{ marginLeft: 16 }}
-              >
-                重置
+              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
+                リセット
               </Button>
             </Form.Item>
           </Col>
@@ -89,22 +93,22 @@ const driver: React.FC = () => {
       </Form>
       <DriverForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title="司机列表"
+        title="ドライバーリスト"
         extra={
           <Button type="primary" onClick={handleAdd}>
-            + 新建
+            + 新規
           </Button>
         }
       >
         <Table rowKey="_id" {...tableProps}>
           <Table.Column title="ID" render={(_, __, i) => i + 1} />
-          <Table.Column title="名字" dataIndex="name" />
-          <Table.Column title="电话" dataIndex="tel" />
+          <Table.Column title="名前" dataIndex="name" />
+          <Table.Column title="電話番号" dataIndex="tel" />
           <Table.Column
             title="操作"
             render={(row: any) => {
               const handleEdit = () => {
-                handleOpen({ title: '编辑司机', type: 'edit', data: row });
+                handleOpen({ title: 'ドライバー', type: 'edit', data: row });
               };
               const [handleDelete] = deleteConfirm({
                 name: row?.name,
