@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 ////
-import { useSKFormBasic } from './useSKForm';
+import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -10,23 +11,17 @@ const formItemLayout = {
 
 interface DataSource extends API.Driver {}
 
-export interface DriverFormProps {
-  type: string;
-  title: string;
-  visible: boolean;
-  dataSource?: DataSource;
-  onSubmit?: (data: DataSource) => void;
-  onVisibleChange?: (visible: boolean) => void;
-}
+export interface DriverFormProps extends SKFormProps<DataSource> {}
 
 const DriverForm: React.FC<DriverFormProps> = (props) => {
-  const { modalProps, formProps } = useSKFormBasic(props);
+  const { modalProps, formProps } = useSKForm.useFormBasic(props);
 
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         name: props?.dataSource?.name || '',
         tel: props?.dataSource?.tel || '',
+        password: '',
       });
     }
   }, [props]);

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { useBoolean, useRequest } from 'ahooks';
+import { useRequest } from 'ahooks';
 import { Row, Col, Card, Empty, message } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
 import ZipAreaSider from './components/ZipAreaSider';
 import ZipAreaContent from './components/ZipAreaContent';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
 import { useIntlFormat } from '@/services/useIntl';
-import { getZipAreas } from '@/services/request/ziparea';
+import { getZipAreas, createZipArea } from '@/services/request/ziparea';
 import { updateNameByZipAreaId, deleteByZipAreaId } from '@/services/request/ziparea';
 
 export interface ZipAreaProps {}
@@ -16,24 +17,39 @@ export interface ZipAreaProps {}
 const ZipArea: React.FC<ZipAreaProps> = () => {
   // state
   const [areaData, setAreaData] = useState<any>();
-  const [modalVisible, handleModelVisible] = useBoolean();
   const [intlMenu] = useIntlFormat('menu');
+  const { formType, formProps, handleOpen } = useSKForm.useForm<{ name: string }>();
 
   // api
   const zipAreasApi = useRequest<any>(getZipAreas);
 
   // actions
   const handleSubmit = async (values: any) => {
-    try {
-      const zipAreaId = areaData._id;
-      const name = values?.name;
-      if (name === areaData?.name) return;
-      await updateNameByZipAreaId({ zipAreaId, name });
-      updateZipAreaApi({ ...areaData, name });
-    } catch (error: any) {
-      message.error(error);
+    if (formType === 'add') {
+      const { _id } = await createZipArea({ name: values?.name });
+      zipAreasApi?.mutate([...zipAreasApi?.data, { _id, name: values?.name }]);
+    }
+    if (formType === 'edit') {
+      try {
+        const zipAreaId = areaData._id;
+        const name = values?.name;
+        if (name === areaData?.name) return;
+        await updateNameByZipAreaId({ zipAreaId, name });
+        updateZipAreaApi({ ...areaData, name });
+      } catch (error: any) {
+        message.error(error);
+      }
     }
   };
+
+  const handleAdd = () => {
+    handleOpen({ title: '区域', type: 'add', data: null });
+  };
+
+  const handleEdit = () => {
+    handleOpen({ title: '区域', type: 'edit', data: areaData });
+  };
+
   const [handleDelete] = deleteConfirm({
     name: areaData?.name,
     submit: async () => {
@@ -63,23 +79,14 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
         },
       }}
     >
-      <ZipAreaForm
-        title="区域"
-        dataSource={areaData}
-        visible={modalVisible}
-        onSubmit={handleSubmit}
-        onVisibleChange={handleModelVisible.toggle}
-      />
+      <ZipAreaForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Row gutter={12} wrap={false}>
         <Col flex="210px">
-          <ZipAreaSider zipAreasApi={zipAreasApi} onChange={setAreaData} />
+          <ZipAreaSider zipAreasApi={zipAreasApi} onChange={setAreaData} onAdd={handleAdd} />
         </Col>
         <Col flex="auto">
           {areaData?.name ? (
-            <Card
-              title={areaData?.name}
-              extra={<Actions onEdit={handleModelVisible.setTrue} onDelete={handleDelete} />}
-            >
+            <Card title={areaData?.name} extra={<Actions onEdit={handleEdit} onDelete={handleDelete} />}>
               <ZipAreaContent areaData={areaData} updateZipAreaApi={updateZipAreaApi} />
             </Card>
           ) : (

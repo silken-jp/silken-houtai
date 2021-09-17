@@ -1,3 +1,3 @@
-import { locales } from '@silken-houtai/core';
+import { locales } from '@silken-houtai/core/lib/locales';
 
-export default locales['default']['zh-CN'];
+export default locales['zh-CN'];

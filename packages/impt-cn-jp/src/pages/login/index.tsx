@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input, Button, message } from 'antd';
 
-import { constant } from '@silken-houtai/core';
+import { STORAGE_KEY } from '@silken-houtai/core/lib/constant';
 import styles from './login.less';
 
 const LoginForm: React.FC = () => {
@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
       const remainingMilliseconds = 24 * 60 * 60 * 1000;
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
       // setUserLogin({ ...data.TeacherLogin, expiryDate });
-      localStorage.setItem(constant.STORAGE_KEY + 'userLogin', JSON.stringify({ token: 'aaa', expiryDate }));
+      localStorage.setItem(STORAGE_KEY + 'userLogin', JSON.stringify({ token: 'aaa', expiryDate }));
       await setLoading(false);
       window.location.reload();
     } catch (error: any) {

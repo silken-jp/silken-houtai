@@ -4,18 +4,18 @@ import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 import dayjs from 'dayjs';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllWaybills, createWaybill, updateWaybill, deleteByWaybillId } from '@/services/request/waybill';
 import WaybillForm from '@/components/Form/WaybillForm';
-import { useSKForm } from '@/components/Form/useSKForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlPage] = useIntlFormat();
-  const { formType, formProps, handleOpen } = useSKForm<API.Waybill>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   // api
   const getTableData = async (_: PaginatedParams[0], formData: Object) => {

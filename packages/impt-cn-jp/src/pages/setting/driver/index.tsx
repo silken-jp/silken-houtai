@@ -3,18 +3,18 @@ import { Table, Card, Button, Form, Input, Row, Col } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllDrivers, createDriver, updateDriver, deleteByDriverId } from '@/services/request/driver';
 import DriverForm from '@/components/Form/DriverForm';
-import { useSKForm } from '@/components/Form/useSKForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
 const driver: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const { formType, formProps, handleOpen } = useSKForm<API.Driver>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
 
   // api
   const getTableData = async (pageData: PaginatedParams[0], formData: Object) => {

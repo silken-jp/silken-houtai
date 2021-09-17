@@ -10,8 +10,11 @@ export interface CreateProps {
 
 const Extra: React.FC<CreateProps> = (props) => {
   const [visible, setVisible] = useState(false);
+  const [form] = Form.useForm();
+
   return (
     <>
+      {/* <ExportCheckedFileForm type="" {...formProps} onSubmit={handleSubmit}/> */}
       <Modal title="クリエート" visible={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)}>
         <Form>
           <Form.Item label="4.ICB">

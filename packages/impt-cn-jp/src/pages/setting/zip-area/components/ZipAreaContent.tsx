@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Row, Col, Drawer, Button, Descriptions, message } from 'antd';
-import { constant } from '@silken-houtai/core';
+import { ZIP } from '@silken-houtai/core/lib/constant';
 ////
 import { updateZipCodesByZipAreaId } from '@/services/request/ziparea';
 import ZipAreaContentItem from './ZipAreaContentItem';
@@ -69,7 +69,7 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
         <ZipAreaContentItem ref={ref} state={stateName} zipAreaId={props.areaData?._id} />
       </Drawer>
       <Descriptions bordered>
-        {constant.ZIP_STATES_GROUPS.map((item, key) => {
+        {ZIP.ZIP_STATES_GROUPS.map((item, key) => {
           return (
             <Descriptions.Item label={item.name} key={key} span={3}>
               <Row>

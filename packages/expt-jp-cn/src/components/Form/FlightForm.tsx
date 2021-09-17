@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Space } from 'antd';
 ////
-import { useSKFormBasic } from './useSKForm';
+import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
   labelCol: { span: 8 },
@@ -14,16 +15,10 @@ function timeToTime(value: number) {
 
 interface DataSource extends API.Flight {}
 
-export interface FlightFormProps {
-  title: string;
-  visible: boolean;
-  dataSource?: DataSource;
-  onSubmit?: (data: DataSource) => void;
-  onVisibleChange?: (visible: boolean) => void;
-}
+export interface FlightFormProps extends SKFormProps<DataSource> {}
 
 const FlightForm: React.FC<FlightFormProps> = (props) => {
-  const { modalProps, formProps } = useSKFormBasic(props);
+  const { modalProps, formProps } = useSKForm.useFormBasic(props);
 
   useEffect(() => {
     if (props?.visible) {

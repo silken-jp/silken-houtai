@@ -36,9 +36,11 @@ var __importStar =
     return result;
   };
 exports.__esModule = true;
-exports.locales = exports.constant = void 0;
+exports.locales = exports.useHooks = exports.constant = void 0;
 var constant = __importStar(require('./constant'));
 exports.constant = constant;
 var locales = __importStar(require('./locales'));
 exports.locales = locales;
-exports['default'] = { constant: constant, locales: locales };
+var useHooks = __importStar(require('./useHooks'));
+exports.useHooks = useHooks;
+exports['default'] = { constant: constant, useHooks: useHooks, locales: locales };

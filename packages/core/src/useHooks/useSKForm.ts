@@ -1,7 +1,24 @@
 import { useState } from 'react';
 import { Form, message } from 'antd';
 
-export const useSKForm = <T>() => {
+export declare interface SKFormProps<T> {
+  type?: string;
+  title: string;
+  visible: boolean;
+  dataSource?: T;
+  onSubmit?: (data: T) => void;
+  onVisibleChange?: (visible: boolean) => void;
+}
+
+export declare interface BasicFormProps<T> {
+  title: string;
+  visible: boolean;
+  dataSource?: T;
+  onSubmit?: (data: T) => void;
+  onVisibleChange?: (visible: boolean) => void;
+}
+
+export const useForm = <T>() => {
   const [formType, setFormType] = useState('');
   const [title, setTitle] = useState('');
   const [visible, setVisible] = useState(false);
@@ -31,14 +48,7 @@ export const useSKForm = <T>() => {
   };
 };
 
-export interface BasicFormProps<T> {
-  title: string;
-  visible: boolean;
-  dataSource?: T;
-  onSubmit?: (data: T) => void;
-  onVisibleChange?: (visible: boolean) => void;
-}
-export const useSKFormBasic = <T>(props: BasicFormProps<T>) => {
+export const useFormBasic = <T>(props: BasicFormProps<T>) => {
   const { title = '', visible = false } = props;
   const { onSubmit = () => {}, onVisibleChange = () => {} } = props;
 

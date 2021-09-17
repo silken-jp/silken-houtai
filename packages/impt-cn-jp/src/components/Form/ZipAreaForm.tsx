@@ -1,49 +1,34 @@
-import React, { useState } from 'react';
-import { Modal, Form, Input, message } from 'antd';
+import React, { useEffect } from 'react';
+import { Modal, Form, Input } from 'antd';
+////
+import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
+
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 14 },
+};
 
 interface DataSource {
   name: string;
 }
 
-export interface ZipAreaFormProps {
-  title: string;
-  visible: boolean;
-  dataSource?: DataSource;
-  onSubmit?: (data: DataSource) => void;
-  onVisibleChange?: (visible: boolean) => void;
-}
+export interface ZipAreaFormProps extends SKFormProps<DataSource> {}
 
 const ZipAreaForm: React.FC<ZipAreaFormProps> = (props) => {
-  const { title = '', dataSource = {}, visible = false, onSubmit = () => {}, onVisibleChange = () => {} } = props;
+  const { modalProps, formProps } = useSKForm.useFormBasic(props);
 
-  const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
-
-  const onOk = async () => {
-    form
-      .validateFields()
-      .then(async (v) => {
-        try {
-          setLoading(true);
-          await onSubmit(v);
-          onVisibleChange(false);
-          setLoading(false);
-        } catch (error: any) {
-          message.error(error);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+  useEffect(() => {
+    if (props?.visible) {
+      formProps?.form?.setFieldsValue({
+        name: props?.dataSource?.name,
       });
-  };
-
-  const onCancel = () => {
-    onVisibleChange(false);
-  };
+    }
+  }, [props]);
 
   return (
-    <Modal visible={visible} title={title} confirmLoading={loading} onCancel={onCancel} onOk={onOk} centered>
-      <Form name="ZipAreaForm" form={form} initialValues={dataSource}>
+    <Modal {...modalProps} centered>
+      <Form name="ZipAreaForm" {...formItemLayout} {...formProps}>
         <Form.Item label="名称" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
           <Input />
         </Form.Item>
