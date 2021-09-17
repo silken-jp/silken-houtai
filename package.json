@@ -1,12 +1,16 @@
 {
+  "name": "root",
   "private": true,
-  "homepage": "https://github.com/silken-jp/silken-houtai",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "UMI_ENV=host umi dev",
-    "dev:prod": "UMI_ENV=prod umi dev",
-    "build": "UMI_ENV=prod umi build",
-    "deploy": "gh-pages -d dist",
-    "postinstall": "umi generate tmp",
+    "sl:jpcn": "yarn workspace houtai-jp-cn start",
+    "sl:cnjp": "yarn workspace houtai-cn-jp start",
+    "sp:jpcn": "yarn workspace houtai-jp-cn start:prod",
+    "sp:cnjp": "yarn workspace houtai-cn-jp start:prod",
+    "build:jpcn": "yarn workspace houtai-jp-cn build",
+    "build:cnjp": "yarn workspace houtai-cn-jp build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
   "gitHooks": {
@@ -20,23 +24,10 @@
       "prettier --parser=typescript --write"
     ]
   },
-  "dependencies": {
-    "@ant-design/pro-layout": "6.x",
-    "@umijs/preset-react": "1.x",
-    "ahooks": "2.x",
-    "antd-dayjs-webpack-plugin": "^1.0.6",
-    "umi": "3.x",
-    "xlsx": "^0.17.0"
-  },
   "devDependencies": {
-    "@types/mockjs": "^1.0.3",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
+    "lerna": "^4.0.0",
     "lint-staged": "^10.0.7",
-    "mockjs": "^1.1.0",
-    "prettier": "^2.2.0",
-    "react": "17.x",
-    "react-dom": "17.x",
+    "prettier": "^2.4.1",
     "typescript": "^4.1.2",
     "yorkie": "^2.0.0"
   }

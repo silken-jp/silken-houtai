@@ -1,0 +1,23 @@
+declare const _default: {
+  'menu.title': string;
+  'menu.waybill': string;
+  'menu.waybill.cn-to-jp': string;
+  'menu.waybill.jp-to-cn': string;
+  'menu.waybill.BtoC': string;
+  'menu.waybill.BtoB': string;
+  'menu.delivery': string;
+  'menu.delivery.self': string;
+  'menu.delivery.other': string;
+  'menu.cts': string;
+  'menu.CSManagement': string;
+  'menu.CSManagement.permit': string;
+  'menu.CSManagement.cargoIssues': string;
+  'menu.setting': string;
+  'menu.setting.driver': string;
+  'menu.setting.flight': string;
+  'menu.setting.zipArea': string;
+  'menu.exception.403': string;
+  'menu.exception.404': string;
+  'menu.exception.500': string;
+};
+export default _default;
