@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 ////
-import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
@@ -12,7 +11,7 @@ const formItemLayout = {
 
 interface DataSource extends API.Waybill {}
 
-export interface WaybillFormProps extends SKFormProps<DataSource> {}
+export interface WaybillFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const WaybillForm: React.FC<WaybillFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);

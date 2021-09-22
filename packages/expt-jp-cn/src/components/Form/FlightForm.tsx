@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Space } from 'antd';
 ////
-import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
@@ -15,7 +14,7 @@ function timeToTime(value: number) {
 
 interface DataSource extends API.Flight {}
 
-export interface FlightFormProps extends SKFormProps<DataSource> {}
+export interface FlightFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const FlightForm: React.FC<FlightFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 ////
-import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
@@ -11,7 +10,7 @@ const formItemLayout = {
 
 interface DataSource extends API.Driver {}
 
-export interface DriverFormProps extends SKFormProps<DataSource> {}
+export interface DriverFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const DriverForm: React.FC<DriverFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);

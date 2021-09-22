@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 ////
-import { SKFormProps } from '@silken-houtai/core/lib/useHooks/useSKForm';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
 const formItemLayout = {
@@ -13,7 +12,7 @@ interface DataSource {
   name: string;
 }
 
-export interface ZipAreaFormProps extends SKFormProps<DataSource> {}
+export interface ZipAreaFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const ZipAreaForm: React.FC<ZipAreaFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);
