@@ -73,7 +73,7 @@ const ManifestWaybill: React.FC = () => {
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
                 <Button type="primary" onClick={search.submit}>
-                  検査
+                  検索
                 </Button>
                 <Button onClick={search.reset}>リセット</Button>
               </Space>

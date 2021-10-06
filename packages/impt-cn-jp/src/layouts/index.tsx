@@ -15,7 +15,7 @@ import styles from './index.less';
 
 const Index: React.FC = (props) => {
   const history = useHistory();
-  const isFull = ['/login', '/check'].some((item: any) => history?.location?.pathname?.startsWith(item));
+  const isFull = ['/login', '/waybill/cts/check/'].some((item: any) => history?.location?.pathname?.startsWith(item));
   const [collapsed, setCollapsed] = useState(false);
   const toggle = () => {
     setCollapsed(!collapsed);

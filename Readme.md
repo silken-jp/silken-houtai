@@ -38,9 +38,9 @@ yarn tsc
 #### 项目名录
 
 - 输出管理系统：
-  - 日中（ejpcn）：expt-jp-cn 
+  - ejpcn：expt-jp-cn （日中）
 - 输入管理系统：
-  - 中日（icnjp）：impt-cn-jp
+  - icnjp：impt-cn-jp （中日）
 
 ### learn常用命令
 

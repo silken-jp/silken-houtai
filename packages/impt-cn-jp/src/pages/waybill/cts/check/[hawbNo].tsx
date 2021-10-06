@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Form, Space, Select, Radio, Drawer, Input } from 'antd';
+import { Card, Form, Space, Select, Radio, Button } from 'antd';
 import { useKeyPress } from 'ahooks';
 ////
 import AIDForm from './components/AIDForm';
@@ -17,7 +17,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
   const [urlIndex, setUrlIndex] = useState(0);
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({});
+    form.setFieldsValue({
+      formType1: 'MIC',
+    });
   }, []);
 
   // key: w
@@ -49,13 +51,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
     },
   ];
   return (
-    <Card>
+    <Card
+      extra={
+        <Button target="_blank" href="http://localhost:8000/#/waybill/cts/check/import">
+          インボイス
+        </Button>
+      }
+    >
       <Form size="small" form={form}>
-        <Drawer title="search" visible={visible} onClose={() => setVisible(false)}>
-          <Form.Item label="会社コード">
-            <Input.Search enterButton />
-          </Form.Item>
-        </Drawer>
+        {/* <Form.Item label="Example" name="test">
+          <PopoverInput />
+        </Form.Item> */}
         <Space>
           <Form.Item label="FormType" name="formType1">
             <Select
