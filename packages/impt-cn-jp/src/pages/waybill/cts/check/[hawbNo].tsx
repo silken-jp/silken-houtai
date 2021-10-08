@@ -13,7 +13,6 @@ const urls = [
 ];
 
 const WaybillCheck: React.FC<WaybillCheckProps> = () => {
-  const [visible, setVisible] = useState(false);
   const [urlIndex, setUrlIndex] = useState(0);
   const [form] = Form.useForm();
   useEffect(() => {
@@ -23,45 +22,39 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
   }, []);
 
   // key: w
-  useKeyPress('w', () => {
-    const channel = new BroadcastChannel('sk_import');
+  useKeyPress('F9', () => {
     setUrlIndex(!urlIndex ? 1 : 0);
-    channel.postMessage({
-      url: urls[urlIndex],
-    });
+    postImporter({ url: urls[urlIndex] });
   });
-  // key: v
-  useKeyPress('F8', () => {
-    setVisible(!visible);
-  });
+
+  function postImporter({ url }: any) {
+    const channel = new BroadcastChannel('sk_import');
+    channel.postMessage({ url });
+  }
 
   const formTypeOption = [
     { value: 'AID', label: 'AID: 輸入申告' },
-    {
-      value: 'ASD',
-      label: 'ASD: 輸入申告（少額関税無税）',
-    },
+    { value: 'ASD', label: 'ASD: 輸入申告（少額関税無税）' },
     { value: 'AHK', label: 'AHK: 輸入（引取）申告' },
     { value: 'AHT', label: 'AHT: 輸入（引取・特例）申告' },
     { value: 'AIS', label: 'AIS: 蔵入等承認申請' },
     { value: 'AIW', label: 'AIW: 蔵出等輸入申告' },
-    {
-      value: 'AST',
-      label: 'AST: 蔵出輸入（引取・特例）申告',
-    },
+    { value: 'AST', label: 'AST: 蔵出輸入（引取・特例）申告' },
   ];
   return (
     <Card
       extra={
-        <Button target="_blank" href="http://localhost:8000/#/waybill/cts/check/import">
+        <Button target="_blank" href={`http://localhost:8000/#/waybill/cts/check/import`}>
           インボイス
         </Button>
       }
+      actions={[
+        <Button type="text">Next（F2）</Button>,
+        <Button type="text">HOLD（F8）</Button>,
+        <Button type="text">Accept（F9）</Button>,
+      ]}
     >
       <Form size="small" form={form}>
-        {/* <Form.Item label="Example" name="test">
-          <PopoverInput />
-        </Form.Item> */}
         <Space>
           <Form.Item label="FormType" name="formType1">
             <Select

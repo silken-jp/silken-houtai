@@ -16,7 +16,7 @@ const Importer: React.FC<ImporterProps> = () => {
     return () => channel?.close();
   }, []);
   return (
-    <>
+    <div style={{ width: '100vw', height: '100vh' }}>
       <object data={state?.url} type="application/pdf" width="100%" height="100%">
         <iframe src={state?.url} width="100%" height="100%">
           <p>
@@ -24,7 +24,7 @@ const Importer: React.FC<ImporterProps> = () => {
           </p>
         </iframe>
       </object>
-    </>
+    </div>
   );
 };
 
