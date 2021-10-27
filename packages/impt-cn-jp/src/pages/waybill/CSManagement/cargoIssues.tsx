@@ -69,7 +69,7 @@ const waybill: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 1300 }}>
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
           <Table.Column width={180} title="代理店" />
           <Table.Column width={180} title="HAWB番号" />
           <Table.Column width={180} title="MAWB番号" />

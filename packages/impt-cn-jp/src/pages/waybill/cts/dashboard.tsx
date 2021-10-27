@@ -47,11 +47,6 @@ const Dashboard: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
           <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="代理店名">
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
             <Form.Item label="MAWB番号">
               <Input />
             </Form.Item>
@@ -74,9 +69,7 @@ const Dashboard: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 1300 }}>
-          <Table.Column width={180} title="代理店名" />
-          <Table.Column width={180} title="備考" />
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
           <Table.Column width={180} title="MAWB番号" />
           <Table.Column width={180} title="FlightNo" />
           <Table.Column width={180} title="FlightDate" />

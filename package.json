@@ -5,13 +5,13 @@
     "packages/*"
   ],
   "scripts": {
-    "sl:ejpcn": "yarn workspace expt-jp-cn start",
-    "sl:icnjp": "yarn workspace impt-cn-jp start",
-    "sp:ejpcn": "yarn workspace expt-jp-cn start:prod",
-    "sp:icnjp": "yarn workspace impt-cn-jp start:prod",
+    "start:ejpcn": "yarn workspace expt-jp-cn start",
+    "start:icnjp": "yarn workspace impt-cn-jp start",
+    "prod:ejpcn": "yarn workspace expt-jp-cn start:prod",
+    "prod:icnjp": "yarn workspace impt-cn-jp start:prod",
     "build:ejpcn": "yarn workspace expt-jp-cn build",
     "build:icnjp": "yarn workspace impt-cn-jp build",
-    "tsc": "yarn workspace @silken-houtai/core tsc",
+    "tsc:core": "yarn workspace @silken-houtai/core tsc",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
   "gitHooks": {

@@ -3,7 +3,7 @@ import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import Extra from './components/Extra';
+import Create from './components/Create';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllWaybills, deleteByWaybillId } from '@/services/request/waybill';
 
@@ -11,7 +11,7 @@ const LargeWaybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const [tabKey, setTabKey] = useState('AID');
+  const [tabKey, setTabKey] = useState('ALL');
   // query
   const getTableData = async (pageData: any, formData: Object) => {
     try {
@@ -27,6 +27,7 @@ const LargeWaybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   const tabList = [
+    { tab: 'ALL', key: 'ALL' },
     { tab: 'AID', key: 'AID' },
     { tab: 'ASD', key: 'ASD' },
     { tab: 'AHK', key: 'AHK' },
@@ -86,7 +87,19 @@ const LargeWaybill: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card tabList={tabList} onTabChange={handleTabChange} activeTabKey={tabKey} tabBarExtraContent={<Extra />}>
+      <Card
+        tabList={tabList}
+        onTabChange={handleTabChange}
+        activeTabKey={tabKey}
+        tabBarExtraContent={
+          <Space>
+            <Button href="/#/waybill/cts/check/1234567" type="primary">
+              クレンジング
+            </Button>
+            <Create />
+          </Space>
+        }
+      >
         <Table rowKey="id" {...tableProps}>
           <Table.Column title="HAWB番号" dataIndex="hawb_no" />
           <Table.Column title="MAWB番号" dataIndex="mawb_no" />

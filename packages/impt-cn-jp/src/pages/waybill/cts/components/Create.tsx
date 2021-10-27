@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Space, Modal, Button, Input, Form, Select, DatePicker } from 'antd';
+import { Modal, Button, Input, Form, Select, DatePicker } from 'antd';
 import moment from 'moment';
 
 export interface CreateProps {
-  check?: any;
-  create?: {
-    disable: boolean;
-  };
+  disable?: boolean;
 }
 
-const Extra: React.FC<CreateProps> = (props) => {
+const Cleansing: React.FC<CreateProps> = (props) => {
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
 
@@ -25,7 +22,6 @@ const Extra: React.FC<CreateProps> = (props) => {
 
   return (
     <>
-      {/* <ExportCheckedFileForm type="" {...formProps} onSubmit={handleSubmit}/> */}
       <Modal title="クリエート" visible={visible} onCancel={() => setVisible(false)} onOk={() => setVisible(false)}>
         <Form form={form}>
           <Form.Item label="3.JYO" name="JYO">
@@ -78,16 +74,11 @@ const Extra: React.FC<CreateProps> = (props) => {
           </Form.Item>
         </Form>
       </Modal>
-      <Space>
-        <Button href="/#/waybill/cts/check/1234567" type="primary">
-          クレンジング
-        </Button>
-        <Button type="primary" disabled={props?.create?.disable} onClick={() => setVisible(true)}>
-          クリエート
-        </Button>
-      </Space>
+      <Button type="primary" disabled={props?.disable} onClick={() => setVisible(true)}>
+        クリエート
+      </Button>
     </>
   );
 };
 
-export default Extra;
+export default Cleansing;
