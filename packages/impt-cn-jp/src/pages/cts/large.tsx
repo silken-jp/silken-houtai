@@ -5,9 +5,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from './components/Create';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills, deleteByWaybillId } from '@/services/request/waybill';
 
-const SmallWaybill: React.FC = () => {
+const LargeWaybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
@@ -17,8 +16,7 @@ const SmallWaybill: React.FC = () => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
-      console.log(tabKey);
-      const data = [] || (await getAllWaybills(formData));
+      const data: any[] = []; // await getAllWaybills(formData)
       return { total: data.length, list: data };
     } catch (error: any) {
       return { error };
@@ -46,14 +44,11 @@ const SmallWaybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: 'Small',
+        title: 'Large',
         breadcrumb: {
           routes: [
-            {
-              path: `/waybill/cts/small`,
-              breadcrumbName: intlMenu('cts'),
-            },
-            { path: '', breadcrumbName: 'Small' },
+            { path: `/cts/large`, breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Large' },
           ],
         },
       }}
@@ -93,7 +88,7 @@ const SmallWaybill: React.FC = () => {
         activeTabKey={tabKey}
         tabBarExtraContent={
           <Space>
-            <Button href="/#/waybill/cts/check/1234567" type="primary">
+            <Button href="/#/cts/check/1234567" type="primary">
               クレンジング
             </Button>
             <Create />
@@ -119,4 +114,4 @@ const SmallWaybill: React.FC = () => {
   );
 };
 
-export default SmallWaybill;
+export default LargeWaybill;

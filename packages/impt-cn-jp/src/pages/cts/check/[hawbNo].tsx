@@ -78,7 +78,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
         extra={
           <Space>
             <FormTypeModal form={form} />
-            <Button target="_blank" href={`http://localhost:8000/#/waybill/cts/check/import`}>
+            <Button target="_blank" href={`/#/cts/check/import`}>
               インボイス
             </Button>
           </Space>

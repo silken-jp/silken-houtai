@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Table, Card, Row, Col, Input, Button } from 'antd';
+import { Form, Table, Card, Row, Col, Input, Button, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -36,10 +36,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         // title: intlMenu('delivery.other'),
         breadcrumb: {
           routes: [
-            {
-              path: `/waybill/delivery/other`,
-              breadcrumbName: intlMenu('delivery'),
-            },
+            { path: `/delivery/other`, breadcrumbName: intlMenu('delivery') },
             { path: '', breadcrumbName: intlMenu('delivery.other') },
           ],
         },
@@ -55,12 +52,12 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           <Col xs={12} sm={12} md={12} lg={8} xxl={8}></Col>
           <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
             <Form.Item style={{ textAlign: 'right' }}>
-              <Button type="primary" onClick={search.submit}>
-                検索
-              </Button>
-              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
-                リセット
-              </Button>
+              <Space>
+                <Button type="primary" onClick={search.submit}>
+                  検索
+                </Button>
+                <Button onClick={search.reset}>リセット</Button>
+              </Space>
             </Form.Item>
           </Col>
         </Row>

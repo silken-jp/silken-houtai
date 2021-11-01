@@ -4,7 +4,6 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills, deleteByWaybillId } from '@/services/request/waybill';
 
 const OtherWaybill: React.FC = () => {
   // state
@@ -18,7 +17,7 @@ const OtherWaybill: React.FC = () => {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
       console.log(tabKey);
-      const data = [] || (await getAllWaybills(formData));
+      const data: any[] = []; // await getAllWaybills(formData)
       return { total: data.length, list: data };
     } catch (error: any) {
       return { error };
@@ -42,10 +41,7 @@ const OtherWaybill: React.FC = () => {
         title: 'Other',
         breadcrumb: {
           routes: [
-            {
-              path: `/waybill/cts/other`,
-              breadcrumbName: intlMenu('cts'),
-            },
+            { path: `/cts/other`, breadcrumbName: intlMenu('cts') },
             { path: '', breadcrumbName: 'Other' },
           ],
         },

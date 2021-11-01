@@ -5,21 +5,19 @@ import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from './components/Create';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills, deleteByWaybillId } from '@/services/request/waybill';
 
-const ManifestWaybill: React.FC = () => {
+const SmallWaybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const [tabKey, setTabKey] = useState('MIC');
-
+  const [tabKey, setTabKey] = useState('ALL');
   // query
   const getTableData = async (pageData: any, formData: Object) => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
       console.log(tabKey);
-      const data = [] || (await getAllWaybills(formData));
+      const data: any[] = []; // await getAllWaybills(formData)
       return { total: data.length, list: data };
     } catch (error: any) {
       return { error };
@@ -28,9 +26,15 @@ const ManifestWaybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   const tabList = [
-    { tab: 'MIC', key: 'MIC' },
+    { tab: 'ALL', key: 'ALL' },
+    { tab: 'AID', key: 'AID' },
+    { tab: 'ASD', key: 'ASD' },
+    { tab: 'AHK', key: 'AHK' },
+    { tab: 'AHT', key: 'AHT' },
+    { tab: 'AIS', key: 'AIS' },
+    { tab: 'AIW', key: 'AIW' },
+    { tab: 'AST', key: 'AST' },
     { tab: 'Hold', key: 'Hold' },
-    { tab: 'SendBack', key: 'SendBack' },
   ];
 
   const handleTabChange = (key: string) => {
@@ -41,14 +45,11 @@ const ManifestWaybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: 'Manifest',
+        title: 'Small',
         breadcrumb: {
           routes: [
-            {
-              path: `/waybill/cts/manifest`,
-              breadcrumbName: intlMenu('cts'),
-            },
-            { path: '', breadcrumbName: 'Manifest' },
+            { path: `/cts/small`, breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Small' },
           ],
         },
       }}
@@ -88,21 +89,18 @@ const ManifestWaybill: React.FC = () => {
         activeTabKey={tabKey}
         tabBarExtraContent={
           <Space>
-            <Button href="/#/waybill/cts/check/1234567" type="primary">
+            <Button href="/#/cts/check/1234567" type="primary">
               クレンジング
             </Button>
-            <Button type="primary">ブローカーチェック</Button>
             <Create />
           </Space>
         }
       >
-        <Table rowKey="id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table rowKey="id" {...tableProps}>
           <Table.Column title="HAWB番号" dataIndex="hawb_no" />
           <Table.Column title="MAWB番号" dataIndex="mawb_no" />
           <Table.Column title="クレンザー" dataIndex="" />
           <Table.Column title="クレンジング時間" dataIndex="" />
-          <Table.Column title="ブローカー" dataIndex="" />
-          <Table.Column title="ブローカーチェック時間" dataIndex="" />
           <Table.Column title="クリエーター" dataIndex="" />
           <Table.Column title="クリエート時間" dataIndex="" />
           <Table.Column title="申告番号" dataIndex="" />
@@ -117,4 +115,4 @@ const ManifestWaybill: React.FC = () => {
   );
 };
 
-export default ManifestWaybill;
+export default SmallWaybill;

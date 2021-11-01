@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
-import {
-  CloudFilled,
-  ProfileOutlined,
-  UserOutlined,
-  SettingOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons';
+import { CloudFilled, ProfileOutlined, SettingOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
 import { useIntlFormat } from '../services/useIntl';
@@ -15,13 +8,15 @@ import styles from './index.less';
 
 const Index: React.FC = (props) => {
   const history = useHistory();
-  const isFull = ['/login', '/waybill/cts/check/'].some((item: any) => history?.location?.pathname?.startsWith(item));
+  const isFull = ['/login', '/cts/check/'].some((item: any) => history?.location?.pathname?.startsWith(item));
+
   const [collapsed, setCollapsed] = useState(false);
   const toggle = () => {
     setCollapsed(!collapsed);
   };
 
   const [intlMenu] = useIntlFormat('menu');
+
   return isFull ? (
     <>{props?.children}</>
   ) : (
@@ -32,51 +27,53 @@ const Index: React.FC = (props) => {
           {!collapsed && <span className={styles['text']}>シルケン</span>}
         </div>
         <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
-          <Menu.ItemGroup key="1" title={intlMenu('waybill')}>
-            <Menu.SubMenu key="/waybill/cts" icon={<ProfileOutlined />} title={intlMenu('cts')}>
-              <Menu.Item key="/waybill/cts/dashboard">
-                <Link to="/waybill/cts/dashboard">Status Inquiry</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/cts/large">
-                <Link to="/waybill/cts/large">Large</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/cts/small">
-                <Link to="/waybill/cts/small">Small</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/cts/manifest">
-                <Link to="/waybill/cts/manifest">Manifest</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/cts/other">
-                <Link to="/waybill/cts/other">Other</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-
-            <Menu.SubMenu key="/waybill/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>
-              <Menu.Item key="/waybill/delivery/self">
-                <Link to="/waybill/delivery/self">{intlMenu('delivery.self')}</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/delivery/other">
-                <Link to="/waybill/delivery/other">{intlMenu('delivery.other')}</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="/waybill/CSManagement" icon={<ProfileOutlined />} title={intlMenu('CSManagement')}>
-              <Menu.Item key="/waybill/CSManagement/permit">
-                <Link to="/waybill/CSManagement/permit">{intlMenu('CSManagement.permit')}</Link>
-              </Menu.Item>
-              <Menu.Item key="/waybill/CSManagement/cargoIssues">
-                <Link to="/waybill/CSManagement/cargoIssues">{intlMenu('CSManagement.cargoIssues')}</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          </Menu.ItemGroup>
-
-          <Menu.ItemGroup key="/setting" title={intlMenu('setting')}>
-            <Menu.Item key="/setting/driver" icon={<UserOutlined />}>
-              <Link to="/setting/driver">{intlMenu('setting.driver')}</Link>
+          <Menu.SubMenu key="/cts" icon={<ProfileOutlined />} title={intlMenu('cts')}>
+            <Menu.Item key="/cts/dashboard">
+              <Link to="/cts/dashboard">Status Inquiry</Link>
             </Menu.Item>
-            <Menu.Item key="/setting/zip-area" icon={<SettingOutlined />}>
-              <Link to="/setting/zip-area">{intlMenu('setting.zipArea')}</Link>
+            <Menu.Item key="/cts/large">
+              <Link to="/cts/large">Large</Link>
             </Menu.Item>
-          </Menu.ItemGroup>
+            <Menu.Item key="/cts/small">
+              <Link to="/cts/small">Small</Link>
+            </Menu.Item>
+            <Menu.Item key="/cts/manifest">
+              <Link to="/cts/manifest">Manifest</Link>
+            </Menu.Item>
+            <Menu.Item key="/cts/other">
+              <Link to="/cts/other">Other</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="/cts/settings" title={intlMenu('cts.settings')} icon={<SettingOutlined />}>
+            <Menu.Item key="/cts/settings/MICkey">
+              <Link to="/cts/settings/MICkey">{intlMenu('setting.MICkey')}</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.Divider />
+          <Menu.SubMenu key="/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>
+            <Menu.Item key="/delivery/self">
+              <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
+            </Menu.Item>
+            <Menu.Item key="/delivery/other">
+              <Link to="/delivery/other">{intlMenu('delivery.other')}</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          {/* <Menu.SubMenu key="/CSManagement" icon={<ProfileOutlined />} title={intlMenu('CSManagement')}>
+              <Menu.Item key="/CSManagement/permit">
+                <Link to="/CSManagement/permit">{intlMenu('CSManagement.permit')}</Link>
+              </Menu.Item>
+              <Menu.Item key="/CSManagement/cargoIssues">
+                <Link to="/CSManagement/cargoIssues">{intlMenu('CSManagement.cargoIssues')}</Link>
+              </Menu.Item>
+            </Menu.SubMenu> */}
+          <Menu.SubMenu key="/delivery/settings" title={intlMenu('delivery.settings')} icon={<SettingOutlined />}>
+            <Menu.Item key="/delivery/settings/driver">
+              <Link to="/delivery/settings/driver">{intlMenu('setting.driver')}</Link>
+            </Menu.Item>
+            <Menu.Item key="/delivery/settings/zip-area">
+              <Link to="/delivery/settings/zip-area">{intlMenu('setting.zipArea')}</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
       <Layout className={styles['site-layout']}>

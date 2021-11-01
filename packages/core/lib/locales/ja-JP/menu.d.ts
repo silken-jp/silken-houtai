@@ -8,7 +8,9 @@ declare const _default: {
   'menu.delivery': string;
   'menu.delivery.self': string;
   'menu.delivery.other': string;
+  'menu.delivery.settings': string;
   'menu.cts': string;
+  'menu.cts.settings': string;
   'menu.CSManagement': string;
   'menu.CSManagement.permit': string;
   'menu.CSManagement.cargoIssues': string;
@@ -16,5 +18,6 @@ declare const _default: {
   'menu.setting.driver': string;
   'menu.setting.flight': string;
   'menu.setting.zipArea': string;
+  'menu.setting.MICkey': string;
 };
 export default _default;

@@ -229,7 +229,7 @@ var useFormBasic = function (props) {
     },
     formProps: {
       form: form,
-      validateMessages: { required: '【${label}】 是必选字段' },
+      validateMessages: { required: '【${label}】 は必須' },
     },
   };
 };

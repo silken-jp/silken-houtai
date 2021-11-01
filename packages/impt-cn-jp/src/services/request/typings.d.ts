@@ -40,4 +40,10 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
   };
+  type MICkeys = {
+    _id?: ID;
+    words?: string;
+    price?: string;
+    file_type?: string;
+  };
 }

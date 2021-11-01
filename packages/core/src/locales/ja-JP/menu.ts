@@ -8,7 +8,9 @@ export default {
   'menu.delivery': '配送管理',
   'menu.delivery.self': '自社',
   'menu.delivery.other': '他社',
+  'menu.delivery.settings': '配送設定',
   'menu.cts': '通関管理',
+  'menu.cts.settings': '通関設定',
   'menu.CSManagement': 'CS管理',
   'menu.CSManagement.permit': '貨物状況確認',
   'menu.CSManagement.cargoIssues': '貨物問題リスト',
@@ -16,4 +18,5 @@ export default {
   'menu.setting.driver': 'ドライバー管理',
   'menu.setting.flight': 'フライト管理',
   'menu.setting.zipArea': '配達エリア管理',
+  'menu.setting.MICkey': 'フォルダ変更管理',
 };

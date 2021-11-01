@@ -1,3 +1,3 @@
-import { locales } from '@silken-houtai/core/lib/locales';
+import { locales } from '@silken-houtai/core';
 
-export default locales['ja-JP'];
+export default locales['default']['ja-JP'];

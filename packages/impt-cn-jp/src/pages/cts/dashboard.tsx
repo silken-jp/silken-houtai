@@ -1,11 +1,10 @@
 import React from 'react';
-import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
+import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills } from '@/services/request/waybill';
 
 const Dashboard: React.FC = () => {
   // state
@@ -15,11 +14,8 @@ const Dashboard: React.FC = () => {
   // api
   const getTableData = async (_: PaginatedParams[0], formData: Object) => {
     try {
-      const data = [] || (await getAllWaybills(formData));
-      return {
-        total: data.length,
-        list: data,
-      };
+      const data: any[] = []; // await getAllWaybills(formData)
+      return { total: data.length, list: data };
     } catch (error: any) {
       return { error };
     }
@@ -32,38 +28,32 @@ const Dashboard: React.FC = () => {
       header={{
         breadcrumb: {
           routes: [
-            {
-              path: '/waybill/cts/dashboard',
-              breadcrumbName: intlMenu('cts'),
-            },
-            {
-              path: '',
-              breadcrumbName: 'Status Inquiry',
-            },
+            { path: '/cts/dashboard', breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Status Inquiry' },
           ],
         },
       }}
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
             <Form.Item label="MAWB番号">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
             <Form.Item label="FlightNo">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
+          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
             <Form.Item style={{ textAlign: 'right' }}>
-              <Button type="primary" onClick={search.submit}>
-                検索
-              </Button>
-              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
-                リセット
-              </Button>
+              <Space>
+                <Button type="primary" onClick={search.submit}>
+                  検索
+                </Button>
+                <Button onClick={search.reset}>リセット</Button>
+              </Space>
             </Form.Item>
           </Col>
         </Row>

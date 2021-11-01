@@ -23,7 +23,9 @@ export declare const locales: {
     'menu.delivery': string;
     'menu.delivery.self': string;
     'menu.delivery.other': string;
+    'menu.delivery.settings': string;
     'menu.cts': string;
+    'menu.cts.settings': string;
     'menu.CSManagement': string;
     'menu.CSManagement.permit': string;
     'menu.CSManagement.cargoIssues': string;
@@ -31,6 +33,7 @@ export declare const locales: {
     'menu.setting.driver': string;
     'menu.setting.flight': string;
     'menu.setting.zipArea': string;
+    'menu.setting.MICkey': string;
     'component.globalHeader.search': string;
     'component.globalHeader.search.example1': string;
     'component.globalHeader.search.example2': string;
@@ -81,7 +84,9 @@ export declare const locales: {
     'menu.delivery': string;
     'menu.delivery.self': string;
     'menu.delivery.other': string;
+    'menu.delivery.settings': string;
     'menu.cts': string;
+    'menu.cts.settings': string;
     'menu.CSManagement': string;
     'menu.CSManagement.permit': string;
     'menu.CSManagement.cargoIssues': string;
@@ -89,6 +94,7 @@ export declare const locales: {
     'menu.setting.driver': string;
     'menu.setting.flight': string;
     'menu.setting.zipArea': string;
+    'menu.setting.MICkey': string;
     'menu.exception.403': string;
     'menu.exception.404': string;
     'menu.exception.500': string;
