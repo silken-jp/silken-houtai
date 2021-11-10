@@ -9,7 +9,7 @@ import { useIntlFormat } from '@/services/useIntl';
 import MICkeyForm from '@/components/Form/MICkeyForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
-const driver: React.FC = () => {
+const MICkey: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
@@ -20,7 +20,10 @@ const driver: React.FC = () => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
-      const data: any[] = [{ price: '0~200,999', words: 'sweater, T-shirt', formType: 'IDA', LS: 'S', tab: 'ALL' }]; // await getAllDrivers();
+      const data: any[] = [
+        { price: [1, 200999], words: 'sweater, T-shirt', code: 'IDA', LS: 'S', tab: 'ALL' },
+        { price: [200999], words: 'sweater, T-shirt', code: 'MIC', LS: 'S', tab: 'ALL' },
+      ]; // await getAllDrivers();
       return {
         total: data.length,
         list: data,
@@ -87,14 +90,19 @@ const driver: React.FC = () => {
           </Button>
         }
       >
-        <Table rowKey="_id" {...tableProps}>
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 1200 }}>
           <Table.Column width={80} title="No" render={(_, __, i) => i + 1} />
-          <Table.Column width={180} title="金額設定" dataIndex="price" />
-          <Table.Column width={800} title="キーワード" dataIndex="words" />
-          <Table.Column width={120} title="業務コード" dataIndex="formType" />
-          <Table.Column width={80} title="LS" dataIndex="LS" />
-          <Table.Column width={80} title="タブ" dataIndex="tab" />
           <Table.Column
+            width={180}
+            title="金額設定"
+            render={(row) => `${row?.price?.[0] || 1} ~ ${row?.price?.[1] || ''}`}
+          />
+          <Table.Column width={800} title="キーワード" dataIndex="words" />
+          <Table.Column width={160} title="業務コード" dataIndex="code" />
+          <Table.Column width={100} title="LS" dataIndex="LS" />
+          <Table.Column width={100} title="タブ" dataIndex="tab" />
+          <Table.Column
+            width={80}
             title="操作"
             render={(row: any) => {
               const handleEdit = () => {
@@ -117,4 +125,4 @@ const driver: React.FC = () => {
   );
 };
 
-export default driver;
+export default MICkey;

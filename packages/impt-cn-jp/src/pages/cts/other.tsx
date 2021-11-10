@@ -77,6 +77,7 @@ const OtherWaybill: React.FC = () => {
         </Row>
       </Form>
       <Card tabList={tabList} onTabChange={handleTabChange} activeTabKey={tabKey}>
+        {/* TODO: 显示黑名单field，添加操作按钮转化白名单 */}
         <Table rowKey="id" {...tableProps}>
           <Table.Column title="HAWB番号" dataIndex="hawb_no" />
           <Table.Column title="MAWB番号" dataIndex="mawb_no" />

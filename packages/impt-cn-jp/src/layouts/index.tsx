@@ -48,6 +48,12 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/cts/settings/MICkey">
               <Link to="/cts/settings/MICkey">{intlMenu('setting.MICkey')}</Link>
             </Menu.Item>
+            <Menu.Item key="/cts/settings/BlackList">
+              <Link to="/cts/settings/BlackList">ブラックリスト設定</Link>
+            </Menu.Item>
+            <Menu.Item key="/cts/settings/Importer">
+              <Link to="/cts/settings/Importer">輸入者設定</Link>
+            </Menu.Item>
           </Menu.SubMenu>
           <Menu.Divider />
           <Menu.SubMenu key="/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>

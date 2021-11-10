@@ -17,17 +17,17 @@ silken物流系统后台部分，使用learn管理多个子后台。
 
 ```shell
 # 使用本地api启动项目
-yarn sl:<项目名缩写，例：icnjp> 
+yarn start <项目名，例：impt-cn-jp> 
 ```
 
 ```shell
 # 使用线上api启动项目
-yarn sp:<项目名缩写，例：icnjp> 
+yarn start:prod <项目名，例：impt-cn-jp> 
 ```
 
 ```shell
 # build项目
-yarn build:<项目名缩写，例：icnjp> 
+yarn build <项目名，例：impt-cn-jp> 
 ```
 
 ```shell
@@ -38,9 +38,9 @@ yarn tsc
 #### 项目名录
 
 - 输出管理系统：
-  - ejpcn：expt-jp-cn （日中）
+  - expt-jp-cn （日中）
 - 输入管理系统：
-  - icnjp：impt-cn-jp （中日）
+  - impt-cn-jp （中日）
 
 ### learn常用命令
 

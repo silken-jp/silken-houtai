@@ -18,7 +18,7 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        price: props?.dataSource?.price || '',
+        price: props?.dataSource?.price || ['', ''],
         words: props?.dataSource?.words || '',
         file_type: props?.dataSource?.file_type || '',
       });

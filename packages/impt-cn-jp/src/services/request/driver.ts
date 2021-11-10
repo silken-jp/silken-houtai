@@ -15,7 +15,7 @@ interface GetDriver {
   driverId: API.ID;
 }
 export async function getDriver(params: GetDriver) {
-  return request<any>(ApiURL + '/drivers' + params.driverId, {
+  return request<any>(ApiURL + '/drivers/' + params.driverId, {
     method: 'GET',
   });
 }

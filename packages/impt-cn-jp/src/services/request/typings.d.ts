@@ -40,6 +40,21 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
   };
+  type Importer = {
+    _id?: ID;
+    code?: string;
+    company_name_en?: string;
+    company_name_jp?: string;
+    address_en?: string;
+    address_jp?: string;
+    zip?: string;
+    phone?: string;
+    imp_code?: string;
+    add1?: string;
+    add2?: string;
+    add3?: string;
+    add4?: string;
+  };
   type MICkeys = {
     _id?: ID;
     words?: string;

@@ -7,7 +7,7 @@ interface GetAllWaybills extends API.Waybill {}
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
     method: 'GET',
-    params: params,
+    params,
   });
 }
 

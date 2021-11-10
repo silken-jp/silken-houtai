@@ -5,12 +5,10 @@
     "packages/*"
   ],
   "scripts": {
-    "start:ejpcn": "yarn workspace expt-jp-cn start",
-    "start:icnjp": "yarn workspace impt-cn-jp start",
-    "prod:ejpcn": "yarn workspace expt-jp-cn start:prod",
-    "prod:icnjp": "yarn workspace impt-cn-jp start:prod",
-    "build:ejpcn": "yarn workspace expt-jp-cn build",
-    "build:icnjp": "yarn workspace impt-cn-jp build",
+    "start": "lerna run start --parallel --scope",
+    "start:prod": "lerna run start:prod --parallel --scope",
+    "build:all": "lerna run build --parallel",
+    "build": "lerna run build --parallel --scope",
     "tsc:core": "yarn workspace @silken-houtai/core tsc",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
