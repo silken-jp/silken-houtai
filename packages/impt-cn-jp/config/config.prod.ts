@@ -6,5 +6,5 @@ export default defineConfig({
       ApiURL: 'https://skapi.weixin-jp.com',
     },
   },
-  outputPath: '../../dist/houtai-cn-jp',
+  outputPath: '../../dist/houtai-import-cn-jp',
 });

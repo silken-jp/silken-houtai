@@ -71,12 +71,15 @@ const Importer: React.FC = () => {
           { tab: '個人', key: '1' },
         ]}
       >
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 800 }}>
-          <Table.Column width={100} title="法人番号" dataIndex="code" />
-          <Table.Column width={200} title="会社名" dataIndex="company_name_jp" />
+        <Table rowKey="_id" {...tableProps} pagination={false} scroll={{ x: 3000 }}>
+          <Table.Column width={100} title="法人番号" dataIndex="imp_code" />
+          <Table.Column width={100} title="輸出入者符号" dataIndex="code" />
+          <Table.Column width={200} title="会社名(en)" dataIndex="company_name_en" />
+          <Table.Column width={200} title="会社名(jp)" dataIndex="company_name_jp" />
           <Table.Column width={100} title="郵便番号" dataIndex="zip" />
           <Table.Column width={150} title="電話" dataIndex="phone" />
-          <Table.Column width={400} title="住所" dataIndex="address_jp" />
+          <Table.Column width={400} title="住所(en)" dataIndex="address_en" />
+          <Table.Column width={400} title="住所(jp)" dataIndex="address_jp" />
         </Table>
       </Card>
     </PageContainer>
