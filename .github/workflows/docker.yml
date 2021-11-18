@@ -4,7 +4,7 @@ on:
     branches: [master]
 
 jobs:
-  build app:
+  build_app:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,8 +15,8 @@ jobs:
       - name: Run yarn build
         run: yarn build:all
 
-  build image:
-    needs: [build app]
+  build_image:
+    needs: [build_app]
     runs-on: ubuntu-latest
     steps:
       - name: Login to Docker Hub
@@ -36,7 +36,7 @@ jobs:
         run: echo ${{ steps.docker_build.outputs.digest }}
 
   deploy:
-    needs: [build app, build image]
+    needs: [build_app, build_image]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
