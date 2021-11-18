@@ -53,7 +53,7 @@ const Index: React.FC = (props) => {
 
             <Menu.SubMenu key="/cts/settings" title={intlMenu('cts.settings')} icon={<SettingOutlined />}>
               <Menu.Item key="/cts/settings/Importer">
-                <Link to="/cts/settings/Importer">輸入者管理</Link>
+                <Link to="/cts/settings/Importer">法人輸入者管理</Link>
               </Menu.Item>
               <Menu.Item key="/cts/settings/MICkey">
                 <Link to="/cts/settings/MICkey">{intlMenu('setting.MICkey')}</Link>

@@ -31,11 +31,11 @@ const Importer: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: '輸入者管理',
+        title: '法人輸入者管理',
         breadcrumb: {
           routes: [
             { path: '/cts/settings/Importer', breadcrumbName: intlMenu('setting') },
-            { path: '', breadcrumbName: '輸入者管理' },
+            { path: '', breadcrumbName: '法人輸入者管理' },
           ],
         },
       }}
@@ -64,22 +64,21 @@ const Importer: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card
-        title="輸入者リスト"
-        tabList={[
-          { tab: '法人', key: '0' },
-          { tab: '個人', key: '1' },
-        ]}
-      >
-        <Table rowKey="_id" {...tableProps} pagination={false} scroll={{ x: 3000 }}>
-          <Table.Column width={100} title="法人番号" dataIndex="imp_code" />
-          <Table.Column width={100} title="輸出入者符号" dataIndex="code" />
-          <Table.Column width={200} title="会社名(en)" dataIndex="company_name_en" />
-          <Table.Column width={200} title="会社名(jp)" dataIndex="company_name_jp" />
-          <Table.Column width={100} title="郵便番号" dataIndex="zip" />
+      <Card title="法人輸入者リスト">
+        <Table
+          rowKey="_id"
+          loading={tableProps.loading}
+          dataSource={tableProps.dataSource}
+          scroll={{ x: 3300, y: 'calc(100vh - 550px)' }}
+        >
+          <Table.Column width={150} title="法人番号" dataIndex="imp_code" />
+          <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
+          <Table.Column width={600} title="会社名(en)" dataIndex="company_name_en" />
+          <Table.Column width={600} title="会社名(jp)" dataIndex="company_name_jp" />
+          <Table.Column width={150} title="郵便番号" dataIndex="zip" />
           <Table.Column width={150} title="電話" dataIndex="phone" />
-          <Table.Column width={400} title="住所(en)" dataIndex="address_en" />
-          <Table.Column width={400} title="住所(jp)" dataIndex="address_jp" />
+          <Table.Column width={700} title="住所(en)" dataIndex="address_en" />
+          <Table.Column width={800} title="住所(jp)" dataIndex="address_jp" />
         </Table>
       </Card>
     </PageContainer>
