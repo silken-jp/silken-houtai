@@ -38,9 +38,7 @@ jobs:
       - name: deploy
         run: |
         echo "${{ secrets.AWS_PEM }}" | tr -d '\r' > wxkeypair.pem
-        echo *
       - name: ssh
         run: |
         ssh -i ./wxkeypair.pem ubuntu@13.112.93.138 ${{ secrets.AWS_USER_HOST }}
-        echo *
         bash ./docker/deploy.sh
