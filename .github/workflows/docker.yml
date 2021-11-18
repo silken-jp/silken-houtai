@@ -37,6 +37,11 @@ jobs:
       - uses: actions/checkout@v2
       - name: deploy
         run: echo "${{ secrets.AWS_PEM }}" | tr -d '\r' > wxkeypair.pem
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
       - name: ssh
-        run: ssh -i ./wxkeypair.pem ubuntu@13.112.93.138 ${{ secrets.AWS_USER_HOST }}
+        run: ssh -i ${{ secrets.AWS_PEM }} ubuntu@13.112.93.138
         # bash ./docker/deploy.sh
+      - name: List files in the repository
+        run: ls 
