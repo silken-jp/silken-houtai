@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Form, Space, Button, Radio } from 'antd';
 import { useKeyPress } from 'ahooks';
+import { Link } from 'umi';
 ////
 import AllCheckForm from './components/AllCheckForm';
 import FormTypeModal from './components/FormTypeModal';
@@ -47,7 +48,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
         size="default"
         title={
           <Space>
-            <Button href="/#/home">Exit（X）</Button>
+            <Link to="/home">
+              <Button>Exit（X）</Button>
+            </Link>
             <Form.Item noStyle shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}>
               {({ getFieldValue }) => {
                 const formType = getFieldValue('formType');
@@ -78,9 +81,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
         extra={
           <Space>
             <FormTypeModal form={form} />
-            <Button target="_blank" href={`/#/cts/check/import`}>
-              インボイス
-            </Button>
+            <Link to="/cts/check/import" target="_blank">
+              <Button>インボイス</Button>
+            </Link>
           </Space>
         }
         actions={[

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { Link } from 'umi';
 ////
 import Create from './components/Create';
 import { useIntlFormat } from '@/services/useIntl';
@@ -84,9 +85,9 @@ const ManifestWaybill: React.FC = () => {
         activeTabKey={tabKey}
         tabBarExtraContent={
           <Space>
-            <Button href="/#/cts/check/1234567" type="primary">
-              クレンジング
-            </Button>
+            <Link to="/cts/check/1234567">
+              <Button type="primary">クレンジング</Button>
+            </Link>
             <Button type="primary">ブローカーチェック</Button>
             <Create />
           </Space>
