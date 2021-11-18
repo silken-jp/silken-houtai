@@ -18,7 +18,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run build
         run: |
-          lerna clean
+          lerna clean -y
           lerna bootstrap
           yarn build:all
 
