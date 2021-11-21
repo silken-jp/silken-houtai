@@ -10,10 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - if: startsWith( github.ref, 'refs/tags/v' )
+        id: image_tag
         env:
           REF: ${{ github.ref }}
-          TAG: ${REF##*/}
-        run: echo "${TAG}"
+        run: echo "::set-output name=tag::${REF##*/}""
+      - name: Watch outputs
+        run: echo ${{ steps.image_tag.outputs.tag }}
       - name: Clean packages
         run: lerna clean -y
       - name: Install packages
@@ -32,7 +34,7 @@ jobs:
           context: ./
           file: ./docker/docker-build
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${{ TAG }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${{ steps.image_tag.outputs.tag }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
