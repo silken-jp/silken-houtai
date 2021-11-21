@@ -1,7 +1,6 @@
 name: CI CD with docker
 on:
   push:
-    # branches: [master]
     tags: [v*.*.*]
 
 jobs:
@@ -9,12 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - if: startsWith( github.ref, 'refs/tags/v' )
-        id: image_tag
-        env:
-          REF: ${{ github.ref }}
-          TAG: ${REF##*/}
-        run: echo "::set-output name=tag::${TAG}"
       - name: Watch outputs
         run: echo ${{ steps.image_tag.outputs.tag }}
       - name: Clean packages
@@ -35,7 +28,7 @@ jobs:
           context: ./
           file: ./docker/docker-build
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${{ steps.image_tag.outputs.tag }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
