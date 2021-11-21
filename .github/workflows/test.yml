@@ -2,11 +2,14 @@ name: CI CD with docker
 on:
   push:
     branches: [master]
-      tags: v*
+      tags: 
+        - 'v*'
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+        run: echo ${{ github.ref}}
+        with:
+          tag_name: ${{ github.ref }}
