@@ -13,7 +13,8 @@ jobs:
         id: image_tag
         env:
           REF: ${{ github.ref }}
-        run: echo "::set-output name=tag::${REF##*/}""
+          TAG: 
+        run: echo "::set-output name=tag::${REF##*/}"
       - name: Watch outputs
         run: echo ${{ steps.image_tag.outputs.tag }}
       - name: Clean packages
