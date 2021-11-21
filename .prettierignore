@@ -2,6 +2,8 @@
 **/*.svg
 **/*.ejs
 **/*.html
+dist/
+.vscode
 packages/**/package.json
 packages/**/.umi
 packages/**/.umi-production

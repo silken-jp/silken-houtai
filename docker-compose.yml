@@ -1,0 +1,19 @@
+version: "3"
+services:
+  web:
+    image: sk-web
+    build: 
+      context: ./
+      dockerfile: ./docker/docker-dev
+    ports:
+      - '8000:8000'
+    volumes:
+      - ./:/app
+    command: yarn start:prod ${PG}
+    container_name: sk-web
+    
+  image:
+    image: sk-web
+    build: 
+      context: ./
+      dockerfile: ./docker/docker-dev
