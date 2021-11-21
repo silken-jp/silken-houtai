@@ -12,7 +12,8 @@ jobs:
       - if: startsWith( github.ref, 'refs/tags/v' )
         env:
           REF: ${{ github.ref }}
-        run: echo "${REF##*/}"
+          TAG: ${REF##*/}
+        run: echo "${TAG}"
       - name: Clean packages
         run: lerna clean -y
       - name: Install packages
@@ -31,7 +32,7 @@ jobs:
           context: ./
           file: ./docker/docker-build
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${{ REF##*/ }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${{ TAG }}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
