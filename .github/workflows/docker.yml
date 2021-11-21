@@ -1,12 +1,17 @@
 name: CI CD with docker
 on:
   push:
-    branches: [dev]
+    branches: [master]
+    tags: [v*]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - if: startsWith( github.ref, 'refs/tags/v' )
+        env:
+          REF: ${{ github.ref }}
+        run: echo "${REF##*/}"
       - uses: actions/checkout@v2
       - name: Clean packages
         run: lerna clean -y
@@ -26,7 +31,7 @@ jobs:
           context: ./
           file: ./docker/docker-build
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/sk-houtai:${REF##*/}
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
@@ -43,4 +48,4 @@ jobs:
           key: ${{ secrets.AWS_PEM }}
           script: |
             cd ~
-            bash ./docker/deploy.sh
+            bash ./docker/deploy.sh ${REF##*/}
