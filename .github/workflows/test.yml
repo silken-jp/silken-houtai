@@ -13,4 +13,3 @@ jobs:
         env:
           REF: ${{ github.ref }}
         run: echo "${REF##*/}"
-        run: echo "${GITHUB_REF##*/}"
