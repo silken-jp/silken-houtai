@@ -2,8 +2,7 @@ name: CI CD with docker
 on:
   push:
     branches: [master]
-      tags: 
-        - 'v*'
+    tags: 'v*'
 jobs:
   build:
     runs-on: ubuntu-latest
