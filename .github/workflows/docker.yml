@@ -6,7 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event.pull_request
     steps:
       - run: echo "${GITHUB_REF#refs/heads/}" # PRの番号が取得されてしまいます
       - run: echo "${GITHUB_HEAD_REF}"
