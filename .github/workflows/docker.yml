@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Watch outputs
-        run: echo ${{ steps.image_tag.outputs.tag }}
       - name: Clean packages
         run: lerna clean -y
       - name: Install packages
