@@ -1,6 +1,8 @@
 import React from 'react';
 
-import AIDForm from './AIDForm';
+import AIDForm from './AIDFormA';
+import AIDFormB from './AIDFormB';
+import AIDFormC from './AIDFormC';
 import MICForm from './MICForm';
 
 export interface AllCheckFormProps {
@@ -11,10 +13,12 @@ export interface AllCheckFormProps {
 const AllCheckForm: React.FC<AllCheckFormProps> = (props) => {
   if (props?.formType === 'MIC') return <MICForm />;
   switch (props?.IDAType) {
-    case 'AID':
+    case 'CA':
       return <AIDForm />;
-    case 'ASD':
-      return <AIDForm />;
+    case 'CB':
+      return <AIDFormB />;
+    case 'CC':
+      return <AIDFormC />;
     case 'AHK':
       return <AIDForm />;
     case 'AHT':

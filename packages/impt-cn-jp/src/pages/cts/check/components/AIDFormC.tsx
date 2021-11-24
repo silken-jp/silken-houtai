@@ -1,19 +1,9 @@
 import React from 'react';
-import { Tabs, Form, Input, Space, Select, Radio } from 'antd';
+import { Form, Input, Space } from 'antd';
 
 export interface AIDFormProps {}
 
 const AIDForm: React.FC<AIDFormProps> = () => {
-  // return (
-  //   <Tabs>
-  //     <Tabs.TabPane key="0" tab="共通部">
-  //       <Space></Space>
-  //     </Tabs.TabPane>
-  //     <Tabs.TabPane key="1" tab="繰返部">
-  //       <Space></Space>
-  //     </Tabs.TabPane>
-  //   </Tabs>
-  // );
   const AIDItems = [
     [
       { no: 3, limit: 1, name: 'LS', holder: '大額・少額識別' },
