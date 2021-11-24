@@ -112,10 +112,12 @@ const AIDForm: React.FC<AIDFormProps> = () => {
     //   { no: 62, limit: 4, name: 'S_', holder: '輸入承認証等識別' },
     //   { no: 63, limit: 20, name: 'N_', holder: '輸入承認証番号等' },
     // ],
+    // [
+    //   { no: 65, limit: 10, name: 'IV2', holder: '電子インボイス受付番号' },
+    //   { no: 66, limit: 35, name: 'IV3', holder: 'インボイス番号' },
+    // ],
     [
       { no: 64, limit: 1, name: 'IV1', holder: 'インボイス識別' },
-      { no: 65, limit: 10, name: 'IV2', holder: '電子インボイス受付 番号' },
-      { no: 66, limit: 35, name: 'IV3', holder: 'インボイス番号' },
       { no: 67, limit: 1, name: 'IP1', holder: 'インボイス価格区分コード' },
       { no: 68, limit: 3, name: 'IP2', holder: 'インボイス価格条件コード' },
       { no: 69, limit: 3, name: 'IP3', holder: 'インボイス通貨コード ' },
