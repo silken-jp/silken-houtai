@@ -59,7 +59,7 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
         title: `${intlMenu('setting.flight')}`,
         breadcrumb: {
           routes: [
-            { path: '/setting/flight', breadcrumbName: intlMenu('setting') },
+            { path: '/delivery/settings/flight', breadcrumbName: intlMenu('setting') },
             { path: '', breadcrumbName: intlMenu('setting.flight') },
           ],
         },

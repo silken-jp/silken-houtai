@@ -1,7 +1,7 @@
 name: CI CD with docker
 on:
   push:
-    tags: [v*.*.*]
+    branches: [ prod ]
 
 jobs:
   CI:

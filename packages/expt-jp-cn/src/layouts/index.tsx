@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
-import { CloudFilled, ProfileOutlined, MenuUnfoldOutlined, SendOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { CloudFilled, ProfileOutlined, MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
 import { useIntlFormat } from '../services/useIntl';
@@ -25,19 +25,16 @@ const Index: React.FC = (props) => {
           {!collapsed && <span className={styles['text']}>シルケン日中</span>}
         </div>
         <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
-          <Menu.ItemGroup key="2" title={intlMenu('waybill')}>
-            <Menu.SubMenu key="/waybill" icon={<ProfileOutlined />} title={intlMenu('waybill')}>
-              <Menu.Item key="/waybill/BtoB">
-                <Link to="/waybill/BtoB">{intlMenu('waybill.BtoB')}</Link>
+          <Menu.SubMenu key="/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>
+            <Menu.Item key="/delivery/BtoB">
+              <Link to="/delivery/BtoB">BtoB</Link>
+            </Menu.Item>
+            <Menu.SubMenu key="/delivery/settings" title={intlMenu('delivery.settings')} icon={<SettingOutlined />}>
+              <Menu.Item key="/delivery/settings/flight">
+                <Link to="/delivery/settings/flight">{intlMenu('setting.flight')}</Link>
               </Menu.Item>
             </Menu.SubMenu>
-          </Menu.ItemGroup>
-
-          <Menu.ItemGroup key="/setting" title={intlMenu('setting')}>
-            <Menu.Item key="/setting/flight" icon={<SendOutlined />}>
-              <Link to="/setting/flight">{intlMenu('setting.flight')}</Link>
-            </Menu.Item>
-          </Menu.ItemGroup>
+          </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
       <Layout className={styles['site-layout']}>

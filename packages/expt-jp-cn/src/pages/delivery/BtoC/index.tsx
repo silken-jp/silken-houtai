@@ -36,8 +36,8 @@ const waybill: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/jp-to-cn/waybill/BtoC',
-              breadcrumbName: intlMenu('waybill'),
+              path: '/delivery/BtoC',
+              breadcrumbName: intlMenu('delivery'),
             },
             { path: '', breadcrumbName: intlMenu('waybill.BtoC') },
           ],

@@ -14,7 +14,7 @@ import Actions, { deleteConfirm } from '@/components/Common/Actions';
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const [intlMenu] = useIntlFormat('menu');
+  const [intlPage] = useIntlFormat();
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   // api
@@ -47,20 +47,7 @@ const waybill: React.FC = () => {
   };
 
   return (
-    <PageContainer
-      header={{
-        title: `${intlMenu('waybill.BtoB')}`,
-        breadcrumb: {
-          routes: [
-            {
-              path: '/waybill/BtoB',
-              breadcrumbName: intlMenu('waybill'),
-            },
-            { path: '', breadcrumbName: intlMenu('waybill.BtoB') },
-          ],
-        },
-      }}
-    >
+    <PageContainer header={{ title: `BtoC` }}>
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
           <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
