@@ -1,5 +1,4 @@
-import React from 'react';
-import { Form, Input, Space } from 'antd';
+import CheckFormBasic from './CheckFormBasic';
 
 // Todo: 9,10,24 search可能
 const MICForm: React.FC = (props) => {
@@ -111,37 +110,7 @@ const MICForm: React.FC = (props) => {
     ],
   ];
 
-  return (
-    <Space direction="vertical">
-      {manifestItems?.map((row, key) => (
-        <Space key={key} align="start" wrap>
-          {row?.length === 0 && <hr color="#eee" />}
-          {row?.map((item) => (
-            <Form.Item key={item?.no} style={{ marginBottom: 0 }} label={`${item?.no}.${item?.name}`} name={item?.name}>
-              {item?.limit > 106 ? (
-                <Input.TextArea
-                  placeholder={item?.holder}
-                  style={{
-                    width: item?.limit * 5 + 50,
-                    fontFamily: 'monospace',
-                  }}
-                  autoSize={{ minRows: 2, maxRows: 2 }}
-                />
-              ) : (
-                <Input
-                  style={{
-                    width: item?.limit * 10 + 50,
-                    fontFamily: 'monospace',
-                  }}
-                  placeholder={item?.holder}
-                />
-              )}
-            </Form.Item>
-          ))}
-        </Space>
-      ))}
-    </Space>
-  );
+  return <CheckFormBasic dataSource={manifestItems} />;
 };
 
 export default MICForm;

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Input, Form, Select, DatePicker } from 'antd';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export interface CreateProps {
   disable?: boolean;
+  type?: 'MIC' | 'AID';
 }
 
 const Cleansing: React.FC<CreateProps> = (props) => {
@@ -13,10 +14,10 @@ const Cleansing: React.FC<CreateProps> = (props) => {
   useEffect(() => {
     form.setFieldsValue({
       JYO: 'Z',
-      ICD: moment(),
+      ICD: dayjs(),
       MAB: '12345678901234567890',
       VSN: 'AB0001/01JAN',
-      ARR: moment(),
+      ARR: dayjs(),
     });
   }, []);
 

@@ -16,7 +16,7 @@ interface GetWaybill {
   waybillId: API.ID;
 }
 export async function getWaybill(params: GetWaybill) {
-  return request<any>(ApiURL + '/waybills' + params.waybillId, {
+  return request<any>(ApiURL + '/waybills/' + params.waybillId, {
     method: 'GET',
   });
 }

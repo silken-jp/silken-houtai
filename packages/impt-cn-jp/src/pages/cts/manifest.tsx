@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
+import { Form, Table, Input, Button, Row, Col, Card, Space, Statistic, Progress } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from 'umi';
 ////
+import { getAllWaybills } from '@/services/request/waybill';
 import Create from './components/Create';
 import { useIntlFormat } from '@/services/useIntl';
 
@@ -19,7 +20,7 @@ const ManifestWaybill: React.FC = () => {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
       console.log(tabKey);
-      const data: any[] = []; // await getAllWaybills(formData)
+      const data: any[] = await getAllWaybills(formData);
       return { total: data.length, list: data };
     } catch (error: any) {
       return { error };
@@ -79,13 +80,34 @@ const ManifestWaybill: React.FC = () => {
           </Col>
         </Row>
       </Form>
+      <Form className="sk-table-search">
+        <Row gutter={16}>
+          <Col span={6}>
+            <Statistic title="クレンジング済" value={1000} suffix="/ 1000" />
+            <Progress percent={100} />
+          </Col>
+          <Col span={6}>
+            <Statistic title="ブローカーチェック済" value={1000} suffix="/ 1000" />
+            <Progress percent={100} />
+          </Col>
+          <Col span={6}>
+            <Statistic title="クリエート済" value={870} suffix="/ 1000" />
+            <Progress percent={87} />
+          </Col>
+          <Col span={6}>
+            <Statistic title="申告済" value={870} suffix="/ 1000" />
+            <Progress percent={87} />
+          </Col>
+        </Row>
+        <br />
+      </Form>
       <Card
         tabList={tabList}
         onTabChange={handleTabChange}
         activeTabKey={tabKey}
         tabBarExtraContent={
           <Space>
-            <Link to="/cts/check/1234567">
+            <Link to="/cts/check/61a5d4b658b384d0295fb5e5">
               <Button type="primary">クレンジング</Button>
             </Link>
             <Button type="primary">ブローカーチェック</Button>
@@ -94,8 +116,8 @@ const ManifestWaybill: React.FC = () => {
         }
       >
         <Table rowKey="id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column title="HAWB番号" dataIndex="hawb_no" />
-          <Table.Column title="MAWB番号" dataIndex="mawb_no" />
+          <Table.Column title="HAWB番号" dataIndex="HAB" />
+          <Table.Column title="MAWB番号" dataIndex="MAB" />
           <Table.Column title="クレンザー" dataIndex="" />
           <Table.Column title="クレンジング時間" dataIndex="" />
           <Table.Column title="ブローカー" dataIndex="" />

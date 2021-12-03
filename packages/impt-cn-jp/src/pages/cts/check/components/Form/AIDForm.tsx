@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Input, Space } from 'antd';
+import CheckFormBasic from './CheckFormBasic';
+import FormGroupModel from '../Modal/FormGroupModal';
 
 export interface AIDFormProps {}
 
@@ -11,6 +11,8 @@ const AIDForm: React.FC<AIDFormProps> = () => {
       // Todo: to IDA create
       // { no: 10, limit: 2, name: 'CHH', holder: '特例申告あて先官署 コード ' },
       // { no: 11, limit: 2, name: 'CHT', holder: '特例申告あて先部門 コード' },
+      // Todo: to create
+      //   { no: 26, limit: 5, name: 'ICC', holder: '申告等予定者コード' },
       { no: 38, limit: 20, name: 'BL_', holder: 'Ｂ／Ｌ番号／ＡＷＢ 番号' },
       { no: 39, limit: 8, name: 'NO', holder: '貨物個数' },
       { no: 40, limit: 3, name: 'NOT', holder: '個数単位コード' },
@@ -34,11 +36,7 @@ const AIDForm: React.FC<AIDFormProps> = () => {
       { no: 20, limit: 11, name: 'Tel', holder: '輸入者電話番号' },
     ],
     [],
-    // [
-    //   { no: 24, limit: 5, name: 'ST', holder: '通関予定蔵置場コード' },
-    // Todo: to create
-    //   { no: 26, limit: 5, name: 'ICC', holder: '申告等予定者コード' },
-    // ],
+
     [
       { no: 27, limit: 17, name: 'NMC', holder: '輸入取引者コード' },
       { no: 28, limit: 70, name: 'NMN', holder: '輸入取引者名' },
@@ -226,40 +224,10 @@ const AIDForm: React.FC<AIDFormProps> = () => {
   ];
 
   return (
-    <Space direction="vertical">
-      {AIDItems?.map((row, key) => (
-        <Space key={key} align="start" wrap>
-          {row?.length === 0 && <hr color="#eee" />}
-          {row?.map((item) => (
-            <Form.Item
-              key={item?.no}
-              style={{ marginBottom: 0 }}
-              label={`${item?.no}.${item?.holder}`}
-              name={item?.name}
-            >
-              {item?.limit > 106 ? (
-                <Input.TextArea
-                  placeholder={item?.holder}
-                  style={{
-                    width: item?.limit * 5 + 50,
-                    fontFamily: 'monospace',
-                  }}
-                  autoSize={{ minRows: 2, maxRows: 2 }}
-                />
-              ) : (
-                <Input
-                  style={{
-                    width: item?.limit * 10 + 50,
-                    fontFamily: 'monospace',
-                  }}
-                  placeholder={item?.holder}
-                />
-              )}
-            </Form.Item>
-          ))}
-        </Space>
-      ))}
-    </Space>
+    <>
+      <CheckFormBasic dataSource={AIDItems} />
+      <FormGroupModel />
+    </>
   );
 };
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Form, Space, Button, Radio } from 'antd';
-import { useKeyPress } from 'ahooks';
-import { Link } from 'umi';
+import { useKeyPress, useRequest } from 'ahooks';
+import { Link, useParams } from 'umi';
 ////
+import { getWaybill } from '@/services/request/waybill';
 import AllCheckForm from './components/AllCheckForm';
-import FormTypeModal from './components/FormTypeModal';
-import SearchModal from './components/SearchModal';
+import FormTypeModal from './components/Modal/FormTypeModal';
+import SearchModal from './components/Modal/SearchModal';
 
 export interface WaybillCheckProps {}
 
@@ -18,9 +19,13 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
   const [urlIndex, setUrlIndex] = useState(0);
   const [form] = Form.useForm();
 
+  const { waybillId } = useParams<any>();
+
+  const { data, error, loading } = useRequest(async () => await getWaybill({ waybillId }));
+
   useEffect(() => {
-    form.setFieldsValue({ formType: 'MIC', IDAType: '', LS: '' });
-  }, []);
+    form.setFieldsValue({ formType: 'MIC', IDAType: '', LS: '', ...data });
+  }, [data?._id]);
 
   // key: w
   useKeyPress('F9', () => {
@@ -40,6 +45,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
   function handleSearchOk(v: any) {
     form.setFieldsValue({ ...v });
   }
+
+  if (loading) return <>loading...</>;
 
   return (
     <Form size="small" form={form}>

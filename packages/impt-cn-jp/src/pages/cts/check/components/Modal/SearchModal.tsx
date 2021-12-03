@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Descriptions, Radio, Input, Space, Button, Card, Row } from 'antd';
 import { useKeyPress } from 'ahooks';
 

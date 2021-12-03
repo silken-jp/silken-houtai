@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Modal, Button, Select, Radio } from 'antd';
 
 export interface FormTypeModalProps {
@@ -53,9 +53,10 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
                 onSelect={(v: string) => setIDAType(v)}
                 style={{ width: 350 }}
                 options={[
-                  { value: 'CA', label: 'AID: 輸入申告（申告納税）A' }, // 简化版
-                  { value: 'CB', label: 'AID: 輸入申告（申告納税）B' }, // 复杂版
-                  { value: 'CC', label: 'AID: 輸入申告（申告納税）C' }, // 复杂版
+                  { value: 'C', label: 'AID: 輸入申告（申告納税）' }, // 简化版
+                  // { value: 'CA', label: 'AID: 輸入申告（申告納税）A' }, // 简化版
+                  // { value: 'CB', label: 'AID: 輸入申告（申告納税）B' }, // 复杂版
+                  // { value: 'CC', label: 'AID: 輸入申告（申告納税）C' }, // 复杂版
                   { value: 'F', label: 'AID: 輸入申告（賦課課税）' },
                   { value: 'Y', label: 'ASD: 輸入申告（少額関税無税）' },
                   { value: 'H', label: 'AHK: 輸入（引取）申告' },
