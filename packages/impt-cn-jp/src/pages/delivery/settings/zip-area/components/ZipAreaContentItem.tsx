@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from 'react';
+import { useImperativeHandle, forwardRef } from 'react';
 import { useRequest, useMap } from 'ahooks';
 import { Row, Col, Spin } from 'antd';
 
@@ -11,7 +11,10 @@ export interface ZipAreaContentProps {
   zipAreaId: string;
 }
 
-const ZipAreaContentItem: React.ForwardRefRenderFunction<any, ZipAreaContentProps> = (props, ref) => {
+const ZipAreaContentItem: React.ForwardRefRenderFunction<any, ZipAreaContentProps> = (
+  props,
+  ref,
+) => {
   // state
   // 双向绑定所有的二级drawer, key为city的zipcode，value为address的zipcode[]
   const [zipcodeMap, { set }] = useMap<string | number, string[]>([]);
@@ -90,4 +93,4 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<any, ZipAreaContentProp
   );
 };
 
-export default React.forwardRef(ZipAreaContentItem);
+export default forwardRef(ZipAreaContentItem);

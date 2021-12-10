@@ -1,32 +1,67 @@
 import { useState } from 'react';
 import { Modal } from 'antd';
 import { useKeyPress } from 'ahooks';
-
+////
 import CheckFormBasic from '../Form/CheckFormBasic';
 
 export interface FormGroupModelProps {}
 
-const FormGroupModel: React.FC<FormGroupModelProps> = () => {
-  const [visible, setVisible] = useState(false);
+const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
   const [dataSource, setDataSource] = useState<any[][]>([[]]);
+  const [state, setState] = useState({ title: 'Group', width: 1800, visible: false });
 
   useKeyPress(['ctrl.alt.1'], () => {
-    // Todo: 按键展示（1） 海上组
+    // Todo: 按键展示（1） HS品目コード组
     setDataSource([
       [
-        { no: 25, limit: 1, name: 'IKY', holder: '一括申告等識別' },
-        { no: 51, limit: 3, name: 'COC', holder: 'コンテナ扱い本数' },
+        { no: 99, limit: 9, name: 'CMD', holder: '品目コード' },
+        { no: 100, limit: 1, name: 'CM2', holder: 'NACCS用コード' },
+        { no: 101, limit: 40, name: 'CMN', holder: '品名' },
+        { no: 102, limit: 2, name: 'OR', holder: '原産地コード' },
+        { no: 103, limit: 4, name: 'ORS', holder: '原産地証明書識別' },
       ],
       [
-        { no: 43, limit: 140, name: 'MRK', holder: '記号番号' },
-        { no: 44, limit: 9, name: 'VSC', holder: '積載船舶コード' },
+        { no: 104, limit: 12, name: 'QN1', holder: '数量（１）' },
+        { no: 105, limit: 4, name: 'QT1', holder: '数量単位コード （１）' },
+        { no: 106, limit: 12, name: 'QN2', holder: '数量（２）' },
+        { no: 107, limit: 4, name: 'QT2', holder: '数量単位コード （２）' },
+        { no: 108, limit: 4, name: 'IT', holder: '輸入貿易管理令別表 コード ' },
+        { no: 109, limit: 1, name: 'RG', holder: '蔵置種別等コード' }, // 海上only
+      ],
+      [
+        { no: 110, limit: 18, name: 'BPR', holder: '課税価格按分係数' },
+        { no: 111, limit: 1, name: 'FRS', holder: '運賃按分識別' },
+        // { no: 112, limit: 3, name: 'FOB', holder: 'ＦＯＢ通貨コード' },
+        { no: 113, limit: 18, name: 'DPR', holder: '課税価格' },
+      ],
+      [
+        { no: 114, limit: 9, name: 'JKB', holder: '事前教示（分類）' },
+        { no: 115, limit: 7, name: 'JKO', holder: '事前教示（原産地）' },
+      ],
+      [
+        { no: 116, limit: 5, name: 'RE', holder: '関税減免税コード' },
+        { no: 117, limit: 11, name: 'REG', holder: '関税減税額' },
+      ],
+      [
+        { no: 118, limit: 10, name: 'TX_', holder: '内国消費税等種別 コード' },
+        { no: 119, limit: 3, name: 'TR_', holder: '内国消費税等減免税 コード' },
+        { no: 120, limit: 11, name: 'TG_', holder: '内国消費税等減税等' },
+      ],
+      [
+        { no: 118, limit: 10, name: 'TX_', holder: '内国消費税等種別 コード' },
+        { no: 119, limit: 3, name: 'TR_', holder: '内国消費税等減免税 コード' },
+        { no: 120, limit: 11, name: 'TG_', holder: '内国消費税等減税等' },
       ],
     ]);
-    setVisible(true);
+    setState({
+      title: 'HSコード繰返部',
+      width: 1300,
+      visible: true,
+    });
   });
 
   useKeyPress(['ctrl.alt.2'], () => {
-    // Todo: 按键展示（2） 卫生组
+    // Todo: 按键展示（2） インボイス组
     setDataSource([
       [
         { no: 52, limit: 1, name: 'RTD', holder: '戻税申告識別' },
@@ -34,7 +69,7 @@ const FormGroupModel: React.FC<FormGroupModelProps> = () => {
         { no: 54, limit: 1, name: 'IL', holder: '輸入承認証添付識別' },
       ],
       [
-        { no: 57, limit: 2, name: 'OL_', holder: '他法令コード' },
+        { no: 57, limit: 2, name: 'OL_', holder: '他法令コード' }, // x5
         { no: 58, limit: 10, name: 'KNO', holder: '共通管理番号' },
       ],
       [
@@ -85,11 +120,15 @@ const FormGroupModel: React.FC<FormGroupModelProps> = () => {
         { no: 63, limit: 20, name: 'N_', holder: '輸入承認証番号等' },
       ],
     ]);
-    setVisible(true);
+    setState({
+      title: 'インボイス＆他法令',
+      width: 600,
+      visible: true,
+    });
   });
 
   useKeyPress(['ctrl.alt.3'], () => {
-    // Todo: 按键展示（3） 备注组
+    // Todo: 按键展示（3） Note组
     setDataSource([
       [
         { no: 93, limit: 140, name: 'NT1', holder: '記事（税関用）' },
@@ -110,11 +149,38 @@ const FormGroupModel: React.FC<FormGroupModelProps> = () => {
         { no: 23, limit: 70, name: 'ZJN', holder: '税関事務管理人名' },
       ],
     ]);
-    setVisible(true);
+    setState({
+      title: 'Note',
+      width: 1200,
+      visible: true,
+    });
   });
 
+  useKeyPress(['ctrl.alt.4'], () => {
+    // Todo: 按键展示（4） 海上组
+    setDataSource([
+      [
+        { no: 25, limit: 1, name: 'IKY', holder: '一括申告等識別' },
+        { no: 51, limit: 3, name: 'COC', holder: 'コンテナ扱い本数' },
+      ],
+      [
+        { no: 43, limit: 140, name: 'MRK', holder: '記号番号' },
+        { no: 44, limit: 9, name: 'VSC', holder: '積載船舶コード' },
+      ],
+    ]);
+    setState({
+      title: '海上',
+      width: 1200,
+      visible: true,
+    });
+  });
+
+  function handleCancel() {
+    setState({ ...state, visible: false });
+  }
+
   return (
-    <Modal title="Group" width={1050} visible={visible} onCancel={() => setVisible(false)}>
+    <Modal {...state} onCancel={handleCancel}>
       <CheckFormBasic dataSource={dataSource} />
     </Modal>
   );

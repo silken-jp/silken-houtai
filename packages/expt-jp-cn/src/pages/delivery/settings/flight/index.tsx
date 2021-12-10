@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table, Card, Button, Form, Input, Row, Col } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
@@ -7,7 +6,12 @@ import dayjs from 'dayjs';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllFlights, createFlight, updateFlight, deleteByFlightId } from '@/services/request/flight';
+import {
+  getAllFlights,
+  createFlight,
+  updateFlight,
+  deleteByFlightId,
+} from '@/services/request/flight';
 import FlightForm from '@/components/Form/FlightForm';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 
@@ -99,7 +103,10 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
           <Table.Column title="日本便出発" render={(row) => timeToTime(row?.jp_depart_time)} />
           <Table.Column title="日本到着" render={(row) => timeToTime(row?.arrive_time)} />
           <Table.Column title="通関中" render={(row) => timeToTime(row?.clearance_time)} />
-          <Table.Column title="更新時間" render={(row) => dayjs(row?.updatedAt)?.format('YYYY-MM-DD HH:mm')} />
+          <Table.Column
+            title="更新時間"
+            render={(row) => dayjs(row?.updatedAt)?.format('YYYY-MM-DD HH:mm')}
+          />
           <Table.Column
             title="操作"
             render={(row: any) => {

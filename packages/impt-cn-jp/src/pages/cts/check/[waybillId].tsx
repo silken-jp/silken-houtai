@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Form, Space, Button, Radio } from 'antd';
+import { useEffect, useState } from 'react';
+import { Card, Form, Space, Button, Radio, Modal, Input } from 'antd';
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams } from 'umi';
 ////
@@ -8,32 +8,46 @@ import AllCheckForm from './components/AllCheckForm';
 import FormTypeModal from './components/Modal/FormTypeModal';
 import SearchModal from './components/Modal/SearchModal';
 
-export interface WaybillCheckProps {}
-
 const urls = [
   'https://bbs.naccscenter.com/naccs/dfw/web/data/ref_6nac/naccs/ida-03.pdf',
   'https://bbs.naccscenter.com/naccs/dfw/web/data/ref_6nac/naccs/mic-04.pdf',
 ];
 
-const WaybillCheck: React.FC<WaybillCheckProps> = () => {
-  const [urlIndex, setUrlIndex] = useState(0);
-  const [form] = Form.useForm();
-
+export interface WaybillContainerProps {}
+const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
 
   const { data, error, loading } = useRequest(async () => await getWaybill({ waybillId }));
+  if (loading) return <>loading...</>;
+  if (error) return <>error...</>;
+  return <WaybillCheck dataSource={data} />;
+};
+
+export interface WaybillCheckProps {
+  dataSource: API.Waybill;
+}
+const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
+  const [urlIndex, setUrlIndex] = useState(0);
+  const [commandState, setCommandState] = useState({ visible: false, command: '' });
+  const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({ formType: 'MIC', IDAType: '', LS: '', ...data });
-  }, [data?._id]);
+    const formType = ['IDA', 'MIC'][props.dataSource?.waybill_type];
+    const IDAType = '';
+    form.setFieldsValue({ formType, IDAType, ...props.dataSource });
+    form.validateFields();
+  }, []);
 
-  // key: w
+  useKeyPress('F2', () => {
+    setCommandState({ visible: true, command: '' });
+  });
+
   useKeyPress('F9', () => {
     setUrlIndex(!urlIndex ? 1 : 0);
     postImporter({ url: urls[urlIndex] });
   });
 
-  useKeyPress('X', () => {
+  useKeyPress('esc', () => {
     document.activeElement?.nodeName === 'BODY' && location.assign('/#/home');
   });
 
@@ -42,23 +56,45 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
     channel.postMessage({ url });
   }
 
-  function handleSearchOk(v: any) {
-    form.setFieldsValue({ ...v });
-  }
-
-  if (loading) return <>loading...</>;
-
   return (
     <Form size="small" form={form}>
-      <SearchModal onOk={handleSearchOk} />
+      <Modal
+        style={{ top: 0 }}
+        bodyStyle={{ padding: '6px 8px' }}
+        closable={false}
+        mask={false}
+        visible={commandState.visible}
+        footer={null}
+      >
+        <Input
+          value={commandState.command}
+          autoFocus
+          onChange={(e) => setCommandState({ visible: true, command: e.target.value })}
+          onPressEnter={() => {
+            let { command } = commandState;
+            if (command.includes('..')) {
+              form.setFieldsValue({ command });
+            } else if (command.includes('.')) {
+            } else {
+              form.setFieldsValue({ command });
+            }
+            setCommandState({ visible: false, command: '' });
+          }}
+          placeholder="隠し欄表示: １ ｜ カーソル移動: 33. ｜ サーチ: 13.."
+        />
+      </Modal>
+      <SearchModal form={form} />
       <Card
         size="default"
         title={
           <Space>
             <Link to="/home">
-              <Button>Exit（X）</Button>
+              <Button>Exit（ESC）</Button>
             </Link>
-            <Form.Item noStyle shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}>
+            <Form.Item
+              noStyle
+              shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}
+            >
               {({ getFieldValue }) => {
                 const formType = getFieldValue('formType');
                 const IDAType = getFieldValue('IDAType');
@@ -66,7 +102,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
                   <Space>
                     {formType && <span>業務コード: {formType}</span>}
                     {IDAType && <span>申告種別: {IDAType}</span>}
-                    {IDAType && (
+                    {formType === 'IDA' && (
                       <Form.Item name="LS" noStyle>
                         <Radio.Group
                           size="small"
@@ -101,7 +137,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
           <Button type="text">Accept（F9）</Button>,
         ]}
       >
-        <Form.Item shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}>
+        <Form.Item
+          shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}
+        >
           {({ getFieldValue }) => (
             <AllCheckForm formType={getFieldValue('formType')} IDAType={getFieldValue('IDAType')} />
           )}
@@ -111,4 +149,4 @@ const WaybillCheck: React.FC<WaybillCheckProps> = () => {
   );
 };
 
-export default WaybillCheck;
+export default WaybillContainer;

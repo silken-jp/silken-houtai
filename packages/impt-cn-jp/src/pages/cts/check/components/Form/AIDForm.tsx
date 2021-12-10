@@ -13,7 +13,7 @@ const AIDForm: React.FC<AIDFormProps> = () => {
       // { no: 11, limit: 2, name: 'CHT', holder: '特例申告あて先部門 コード' },
       // Todo: to create
       //   { no: 26, limit: 5, name: 'ICC', holder: '申告等予定者コード' },
-      { no: 38, limit: 20, name: 'BL_', holder: 'Ｂ／Ｌ番号／ＡＷＢ 番号' },
+      { no: 38, limit: 20, name: 'BL_', holder: 'Ｂ／Ｌ番号／ＡＷＢ 番号' }, // 海上の時　X５
       { no: 39, limit: 8, name: 'NO', holder: '貨物個数' },
       { no: 40, limit: 3, name: 'NOT', holder: '個数単位コード' },
       { no: 41, limit: 10, name: 'GW', holder: '貨物重量（グロス）' },

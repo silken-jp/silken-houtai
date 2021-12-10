@@ -1,6 +1,6 @@
-import * as constant from './constant';
+import * as utils from './utils';
 import * as locales from './locales';
 import * as useHooks from './useHooks';
 
-export { constant, useHooks, locales };
-export default { constant, useHooks, locales };
+export { useHooks, locales, utils };
+export default { useHooks, locales, utils };

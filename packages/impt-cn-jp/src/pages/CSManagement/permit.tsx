@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';

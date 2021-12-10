@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'umi';
 import { Descriptions, Card, Timeline } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';

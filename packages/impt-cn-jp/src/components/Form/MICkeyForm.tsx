@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Space, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';

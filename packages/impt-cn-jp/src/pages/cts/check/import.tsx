@@ -1,11 +1,11 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 
 export interface ImporterProps {}
 
 const Importer: React.FC<ImporterProps> = () => {
-  const [state, setState] = React.useState<any>();
+  const [state, setState] = useState<any>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     let channel = new window.BroadcastChannel('sk_import');
     channel.onmessage = (e) => {
       setState(e.data);

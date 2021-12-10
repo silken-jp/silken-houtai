@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Modal, Form, Input } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -28,7 +28,11 @@ const ZipAreaForm: React.FC<ZipAreaFormProps> = (props) => {
   return (
     <Modal {...modalProps} centered>
       <Form name="ZipAreaForm" {...formItemLayout} {...formProps}>
-        <Form.Item label="名称" name="name" rules={[{ required: true, message: 'Please input name!' }]}>
+        <Form.Item
+          label="名称"
+          name="name"
+          rules={[{ required: true, message: 'Please input name!' }]}
+        >
           <Input />
         </Form.Item>
       </Form>

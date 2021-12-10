@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -50,20 +50,16 @@ const OtherWaybill: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
           <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="MAWB番号" name="mawb_no">
-              <Input placeholder="MAWB番号" />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="HAWB番号" name="hawb_no">
+            <Form.Item label="HAWB番号" name="HAB">
               <Input placeholder="HAWB番号" />
             </Form.Item>
           </Col>
           <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="FLIGHT" name="flight_no">
-              <Input placeholder="FLIGHT" />
+            <Form.Item label="MAWB番号" name="MAB">
+              <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
+          <Col xs={12} sm={12} md={12} lg={6} xxl={6}></Col>
           <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
@@ -78,9 +74,9 @@ const OtherWaybill: React.FC = () => {
       </Form>
       <Card tabList={tabList} onTabChange={handleTabChange} activeTabKey={tabKey}>
         {/* TODO: 显示黑名单field，添加操作按钮转化白名单 */}
-        <Table rowKey="id" {...tableProps}>
-          <Table.Column title="HAWB番号" dataIndex="hawb_no" />
-          <Table.Column title="MAWB番号" dataIndex="mawb_no" />
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+          <Table.Column title="HAWB番号" dataIndex="HAB" />
+          <Table.Column title="MAWB番号" dataIndex="MAB" />
           <Table.Column title="クレンザー" dataIndex="" />
           <Table.Column title="クレンジング時間" dataIndex="" />
           <Table.Column title="クリエーター" dataIndex="" />

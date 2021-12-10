@@ -31,16 +31,17 @@ var __importStar =
     var result = {};
     if (mod != null)
       for (var k in mod)
-        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k))
+          __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
   };
 exports.__esModule = true;
-exports.locales = exports.useHooks = exports.constant = void 0;
-var constant = __importStar(require('./constant'));
-exports.constant = constant;
+exports.utils = exports.locales = exports.useHooks = void 0;
+var utils = __importStar(require('./utils'));
+exports.utils = utils;
 var locales = __importStar(require('./locales'));
 exports.locales = locales;
 var useHooks = __importStar(require('./useHooks'));
 exports.useHooks = useHooks;
-exports['default'] = { constant: constant, useHooks: useHooks, locales: locales };
+exports['default'] = { useHooks: useHooks, locales: locales, utils: utils };

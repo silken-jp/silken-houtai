@@ -1,4 +1,3 @@
-import React from 'react';
 import { Menu, Button, Spin } from 'antd';
 
 export interface ZipAreaSiderProps {
@@ -11,10 +10,9 @@ const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
   // props
   const { data, loading, error } = props?.zipAreasApi;
 
-  if (loading) return <Spin />;
   if (error) return <>error</>;
   return (
-    <>
+    <Spin spinning={loading}>
       <Button size="large" type="dashed" onClick={props.onAdd} block>
         新規
       </Button>
@@ -25,7 +23,7 @@ const ZipAreaSider: React.FC<ZipAreaSiderProps> = (props) => {
           </Menu.Item>
         ))}
       </Menu>
-    </>
+    </Spin>
   );
 };
 

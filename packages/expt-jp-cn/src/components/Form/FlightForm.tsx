@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Modal, Form, Input, InputNumber, Space } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -38,7 +38,12 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
         </Form.Item>
         <Form.Item label="日本便出発" required>
           <Space>
-            <Form.Item label="日本便出発" name="jp_depart_time" rules={[{ required: true }]} noStyle>
+            <Form.Item
+              label="日本便出発"
+              name="jp_depart_time"
+              rules={[{ required: true }]}
+              noStyle
+            >
               <InputNumber
                 min={0}
                 formatter={(v) => (v ? `${v} min` : '')}

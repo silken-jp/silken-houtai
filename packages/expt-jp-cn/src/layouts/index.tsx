@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
-import { CloudFilled, ProfileOutlined, MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined } from '@ant-design/icons';
+import {
+  CloudFilled,
+  ProfileOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
 import { useIntlFormat } from '../services/useIntl';
@@ -8,7 +14,9 @@ import styles from './index.less';
 
 const Index: React.FC = (props) => {
   const history = useHistory();
-  const isFull = ['/login', '/check'].some((item: any) => history?.location?.pathname?.startsWith(item));
+  const isFull = ['/login', '/check'].some((item: any) =>
+    history?.location?.pathname?.startsWith(item),
+  );
   const [collapsed, setCollapsed] = useState(false);
   const toggle = () => {
     setCollapsed(!collapsed);
@@ -19,7 +27,12 @@ const Index: React.FC = (props) => {
     <>{props?.children}</>
   ) : (
     <Layout className={styles['layout']}>
-      <Layout.Sider className={styles['slider-layout']} trigger={null} collapsible collapsed={collapsed}>
+      <Layout.Sider
+        className={styles['slider-layout']}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
         <div className={styles['logo']}>
           <CloudFilled className={styles['icon']} />
           {!collapsed && <span className={styles['text']}>シルケン日中</span>}
@@ -29,7 +42,11 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/delivery/BtoB">
               <Link to="/delivery/BtoB">BtoB</Link>
             </Menu.Item>
-            <Menu.SubMenu key="/delivery/settings" title={intlMenu('delivery.settings')} icon={<SettingOutlined />}>
+            <Menu.SubMenu
+              key="/delivery/settings"
+              title={intlMenu('delivery.settings')}
+              icon={<SettingOutlined />}
+            >
               <Menu.Item key="/delivery/settings/flight">
                 <Link to="/delivery/settings/flight">{intlMenu('setting.flight')}</Link>
               </Menu.Item>
@@ -41,7 +58,7 @@ const Index: React.FC = (props) => {
         <Layout.Header className={styles['site-layout-background']}>
           <Row align="middle" justify="space-between">
             <Col>
-              {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                 className: styles['trigger'],
                 onClick: toggle,
               })}

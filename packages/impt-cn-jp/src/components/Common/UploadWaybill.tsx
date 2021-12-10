@@ -1,4 +1,3 @@
-import React from 'react';
 import { Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
@@ -16,14 +15,14 @@ const failedFormat = (success: boolean, failedNo: string[], type: string) => ({
 });
 
 export interface UploadWaybillProps {
-  onUploadCreate: () => void;
-  onUploadUpdate: () => void;
+  onUploadCreate?: () => void;
+  onUploadUpdate?: () => void;
 }
 
 const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUploadCreate(jsonArr: any) {
     const { successCount: count, failedNo } = await createMultiWaybill(jsonArr);
-    props?.onUploadCreate();
+    props?.onUploadCreate?.();
     const success = count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
     const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
     return { success, failed };
@@ -31,7 +30,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
 
   async function onUploadUpdate(jsonArr: any) {
     const { successCount: count, failedNo } = await updateMultiWaybill(jsonArr);
-    props?.onUploadUpdate();
+    props?.onUploadUpdate?.();
     const success = count > 0 ? successFormat(count, jsonArr.length - 1, '更新') : null;
     const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '更新') : null;
     return { success, failed };
@@ -43,8 +42,9 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
         <a href={exampleHref} download>
           テンプレート
         </a>
-        <UploadXlsx onUpload={onUploadCreate} text="一括新規" />
-        <UploadXlsx onUpload={onUploadUpdate} text="一括更新" />
+        <UploadXlsx onUpload={onUploadCreate} text="IDA" />
+        <UploadXlsx onUpload={onUploadCreate} text="MIC" />
+        {/* <UploadXlsx onUpload={onUploadUpdate} text="一括更新" /> */}
       </Space>
     </>
   );

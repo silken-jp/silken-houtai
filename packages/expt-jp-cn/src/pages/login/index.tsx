@@ -1,11 +1,11 @@
 /**
  * title: 登陆
  */
-import React, { useState } from 'react';
+import { useState, Fragment } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input, Button, message } from 'antd';
 
-import { STORAGE_KEY } from '@silken-houtai/core/lib/constant';
+import { utils } from '@silken-houtai/core';
 import styles from './login.less';
 
 const LoginForm: React.FC = () => {
@@ -26,7 +26,10 @@ const LoginForm: React.FC = () => {
       const remainingMilliseconds = 24 * 60 * 60 * 1000;
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
       // setUserLogin({ ...data.TeacherLogin, expiryDate });
-      localStorage.setItem(STORAGE_KEY + 'userLogin', JSON.stringify({ token: 'aaa', expiryDate }));
+      localStorage.setItem(
+        utils.STORAGE_KEY + 'userLogin',
+        JSON.stringify({ token: 'aaa', expiryDate }),
+      );
       await setLoading(false);
       window.location.reload();
     } catch (error: any) {
@@ -41,12 +44,16 @@ const LoginForm: React.FC = () => {
         <div className={styles.login}>
           <div className={styles.title}>物流管理系统</div>
           <div className={styles.subtitle}>后台管理</div>
-          <Form.Item name="email" rules={[{ required: true, message: <React.Fragment /> }]} className={styles.FormItem}>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: <Fragment /> }]}
+            className={styles.FormItem}
+          >
             <Input prefix={<UserOutlined />} placeholder="账号:admin" className={styles.input} />
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: <React.Fragment /> }]}
+            rules={[{ required: true, message: <Fragment /> }]}
             className={styles.FormItem}
           >
             <Input.Password
@@ -58,7 +65,13 @@ const LoginForm: React.FC = () => {
           </Form.Item>
           <br />
           <Form.Item className={styles.FormItem}>
-            <Button loading={loading} htmlType="submit" type="primary" block={true} className={styles.submit}>
+            <Button
+              loading={loading}
+              htmlType="submit"
+              type="primary"
+              block={true}
+              className={styles.submit}
+            >
               登录
             </Button>
           </Form.Item>

@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Row, Col, Drawer, Button, Descriptions, message } from 'antd';
-import { ZIP } from '@silken-houtai/core/lib/constant';
 ////
+import { ZIP } from '@/utils/constant';
 import { updateZipCodesByZipAreaId } from '@/services/request/ziparea';
 import ZipAreaContentItem from './ZipAreaContentItem';
 
@@ -29,7 +29,9 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
       });
       const newAreaData = {
         ...props.areaData,
-        states: props.areaData.states?.map((s: any) => (s.name === stateName ? { ...s, count } : s)),
+        states: props.areaData.states?.map((s: any) =>
+          s.name === stateName ? { ...s, count } : s,
+        ),
       };
       props.updateZipAreaApi(newAreaData);
       handleCancel();
@@ -74,7 +76,8 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
             <Descriptions.Item label={item.name} key={key} span={3}>
               <Row>
                 {item?.states?.map((state, key) => {
-                  const cityCount = props?.areaData?.states?.find(({ name }: any) => name === state)?.count || 0;
+                  const cityCount =
+                    props?.areaData?.states?.find(({ name }: any) => name === state)?.count || 0;
                   const handleOpen = () => {
                     ref?.current?.resetSelected(state);
                     setStateName(state);

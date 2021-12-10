@@ -3,14 +3,12 @@ import { Modal, Descriptions, Radio, Input, Space, Button, Card, Row } from 'ant
 import { useKeyPress } from 'ahooks';
 
 export interface SearchModalProps {
-  value?: any;
-  onChange?: (e: any) => void;
-  onOk?: (v: any) => void;
+  form: any;
 }
 
 const SearchModal: React.FC<SearchModalProps> = (props) => {
-  const [visible, setVisible] = useState(false);
-  const [changeType, setChangeType] = useState(0);
+  // const [visible, setVisible] = useState(false);
+  const [changeType, setChangeType] = useState(3);
   const [dataResult, setDateResult] = useState<any>({
     show: false,
     ImpCode: '',
@@ -19,24 +17,44 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     Zip: '',
     IAD: '',
   });
+  const visible = !!props?.form?.getFieldValue('command')?.includes('..');
+  function handleClose() {
+    props?.form?.setFieldsValue({ command: '' });
+  }
   useKeyPress('f2', () => {
-    setVisible(true);
+    // props?.form?.getFieldValue("command")
+    // setVisible(true);
   });
   useKeyPress('1', () => {
-    setChangeType(1);
+    visible && setChangeType(1);
   });
   useKeyPress('2', () => {
-    setChangeType(2);
+    visible && setChangeType(2);
   });
   useKeyPress('3', () => {
-    setChangeType(3);
+    visible && setChangeType(3);
+  });
+  useKeyPress('esc', () => {
+    visible && handleCancel();
+  });
+  useKeyPress('F9', () => {
+    visible && handleOK();
   });
   function handleOK() {
-    props?.onOk?.(dataResult);
-    setVisible(false);
+    const { ImpCode, ImpName, ...res } = dataResult;
+    if (changeType === 1) {
+      props.form?.setFieldsValue({ ImpCode, ImpName });
+    } else if (changeType === 2) {
+      props.form?.setFieldsValue({ ...res });
+    } else if (changeType === 3) {
+      props.form?.setFieldsValue({ ...dataResult });
+    }
+    // setVisible(false);
+    handleClose();
   }
   function handleCancel() {
-    setVisible(false);
+    // setVisible(false);
+    handleClose();
     setDateResult({
       show: false,
       ImpCode: '',
@@ -74,7 +92,11 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
           {dataResult.show && (
             <Space>
               <span>変更項目選択：</span>
-              <Radio.Group size="middle" value={changeType} onChange={(e) => setChangeType(e.target.value)}>
+              <Radio.Group
+                size="middle"
+                value={changeType}
+                onChange={(e) => setChangeType(e.target.value)}
+              >
                 <Radio value={1}>1: 輸入者コード + 輸入者名</Radio>
                 <Radio value={2}>2: Tel + Zip + IAD</Radio>
                 <Radio value={3}>3: ALL</Radio>
@@ -93,7 +115,12 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
       }
     >
       <Space direction="vertical">
-        <Input.Search onSearch={handleSearch} size="large" defaultValue={'BUCKMAN LABORATORIES,K.K.'} autoFocus />
+        <Input.Search
+          onSearch={handleSearch}
+          size="large"
+          defaultValue={'BUCKMAN LABORATORIES,K.K.'}
+          autoFocus
+        />
         <Space align="start">
           <Card title="現在のデータ" bordered={false}>
             <Descriptions column={1}>
@@ -115,10 +142,17 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
             </Descriptions>
           </Card>
           {dataResult.show && (
-            <Card size="small" title="検索結果(1/10)" actions={[<a>Previous（P）</a>, <a>Next（N）</a>]}>
+            <Card
+              size="small"
+              title="検索結果(1/10)"
+              actions={[<a>Previous（P）</a>, <a>Next（N）</a>]}
+            >
               <Descriptions column={1}>
                 {dataResult.ImpCode && (
-                  <Descriptions.Item contentStyle={changeTarget([1, 3])} label={<>9.輸入者コード</>}>
+                  <Descriptions.Item
+                    contentStyle={changeTarget([1, 3])}
+                    label={<>9.輸入者コード</>}
+                  >
                     {dataResult.ImpCode}
                   </Descriptions.Item>
                 )}
@@ -128,7 +162,10 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
                   </Descriptions.Item>
                 )}
                 {dataResult.Tel && (
-                  <Descriptions.Item contentStyle={changeTarget([2, 3])} label={<>16.輸入者電話番号</>}>
+                  <Descriptions.Item
+                    contentStyle={changeTarget([2, 3])}
+                    label={<>16.輸入者電話番号</>}
+                  >
                     {dataResult.Tel}
                   </Descriptions.Item>
                 )}

@@ -1,10 +1,10 @@
-import * as constant from './constant';
+import * as utils from './utils';
 import * as locales from './locales';
 import * as useHooks from './useHooks';
-export { constant, useHooks, locales };
+export { useHooks, locales, utils };
 declare const _default: {
-  constant: typeof constant;
   useHooks: typeof useHooks;
   locales: typeof locales;
+  utils: typeof utils;
 };
 export default _default;

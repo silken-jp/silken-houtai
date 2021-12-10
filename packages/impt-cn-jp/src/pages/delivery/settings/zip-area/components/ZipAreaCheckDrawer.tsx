@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Checkbox, Col, Row, Space, Drawer } from 'antd';
 import { useSelections, useBoolean } from 'ahooks';
 
@@ -24,7 +24,10 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
   // 去除city
   const fixSelected = selected.filter((s) => s !== props.cityCode);
   // data format
-  const name = options?.length > 1 ? `${props.name}（${fixSelected?.length}/${options?.length - 1}）` : `${props.name}`;
+  const name =
+    options?.length > 1
+      ? `${props.name}（${fixSelected?.length}/${options?.length - 1}）`
+      : `${props.name}`;
 
   // effect
   // 通过双向绑定,向父组件返回组件的selected值
@@ -51,7 +54,11 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
           {props.dataSource?.map((item) => {
             return (
               <Col span={!item?.address ? 0 : 24} key={item.zipcode}>
-                <Checkbox key={item.zipcode} checked={isSelected(item.zipcode)} onClick={() => toggle(item.zipcode)}>
+                <Checkbox
+                  key={item.zipcode}
+                  checked={isSelected(item.zipcode)}
+                  onClick={() => toggle(item.zipcode)}
+                >
                   {item?.address}
                 </Checkbox>
               </Col>

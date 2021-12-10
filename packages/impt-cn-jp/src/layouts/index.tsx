@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
 import {
   CloudFilled,
@@ -15,7 +15,9 @@ import styles from './index.less';
 
 const Index: React.FC = (props) => {
   const history = useHistory();
-  const isFull = ['/login', '/cts/check/'].some((item: any) => history?.location?.pathname?.startsWith(item));
+  const isFull = ['/login', '/cts/check/'].some((item: any) =>
+    history?.location?.pathname?.startsWith(item),
+  );
 
   const [collapsed, setCollapsed] = useState(false);
   const toggle = () => {
@@ -28,7 +30,13 @@ const Index: React.FC = (props) => {
     <>{props?.children}</>
   ) : (
     <Layout className={styles['layout']}>
-      <Layout.Sider className={styles['slider-layout']} width={260} trigger={null} collapsible collapsed={collapsed}>
+      <Layout.Sider
+        className={styles['slider-layout']}
+        width={260}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
         <div className={styles['logo']}>
           <CloudFilled className={styles['icon']} />
           {!collapsed && <span className={styles['text']}>シルケン</span>}
@@ -51,7 +59,11 @@ const Index: React.FC = (props) => {
               <Link to="/cts/other">Other</Link>
             </Menu.Item>
 
-            <Menu.SubMenu key="/cts/settings" title={intlMenu('cts.settings')} icon={<SettingOutlined />}>
+            <Menu.SubMenu
+              key="/cts/settings"
+              title={intlMenu('cts.settings')}
+              icon={<SettingOutlined />}
+            >
               <Menu.Item key="/cts/settings/Importer">
                 <Link to="/cts/settings/Importer">法人輸入者管理</Link>
               </Menu.Item>
@@ -81,7 +93,11 @@ const Index: React.FC = (props) => {
               </Menu.Item>
             </Menu.SubMenu> */}
 
-            <Menu.SubMenu key="/delivery/settings" title={intlMenu('delivery.settings')} icon={<SettingOutlined />}>
+            <Menu.SubMenu
+              key="/delivery/settings"
+              title={intlMenu('delivery.settings')}
+              icon={<SettingOutlined />}
+            >
               <Menu.Item key="/delivery/settings/driver">
                 <Link to="/delivery/settings/driver">{intlMenu('setting.driver')}</Link>
               </Menu.Item>
@@ -96,7 +112,7 @@ const Index: React.FC = (props) => {
         <Layout.Header className={styles['site-layout-background']}>
           <Row align="middle" justify="space-between">
             <Col>
-              {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                 className: styles['trigger'],
                 onClick: toggle,
               })}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, Button, Form, List } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -46,7 +45,12 @@ const BlackList: React.FC = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Button data-title={'輸出' + item?.title} onClick={handleEdit} size="small" type="link">
+                <Button
+                  data-title={'輸出' + item?.title}
+                  onClick={handleEdit}
+                  size="small"
+                  type="link"
+                >
                   編集
                 </Button>,
               ]}
@@ -69,7 +73,12 @@ const BlackList: React.FC = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Button data-title={'輸入' + item?.title} onClick={handleEdit} size="small" type="link">
+                <Button
+                  data-title={'輸入' + item?.title}
+                  onClick={handleEdit}
+                  size="small"
+                  type="link"
+                >
                   編集
                 </Button>,
               ]}

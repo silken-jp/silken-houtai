@@ -29,7 +29,13 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
 
   return (
     <>
-      <Modal width={600} title="業務コード変更" visible={visible} onCancel={handleCancel} onOk={handleOk}>
+      <Modal
+        width={600}
+        title="業務コード変更"
+        visible={visible}
+        onCancel={handleCancel}
+        onOk={handleOk}
+      >
         <Form.Item label="業務コード">
           <Select
             value={formType}

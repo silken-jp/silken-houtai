@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
@@ -95,12 +94,17 @@ const waybill: React.FC = () => {
           <Table.Column
             title="単証入力時間"
             render={(row) =>
-              row?.waybill_input_time ? dayjs(row?.waybill_input_time).format('YYYY-MM-DD HH:mm') : '-'
+              row?.waybill_input_time
+                ? dayjs(row?.waybill_input_time).format('YYYY-MM-DD HH:mm')
+                : '-'
             }
           />
           <Table.Column title="中国伝票番号" dataIndex="cn_delivery_no" />
           <Table.Column title="中国宅配会社" dataIndex="cn_delivery_company" />
-          <Table.Column title="操作時間" render={(row) => dayjs(row?.updatedAt).format('YYYY-MM-DD HH:mm')} />
+          <Table.Column
+            title="操作時間"
+            render={(row) => dayjs(row?.updatedAt).format('YYYY-MM-DD HH:mm')}
+          />
           <Table.Column
             title="操作"
             render={(row: any) => {

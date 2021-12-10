@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, Table, Card, Row, Col, Input, Button, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PaginatedParams } from 'ahooks/lib/useAntdTable';
@@ -67,7 +66,10 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           <Table.Column title="status" render={(row) => STATUS[row?.status]} />
           <Table.Column title="waybill" dataIndex="waybill" />
           <Table.Column title="truck" dataIndex="truck" />
-          <Table.Column title="createAt" render={(row) => dayjs(row.createdAt).format('YYYY/MM/DD')} />
+          <Table.Column
+            title="createAt"
+            render={(row) => dayjs(row.createdAt).format('YYYY/MM/DD')}
+          />
         </Table>
       </Card>
     </PageContainer>

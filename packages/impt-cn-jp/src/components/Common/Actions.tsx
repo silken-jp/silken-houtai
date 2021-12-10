@@ -1,4 +1,3 @@
-import React from 'react';
 import { ModalFuncProps } from 'antd/lib/modal';
 import { Menu, Dropdown, Button, Modal, message } from 'antd';
 import { MoreOutlined, ExclamationCircleOutlined } from '@ant-design/icons';

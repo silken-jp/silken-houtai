@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useRequest } from 'ahooks';
 import { Row, Col, Card, Empty, message } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -63,7 +63,9 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
 
   const updateZipAreaApi = (newAreaData: any) => {
     setAreaData(newAreaData);
-    const newSiderData = zipAreasApi?.data?.map((s: any) => (s._id === newAreaData?._id ? newAreaData : s));
+    const newSiderData = zipAreasApi?.data?.map((s: any) =>
+      s._id === newAreaData?._id ? newAreaData : s,
+    );
     zipAreasApi?.mutate(newSiderData);
   };
 
@@ -86,7 +88,10 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
         </Col>
         <Col flex="auto">
           {areaData?.name ? (
-            <Card title={areaData?.name} extra={<Actions onEdit={handleEdit} onDelete={handleDelete} />}>
+            <Card
+              title={areaData?.name}
+              extra={<Actions onEdit={handleEdit} onDelete={handleDelete} />}
+            >
               <ZipAreaContent areaData={areaData} updateZipAreaApi={updateZipAreaApi} />
             </Card>
           ) : (

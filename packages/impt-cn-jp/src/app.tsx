@@ -1,9 +1,9 @@
 import { history } from 'umi';
 
-import { STORAGE_KEY } from '@silken-houtai/core/lib/constant';
+import { utils } from '@silken-houtai/core';
 import { checkUserLogin } from '@/services/useStorage';
 
-const loginKey = STORAGE_KEY + 'userLogin';
+const loginKey = utils.STORAGE_KEY + 'userLogin';
 
 /**
  *
