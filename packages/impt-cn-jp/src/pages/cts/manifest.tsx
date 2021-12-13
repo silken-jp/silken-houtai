@@ -8,6 +8,7 @@ import Create from '@/components/Common/Create';
 import UploadWaybill from '@/components/Common/UploadWaybill';
 import { getAllWaybills } from '@/services/request/waybill';
 import { useIntlFormat } from '@/services/useIntl';
+import WaybillModal from '@/components/Modal/WaybillModal';
 
 const ManifestWaybill: React.FC = () => {
   // state
@@ -50,7 +51,7 @@ const ManifestWaybill: React.FC = () => {
             { path: '', breadcrumbName: 'Manifest' },
           ],
         },
-        extra: <UploadWaybill />,
+        extra: <UploadWaybill onUpload={search.submit} />,
       }}
     >
       <Form form={form} className="sk-table-search">
@@ -113,7 +114,7 @@ const ManifestWaybill: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column title="HAWB番号" dataIndex="HAB" />
+          <Table.Column title="HAWB番号" render={(row) => <WaybillModal dataSource={row} />} />
           <Table.Column title="MAWB番号" dataIndex="MAB" />
           <Table.Column title="クレンザー" dataIndex="" />
           <Table.Column title="クレンジング時間" dataIndex="" />

@@ -46,6 +46,7 @@ const Create: React.FC<CreateProps> = (props) => {
       <Modal
         title="クリエート"
         visible={visible}
+        forceRender
         onCancel={() => setVisible(false)}
         onOk={() => setVisible(false)}
       >
