@@ -108,7 +108,7 @@ const ManifestWaybill: React.FC = () => {
               <Button type="primary">クレンジング</Button>
             </Link>
             <Button type="primary">ブローカーチェック</Button>
-            {/* <Create type="MIC" /> */}
+            <Create type="MIC" />
           </Space>
         }
       >
