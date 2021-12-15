@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Space, Select } from 'antd';
+import { Modal, Form, Input, InputNumber, Space, Select, Checkbox } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 
@@ -20,7 +20,9 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
       formProps?.form?.setFieldsValue({
         price: props?.dataSource?.price || ['', ''],
         words: props?.dataSource?.words || '',
-        file_type: props?.dataSource?.file_type || '',
+        waybill_type: props?.dataSource?.waybill_type || '1',
+        LS: props?.dataSource?.LS || '',
+        waybill_status: props?.dataSource?.waybill_status || '1',
       });
     }
   }, [props]);
@@ -42,29 +44,35 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
         <Form.Item label="key-words" name="words" rules={[{ required: true }]}>
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label="業務コード" name="file_type" rules={[{ required: true }]}>
+        <Form.Item label="業務コード" name="waybill_type" rules={[{ required: true }]}>
           <Select
             options={[
-              { value: 'IDA', label: 'IDA' },
-              { value: 'MIC', label: 'MIC' },
+              { value: '0', label: 'IDA' },
+              { value: '1', label: 'MIC' },
             ]}
           />
         </Form.Item>
-        <Form.Item label="LS" name="LS">
-          <Select
-            allowClear
-            options={[
-              { value: 'L', label: 'L' },
-              { value: 'S', label: 'S' },
-            ]}
-          />
+        <Form.Item noStyle shouldUpdate={(a, b) => a.waybill_type !== b.waybill_type}>
+          {({ getFieldValue }) => (
+            <>
+              {getFieldValue('waybill_type') === '0' && (
+                <Form.Item label="LS" name="LS" rules={[{ required: true }]}>
+                  <Select
+                    options={[
+                      { value: 'L', label: 'L' },
+                      { value: 'S', label: 'S' },
+                    ]}
+                  />
+                </Form.Item>
+              )}
+            </>
+          )}
         </Form.Item>
-        <Form.Item label="タブ" name="tab">
+        <Form.Item label="タブ" name="waybill_status" rules={[{ required: true }]}>
           <Select
-            allowClear
             options={[
-              { value: 'ALL', label: 'ALL' },
-              { value: 'Hold', label: 'Hold' },
+              { value: '1', label: 'Normal' },
+              { value: '0', label: 'Other' },
             ]}
           />
         </Form.Item>

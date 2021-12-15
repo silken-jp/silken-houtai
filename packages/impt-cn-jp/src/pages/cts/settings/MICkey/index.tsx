@@ -20,8 +20,9 @@ const MICkey: React.FC = () => {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
       const data: any[] = [
-        { price: [1, 200999], words: 'sweater, T-shirt', code: 'IDA', LS: 'S', tab: 'ALL' },
-        { price: [200999], words: 'sweater, T-shirt', code: 'MIC', LS: 'S', tab: 'ALL' },
+        { price: [1, 200999], words: 'sweater, T-shirt', code: 'IDA', LS: 'S', tab: 'S' },
+        { price: [200999], words: 'sweater, T-shirt', code: 'MIC', LS: '', tab: 'M' },
+        { price: [20099900], words: 'sweater, T-shirt', code: 'IDA', LS: 'L', tab: 'O' },
       ]; // await getAllDrivers();
       return {
         total: data.length,
@@ -98,8 +99,8 @@ const MICkey: React.FC = () => {
           />
           <Table.Column width={800} title="キーワード" dataIndex="words" />
           <Table.Column width={160} title="業務コード" dataIndex="code" />
-          <Table.Column width={100} title="LS" dataIndex="LS" />
-          <Table.Column width={100} title="タブ" dataIndex="tab" />
+          {/* <Table.Column width={100} title="LS" dataIndex="LS" /> */}
+          <Table.Column width={200} title="Value Group" dataIndex="tab" />
           <Table.Column
             width={80}
             title="操作"

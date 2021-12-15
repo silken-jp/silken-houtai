@@ -81,7 +81,7 @@ declare namespace API {
     receiver_zip?: string;
     track_history?: any[];
     io_type: 0 | 1;
-    waybill_type: 0 | 1 | 2;
+    waybill_type: 0 | 1;
     LS?: 'L' | 'S';
   };
   type Importer = {
@@ -103,6 +103,8 @@ declare namespace API {
     _id?: ID;
     words?: string;
     price?: string;
-    file_type?: string;
+    waybill_type: 0 | 1; // ["IDA","MIC"]
+    LS?: 'L' | 'S';
+    waybill_status: 0 | 1 | 2 | 3; // ["other","normal","hold","sendBack"]
   };
 }

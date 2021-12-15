@@ -51,9 +51,18 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     document.activeElement?.nodeName === 'BODY' && location.assign('/#/home');
   });
 
+  function handleCancel() {
+    commandState.visible && setCommandState({ visible: false, command: '' });
+  }
+
   function postImporter({ url }: any) {
     const channel = new BroadcastChannel('sk_import');
     channel.postMessage({ url });
+  }
+
+  function postFocus({ no }: any) {
+    const channel = new BroadcastChannel('sk_focus');
+    channel.postMessage({ no });
   }
 
   return (
@@ -63,8 +72,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         bodyStyle={{ padding: '6px 8px' }}
         closable={false}
         mask={false}
+        destroyOnClose
         visible={commandState.visible}
         footer={null}
+        onCancel={handleCancel}
       >
         <Input
           value={commandState.command}
@@ -75,6 +86,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             if (command.includes('..')) {
               form.setFieldsValue({ command });
             } else if (command.includes('.')) {
+              postFocus({ no: command?.substring(0, command?.length - 1) });
             } else {
               form.setFieldsValue({ command });
             }

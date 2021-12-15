@@ -46,17 +46,16 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/cts/dashboard">
               <Link to="/cts/dashboard">Status Inquiry</Link>
             </Menu.Item>
-            <Menu.Item key="/cts/large">
-              <Link to="/cts/large">Large</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/small">
-              <Link to="/cts/small">Small</Link>
-            </Menu.Item>
+            <Menu.SubMenu key="/cts/IDA" title={'IDA'}>
+              <Menu.Item key="/cts/large">
+                <Link to="/cts/large">Large</Link>
+              </Menu.Item>
+              <Menu.Item key="/cts/small">
+                <Link to="/cts/small">Small</Link>
+              </Menu.Item>
+            </Menu.SubMenu>
             <Menu.Item key="/cts/manifest">
-              <Link to="/cts/manifest">Manifest</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/other">
-              <Link to="/cts/other">Other</Link>
+              <Link to="/cts/manifest">MIC</Link>
             </Menu.Item>
 
             <Menu.SubMenu

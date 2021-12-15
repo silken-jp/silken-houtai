@@ -34,6 +34,7 @@ const ManifestWaybill: React.FC = () => {
     { tab: 'MIC', key: 'MIC' },
     { tab: 'Hold', key: 'Hold' },
     { tab: 'SendBack', key: 'SendBack' },
+    { tab: 'Other', key: 'Other' },
   ];
 
   const handleTabChange = (key: string) => {

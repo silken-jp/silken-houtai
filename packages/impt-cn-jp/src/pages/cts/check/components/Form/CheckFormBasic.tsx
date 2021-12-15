@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Form, Input, Space, Tooltip, AutoComplete } from 'antd';
 
 import { CODE_SOURCE } from '@/utils/constant';
@@ -8,7 +8,20 @@ export interface CheckFormProps {
 }
 
 const ToolTipInput: React.FC<any> = (props) => {
+  const ref = useRef<any>();
   const [options, setOptions] = useState<any[]>([]);
+
+  useEffect(() => {
+    let channel = new window.BroadcastChannel('sk_focus');
+    channel.onmessage = (e) => {
+      // e.data?.no === props?.no?.toString() && ref.current?.focus()
+    };
+    channel.onmessageerror = (ev) => {
+      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+    };
+    return () => channel?.close();
+  }, []);
+
   const onSearch = (searchText: string) => {
     const source = CODE_SOURCE?.[props?.name];
     if (!searchText || !source) return setOptions([]);
@@ -16,17 +29,20 @@ const ToolTipInput: React.FC<any> = (props) => {
       source
         ?.filter(
           (item: any) =>
-            item?.code?.toLowerCase()?.includes(searchText?.toLowerCase()) ||
-            item?.name?.toLowerCase()?.includes(searchText?.toLowerCase()),
+            item?.code?.toUpperCase()?.includes(searchText?.toUpperCase()) ||
+            item?.name?.toUpperCase()?.includes(searchText?.toUpperCase()),
         )
         .map((item) => ({ value: item?.code, label: `${item?.code}: ${item?.name}` })),
     );
   };
+  function handleChange(e: any) {
+    props?.onChange(props?.name?.startsWith('NT') ? e : e?.toUpperCase());
+  }
   return (
     <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
       <AutoComplete
         value={props?.value}
-        onChange={props?.onChange}
+        onChange={handleChange}
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}
@@ -34,6 +50,7 @@ const ToolTipInput: React.FC<any> = (props) => {
       >
         {props?.limit > 106 ? (
           <Input.TextArea
+            ref={ref}
             style={{
               width: props?.limit * 5 + 50,
               fontFamily: 'monospace',
@@ -42,6 +59,7 @@ const ToolTipInput: React.FC<any> = (props) => {
           />
         ) : (
           <Input
+            ref={ref}
             style={{
               width: props?.limit * 10 + (props?.limit > 20 ? 50 : 20),
               fontFamily: 'monospace',

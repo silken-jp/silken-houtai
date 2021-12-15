@@ -14,7 +14,7 @@ const SmallWaybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const [tabKey, setTabKey] = useState('ALL');
+  const [tabKey, setTabKey] = useState('AID');
   // query
   const getTableData = async (pageData: any, formData: any) => {
     try {
@@ -30,7 +30,6 @@ const SmallWaybill: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   const tabList = [
-    { tab: 'ALL', key: 'ALL' },
     { tab: 'AID', key: 'AID' },
     { tab: 'ASD', key: 'ASD' },
     { tab: 'AHK', key: 'AHK' },
@@ -39,6 +38,7 @@ const SmallWaybill: React.FC = () => {
     { tab: 'AIW', key: 'AIW' },
     { tab: 'AST', key: 'AST' },
     { tab: 'Hold', key: 'Hold' },
+    { tab: 'Other', key: 'Other' },
   ];
 
   const handleTabChange = (key: string) => {
