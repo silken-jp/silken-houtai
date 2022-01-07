@@ -14,7 +14,7 @@ const ToolTipInput: React.FC<any> = (props) => {
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
     channel.onmessage = (e) => {
-      // e.data?.no === props?.no?.toString() && ref.current?.focus()
+      e.data?.no === props?.no + '.' && ref.current?.focus();
     };
     channel.onmessageerror = (ev) => {
       throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
@@ -51,6 +51,7 @@ const ToolTipInput: React.FC<any> = (props) => {
         {props?.limit > 106 ? (
           <Input.TextArea
             ref={ref}
+            data-no={props?.no}
             style={{
               width: props?.limit * 5 + 50,
               fontFamily: 'monospace',
@@ -60,6 +61,7 @@ const ToolTipInput: React.FC<any> = (props) => {
         ) : (
           <Input
             ref={ref}
+            data-no={props?.no}
             style={{
               width: props?.limit * 10 + (props?.limit > 20 ? 50 : 20),
               fontFamily: 'monospace',

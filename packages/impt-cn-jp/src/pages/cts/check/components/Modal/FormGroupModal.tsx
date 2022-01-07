@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from 'antd';
-import { useKeyPress } from 'ahooks';
 ////
 import CheckFormBasic from '../Form/CheckFormBasic';
 
@@ -10,8 +9,21 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
   const [dataSource, setDataSource] = useState<any[][]>([[]]);
   const [state, setState] = useState({ title: 'Group', width: 1800, visible: false });
 
-  useKeyPress(['ctrl.alt.1'], () => {
-    // Todo: 按键展示（1） HS品目コード组
+  useEffect(() => {
+    let channel = new window.BroadcastChannel('sk_focus');
+    channel.onmessage = (e) => {
+      if (e.data?.no === '1') set1();
+      if (e.data?.no === '2') set2();
+      if (e.data?.no === '3') set3();
+      if (e.data?.no === '4') set4();
+    };
+    channel.onmessageerror = (ev) => {
+      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+    };
+    return () => channel?.close();
+  }, []);
+  // Todo: 按键展示（1） HS品目コード组
+  function set1() {
     setDataSource([
       [
         { no: 99, limit: 9, name: 'CMD', holder: '品目コード' },
@@ -58,10 +70,9 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       width: 1300,
       visible: true,
     });
-  });
-
-  useKeyPress(['ctrl.alt.2'], () => {
-    // Todo: 按键展示（2） インボイス组
+  }
+  // Todo: 按键展示（2） インボイス组
+  function set2() {
     setDataSource([
       [
         { no: 52, limit: 1, name: 'RTD', holder: '戻税申告識別' },
@@ -125,10 +136,9 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       width: 600,
       visible: true,
     });
-  });
-
-  useKeyPress(['ctrl.alt.3'], () => {
-    // Todo: 按键展示（3） Note组
+  }
+  // Todo: 按键展示（3） Note组
+  function set3() {
     setDataSource([
       [
         { no: 93, limit: 140, name: 'NT1', holder: '記事（税関用）' },
@@ -154,10 +164,9 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       width: 1200,
       visible: true,
     });
-  });
-
-  useKeyPress(['ctrl.alt.4'], () => {
-    // Todo: 按键展示（4） 海上组
+  }
+  // Todo: 按键展示（4） 海上组
+  function set4() {
     setDataSource([
       [
         { no: 25, limit: 1, name: 'IKY', holder: '一括申告等識別' },
@@ -173,7 +182,7 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       width: 1200,
       visible: true,
     });
-  });
+  }
 
   function handleCancel() {
     setState({ ...state, visible: false });

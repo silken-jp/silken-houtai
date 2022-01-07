@@ -17,16 +17,12 @@ const ManifestWaybill: React.FC = () => {
   const [tabKey, setTabKey] = useState('MIC');
 
   // query
-  const getTableData = async (pageData: any, formData: any) => {
-    try {
-      const page = pageData.current - 1;
-      const perPage = pageData.pageSize;
-      console.log(tabKey);
-      const data: any[] = await getAllWaybills({ waybill_type: 1, ...formData });
-      return { total: data.length, list: data };
-    } catch (error: any) {
-      return { error };
-    }
+  const getTableData = async (pageData: any, formData: any): Promise<API.Result> => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    console.log(tabKey);
+    const data: any[] = await getAllWaybills({ waybill_type: 1, ...formData });
+    return { total: data.length, list: data };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -67,7 +63,11 @@ const ManifestWaybill: React.FC = () => {
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}></Col>
+          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
+            <Form.Item label="申告番号" name="">
+              <Input placeholder="申告番号" />
+            </Form.Item>
+          </Col>
           <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
@@ -117,6 +117,7 @@ const ManifestWaybill: React.FC = () => {
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
           <Table.Column title="HAWB番号" render={(row) => <WaybillModal dataSource={row} />} />
           <Table.Column title="MAWB番号" dataIndex="MAB" />
+          {tabKey === 'Other' && <Table.Column title="コントローラー" dataIndex="" />}
           <Table.Column title="クレンザー" dataIndex="" />
           <Table.Column title="クレンジング時間" dataIndex="" />
           <Table.Column title="ブローカー" dataIndex="" />

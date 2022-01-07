@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal, Descriptions, Radio, Input, Space, Button, Card, Row } from 'antd';
 import { useKeyPress } from 'ahooks';
 
@@ -7,7 +7,7 @@ export interface SearchModalProps {
 }
 
 const SearchModal: React.FC<SearchModalProps> = (props) => {
-  // const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [changeType, setChangeType] = useState(3);
   const [dataResult, setDateResult] = useState<any>({
     show: false,
@@ -17,14 +17,18 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     Zip: '',
     IAD: '',
   });
-  const visible = !!props?.form?.getFieldValue('command')?.includes('..');
-  function handleClose() {
-    props?.form?.setFieldsValue({ command: '' });
-  }
-  useKeyPress('f2', () => {
-    // props?.form?.getFieldValue("command")
-    // setVisible(true);
-  });
+
+  useEffect(() => {
+    let channel = new window.BroadcastChannel('sk_focus');
+    channel.onmessage = (e) => {
+      e.data?.no === '13..' && setVisible(true);
+    };
+    channel.onmessageerror = (ev) => {
+      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+    };
+    return () => channel?.close();
+  }, []);
+
   useKeyPress('1', () => {
     visible && setChangeType(1);
   });
@@ -49,12 +53,10 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     } else if (changeType === 3) {
       props.form?.setFieldsValue({ ...dataResult });
     }
-    // setVisible(false);
-    handleClose();
+    setVisible(false);
   }
   function handleCancel() {
-    // setVisible(false);
-    handleClose();
+    setVisible(false);
     setDateResult({
       show: false,
       ImpCode: '',

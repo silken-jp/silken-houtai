@@ -107,4 +107,8 @@ declare namespace API {
     LS?: 'L' | 'S';
     waybill_status: 0 | 1 | 2 | 3; // ["other","normal","hold","sendBack"]
   };
+  type Result<T = any> = {
+    total: number;
+    list: T[];
+  };
 }

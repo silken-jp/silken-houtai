@@ -7,8 +7,8 @@
   "scripts": {
     "docker:start": "bash ./docker/scripts/start.sh",
     "docker:build": "bash ./docker/scripts/build.sh",
-    "start": "lerna run start --parallel --scope",
-    "start:prod": "lerna run start:prod --parallel --scope",
+    "start": "node ./scripts/start start",
+    "start:prod": "node ./scripts/start start:prod",
     "build:all": "lerna run build --parallel",
     "build": "lerna run build --parallel --scope",
     "tsc:core": "yarn workspace @silken-houtai/core tsc",

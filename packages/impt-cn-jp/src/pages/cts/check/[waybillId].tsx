@@ -38,17 +38,35 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     form.validateFields();
   }, []);
 
+  function checkFocus() {
+    return document.activeElement?.nodeName !== 'INPUT';
+  }
+
+  useKeyPress('e', () => {
+    console.log(document.activeElement);
+    if (checkFocus()) {
+      form.getFieldValue('formType') === 'IDA' && postFocus({ no: '14.' });
+      form.getFieldValue('formType') === 'MIC' && postFocus({ no: '50.' });
+    }
+  });
+
   useKeyPress('F2', () => {
-    setCommandState({ visible: true, command: '' });
+    if (checkFocus()) {
+      setCommandState({ visible: true, command: '' });
+    }
   });
 
   useKeyPress('F9', () => {
-    setUrlIndex(!urlIndex ? 1 : 0);
-    postImporter({ url: urls[urlIndex] });
+    if (checkFocus()) {
+      setUrlIndex(!urlIndex ? 1 : 0);
+      postImporter({ url: urls[urlIndex] });
+    }
   });
 
-  useKeyPress('esc', () => {
-    document.activeElement?.nodeName === 'BODY' && location.assign('/#/home');
+  useKeyPress('x', () => {
+    if (checkFocus()) {
+      location.assign('/#/home');
+    }
   });
 
   function handleCancel() {
@@ -81,15 +99,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           value={commandState.command}
           autoFocus
           onChange={(e) => setCommandState({ visible: true, command: e.target.value })}
-          onPressEnter={() => {
-            let { command } = commandState;
-            if (command.includes('..')) {
-              form.setFieldsValue({ command });
-            } else if (command.includes('.')) {
-              postFocus({ no: command?.substring(0, command?.length - 1) });
-            } else {
-              form.setFieldsValue({ command });
-            }
+          onPressEnter={(e) => {
+            postFocus({ no: e.currentTarget.value });
             setCommandState({ visible: false, command: '' });
           }}
           placeholder="隠し欄表示: １ ｜ カーソル移動: 33. ｜ サーチ: 13.."
@@ -101,7 +112,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         title={
           <Space>
             <Link to="/home">
-              <Button>Exit（ESC）</Button>
+              <Button>Exit（X）</Button>
             </Link>
             <Form.Item
               noStyle
