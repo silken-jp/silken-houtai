@@ -34,7 +34,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   useEffect(() => {
     const formType = ['IDA', 'MIC'][props.dataSource?.waybill_type];
     const IDAType = '';
-    form.setFieldsValue({ formType, IDAType, ...props.dataSource });
+    const NOF = 'R';
+    const PF = '00010544650858';
+    form.setFieldsValue({ formType, IDAType, NOF, PF, ...props.dataSource });
     form.validateFields();
   }, []);
 

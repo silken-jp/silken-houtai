@@ -10,6 +10,7 @@ const prompts = [
     type: 'list',
     pageSize: 11,
     choices: [
+      { name: 'dashboard', value: '@sk-houtai/dashboard' },
       { name: 'import-cn-jp', value: 'i-cn-jp' },
       { name: 'export-jp-cn', value: 'e-jp-cn' },
     ],

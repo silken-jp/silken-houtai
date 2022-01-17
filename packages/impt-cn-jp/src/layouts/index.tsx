@@ -44,7 +44,10 @@ const Index: React.FC = (props) => {
         <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
           <Menu.SubMenu key="/cts" icon={<FormOutlined />} title={intlMenu('cts')}>
             <Menu.Item key="/cts/dashboard">
-              <Link to="/cts/dashboard">Status Inquiry</Link>
+              <Link to="/cts/dashboard">Dashboard</Link>
+            </Menu.Item>
+            <Menu.Item key="/cts/StatusInquiry">
+              <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
             <Menu.SubMenu key="/cts/IDA" title={'IDA'}>
               <Menu.Item key="/cts/large">

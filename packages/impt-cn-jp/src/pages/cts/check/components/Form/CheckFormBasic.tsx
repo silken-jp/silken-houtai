@@ -3,6 +3,7 @@ import { Form, Input, Space, Tooltip, AutoComplete } from 'antd';
 
 import { CODE_SOURCE } from '@/utils/constant';
 
+// IP3 = FR2 = IN2
 export interface CheckFormProps {
   dataSource: any[][];
 }

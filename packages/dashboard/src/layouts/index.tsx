@@ -1,0 +1,92 @@
+import { useState, createElement } from 'react';
+import { Layout, Menu, Row, Col, Button } from 'antd';
+import {
+  CloudFilled,
+  FormOutlined,
+  SettingOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  CarOutlined,
+} from '@ant-design/icons';
+import { useHistory, Link, setLocale } from 'umi';
+////
+import { useIntlFormat } from '../services/useIntl';
+import styles from './index.less';
+
+const Index: React.FC = (props) => {
+  const history = useHistory();
+  const isFull = ['/login', '/cts/check/'].some((item: any) =>
+    history?.location?.pathname?.startsWith(item),
+  );
+
+  const [collapsed, setCollapsed] = useState(false);
+  const toggle = () => {
+    setCollapsed(!collapsed);
+  };
+
+  const [intlMenu] = useIntlFormat('menu');
+
+  return isFull ? (
+    <>{props?.children}</>
+  ) : (
+    <Layout className={styles['layout']}>
+      <Layout.Sider
+        className={styles['slider-layout']}
+        width={260}
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+      >
+        <div className={styles['logo']}>
+          <CloudFilled className={styles['icon']} />
+          {!collapsed && <span className={styles['text']}>シルケン</span>}
+        </div>
+        <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
+          <Menu.Item key="/dashboard">
+            <Link to="/dashboard">ダッシュボード</Link>
+          </Menu.Item>
+          <Menu.SubMenu key="/cts" icon={<FormOutlined />} title="通関管理">
+            <Menu.Item key="/cts/list">
+              <Link to="/cts/list">Status Inquiry</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="/CSManagement" icon={<FormOutlined />} title="CS管理">
+            <Menu.Item key="/CSManagement/permit">
+              <Link to="/CSManagement/permit">貨物状況確認</Link>
+            </Menu.Item>
+            <Menu.Item key="/CSManagement/cargoIssues">
+              <Link to="/CSManagement/cargoIssues">貨物問題リスト</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+          <Menu.SubMenu key="/delivery" icon={<FormOutlined />} title="配送管理">
+            <Menu.Item key="/delivery/list">
+              <Link to="/delivery/list">配送状況確認</Link>
+            </Menu.Item>
+          </Menu.SubMenu>
+        </Menu>
+      </Layout.Sider>
+      <Layout className={styles['site-layout']}>
+        <Layout.Header className={styles['site-layout-background']}>
+          <Row align="middle" justify="space-between">
+            <Col>
+              {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                className: styles['trigger'],
+                onClick: toggle,
+              })}
+            </Col>
+            <Col>
+              <Button type="link" onClick={() => setLocale('zh-CN', false)}>
+                中
+              </Button>
+              <Button type="link" onClick={() => setLocale('ja-JP', false)}>
+                日
+              </Button>
+            </Col>
+          </Row>
+        </Layout.Header>
+        <Layout.Content>{props?.children}</Layout.Content>
+      </Layout>
+    </Layout>
+  );
+};
+export default Index;
