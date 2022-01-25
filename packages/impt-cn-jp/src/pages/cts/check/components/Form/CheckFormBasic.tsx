@@ -30,14 +30,14 @@ const ToolTipInput: React.FC<any> = (props) => {
       source
         ?.filter(
           (item: any) =>
-            item?.code?.toUpperCase()?.includes(searchText?.toUpperCase()) ||
-            item?.name?.toUpperCase()?.includes(searchText?.toUpperCase()),
+            item?.value?.toUpperCase()?.includes(searchText?.toUpperCase()) ||
+            item?.label?.toUpperCase()?.includes(searchText?.toUpperCase()),
         )
-        .map((item) => ({ value: item?.code, label: `${item?.code}: ${item?.name}` })),
+        .map((item) => ({ ...item, label: `${item?.value}: ${item?.label}` })),
     );
   };
-  function handleChange(e: any) {
-    props?.onChange(props?.name?.startsWith('NT') ? e : e?.toUpperCase());
+  function handleChange(v: any) {
+    props?.onChange(props?.name?.startsWith('NT') ? v : v?.toUpperCase());
   }
   return (
     <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
@@ -47,7 +47,7 @@ const ToolTipInput: React.FC<any> = (props) => {
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}
-        dropdownMatchSelectWidth={300}
+        dropdownMatchSelectWidth={400}
       >
         {props?.limit > 106 ? (
           <Input.TextArea

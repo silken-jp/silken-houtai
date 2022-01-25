@@ -13,33 +13,35 @@ const Create: React.FC<CreateProps> = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    form.setFieldsValue({
-      //////////////// MIC
-      JYO: 'Z',
-      IC1: '',
-      CH: '',
-      CHB: '',
-      ICD: dayjs(),
-      ST: '',
-      TTC: '',
-      MAB: '12345678901234567890',
-      VSN: 'AB0001/01JAN',
-      ARR: dayjs(),
-      //////////////// IDA
-      // IC1: '',
-      IC2: '',
-      // CH: '',
-      // CHB: '',
-      CHH: '',
-      CHT: '',
-      // ICD: '',
-      // ST: '',
-      // TTC: '',
-      BL_: '12345678901234567890',
-      // VSN: '',
-      // ARR: '',
-    });
-  }, []);
+    props?.type === 'MIC' &&
+      form.setFieldsValue({
+        JYO: 'Z',
+        IC1: '',
+        CH: '',
+        CHB: '',
+        ICD: dayjs(),
+        ST: '',
+        TTC: '',
+        MAB: '',
+        VSN: '',
+        ARR: dayjs(),
+      });
+    props?.type === 'IDA' &&
+      form.setFieldsValue({
+        IC1: '',
+        IC2: '',
+        CH: '',
+        CHB: '',
+        CHH: '',
+        CHT: '',
+        ICD: dayjs(),
+        ST: '',
+        TTC: '',
+        BL_: '',
+        VSN: '',
+        ARR: dayjs(),
+      });
+  }, [visible]);
 
   return (
     <>
@@ -108,7 +110,13 @@ const Create: React.FC<CreateProps> = (props) => {
               <Form.Item label="5.IC1" name="IC1">
                 <Select
                   placeholder="申告先種別コード"
-                  options={[{ value: 'R', label: 'R:蔵出輸入（引取・特例）申告' }]}
+                  options={[
+                    { value: 'R', label: 'R:蔵出輸入（引取・特例）申告' },
+                    { value: 'T', label: 'T:一般申告(特別通関貨物)' },
+                    { value: 'Y', label: 'Y:横持ち申告' },
+                    { value: 'K', label: 'K:横持ち申告(緊急通関貨物)' },
+                    { value: 'E', label: 'E:自由化申告(緊急通関貨物)' },
+                  ]}
                 />
               </Form.Item>
               <Form.Item label="6.IC2" name="IC2">

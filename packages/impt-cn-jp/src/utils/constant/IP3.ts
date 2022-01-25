@@ -1,423 +1,111 @@
 // 通貨コード
 //
-// name: 国名
-// code: 通貨コード
+// label: 国名
+// value: 通貨コード
 
 export const IP3 = [
-  {
-    name: 'アラブ首長国連邦',
-    code: 'AED',
-  },
-  {
-    name: '蘭領アンティール',
-    code: 'ANG',
-  },
-  {
-    name: 'アルゼンチン',
-    code: 'ARS',
-  },
-  {
-    name: 'オーストラリア',
-    code: 'AUD',
-  },
-  {
-    name: 'バルバドス',
-    code: 'BBD',
-  },
-  {
-    name: 'バングラデシュ',
-    code: 'BDT',
-  },
-  {
-    name: 'ブルガリア',
-    code: 'BGL',
-  },
-  {
-    name: 'ブルガリア',
-    code: 'BGN',
-  },
-  {
-    name: 'バーレーン',
-    code: 'BHD',
-  },
-  {
-    name: 'ブルンジ',
-    code: 'BIF',
-  },
-  {
-    name: 'ブルネイ',
-    code: 'BND',
-  },
-  {
-    name: 'ボリビア',
-    code: 'BOB',
-  },
-  {
-    name: 'ブラジル',
-    code: 'BRL',
-  },
-  {
-    name: 'ブータン',
-    code: 'BTN',
-  },
-  {
-    name: 'カナダ',
-    code: 'CAD',
-  },
-  {
-    name: 'スイス',
-    code: 'CHF',
-  },
-  {
-    name: 'チリ',
-    code: 'CLP',
-  },
-  {
-    name: '中華人民共和国',
-    code: 'CNY',
-  },
-  {
-    name: 'コロンビア',
-    code: 'COP',
-  },
-  {
-    name: 'キューバ',
-    code: 'CUP',
-  },
-  {
-    name: 'チェコ',
-    code: 'CZK',
-  },
-  {
-    name: 'デンマーク',
-    code: 'DKK',
-  },
-  {
-    name: 'ドミニカ共和国',
-    code: 'DOP',
-  },
-  {
-    name: 'アルジェリア',
-    code: 'DZD',
-  },
-  {
-    name: 'エストニア',
-    code: 'EEK',
-  },
-  {
-    name: 'エジプト',
-    code: 'EGP',
-  },
-  {
-    name: 'エチオピア',
-    code: 'ETB',
-  },
-  {
-    name: '欧州統一通貨',
-    code: 'EUR',
-  },
-  {
-    name: 'フィジー',
-    code: 'FJD',
-  },
-  {
-    name: '英国',
-    code: 'GBP',
-  },
-  {
-    name: 'ガーナ',
-    code: 'GHS',
-  },
-  {
-    name: 'グアテマラ',
-    code: 'GTQ',
-  },
-  {
-    name: 'ガイアナ',
-    code: 'GYD',
-  },
-  {
-    name: '香港',
-    code: 'HKD',
-  },
-  {
-    name: 'クロアチア',
-    code: 'HRK',
-  },
-  {
-    name: 'ハンガリー',
-    code: 'HUF',
-  },
-  {
-    name: 'インドネシア',
-    code: 'IDR',
-  },
-  {
-    name: 'イスラエル',
-    code: 'ILS',
-  },
-  {
-    name: 'インド',
-    code: 'INR',
-  },
-  {
-    name: 'イラク',
-    code: 'IQD',
-  },
-  {
-    name: 'イラン',
-    code: 'IRR',
-  },
-  {
-    name: 'アイスランド',
-    code: 'ISK',
-  },
-  {
-    name: 'ジャマイカ',
-    code: 'JMD',
-  },
-  {
-    name: 'ヨルダン',
-    code: 'JOD',
-  },
-  {
-    name: '日本',
-    code: 'JPY',
-  },
-  {
-    name: 'ケニア',
-    code: 'KES',
-  },
-  {
-    name: '北朝鮮',
-    code: 'KPW',
-  },
-  {
-    name: '大韓民国',
-    code: 'KRW',
-  },
-  {
-    name: 'クウェート',
-    code: 'KWD',
-  },
-  {
-    name: 'レバノン',
-    code: 'LBP',
-  },
-  {
-    name: 'スリランカ',
-    code: 'LKR',
-  },
-  {
-    name: 'ラトビア',
-    code: 'LVL',
-  },
-  {
-    name: 'モロッコ',
-    code: 'MAD',
-  },
-  {
-    name: 'マダガスカル',
-    code: 'MGA',
-  },
-  {
-    name: 'ミャンマー',
-    code: 'MMK',
-  },
-  {
-    name: 'モンゴル',
-    code: 'MNT',
-  },
-  {
-    name: 'マカオ',
-    code: 'MOP',
-  },
-  {
-    name: 'モーリシャス',
-    code: 'MUR',
-  },
-  {
-    name: 'マラウイ',
-    code: 'MWK',
-  },
-  {
-    name: 'メキシコ',
-    code: 'MXN',
-  },
-  {
-    name: 'マレーシア',
-    code: 'MYR',
-  },
-  {
-    name: 'ナイジェリア',
-    code: 'NGN',
-  },
-  {
-    name: 'ノルウェー',
-    code: 'NOK',
-  },
-  {
-    name: 'ネパール',
-    code: 'NPR',
-  },
-  {
-    name: 'ニュージーランド',
-    code: 'NZD',
-  },
-  {
-    name: 'オマーン',
-    code: 'OMR',
-  },
-  {
-    name: 'ペルー',
-    code: 'PEN',
-  },
-  {
-    name: 'パプアニューギニア',
-    code: 'PGK',
-  },
-  {
-    name: 'フィリピン',
-    code: 'PHP',
-  },
-  {
-    name: 'パキスタン',
-    code: 'PKR',
-  },
-  {
-    name: 'ポーランド',
-    code: 'PLN',
-  },
-  {
-    name: 'カタール',
-    code: 'QAR',
-  },
-  {
-    name: 'ルーマニア',
-    code: 'RON',
-  },
-  {
-    name: 'セルビア',
-    code: 'RSD',
-  },
-  {
-    name: 'ロシア',
-    code: 'RUB',
-  },
-  {
-    name: 'サウジアラビア',
-    code: 'SAR',
-  },
-  {
-    name: 'ソロモン',
-    code: 'SBD',
-  },
-  {
-    name: 'セーシェル',
-    code: 'SCR',
-  },
-  {
-    name: 'スウェーデン',
-    code: 'SEK',
-  },
-  {
-    name: 'シンガポール',
-    code: 'SGD',
-  },
-  {
-    name: 'スロバキア',
-    code: 'SKK',
-  },
-  {
-    name: 'ロシア',
-    code: 'SUR',
-  },
-  {
-    name: 'シリア',
-    code: 'SYP',
-  },
-  {
-    name: 'タイ',
-    code: 'THB',
-  },
-  {
-    name: 'チュニジア',
-    code: 'TND',
-  },
-  {
-    name: 'トンガ',
-    code: 'TOP',
-  },
-  {
-    name: 'トルコ',
-    code: 'TRY',
-  },
-  {
-    name: 'トリニダード・トバゴ',
-    code: 'TTD',
-  },
-  {
-    name: '台湾',
-    code: 'TWD',
-  },
-  {
-    name: 'タンザニア',
-    code: 'TZS',
-  },
-  {
-    name: 'アメリカ合衆国',
-    code: 'USD',
-  },
-  {
-    name: 'ベネズエラ',
-    code: 'VEB',
-  },
-  {
-    name: 'ベネズエラ',
-    code: 'VEF',
-  },
-  {
-    name: 'ベネズエラ',
-    code: 'VES',
-  },
-  {
-    name: 'ベトナム',
-    code: 'VND',
-  },
-  {
-    name: 'バヌアツ',
-    code: 'VUV',
-  },
-  {
-    name: 'サモア',
-    code: 'WST',
-  },
-  {
-    name: 'グレナダ他',
-    code: 'XCD',
-  },
-  {
-    name: 'セネガル他',
-    code: 'XOF',
-  },
-  {
-    name: 'ニューカレドニア他',
-    code: 'XPF',
-  },
-  {
-    name: '南アフリカ共和国',
-    code: 'ZAR',
-  },
-  {
-    name: 'ザンビア',
-    code: 'ZMK',
-  },
-  {
-    name: 'ザンビア',
-    code: 'ZMW',
-  },
-  {
-    name: 'ジンバブエ',
-    code: 'ZWD',
-  },
+  { label: 'アラブ首長国連邦', value: 'AED' },
+  { label: '蘭領アンティール', value: 'ANG' },
+  { label: 'アルゼンチン', value: 'ARS' },
+  { label: 'オーストラリア', value: 'AUD' },
+  { label: 'バルバドス', value: 'BBD' },
+  { label: 'バングラデシュ', value: 'BDT' },
+  { label: 'ブルガリア', value: 'BGL' },
+  { label: 'ブルガリア', value: 'BGN' },
+  { label: 'バーレーン', value: 'BHD' },
+  { label: 'ブルンジ', value: 'BIF' },
+  { label: 'ブルネイ', value: 'BND' },
+  { label: 'ボリビア', value: 'BOB' },
+  { label: 'ブラジル', value: 'BRL' },
+  { label: 'ブータン', value: 'BTN' },
+  { label: 'カナダ', value: 'CAD' },
+  { label: 'スイス', value: 'CHF' },
+  { label: 'チリ', value: 'CLP' },
+  { label: '中華人民共和国', value: 'CNY' },
+  { label: 'コロンビア', value: 'COP' },
+  { label: 'キューバ', value: 'CUP' },
+  { label: 'チェコ', value: 'CZK' },
+  { label: 'デンマーク', value: 'DKK' },
+  { label: 'ドミニカ共和国', value: 'DOP' },
+  { label: 'アルジェリア', value: 'DZD' },
+  { label: 'エストニア', value: 'EEK' },
+  { label: 'エジプト', value: 'EGP' },
+  { label: 'エチオピア', value: 'ETB' },
+  { label: '欧州統一通貨', value: 'EUR' },
+  { label: 'フィジー', value: 'FJD' },
+  { label: '英国', value: 'GBP' },
+  { label: 'ガーナ', value: 'GHS' },
+  { label: 'グアテマラ', value: 'GTQ' },
+  { label: 'ガイアナ', value: 'GYD' },
+  { label: '香港', value: 'HKD' },
+  { label: 'クロアチア', value: 'HRK' },
+  { label: 'ハンガリー', value: 'HUF' },
+  { label: 'インドネシア', value: 'IDR' },
+  { label: 'イスラエル', value: 'ILS' },
+  { label: 'インド', value: 'INR' },
+  { label: 'イラク', value: 'IQD' },
+  { label: 'イラン', value: 'IRR' },
+  { label: 'アイスランド', value: 'ISK' },
+  { label: 'ジャマイカ', value: 'JMD' },
+  { label: 'ヨルダン', value: 'JOD' },
+  { label: '日本', value: 'JPY' },
+  { label: 'ケニア', value: 'KES' },
+  { label: '北朝鮮', value: 'KPW' },
+  { label: '大韓民国', value: 'KRW' },
+  { label: 'クウェート', value: 'KWD' },
+  { label: 'レバノン', value: 'LBP' },
+  { label: 'スリランカ', value: 'LKR' },
+  { label: 'ラトビア', value: 'LVL' },
+  { label: 'モロッコ', value: 'MAD' },
+  { label: 'マダガスカル', value: 'MGA' },
+  { label: 'ミャンマー', value: 'MMK' },
+  { label: 'モンゴル', value: 'MNT' },
+  { label: 'マカオ', value: 'MOP' },
+  { label: 'モーリシャス', value: 'MUR' },
+  { label: 'マラウイ', value: 'MWK' },
+  { label: 'メキシコ', value: 'MXN' },
+  { label: 'マレーシア', value: 'MYR' },
+  { label: 'ナイジェリア', value: 'NGN' },
+  { label: 'ノルウェー', value: 'NOK' },
+  { label: 'ネパール', value: 'NPR' },
+  { label: 'ニュージーランド', value: 'NZD' },
+  { label: 'オマーン', value: 'OMR' },
+  { label: 'ペルー', value: 'PEN' },
+  { label: 'パプアニューギニア', value: 'PGK' },
+  { label: 'フィリピン', value: 'PHP' },
+  { label: 'パキスタン', value: 'PKR' },
+  { label: 'ポーランド', value: 'PLN' },
+  { label: 'カタール', value: 'QAR' },
+  { label: 'ルーマニア', value: 'RON' },
+  { label: 'セルビア', value: 'RSD' },
+  { label: 'ロシア', value: 'RUB' },
+  { label: 'サウジアラビア', value: 'SAR' },
+  { label: 'ソロモン', value: 'SBD' },
+  { label: 'セーシェル', value: 'SCR' },
+  { label: 'スウェーデン', value: 'SEK' },
+  { label: 'シンガポール', value: 'SGD' },
+  { label: 'スロバキア', value: 'SKK' },
+  { label: 'ロシア', value: 'SUR' },
+  { label: 'シリア', value: 'SYP' },
+  { label: 'タイ', value: 'THB' },
+  { label: 'チュニジア', value: 'TND' },
+  { label: 'トンガ', value: 'TOP' },
+  { label: 'トルコ', value: 'TRY' },
+  { label: 'トリニダード・トバゴ', value: 'TTD' },
+  { label: '台湾', value: 'TWD' },
+  { label: 'タンザニア', value: 'TZS' },
+  { label: 'アメリカ合衆国', value: 'USD' },
+  { label: 'ベネズエラ', value: 'VEB' },
+  { label: 'ベネズエラ', value: 'VEF' },
+  { label: 'ベネズエラ', value: 'VES' },
+  { label: 'ベトナム', value: 'VND' },
+  { label: 'バヌアツ', value: 'VUV' },
+  { label: 'サモア', value: 'WST' },
+  { label: 'グレナダ他', value: 'XCD' },
+  { label: 'セネガル他', value: 'XOF' },
+  { label: 'ニューカレドニア他', value: 'XPF' },
+  { label: '南アフリカ共和国', value: 'ZAR' },
+  { label: 'ザンビア', value: 'ZMK' },
+  { label: 'ザンビア', value: 'ZMW' },
+  { label: 'ジンバブエ', value: 'ZWD' },
 ];
