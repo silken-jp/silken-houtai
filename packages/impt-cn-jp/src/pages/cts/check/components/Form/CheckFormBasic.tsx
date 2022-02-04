@@ -24,21 +24,21 @@ const ToolTipInput: React.FC<any> = (props) => {
   }, []);
 
   const onSearch = (searchText: string) => {
-    const source = CODE_SOURCE?.[props?.name];
-    if (!searchText || !source) return setOptions([]);
+    if (!searchText || props?.source?.length === 0) return setOptions([...props?.source]);
     setOptions(
-      source
+      props.source
         ?.filter(
           (item: any) =>
             item?.value?.toUpperCase()?.includes(searchText?.toUpperCase()) ||
             item?.label?.toUpperCase()?.includes(searchText?.toUpperCase()),
         )
-        .map((item) => ({ ...item, label: `${item?.value}: ${item?.label}` })),
+        .map((item: any) => ({ ...item, label: `${item?.value}: ${item?.label}` })),
     );
   };
   function handleChange(v: any) {
     props?.onChange(props?.name?.startsWith('NT') ? v : v?.toUpperCase());
   }
+
   return (
     <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
       <AutoComplete
@@ -47,7 +47,7 @@ const ToolTipInput: React.FC<any> = (props) => {
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}
-        dropdownMatchSelectWidth={400}
+        dropdownMatchSelectWidth={props?.name === 'BOK' ? 600 : 300}
       >
         {props?.limit > 106 ? (
           <Input.TextArea
@@ -80,18 +80,24 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
       {props?.dataSource?.map((row, key) => (
         <Space key={key} align="start" wrap>
           {row?.length === 0 && <hr color="#eee" />}
-          {row?.map((item: any) => (
-            <Form.Item
-              className="form-hidden-message"
-              key={item?.no}
-              style={{ marginBottom: 0 }}
-              label={`${item?.no}.${item?.name}`}
-              name={item?.name}
-              rules={[{ max: item?.limit, message: ' ' }]}
-            >
-              <ToolTipInput {...item} />
-            </Form.Item>
-          ))}
+          {row?.map((item: any) => {
+            const source = CODE_SOURCE?.[item?.name] || [];
+            const arr = source?.map((s: any) => s.value);
+            const rules: any[] =
+              arr.length > 0 ? [{ type: 'enum', enum: arr }] : [{ max: item?.limit }];
+            return (
+              <Form.Item
+                className="form-hidden-message"
+                key={item?.no}
+                style={{ marginBottom: 0 }}
+                label={`${item?.no}.${item?.name}`}
+                name={item?.name}
+                rules={rules}
+              >
+                <ToolTipInput {...item} source={source} />
+              </Form.Item>
+            );
+          })}
         </Space>
       ))}
     </Space>

@@ -1,5 +1,17 @@
 import { useState } from 'react';
-import { Form, Table, Input, Button, Row, Col, Card, Space, Statistic, Progress } from 'antd';
+import {
+  Form,
+  Table,
+  Input,
+  Button,
+  Row,
+  Col,
+  Card,
+  Space,
+  Statistic,
+  Progress,
+  Select,
+} from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Link } from 'umi';
@@ -46,13 +58,13 @@ const SmallWaybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: 'Small',
         breadcrumb: {
           routes: [
             { path: `/cts/small`, breadcrumbName: intlMenu('cts') },
             { path: '', breadcrumbName: 'Small' },
           ],
         },
+        title: <Select defaultValue={'all'} options={[{ value: 'all', label: 'ALL' }]} />,
         extra: <UploadWaybill onUpload={search.submit} />,
       }}
     >

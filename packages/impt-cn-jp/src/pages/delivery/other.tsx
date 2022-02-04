@@ -1,6 +1,5 @@
-import { Form, Table, Card, Row, Col, Input, Button, Space } from 'antd';
+import { Form, Table, Card, Row, Col, Input, Button, Space, Select } from 'antd';
 import { useAntdTable } from 'ahooks';
-import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 import dayjs from 'dayjs';
 ////
@@ -16,16 +15,12 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   // api
-  const getTableData = async (_: PaginatedParams[0], formData: any) => {
-    try {
-      const data = [] || (await getDeliveries(formData));
-      return {
-        total: data.length,
-        list: data,
-      };
-    } catch (error: any) {
-      return { error };
-    }
+  const getTableData = async (_: any, formData: any) => {
+    const data = [] || (await getDeliveries(formData));
+    return {
+      total: data.length,
+      list: data,
+    };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -43,13 +38,17 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
+          <Col span={8}>
             <Form.Item label="Track">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}></Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
+          <Col span={8}>
+            <Form.Item label="配送会社">
+              <Select options={[]} />
+            </Form.Item>
+          </Col>
+          <Col span={8}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
                 <Button type="primary" onClick={search.submit}>

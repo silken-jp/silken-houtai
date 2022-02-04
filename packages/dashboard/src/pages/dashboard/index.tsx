@@ -1,8 +1,18 @@
-import { Row, Col, Card, Tabs, Space, DatePicker, Radio, Statistic, Progress, Select } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Tabs,
+  Space,
+  DatePicker,
+  Radio,
+  Statistic,
+  Progress,
+  Descriptions,
+} from 'antd';
 import { Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-////
-import { useIntlFormat } from '@/services/useIntl';
+
 import { PieChart, Pie, Cell, Tooltip, Label, ResponsiveContainer } from 'recharts';
 import { ComposedChart, Area, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
 
@@ -82,43 +92,40 @@ const SKPieChart: React.FC = () => {
 export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
-  const [intlMenu] = useIntlFormat('menu');
-
   return (
-    <PageContainer
-      title={<Select defaultValue={'all'} options={[{ value: 'all', label: 'ALL' }]} />}
-      header={{
-        breadcrumb: {
-          routes: [
-            { path: '/cts/dashboard', breadcrumbName: intlMenu('cts') },
-            { path: '', breadcrumbName: 'Status Inquiry' },
-          ],
-        },
-      }}
-    >
+    <PageContainer>
       <Row gutter={8}>
-        <Col span={6}>
+        <Col span={8}>
           <Card>
-            <Statistic title="クレンジング済" value={1000} suffix="/ 1000" />
-            <Progress percent={100} />
+            <Descriptions size="small" layout="vertical" bordered title="2022年02月04日">
+              <Descriptions.Item label="件数">0</Descriptions.Item>
+              <Descriptions.Item label="重量">0</Descriptions.Item>
+              <Descriptions.Item label="個数">0</Descriptions.Item>
+              <Descriptions.Item label="MAWB">0</Descriptions.Item>
+              <Descriptions.Item label="未許可件数">0</Descriptions.Item>
+            </Descriptions>
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <Card>
-            <Statistic title="クリエート済" value={1000} suffix="/ 1000" />
-            <Progress percent={100} />
+            <Descriptions size="small" layout="vertical" bordered title="2022年02月累計">
+              <Descriptions.Item label="件数">0</Descriptions.Item>
+              <Descriptions.Item label="重量">0</Descriptions.Item>
+              <Descriptions.Item label="個数">0</Descriptions.Item>
+              <Descriptions.Item label="MAWB">0</Descriptions.Item>
+              <Descriptions.Item label="未許可件数">0</Descriptions.Item>
+            </Descriptions>
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <Card>
-            <Statistic title="ブローカーチェック済" value={870} suffix="/ 1000" />
-            <Progress percent={87} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="申告済" value={870} suffix="/ 1000" />
-            <Progress percent={87} />
+            <Descriptions size="small" layout="vertical" bordered title="2022年01月実績">
+              <Descriptions.Item label="件数">43735</Descriptions.Item>
+              <Descriptions.Item label="重量">8823.1</Descriptions.Item>
+              <Descriptions.Item label="個数">43735</Descriptions.Item>
+              <Descriptions.Item label="MAWB">46</Descriptions.Item>
+              <Descriptions.Item label="未許可件数">27</Descriptions.Item>
+            </Descriptions>
           </Card>
         </Col>
       </Row>

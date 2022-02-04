@@ -39,15 +39,15 @@ const Index: React.FC = (props) => {
       >
         <div className={styles['logo']}>
           <CloudFilled className={styles['icon']} />
-          {!collapsed && <span className={styles['text']}>シルケン</span>}
+          {!collapsed && <span className={styles['text']}>佐川</span>}
         </div>
         <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
           <Menu.Item key="/dashboard">
             <Link to="/dashboard">ダッシュボード</Link>
           </Menu.Item>
           <Menu.SubMenu key="/cts" icon={<FormOutlined />} title="通関管理">
-            <Menu.Item key="/cts/list">
-              <Link to="/cts/list">Status Inquiry</Link>
+            <Menu.Item key="/cts/StatusInquiry">
+              <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="/CSManagement" icon={<FormOutlined />} title="CS管理">
@@ -59,8 +59,11 @@ const Index: React.FC = (props) => {
             </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu key="/delivery" icon={<FormOutlined />} title="配送管理">
-            <Menu.Item key="/delivery/list">
-              <Link to="/delivery/list">配送状況確認</Link>
+            <Menu.Item key="/delivery/self">
+              <Link to="/delivery/self">自社配送状況確認</Link>
+            </Menu.Item>
+            <Menu.Item key="/delivery/other">
+              <Link to="/delivery/other">他社配送状況確認</Link>
             </Menu.Item>
           </Menu.SubMenu>
         </Menu>
