@@ -8,13 +8,14 @@ export interface CheckFormProps {
   dataSource: any[][];
 }
 
-const ToolTipInput: React.FC<any> = (props) => {
+export const ToolTipInput: React.FC<any> = (props) => {
   const ref = useRef<any>();
   const [options, setOptions] = useState<any[]>([]);
 
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
     channel.onmessage = (e) => {
+      e.data?.blur && ref.current?.blur();
       e.data?.no === props?.no + '.' && ref.current?.focus();
     };
     channel.onmessageerror = (ev) => {

@@ -68,9 +68,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     window.open(window.location.origin + '/#/cts/check/import');
   });
 
-  useKeyPress('x', () => {
+  useKeyPress('ctrl.x', () => {
     if (checkFocus()) {
       location.assign('/#/home');
+    } else {
+      postBlur();
     }
   });
 
@@ -86,6 +88,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   function postFocus({ no }: any) {
     const channel = new BroadcastChannel('sk_focus');
     channel.postMessage({ no });
+  }
+
+  function postBlur() {
+    const channel = new BroadcastChannel('sk_focus');
+    channel.postMessage({ blur: true });
   }
 
   return (
@@ -117,7 +124,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         title={
           <Space>
             <Link to="/home">
-              <Button>Exit（X）</Button>
+              <Button>Exit（Ctrl + x）</Button>
             </Link>
             <Form.Item
               noStyle

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Form, Modal, Button, Select, Radio } from 'antd';
 import { useKeyPress } from 'ahooks';
+////
+import { ToolTipInput } from '../Form/CheckFormBasic';
 
 export interface FormTypeModalProps {
   form: any;
