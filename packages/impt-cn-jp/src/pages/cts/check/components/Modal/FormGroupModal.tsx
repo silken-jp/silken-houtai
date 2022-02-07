@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
+import { useKeyPress } from 'ahooks';
 ////
 import CheckFormBasic from '../Form/CheckFormBasic';
 
@@ -188,8 +189,20 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
     setState({ ...state, visible: false });
   }
 
+  useKeyPress('F9', () => {
+    state.visible && handleCancel();
+  });
+
   return (
-    <Modal {...state} onCancel={handleCancel}>
+    <Modal
+      {...state}
+      onCancel={handleCancel}
+      footer={
+        <Button type="primary" onClick={handleCancel}>
+          確定(F9)
+        </Button>
+      }
+    >
       <CheckFormBasic dataSource={dataSource} />
     </Modal>
   );

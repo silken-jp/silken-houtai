@@ -45,7 +45,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   }
 
   useKeyPress('e', () => {
-    console.log(document.activeElement);
     if (checkFocus()) {
       form.getFieldValue('formType') === 'IDA' && postFocus({ no: '14.' });
       form.getFieldValue('formType') === 'MIC' && postFocus({ no: '50.' });
@@ -63,6 +62,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       setUrlIndex(!urlIndex ? 1 : 0);
       postImporter({ url: urls[urlIndex] });
     }
+  });
+
+  useKeyPress('F10', () => {
+    window.open(window.location.origin + '/#/cts/check/import');
   });
 
   useKeyPress('x', () => {
@@ -150,7 +153,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Space>
             <FormTypeModal form={form} />
             <Link to="/cts/check/import" target="_blank">
-              <Button>インボイス</Button>
+              <Button>インボイス(F10)</Button>
             </Link>
           </Space>
         }

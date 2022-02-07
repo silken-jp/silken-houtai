@@ -24,7 +24,7 @@ const ToolTipInput: React.FC<any> = (props) => {
   }, []);
 
   const onSearch = (searchText: string) => {
-    if (!searchText || props?.source?.length === 0) return setOptions([...props?.source]);
+    if (!searchText || props?.source?.length === 0) return setOptions([]);
     setOptions(
       props.source
         ?.filter(
@@ -47,7 +47,7 @@ const ToolTipInput: React.FC<any> = (props) => {
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}
-        dropdownMatchSelectWidth={props?.name === 'BOK' ? 600 : 300}
+        dropdownMatchSelectWidth={props?.name === 'BOK' ? 780 : 300}
       >
         {props?.limit > 106 ? (
           <Input.TextArea

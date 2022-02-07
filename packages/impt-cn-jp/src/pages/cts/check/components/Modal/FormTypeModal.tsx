@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Form, Modal, Button, Select, Radio } from 'antd';
+import { useKeyPress } from 'ahooks';
 
 export interface FormTypeModalProps {
   form: any;
@@ -27,6 +28,14 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
     handleCancel();
   }
 
+  useKeyPress('F8', () => {
+    !visible && handleOpen();
+  });
+
+  useKeyPress('F9', () => {
+    visible && handleOk();
+  });
+
   return (
     <>
       <Modal
@@ -35,6 +44,8 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
         visible={visible}
         onCancel={handleCancel}
         onOk={handleOk}
+        cancelText="キャンセル(ESC)"
+        okText="確定(F9)"
       >
         <Form.Item label="業務コード">
           <Select
@@ -100,7 +111,7 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
         )}
       </Modal>
       <Button onClick={handleOpen} type="primary">
-        業務コード変更
+        業務コード変更(F8)
       </Button>
     </>
   );

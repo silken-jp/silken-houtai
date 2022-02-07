@@ -120,7 +120,7 @@ const AIDForm: React.FC<AIDFormProps> = () => {
       { no: 68, limit: 3, name: 'IP2', holder: 'インボイス価格条件コード' },
       { no: 69, limit: 3, name: 'IP3', holder: 'インボイス通貨コード ' },
       { no: 70, limit: 18, name: 'IP4', holder: 'インボイス価格' },
-      { no: 93, limit: 140, name: 'NT1', holder: '記事（税関用）' },
+      { no: 94, limit: 70, name: 'NT2', holder: '記事（通関業者用）' },
     ],
     [
       { no: 71, limit: 1, name: 'FR1', holder: '運賃区分コード' },
