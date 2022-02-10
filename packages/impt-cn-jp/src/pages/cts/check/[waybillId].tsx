@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Form, Space, Button, Radio, Modal, Input } from 'antd';
+import { Card, Form, Space, Button, Modal, Input } from 'antd';
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams } from 'umi';
 ////
@@ -16,8 +16,8 @@ const urls = [
 export interface WaybillContainerProps {}
 const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
-
   const { data, error, loading } = useRequest(async () => await getWaybill({ waybillId }));
+
   if (loading) return <>loading...</>;
   if (error) return <>error...</>;
   return <WaybillCheck dataSource={data} />;
@@ -32,11 +32,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    const formType = ['IDA', 'MIC'][props.dataSource?.waybill_type];
-    const IDAType = '';
-    const NOF = 'R';
-    const PF = '00010544650858';
-    form.setFieldsValue({ formType, IDAType, NOF, PF, ...props.dataSource });
     form.validateFields();
   }, []);
 
@@ -50,6 +45,27 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       form.getFieldValue('formType') === 'MIC' && postFocus({ no: '50.' });
     }
   });
+
+  useKeyPress('h', () => {
+    if (checkFocus()) {
+      form.isFieldsTouched() && confirm('Hold');
+    }
+  });
+
+  useKeyPress('s', () => {
+    if (checkFocus()) {
+      form.isFieldsTouched() && confirm('Send Back');
+    }
+  });
+
+  function confirm(title: string) {
+    Modal.confirm({
+      title,
+      content: `データの変更を保存して${title}しますか？`,
+      onCancel: () => {},
+      onOk: () => {},
+    });
+  }
 
   useKeyPress('F2', () => {
     if (checkFocus()) {
@@ -65,12 +81,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   });
 
   useKeyPress('F10', () => {
-    window.open(window.location.origin + '/#/cts/check/import');
+    window.open(window.location.origin + window.location.pathname + '#/cts/check/import');
   });
 
   useKeyPress('ctrl.x', () => {
     if (checkFocus()) {
-      location.assign('/#/home');
+      location.assign(window.location.origin + window.location.pathname + '#/home');
     } else {
       postBlur();
     }
@@ -96,7 +112,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   }
 
   return (
-    <Form size="small" form={form}>
+    <Form
+      size="small"
+      form={form}
+      initialValues={{
+        formType: ['IDA', 'MIC'][props?.dataSource?.waybill_type],
+        IDAType: '',
+        NOF: 'R',
+        PF: '00010544650858',
+        ...props?.dataSource,
+      }}
+    >
       <Modal
         style={{ top: 0 }}
         bodyStyle={{ padding: '6px 8px' }}
@@ -133,23 +159,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
               {({ getFieldValue }) => {
                 const formType = getFieldValue('formType');
                 const IDAType = getFieldValue('IDAType');
+                const LS = getFieldValue('LS');
                 return (
                   <Space>
                     {formType && <span>業務コード: {formType}</span>}
                     {IDAType && <span>申告種別: {IDAType}</span>}
-                    {formType === 'IDA' && (
-                      <Form.Item name="LS" noStyle>
-                        <Radio.Group
-                          size="small"
-                          optionType="button"
-                          buttonStyle="solid"
-                          options={[
-                            { value: 'L', label: 'Large' },
-                            { value: 'S', label: 'Small' },
-                          ]}
-                        />
-                      </Form.Item>
-                    )}
+                    {LS && <span>大少額識別: {LS}</span>}
                   </Space>
                 );
               }}

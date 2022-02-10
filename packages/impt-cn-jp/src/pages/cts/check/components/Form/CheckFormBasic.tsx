@@ -8,7 +8,16 @@ export interface CheckFormProps {
   dataSource: any[][];
 }
 
-export const ToolTipInput: React.FC<any> = (props) => {
+interface ToolTipInputProps {
+  no?: string;
+  name?: string;
+  value: string;
+  holder?: string;
+  limit: number;
+  source: any[];
+  onChange: (v: any) => void;
+}
+export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
   const ref = useRef<any>();
   const [options, setOptions] = useState<any[]>([]);
 
