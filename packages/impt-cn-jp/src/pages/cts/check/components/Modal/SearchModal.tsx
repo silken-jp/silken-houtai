@@ -21,7 +21,7 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
     channel.onmessage = (e) => {
-      e.data?.no === '13..' && setVisible(true);
+      e.data?.modal === 'search' && setVisible(true);
     };
     channel.onmessageerror = (ev) => {
       throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);

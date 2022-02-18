@@ -6,7 +6,6 @@ export interface AIDFormProps {}
 const AIDForm: React.FC<AIDFormProps> = () => {
   const AIDItems = [
     [
-      { no: 3, limit: 1, name: 'LS', holder: '大額・少額識別' },
       { no: 7, limit: 1, name: 'SKB', holder: '識別符号' },
       // Todo: to IDA create
       // { no: 10, limit: 2, name: 'CHH', holder: '特例申告あて先官署 コード ' },

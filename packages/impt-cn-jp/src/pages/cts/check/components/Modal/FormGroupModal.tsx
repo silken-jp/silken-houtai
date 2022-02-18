@@ -13,10 +13,10 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
     channel.onmessage = (e) => {
-      if (e.data?.no === '1') set1();
-      if (e.data?.no === '2') set2();
-      if (e.data?.no === '3') set3();
-      if (e.data?.no === '4') set4();
+      if (e.data?.modal === '1') set1();
+      if (e.data?.modal === '2') set2();
+      if (e.data?.modal === '3') set3();
+      if (e.data?.modal === '4') set4();
     };
     channel.onmessageerror = (ev) => {
       throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);

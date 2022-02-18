@@ -49,6 +49,11 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
     props?.onChange(props?.name?.startsWith('NT') ? v : v?.toUpperCase());
   }
 
+  let dropdownMatchSelectWidth = 300;
+  if (props?.name === 'BOK') dropdownMatchSelectWidth = 780;
+  if (props?.name === 'BP') dropdownMatchSelectWidth = 400;
+  if (props?.name === 'IT') dropdownMatchSelectWidth = 400;
+
   return (
     <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
       <AutoComplete
@@ -57,7 +62,7 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}
-        dropdownMatchSelectWidth={props?.name === 'BOK' ? 780 : 300}
+        dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       >
         {props?.limit > 106 ? (
           <Input.TextArea
@@ -93,8 +98,12 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
           {row?.map((item: any) => {
             const source = CODE_SOURCE?.[item?.name] || [];
             const arr = source?.map((s: any) => s.value);
-            const rules: any[] =
-              arr.length > 0 ? [{ type: 'enum', enum: arr }] : [{ max: item?.limit }];
+            let rules: any[] = [{ required: item?.required }];
+            if (arr.length > 0) {
+              rules.push({ type: 'enum', enum: ['', ...arr] });
+            } else {
+              rules.push({ max: item?.limit });
+            }
             return (
               <Form.Item
                 className="form-hidden-message"

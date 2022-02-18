@@ -28,7 +28,7 @@ const LoginForm: React.FC = () => {
       // setUserLogin({ ...data.TeacherLogin, expiryDate });
       localStorage.setItem(
         utils.STORAGE_KEY + 'userLogin',
-        JSON.stringify({ token: 'aaa', expiryDate }),
+        JSON.stringify({ id: '1', name: '古木', token: 'aaa', expiryDate }),
       );
       await setLoading(false);
       window.location.reload();

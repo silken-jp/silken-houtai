@@ -77,17 +77,11 @@ interface UpdateWaybill extends API.Waybill {
   waybillId: API.ID;
 }
 export async function updateWaybill(params: UpdateWaybill) {
+  const { waybillId, ...data } = params;
   return request<any>(ApiURL + '/waybills/' + params.waybillId, {
     method: 'PATCH',
     data: {
-      mawb_no: params?.mawb_no,
-      hawb_no: params?.hawb_no,
-      jp_delivery_no: params?.jp_delivery_no,
-      cn_delivery_no: params?.cn_delivery_no,
-      jp_delivery_company: params?.jp_delivery_company,
-      cn_delivery_company: params?.cn_delivery_company,
-      flight_no: params?.flight_no,
-      waybill_input_time: params?.waybill_input_time,
+      ...data,
     },
   });
 }
@@ -99,5 +93,23 @@ interface DeleteByWaybillId {
 export async function deleteByWaybillId(params: DeleteByWaybillId) {
   return request<any>(ApiURL + '/waybills/' + params.waybillId, {
     method: 'DELETE',
+  });
+}
+
+// 批量创建导入 POST /api/waybills/move
+interface MoveWaybill {
+  move: number;
+  type: number;
+  waybill?: string;
+  MAB: string;
+  LS: string;
+  current_processor: string;
+}
+export async function moveWaybill(params: MoveWaybill) {
+  return request<any>(ApiURL + '/waybills/move', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
   });
 }

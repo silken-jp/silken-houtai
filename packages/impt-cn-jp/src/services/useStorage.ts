@@ -1,12 +1,16 @@
+import { utils } from '@silken-houtai/core';
+
+const loginKey = utils.STORAGE_KEY + 'userLogin';
+
 /**
  *
  * 通过param进行登陆判定
  * @param {*} userLogin
  * @returns isLogin: boolean
  */
-export function checkUserLogin(Key: string) {
+export function checkUserLogin() {
   let isLogin = false;
-  const userLogin = JSON.parse(localStorage.getItem(Key) || '{}');
+  const userLogin = JSON.parse(localStorage.getItem(loginKey) || '{}');
   try {
     const { token, expiryDate } = userLogin;
     isLogin = !!token && token !== 'null';
@@ -20,4 +24,12 @@ export function checkUserLogin(Key: string) {
     console.log(err);
   }
   return isLogin;
+}
+
+export function removeUserInfo() {
+  localStorage.getItem(loginKey);
+}
+
+export function getUserInfo(): userLogin {
+  return JSON.parse(localStorage.getItem(loginKey) || '{}');
 }

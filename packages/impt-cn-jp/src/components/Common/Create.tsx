@@ -4,8 +4,9 @@ import dayjs from 'dayjs';
 ////
 
 export interface CreateProps {
-  disable?: boolean;
+  disabled?: boolean;
   type?: 'MIC' | 'IDA';
+  large?: boolean;
 }
 
 const Create: React.FC<CreateProps> = (props) => {
@@ -16,8 +17,7 @@ const Create: React.FC<CreateProps> = (props) => {
     props?.type === 'MIC' &&
       form.setFieldsValue({
         JYO: 'Z',
-        IC1: '',
-        CH: '',
+        CH: '1A',
         CHB: '',
         ICD: dayjs(),
         ST: '',
@@ -28,10 +28,8 @@ const Create: React.FC<CreateProps> = (props) => {
       });
     props?.type === 'IDA' &&
       form.setFieldsValue({
-        IC1: '',
-        IC2: '',
-        CH: '',
-        CHB: '',
+        CH: '1A',
+        CHB: props?.large ? '55' : '77',
         CHH: '',
         CHT: '',
         ICD: dayjs(),
@@ -67,23 +65,11 @@ const Create: React.FC<CreateProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item label="4.IC1" name="IC1">
-                <Select
-                  placeholder="申告等種別コード"
-                  options={[
-                    { value: 'R', label: 'R: 一般申告（緊急通関貨物）' },
-                    { value: 'R', label: 'T: 一般申告（特別通関貨物） ' },
-                    { value: 'R', label: 'Y: 横持ち申告' },
-                    { value: 'R', label: 'K: 横持ち申告（緊急通関貨物） ' },
-                    { value: 'R', label: 'E: 自由化申告（緊急通関貨物）' },
-                  ]}
-                />
-              </Form.Item>
               <Form.Item label="6.CH" name="CH">
-                <Select placeholder="あて先官署コード" />
+                <Input placeholder="あて先官署コード" />
               </Form.Item>
               <Form.Item label="7.CHB" name="CHB">
-                <Select placeholder="あて先部門コード" />
+                <Input placeholder="あて先部門コード" />
               </Form.Item>
               <Form.Item label="8.ICD" name="ICD">
                 <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
@@ -95,7 +81,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 <Input placeholder="検査立会者" />
               </Form.Item>
               <Form.Item label="33.MAB" name="MAB">
-                <Input placeholder="MAＷB番号" />
+                <Input placeholder="MAWB番号" />
               </Form.Item>
               <Form.Item label="36.VSN" name="VSN">
                 <Input placeholder="積載機名" />
@@ -107,44 +93,17 @@ const Create: React.FC<CreateProps> = (props) => {
           )}
           {props?.type === 'IDA' && (
             <>
-              <Form.Item label="5.IC1" name="IC1">
-                <Select
-                  placeholder="申告先種別コード"
-                  options={[
-                    { value: 'R', label: 'R:蔵出輸入（引取・特例）申告' },
-                    { value: 'T', label: 'T:一般申告(特別通関貨物)' },
-                    { value: 'Y', label: 'Y:横持ち申告' },
-                    { value: 'K', label: 'K:横持ち申告(緊急通関貨物)' },
-                    { value: 'E', label: 'E:自由化申告(緊急通関貨物)' },
-                  ]}
-                />
-              </Form.Item>
-              <Form.Item label="6.IC2" name="IC2">
-                <Select
-                  placeholder="申告貨物識別"
-                  options={[
-                    { value: 'S', label: 'S: SP貨物（航空のみ入力可）' },
-                    { value: 'B', label: 'B: OBC貨物（航空のみ入力可）' },
-                    { value: 'L', label: 'L: 外交官貨物' },
-                    { value: 'X', label: 'X: MDA貨物（申告等種別「C」のみ入力可）' },
-                    { value: 'E', label: 'E: EMS' },
-                    { value: 'H', label: 'H: 航空郵便物' },
-                    { value: 'M', label: 'M: 海上郵便物（海上のみ入力可）' },
-                    { value: 'U', label: 'U: SAL' },
-                  ]}
-                />
-              </Form.Item>
               <Form.Item label="8.CH" name="CH">
-                <Select placeholder="あて先官署コード" />
+                <Input placeholder="あて先官署コード" />
               </Form.Item>
               <Form.Item label="9.CHB" name="CHB">
-                <Select placeholder="あて先部門コード" />
+                <Input placeholder="あて先部門コード" />
               </Form.Item>
               <Form.Item label="10.CHH" name="CHH">
-                <Select placeholder="特例申告あて先官署コード" />
+                <Input placeholder="特例申告あて先官署コード" />
               </Form.Item>
               <Form.Item label="11.CHT" name="CHT">
-                <Select placeholder="特例申告あて先部門コード" />
+                <Input placeholder="特例申告あて先部門コード" />
               </Form.Item>
               <Form.Item label="12.ICD" name="ICD">
                 <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
@@ -168,7 +127,7 @@ const Create: React.FC<CreateProps> = (props) => {
           )}
         </Form>
       </Modal>
-      <Button type="primary" disabled={props?.disable} onClick={() => setVisible(true)}>
+      <Button type="primary" disabled={props?.disabled} onClick={() => setVisible(true)}>
         クリエート
       </Button>
     </>

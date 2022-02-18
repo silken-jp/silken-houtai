@@ -6,3 +6,10 @@ declare module '*.svg' {
   const url: string;
   export default url;
 }
+
+interface userLogin {
+  id: string;
+  name: string;
+  token: string;
+  expiryDate: string;
+}

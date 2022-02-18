@@ -1,26 +1,15 @@
 import { useState } from 'react';
-import {
-  Form,
-  Table,
-  Input,
-  Button,
-  Row,
-  Col,
-  Card,
-  Space,
-  Statistic,
-  Progress,
-  Select,
-} from 'antd';
+import { Form, Table, Row, Col, Card, Space, Statistic, Progress } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Link } from 'umi';
 ////
 import Create from '@/components/Common/Create';
+import Cleansing from '@/components/Common/Cleansing';
+import CTSSearch from '@/components/Search/CTSSearch';
 import UploadWaybill from '@/components/Common/UploadWaybill';
-import { getAllWaybills } from '@/services/request/waybill';
-import { useIntlFormat } from '@/services/useIntl';
 import WaybillModal from '@/components/Modal/WaybillModal';
+import { useIntlFormat } from '@/services/useIntl';
+import { getAllWaybills } from '@/services/request/waybill';
 
 const LargeWaybill: React.FC = () => {
   // state
@@ -58,7 +47,7 @@ const LargeWaybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: <Select defaultValue={'all'} options={[{ value: 'all', label: 'ALL' }]} />,
+        title: 'Large',
         breadcrumb: {
           routes: [
             { path: `/cts/large`, breadcrumbName: intlMenu('cts') },
@@ -68,35 +57,7 @@ const LargeWaybill: React.FC = () => {
         extra: <UploadWaybill onUpload={search.submit} />,
       }}
     >
-      <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="HAWB番号" name="HAB">
-              <Input placeholder="HAWB番号" />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="MAWB番号" name="MAB">
-              <Input placeholder="MAWB番号" />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item label="申告番号" name="">
-              <Input placeholder="申告番号" />
-            </Form.Item>
-          </Col>
-          <Col xs={12} sm={12} md={12} lg={6} xxl={6}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+      <CTSSearch form={form} search={search} />
 
       <Row className="sk-table-stat">
         <Col span={6}>
@@ -123,11 +84,8 @@ const LargeWaybill: React.FC = () => {
         activeTabKey={tabKey}
         tabBarExtraContent={
           <Space>
-            <Link to="/cts/check/61a5e8d529da41d6c82e3108">
-              <Button type="primary">クレンジング</Button>
-            </Link>
-            <Create type="IDA" />
-            <Button type="primary">SendBack</Button>
+            <Cleansing LS="L" MAB={form.getFieldValue('MAB')} />
+            <Create type="IDA" large disabled={!form.getFieldValue('MAB')} />
           </Space>
         }
       >

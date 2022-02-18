@@ -36,7 +36,17 @@ declare namespace API {
     jp_delivery_company?: string;
     cn_delivery_company?: string;
     flight_no?: string;
+    receiver_name?: string;
+    receiver_add?: string;
+    receiver_tel?: string;
+    receiver_zip?: string;
+    track_history?: any[];
+    io_type: 0 | 1;
+    waybill_type: 0 | 1;
+    LS?: 'L' | 'S' | 'M';
+    process_status: number;
     waybill_input_time?: string;
+    waybill_status: number;
     createdAt?: string;
     updatedAt?: string;
 
@@ -75,14 +85,6 @@ declare namespace API {
     IN2?: string;
     IN3?: string;
     Zip?: string;
-    receiver_name?: string;
-    receiver_add?: string;
-    receiver_tel?: string;
-    receiver_zip?: string;
-    track_history?: any[];
-    io_type: 0 | 1;
-    waybill_type: 0 | 1;
-    LS?: 'L' | 'S';
   };
   type Importer = {
     _id?: ID;

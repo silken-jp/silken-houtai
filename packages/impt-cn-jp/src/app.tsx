@@ -1,9 +1,6 @@
 import { history } from 'umi';
 
-import { utils } from '@silken-houtai/core';
-import { checkUserLogin } from '@/services/useStorage';
-
-const loginKey = utils.STORAGE_KEY + 'userLogin';
+import { checkUserLogin, removeUserInfo } from '@/services/useStorage';
 
 /**
  *
@@ -12,11 +9,11 @@ const loginKey = utils.STORAGE_KEY + 'userLogin';
 export function onRouteChange() {
   const { pathname } = history.location;
   //初始化localStorage中的登陆信息
-  const isLogin = checkUserLogin(loginKey);
+  const isLogin = checkUserLogin();
 
   //清除错误登陆信息
   if (!isLogin) {
-    localStorage.removeItem(loginKey);
+    removeUserInfo();
   }
 
   //路由登陆判定
