@@ -10,10 +10,10 @@ const loginKey = utils.STORAGE_KEY + 'userLogin';
  */
 export function checkUserLogin() {
   let isLogin = false;
-  const userLogin = JSON.parse(localStorage.getItem(loginKey) || '{}');
+  const userLogin = getUserInfo();
   try {
-    const { token, expiryDate } = userLogin;
-    isLogin = !!token && token !== 'null';
+    const { _id, expiryDate } = userLogin;
+    isLogin = !!_id && _id !== 'null';
     if (!isLogin) {
       console.log('请登录');
     } else if (expiryDate && new Date(expiryDate) <= new Date()) {
@@ -24,6 +24,10 @@ export function checkUserLogin() {
     console.log(err);
   }
   return isLogin;
+}
+
+export function setUserInfo(data: any) {
+  localStorage.setItem(loginKey, JSON.stringify(data));
 }
 
 export function removeUserInfo() {

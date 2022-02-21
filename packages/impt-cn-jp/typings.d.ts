@@ -8,7 +8,7 @@ declare module '*.svg' {
 }
 
 interface userLogin {
-  id: string;
+  _id: string;
   name: string;
   token: string;
   expiryDate: string;

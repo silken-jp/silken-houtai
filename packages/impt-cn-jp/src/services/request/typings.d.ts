@@ -10,6 +10,14 @@ declare namespace API {
     zipcode?: String;
     address?: String;
   };
+  type User = {
+    _id?: ID;
+    name?: string;
+    tel?: string;
+    password?: string;
+    is_cleanser?: boolean;
+    is_broker?: boolean;
+  };
   type Driver = {
     _id?: ID;
     name?: string;
