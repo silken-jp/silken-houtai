@@ -37,7 +37,7 @@ const WaybillContainer: React.FC<WaybillContainerProps> = () => {
 
   if (loading)
     return (
-      <Spin spinning={loading}>
+      <Spin spinning={loading} delay={0.5}>
         <WaybillCheck />
       </Spin>
     );

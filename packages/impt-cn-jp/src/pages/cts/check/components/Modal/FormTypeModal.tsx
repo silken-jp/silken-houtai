@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Modal, Button } from 'antd';
 import { useKeyPress } from 'ahooks';
 ////
@@ -6,6 +6,11 @@ import { ToolTipInput } from '../Form/CheckFormBasic';
 
 export interface FormTypeModalProps {
   form: any;
+}
+
+function postFocus({ no, modal, blur }: any) {
+  const channel = new BroadcastChannel('sk_focus');
+  channel.postMessage({ no, modal, blur });
 }
 
 const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
@@ -16,6 +21,12 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
   const [LS, setLS] = useState('');
   const [IC1, setIC1] = useState('');
   const [IC2, setIC2] = useState('');
+
+  useEffect(() => {
+    if (visible) {
+      postFocus({ no: '99999.' });
+    }
+  }, [visible]);
 
   //form type modal
   function handleOpen() {
@@ -70,6 +81,7 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
       >
         <Form.Item label="3.L・S・M識別">
           <ToolTipInput
+            no="99999"
             source={[
               { value: 'L', label: 'Large' },
               { value: 'S', label: 'Small' },

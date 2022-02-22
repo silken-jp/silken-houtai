@@ -25,7 +25,10 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
     let channel = new window.BroadcastChannel('sk_focus');
     channel.onmessage = (e) => {
       e.data?.blur && ref.current?.blur();
-      e.data?.no === props?.no + '.' && ref.current?.focus();
+      if (e.data?.no === props?.no + '.') {
+        ref.current?.focus();
+        ref.current?.select();
+      }
     };
     channel.onmessageerror = (ev) => {
       throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);

@@ -84,6 +84,7 @@ const MICForm: React.FC = (props) => {
       { no: 41, limit: 3, name: 'IP2', holder: 'インボイス価格条件コード' },
       { no: 42, limit: 3, name: 'IP3', holder: 'インボイス通貨コード' },
       { no: 43, limit: 13, name: 'IP4', holder: 'インボイス価格' },
+      { no: 53, limit: 35, name: 'NT1', holder: '記事' },
     ],
     [
       { no: 44, limit: 1, name: 'FR1', holder: '運賃区分コード' },
@@ -94,10 +95,7 @@ const MICForm: React.FC = (props) => {
       { no: 49, limit: 9, name: 'IN3', holder: '保険金額' },
     ],
     [{ no: 52, limit: 6, name: 'DPR', holder: '課税価格' }],
-    [
-      { no: 53, limit: 35, name: 'NT1', holder: '記事' },
-      { no: 56, limit: 20, name: 'REF', holder: '社内整理用番号' },
-    ],
+    [{ no: 56, limit: 20, name: 'REF', holder: '社内整理用番号' }],
     [],
     [
       { no: 54, limit: 20, name: 'NSC', holder: '荷主セクションコード' },
