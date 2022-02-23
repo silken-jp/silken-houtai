@@ -7,6 +7,7 @@ import { moveWaybill } from '@/services/request/waybill';
 export interface CleansingProps {
   LS: 'L' | 'S' | 'M';
   MAB?: string;
+  waybill_status?: number;
 }
 
 const Cleansing: React.FC<CleansingProps> = (props) => {
@@ -22,6 +23,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
         MAB,
         LS,
         current_processor,
+        waybill_status: props?.waybill_status || 1,
       });
       if (res?._id) {
         history.push('/cts/check/' + res._id);

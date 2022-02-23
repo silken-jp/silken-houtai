@@ -14,7 +14,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
         <Row>
           <Col span={8}>
             <Space>
-              <Form.Item label="クレンザー" name="c">
+              <Form.Item label="クレンザー">
                 <Select
                   placeholder="名前"
                   options={[
@@ -24,14 +24,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="cc">
+              <Form.Item>
                 <DatePicker.RangePicker />
               </Form.Item>
             </Space>
           </Col>
           <Col span={8}>
             <Space>
-              <Form.Item label="クリエーター" name="d">
+              <Form.Item label="クリエーター">
                 <Select
                   placeholder="名前"
                   options={[
@@ -41,14 +41,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="dd">
+              <Form.Item>
                 <DatePicker.RangePicker />
               </Form.Item>
             </Space>
           </Col>
           <Col span={8}>
             <Space>
-              <Form.Item label="ブローカー" name="e">
+              <Form.Item label="ブローカー">
                 <Select
                   placeholder="名前"
                   options={[
@@ -58,7 +58,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="ee">
+              <Form.Item>
                 <DatePicker.RangePicker />
               </Form.Item>
             </Space>
@@ -68,7 +68,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
         <Row>
           <Col span={16}>
             <Space>
-              <Form.Item label="申告" name="ff">
+              <Form.Item label="申告">
                 <Select
                   placeholder="STATUS"
                   options={[
@@ -78,10 +78,10 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="f">
+              <Form.Item>
                 <Input placeholder="申告番号" />
               </Form.Item>
-              <Form.Item name="fff">
+              <Form.Item>
                 <Select
                   placeholder="申告者"
                   options={[
@@ -91,14 +91,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="ffff">
+              <Form.Item>
                 <DatePicker.RangePicker />
               </Form.Item>
             </Space>
           </Col>
           <Col span={8}>
             <Space>
-              <Form.Item label="許可" name="b">
+              <Form.Item label="許可">
                 <Select
                   placeholder="STATUS"
                   options={[
@@ -108,7 +108,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   allowClear
                 />
               </Form.Item>
-              <Form.Item name="bb">
+              <Form.Item>
                 <DatePicker.RangePicker />
               </Form.Item>
             </Space>
@@ -117,7 +117,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
 
         <Row gutter={24}>
           <Col span={4}>
-            <Form.Item label="代理商名" name="a">
+            <Form.Item label="代理商名">
               <Select
                 placeholder="代理商名"
                 options={[
@@ -161,7 +161,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
       <Form form={form}>
         <Row justify="end" gutter={12}>
           <Col span={2}>
-            <Form.Item name="a">
+            <Form.Item>
               <Select
                 onChange={search.submit}
                 placeholder="代理商名"

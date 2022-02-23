@@ -48,9 +48,6 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
         .map((item: any) => ({ ...item, label: `${item?.value}: ${item?.label}` })),
     );
   };
-  function handleChange(v: any) {
-    props?.onChange(props?.name?.startsWith('NT') ? v : v?.toUpperCase());
-  }
 
   let dropdownMatchSelectWidth = 300;
   if (props?.name === 'BOK') dropdownMatchSelectWidth = 780;
@@ -61,7 +58,7 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
     <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
       <AutoComplete
         value={props?.value}
-        onChange={handleChange}
+        onChange={props?.onChange}
         options={options}
         onSearch={onSearch}
         placeholder={props?.holder}

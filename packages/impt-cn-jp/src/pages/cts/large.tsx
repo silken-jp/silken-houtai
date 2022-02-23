@@ -1,47 +1,74 @@
 import { useState } from 'react';
-import { Form, Table, Row, Col, Card, Space, Statistic, Progress } from 'antd';
-import { useAntdTable } from 'ahooks';
+import { Form, Table, Card, Space } from 'antd';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
 import Cleansing from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
+import CTSStatus from '@/components/Common/CTSStatus';
 import UploadWaybill from '@/components/Common/UploadWaybill';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills } from '@/services/request/waybill';
+import { getAllWaybills, countWaybills } from '@/services/request/waybill';
+import { findLastPH } from '@/utils/helper';
+
+const tabList = [
+  { tab: 'AID', key: 'AID', value: { waybill_status: 1 } },
+  { tab: 'ASD', key: 'ASD', value: { waybill_status: 1 } },
+  { tab: 'AHK', key: 'AHK', value: { waybill_status: 1 } },
+  { tab: 'AHT', key: 'AHT', value: { waybill_status: 1 } },
+  { tab: 'AIS', key: 'AIS', value: { waybill_status: 1 } },
+  { tab: 'AIW', key: 'AIW', value: { waybill_status: 1 } },
+  { tab: 'AST', key: 'AST', value: { waybill_status: 1 } },
+  { tab: 'Hold', key: 'Hold', value: { waybill_status: 2 } },
+  { tab: 'SendBack', key: 'SendBack', value: { waybill_status: 3 } },
+  { tab: 'Other', key: 'Other', value: { waybill_status: 0 } },
+];
 
 const LargeWaybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   const [tabKey, setTabKey] = useState('AID');
+  const tabParams = tabList?.find(({ key }) => key === tabKey)?.value || {};
   // query
   const getTableData = async (pageData: any, formData: any): Promise<API.Result> => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    console.log(tabKey);
-    const data: any[] = await getAllWaybills({ LS: 'S', waybill_type: 0, ...formData });
-    return { total: data.length, list: data };
+    const data = await getAllWaybills({
+      page,
+      perPage,
+      LS: 'L',
+      waybill_type: 0,
+      ...formData,
+      MAB: formData?.MAB || '',
+      ...tabParams,
+    });
+    return { total: data?.totalCount, list: data?.waybills || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search } = useAntdTable(getTableData, { form, manual: true });
 
-  const tabList = [
-    { tab: 'AID', key: 'AID' },
-    { tab: 'ASD', key: 'ASD' },
-    { tab: 'AHK', key: 'AHK' },
-    { tab: 'AHT', key: 'AHT' },
-    { tab: 'AIS', key: 'AIS' },
-    { tab: 'AIW', key: 'AIW' },
-    { tab: 'AST', key: 'AST' },
-    { tab: 'Hold', key: 'Hold' },
-    { tab: 'SendBack', key: 'SendBack' },
-    { tab: 'Other', key: 'Other' },
-  ];
+  const countWaybillsAPI = useRequest(countWaybills, { manual: true });
 
   const handleTabChange = (key: string) => {
     setTabKey(key);
     search.submit();
+  };
+
+  const fixSearch = {
+    ...search,
+    submit: async () => {
+      await search.submit();
+      const formData = form.getFieldsValue();
+      await countWaybillsAPI.run({
+        LS: 'L',
+        waybill_type: 0,
+        ...formData,
+        MAB: formData?.MAB || '',
+        ...tabParams,
+      });
+    },
   };
 
   return (
@@ -57,26 +84,9 @@ const LargeWaybill: React.FC = () => {
         extra: <UploadWaybill onUpload={search.submit} />,
       }}
     >
-      <CTSSearch form={form} search={search} />
+      <CTSSearch form={form} search={fixSearch} {...tabParams} />
 
-      <Row className="sk-table-stat">
-        <Col span={6}>
-          <Statistic title="クレンジング済" value={1000} suffix="/ 1000" />
-          <Progress percent={100} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="クリエート済" value={1000} suffix="/ 1000" />
-          <Progress percent={100} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="ブローカーチェック済" value={870} suffix="/ 1000" />
-          <Progress percent={87} />
-        </Col>
-        <Col span={6}>
-          <Statistic title="申告済" value={870} suffix="/ 1000" />
-          <Progress percent={87} />
-        </Col>
-      </Row>
+      <CTSStatus {...countWaybillsAPI} type="IDA" />
 
       <Card
         tabList={tabList}
@@ -94,12 +104,30 @@ const LargeWaybill: React.FC = () => {
           <Table.Column title="MAWB番号" dataIndex="MAB" />
           {tabKey === 'Other' && <Table.Column title="コントローラー" dataIndex="" />}
           <Table.Column title="書類作成者" dataIndex="" />
-          <Table.Column title="クレンザー" dataIndex="" />
-          <Table.Column title="クレンジング時間" dataIndex="" />
-          <Table.Column title="クリエーター" dataIndex="" />
-          <Table.Column title="クリエート時間" dataIndex="" />
-          <Table.Column title="ブローカー" dataIndex="" />
-          <Table.Column title="ブローカーチェック時間" dataIndex="" />
+          <Table.Column
+            title="クレンザー"
+            render={(row) => findLastPH(row?.process_histories, 1)?.name}
+          />
+          <Table.Column
+            title="クレンジング時間"
+            render={(row) => findLastPH(row?.process_histories, 1)?.time}
+          />
+          <Table.Column
+            title="クリエーター"
+            render={(row) => findLastPH(row?.process_histories, 2)?.name}
+          />
+          <Table.Column
+            title="クリエート時間"
+            render={(row) => findLastPH(row?.process_histories, 2)?.time}
+          />
+          <Table.Column
+            title="ブローカー"
+            render={(row) => findLastPH(row?.process_histories, 3)?.name}
+          />
+          <Table.Column
+            title="ブローカーチェック時間"
+            render={(row) => findLastPH(row?.process_histories, 3)?.time}
+          />
           <Table.Column title="申告番号" dataIndex="" />
           <Table.Column title="申告者" dataIndex="" />
           <Table.Column title="申告時間" dataIndex="" />

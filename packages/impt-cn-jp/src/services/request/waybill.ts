@@ -3,9 +3,24 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills extends API.Waybill {}
+interface GetAllWaybills extends API.Waybill {
+  page: number;
+  perPage: number;
+}
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 计算运单数量 GET /api/waybills/meta
+interface CountWaybills extends API.Waybill {
+  page: number;
+  perPage: number;
+}
+export async function countWaybills(params?: CountWaybills) {
+  return request<any>(ApiURL + '/waybills/meta', {
     method: 'GET',
     params,
   });
@@ -104,6 +119,7 @@ interface MoveWaybill {
   MAB: string;
   LS: string;
   current_processor: string;
+  waybill_status: number;
 }
 export async function moveWaybill(params: MoveWaybill) {
   return request<any>(ApiURL + '/waybills/move', {

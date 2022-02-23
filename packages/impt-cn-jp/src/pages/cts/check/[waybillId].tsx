@@ -55,11 +55,19 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const history = useHistory();
 
   useEffect(() => {
+    const handleExit = () => handleMoveWaybill(99);
+    window.addEventListener('beforeunload', handleExit);
+    return () => {
+      window.removeEventListener('beforeunload', handleExit);
+    };
+  }, []);
+
+  useEffect(() => {
     setUrlIndex(!urlIndex ? 1 : 0);
     postImporter({ url: urls[urlIndex] });
   }, [props?.dataSource?._id]);
 
-  async function handleMoveWaybill(move: -1 | 1) {
+  async function handleMoveWaybill(move: -1 | 1 | 99) {
     const { name } = getUserInfo();
     return await moveWaybill({
       move,
@@ -68,6 +76,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       MAB: props?.dataSource?.MAB || '',
       LS: form.getFieldValue('LS'),
       current_processor: name,
+      waybill_status: props?.dataSource?.waybill_status || 1,
     });
   }
 
@@ -143,9 +152,14 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     window.open(window.location.origin + window.location.pathname + '#/cts/check/import');
   });
 
-  useKeyPress('ctrl.x', () => {
+  useKeyPress('ctrl.x', async () => {
     if (checkFocus()) {
-      location.assign(window.location.origin + window.location.pathname + '#/home');
+      try {
+        await handleMoveWaybill(99);
+        location.assign(window.location.origin + window.location.pathname + '#/home');
+      } catch (error) {
+        message.error('退出失败,请重试');
+      }
     } else {
       postFocus({ blur: true });
     }
@@ -320,9 +334,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button type="text" onClick={handleHold}>
             Hold（H）
           </Button>,
-          <Button type="text" onClick={handleSendBack}>
-            Send Back（B）
-          </Button>,
+          // <Button type="text" onClick={handleSendBack}>
+          //   Send Back（B）
+          // </Button>,
           <Button type="text" onClick={handleAccept}>
             Accept（F9）
           </Button>,
