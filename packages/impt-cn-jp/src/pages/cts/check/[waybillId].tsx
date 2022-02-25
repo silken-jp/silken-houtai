@@ -84,8 +84,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
+        const { _id } = getUserInfo();
         await updateWaybill({
           ...values,
+          user: _id,
           waybillId: props?.dataSource?._id,
           process_status: 2,
           waybill_status,
@@ -217,7 +219,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           },
           onOk,
         })
-      : await handleNext();
+      : await onOk();
   }
 
   async function handleSendBack() {
@@ -234,7 +236,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           },
           onOk,
         })
-      : await handleNext();
+      : await onOk();
   }
 
   async function handleAccept() {
