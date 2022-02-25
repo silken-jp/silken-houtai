@@ -136,7 +136,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       if (formType === 'IDA' && (no === '13' || no === '14')) {
         postFocus({ modal: 'search' });
       }
-      if (formType === 'MIC' && (no === '13' || no === '14')) {
+      if (formType === 'MIC' && (no === '9' || no === '10')) {
         postFocus({ modal: 'search' });
       }
     }

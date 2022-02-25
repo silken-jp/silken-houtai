@@ -108,6 +108,15 @@ declare namespace API {
     add2?: string;
     add3?: string;
     add4?: string;
+    ImpCode?: string;
+    ImpName?: string;
+    Tel?: string;
+    Zip?: string;
+    IAD?: string;
+    Add1?: string;
+    Add2?: string;
+    Add3?: string;
+    Add4?: string;
   };
   type MICkeys = {
     _id?: ID;

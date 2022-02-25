@@ -30,17 +30,17 @@ const MICForm: React.FC = (props) => {
       { no: 11, limit: 7, name: 'Zip', holder: '郵便番号' },
       { no: 17, limit: 105, name: 'IAD', holder: '輸入者住所' },
     ],
-    [
-      { no: 12, limit: 15, name: 'Add1', holder: '住所１（都道府県）' },
-      {
-        no: 13,
-        limit: 35,
-        name: 'Add2',
-        holder: '住所２（市区町村（行政区名））',
-      },
-      { no: 14, limit: 35, name: 'Add3', holder: '住所３（町域名・番地）' },
-      { no: 15, limit: 70, name: 'Add4', holder: '住所４（ビル名ほか）' },
-    ],
+    // [
+    //   { no: 12, limit: 15, name: 'Add1', holder: '住所１（都道府県）' },
+    //   {
+    //     no: 13,
+    //     limit: 35,
+    //     name: 'Add2',
+    //     holder: '住所２（市区町村（行政区名））',
+    //   },
+    //   { no: 14, limit: 35, name: 'Add3', holder: '住所３（町域名・番地）' },
+    //   { no: 15, limit: 70, name: 'Add4', holder: '住所４（ビル名ほか）' },
+    // ],
     [],
     [
       { no: 23, limit: 12, name: 'EPC', holder: '仕出人コード' },
