@@ -3,9 +3,9 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   define: {
     'process.env': {
-      ApiURL: 'https://skapi.weixin-jp.com',
+      ApiURL: 'https://api.sclogi.jp',
     },
   },
   publicPath: '/dashboard/',
-  outputPath: '../../dist/dashboard',
+  outputPath: '../../public/dashboard',
 });

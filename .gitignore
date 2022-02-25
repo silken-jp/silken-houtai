@@ -12,6 +12,9 @@ packages/**/package-lock.json
 
 # production
 /dist
+/public/*
+!assets
+!index.html
 
 # misc
 **/.DS_Store

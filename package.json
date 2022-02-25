@@ -11,7 +11,7 @@
     "start:prod": "node ./scripts/start start:prod",
     "build:all": "lerna run build --parallel",
     "build": "lerna run build --parallel --scope",
-    "tsc:core": "yarn workspace @silken-houtai/core tsc",
+    "tsc": "yarn workspace @silken-houtai/core tsc",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
   "gitHooks": {

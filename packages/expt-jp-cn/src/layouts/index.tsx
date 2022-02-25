@@ -35,7 +35,7 @@ const Index: React.FC = (props) => {
       >
         <div className={styles['logo']}>
           <CloudFilled className={styles['icon']} />
-          {!collapsed && <span className={styles['text']}>シルケン日中</span>}
+          {!collapsed && <span className={styles['text']}>S.C.LOGISTICS</span>}
         </div>
         <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
           <Menu.SubMenu key="/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>
