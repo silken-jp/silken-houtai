@@ -36,4 +36,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-northeast-1"
           FROM_PATH: "public/"
-          DEST_PATH: "s3://sk-front"
+          DEST_PATH: "s3://www.sclogi.jp"
