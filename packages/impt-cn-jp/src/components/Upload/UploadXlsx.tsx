@@ -65,7 +65,8 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       // XLSX自带了一个工具把导入的数据转成json
       var jsonArr = XLSX.utils.sheet_to_json(first_worksheet, {
         header: 1,
-        raw: false,
+        raw: true,
+        blankrows: false,
       });
       handleUpload(jsonArr);
     };

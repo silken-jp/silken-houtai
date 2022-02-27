@@ -18,9 +18,27 @@ export interface UploadWaybillProps {
   onUpload?: () => void;
 }
 
+function fixItemToObj(params: any[]) {
+  let waybills = [];
+  const headers: string[] = params[0];
+  for (let i = 1; i < params.length; i++) {
+    const line = params?.[i];
+    let obj: { [key: string]: any } = {};
+    if (!line || line?.length === 0) continue;
+    for (let j = 0; j < line.length; j++) {
+      if (line[j] !== null || line[j] !== undefined) {
+        obj[headers?.[j]?.trim?.()] = line?.[j]?.toString?.();
+      }
+    }
+    waybills.push(obj);
+  }
+  return waybills;
+}
+
 const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
-  async function onUpload(jsonArr: any) {
-    const { successCount: count, failedNo } = await importMultiWaybill(jsonArr);
+  async function onUpload(jsonArr: any[]) {
+    const waybills = fixItemToObj(jsonArr) as API.Waybill[];
+    const { successCount: count, failedNo } = await importMultiWaybill({ waybills });
     props?.onUpload?.();
     const success = count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
     const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;

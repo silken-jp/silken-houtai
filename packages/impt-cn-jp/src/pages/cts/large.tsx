@@ -39,10 +39,11 @@ const LargeWaybill: React.FC = () => {
     const data = await getAllWaybills({
       page,
       perPage,
+      sortField: 'createdAt',
+      sortOrder: -1,
       LS: 'L',
       waybill_type: 0,
       ...formData,
-      MAB: formData?.MAB || '',
       ...tabParams,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
@@ -59,13 +60,12 @@ const LargeWaybill: React.FC = () => {
   const fixSearch = {
     ...search,
     submit: async () => {
-      await search.submit();
+      search.submit();
       const formData = form.getFieldsValue();
-      await countWaybillsAPI.run({
+      countWaybillsAPI.run({
         LS: 'L',
         waybill_type: 0,
         ...formData,
-        MAB: formData?.MAB || '',
         ...tabParams,
       });
     },

@@ -55,34 +55,14 @@ export async function createWaybill(params: CreateWaybill) {
 }
 
 // 批量创建导入 POST /api/waybills/import-multi
-interface ImportMultiWaybill extends API.Waybill {}
+interface ImportMultiWaybill {
+  waybills: API.Waybill[];
+}
 export async function importMultiWaybill(params: ImportMultiWaybill) {
   return request<any>(ApiURL + '/waybills/import-multi', {
     method: 'POST',
     data: {
-      waybills: params,
-    },
-  });
-}
-
-// 批量创建导入 POST /api/waybills/multi
-interface CreateMultiWaybill extends API.Waybill {}
-export async function createMultiWaybill(params: CreateMultiWaybill) {
-  return request<any>(ApiURL + '/waybills/multi', {
-    method: 'POST',
-    data: {
-      waybills: params,
-    },
-  });
-}
-
-// 批量更新导入 POST /api/waybills/update-multi
-interface UpdateMultiWaybill extends API.Waybill {}
-export async function updateMultiWaybill(params: UpdateMultiWaybill) {
-  return request<any>(ApiURL + '/waybills/update-multi', {
-    method: 'POST',
-    data: {
-      waybills: params,
+      ...params,
     },
   });
 }
