@@ -44,6 +44,7 @@ const LargeWaybill: React.FC = () => {
       LS: 'L',
       waybill_type: 0,
       ...formData,
+      MAB: formData?.MAB || '',
       ...tabParams,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
@@ -66,6 +67,7 @@ const LargeWaybill: React.FC = () => {
         LS: 'L',
         waybill_type: 0,
         ...formData,
+        MAB: formData?.MAB || '',
         ...tabParams,
       });
     },

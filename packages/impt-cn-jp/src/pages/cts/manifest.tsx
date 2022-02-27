@@ -38,6 +38,7 @@ const ManifestWaybill: React.FC = () => {
       LS: 'M',
       waybill_type: 1,
       ...formData,
+      MAB: formData?.MAB || '',
       ...tabParams,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
@@ -60,6 +61,7 @@ const ManifestWaybill: React.FC = () => {
         LS: 'M',
         waybill_type: 1,
         ...formData,
+        MAB: formData?.MAB || '',
         ...tabParams,
       });
     },

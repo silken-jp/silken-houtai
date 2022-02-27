@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Form, Table, Row, Col, Card, Space, Statistic, Progress, message } from 'antd';
+import { Form, Table, Card, Space } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -44,6 +44,7 @@ const SmallWaybill: React.FC = () => {
       LS: 'S',
       waybill_type: 0,
       ...formData,
+      MAB: formData?.MAB || '',
       ...tabParams,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
@@ -66,6 +67,7 @@ const SmallWaybill: React.FC = () => {
         LS: 'S',
         waybill_type: 0,
         ...formData,
+        MAB: formData?.MAB || '',
         ...tabParams,
       });
     },
