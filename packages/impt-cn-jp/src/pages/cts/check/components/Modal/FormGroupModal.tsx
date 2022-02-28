@@ -8,7 +8,11 @@ export interface FormGroupModelProps {}
 
 const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
   const [dataSource, setDataSource] = useState<any[][]>([[]]);
-  const [state, setState] = useState({ title: 'Group', width: 1800, visible: false });
+  const [state, setState] = useState({
+    title: 'Group',
+    width: 1800,
+    visible: false,
+  });
 
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
@@ -19,7 +23,9 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       if (e.data?.modal === '4') set4();
     };
     channel.onmessageerror = (ev) => {
-      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+      throw new Error(
+        'BroadcastChannel Error while deserializing: ' + ev.origin,
+      );
     };
     return () => channel?.close();
   }, []);

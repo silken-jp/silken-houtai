@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
+import { utils } from '@silken-houtai/core';
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 
 import defaultSettings from './defaultSettings';
@@ -21,6 +22,7 @@ export default defineConfig({
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
+  favicon: `${utils.ASSETS_URL}/images/favicon.ico`,
   // targets: {
   //   ie: 11,
   // },

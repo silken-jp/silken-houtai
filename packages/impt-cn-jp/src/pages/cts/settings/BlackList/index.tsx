@@ -13,7 +13,11 @@ const BlackList: React.FC = () => {
 
   // action
   function handleEdit(e: any) {
-    handleOpen({ title: e?.currentTarget?.dataset?.title, type: 'add', data: null });
+    handleOpen({
+      title: e?.currentTarget?.dataset?.title,
+      type: 'add',
+      data: null,
+    });
   }
   function handleSubmit(v: any) {
     console.log(v);
@@ -26,7 +30,10 @@ const BlackList: React.FC = () => {
         title: 'ブラックリスト',
         breadcrumb: {
           routes: [
-            { path: '/cts/settings/BlackList', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/cts/settings/BlackList',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: 'ブラックリスト' },
           ],
         },

@@ -44,7 +44,11 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
         <Form.Item label="key-words" name="words" rules={[{ required: true }]}>
           <Input.TextArea />
         </Form.Item>
-        <Form.Item label="業務コード" name="waybill_type" rules={[{ required: true }]}>
+        <Form.Item
+          label="業務コード"
+          name="waybill_type"
+          rules={[{ required: true }]}
+        >
           <Select
             options={[
               { value: '0', label: 'IDA' },
@@ -52,7 +56,10 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
             ]}
           />
         </Form.Item>
-        <Form.Item noStyle shouldUpdate={(a, b) => a.waybill_type !== b.waybill_type}>
+        <Form.Item
+          noStyle
+          shouldUpdate={(a, b) => a.waybill_type !== b.waybill_type}
+        >
           {({ getFieldValue }) => (
             <>
               {getFieldValue('waybill_type') === '0' && (
@@ -68,7 +75,11 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
             </>
           )}
         </Form.Item>
-        <Form.Item label="タブ" name="waybill_status" rules={[{ required: true }]}>
+        <Form.Item
+          label="タブ"
+          name="waybill_status"
+          rules={[{ required: true }]}
+        >
           <Select
             options={[
               { value: '1', label: 'Normal' },

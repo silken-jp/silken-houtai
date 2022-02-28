@@ -28,7 +28,10 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Flight>();
 
   // api
-  const getTableData = async (pageData: PaginatedParams[0], formData: Object) => {
+  const getTableData = async (
+    pageData: PaginatedParams[0],
+    formData: Object,
+  ) => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
@@ -63,7 +66,10 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
         title: `${intlMenu('setting.flight')}`,
         breadcrumb: {
           routes: [
-            { path: '/delivery/settings/flight', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/delivery/settings/flight',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: intlMenu('setting.flight') },
           ],
         },
@@ -100,9 +106,18 @@ const FlightSetting: React.FC<FlightSettingProps> = () => {
         <Table {...tableProps} rowKey="_id">
           <Table.Column title="ID" render={(_, __, i) => i + 1} />
           <Table.Column title="FlightNo" dataIndex="flight_no" />
-          <Table.Column title="日本便出発" render={(row) => timeToTime(row?.jp_depart_time)} />
-          <Table.Column title="日本到着" render={(row) => timeToTime(row?.arrive_time)} />
-          <Table.Column title="通関中" render={(row) => timeToTime(row?.clearance_time)} />
+          <Table.Column
+            title="日本便出発"
+            render={(row) => timeToTime(row?.jp_depart_time)}
+          />
+          <Table.Column
+            title="日本到着"
+            render={(row) => timeToTime(row?.arrive_time)}
+          />
+          <Table.Column
+            title="通関中"
+            render={(row) => timeToTime(row?.clearance_time)}
+          />
           <Table.Column
             title="更新時間"
             render={(row) => dayjs(row?.updatedAt)?.format('YYYY-MM-DD HH:mm')}

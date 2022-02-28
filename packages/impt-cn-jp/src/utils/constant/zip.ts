@@ -6,7 +6,15 @@ export const ZIP_STATES_GROUPS: { name: string; states: string[] }[] = [
   },
   {
     name: '関東',
-    states: ['東京都', '神奈川県', '千葉県', '埼玉県', '茨城県', '栃木県', '群馬県'],
+    states: [
+      '東京都',
+      '神奈川県',
+      '千葉県',
+      '埼玉県',
+      '茨城県',
+      '栃木県',
+      '群馬県',
+    ],
   },
   {
     name: '甲信越・北陸',
@@ -21,7 +29,16 @@ export const ZIP_STATES_GROUPS: { name: string; states: string[] }[] = [
   { name: '四国', states: ['愛媛県', '香川県', '高知県', '徳島県'] },
   {
     name: '九州・沖縄',
-    states: ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県'],
+    states: [
+      '福岡県',
+      '佐賀県',
+      '長崎県',
+      '熊本県',
+      '大分県',
+      '宮崎県',
+      '鹿児島県',
+      '沖縄県',
+    ],
   },
 ];
 export const ZIP_STATES: string[] = [

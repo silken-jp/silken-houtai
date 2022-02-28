@@ -1,10 +1,9 @@
 import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
-import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
-import { getImportersByFilter } from '@/services/request/importer';
+import { getImporters } from '@/services/request/importer';
 
 const Importer: React.FC = () => {
   // state
@@ -12,14 +11,21 @@ const Importer: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
 
   // api
-  const getTableData = async (pageData: PaginatedParams[0], formData: API.Importer) => {
+  const getTableData = async (
+    pageData: any,
+    formData: API.Importer,
+  ): Promise<any> => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
-      const data: API.Importer[] = await getImportersByFilter(formData);
+      const data = await getImporters({
+        page,
+        perPage,
+        ...formData,
+      });
       return {
-        total: data.length,
-        list: data,
+        total: data?.totalCount,
+        list: data?.importers,
       };
     } catch (error: any) {
       return { error };
@@ -33,7 +39,10 @@ const Importer: React.FC = () => {
         title: '法人輸入者管理',
         breadcrumb: {
           routes: [
-            { path: '/cts/settings/Importer', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/cts/settings/Importer',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: '法人輸入者管理' },
           ],
         },
@@ -41,17 +50,32 @@ const Importer: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item label="法人番号" name="code">
+          <Col span={4}>
+            <Form.Item label="法人番号" name="imp_code">
               <Input placeholder="法人番号" />
             </Form.Item>
           </Col>
-          <Col span={8}>
-            <Form.Item label="会社名" name="company_name_jp">
-              <Input placeholder="会社名" />
+          <Col span={4}>
+            <Form.Item label="輸出入者符号" name="code">
+              <Input placeholder="輸出入者符号" />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={4}>
+            <Form.Item label="会社名" name="ImpName">
+              <Input placeholder="会社名(en)" />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label="郵便" name="Zip">
+              <Input placeholder="郵便番号" />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label="電話" name="Tel">
+              <Input placeholder="電話" />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
                 <Button type="primary" onClick={search.submit}>
@@ -72,11 +96,15 @@ const Importer: React.FC = () => {
         >
           <Table.Column width={150} title="法人番号" dataIndex="imp_code" />
           <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
-          <Table.Column width={600} title="会社名(en)" dataIndex="company_name_en" />
-          <Table.Column width={600} title="会社名(jp)" dataIndex="company_name_jp" />
-          <Table.Column width={150} title="郵便番号" dataIndex="zip" />
-          <Table.Column width={150} title="電話" dataIndex="phone" />
-          <Table.Column width={700} title="住所(en)" dataIndex="address_en" />
+          <Table.Column width={300} title="会社名(en)" dataIndex="ImpName" />
+          <Table.Column
+            width={300}
+            title="会社名(jp)"
+            dataIndex="company_name_jp"
+          />
+          <Table.Column width={150} title="郵便番号" dataIndex="Zip" />
+          <Table.Column width={150} title="電話" dataIndex="Tel" />
+          <Table.Column width={700} title="住所(en)" dataIndex="IAD" />
           <Table.Column width={800} title="住所(jp)" dataIndex="address_jp" />
         </Table>
       </Card>

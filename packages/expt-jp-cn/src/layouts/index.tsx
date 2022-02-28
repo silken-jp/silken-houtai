@@ -37,8 +37,16 @@ const Index: React.FC = (props) => {
           <CloudFilled className={styles['icon']} />
           {!collapsed && <span className={styles['text']}>S.C.LOGISTICS</span>}
         </div>
-        <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
-          <Menu.SubMenu key="/delivery" icon={<ProfileOutlined />} title={intlMenu('delivery')}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[history?.location?.pathname]}
+        >
+          <Menu.SubMenu
+            key="/delivery"
+            icon={<ProfileOutlined />}
+            title={intlMenu('delivery')}
+          >
             <Menu.Item key="/delivery/BtoB">
               <Link to="/delivery/BtoB">BtoB</Link>
             </Menu.Item>
@@ -48,7 +56,9 @@ const Index: React.FC = (props) => {
               icon={<SettingOutlined />}
             >
               <Menu.Item key="/delivery/settings/flight">
-                <Link to="/delivery/settings/flight">{intlMenu('setting.flight')}</Link>
+                <Link to="/delivery/settings/flight">
+                  {intlMenu('setting.flight')}
+                </Link>
               </Menu.Item>
             </Menu.SubMenu>
           </Menu.SubMenu>
@@ -58,10 +68,13 @@ const Index: React.FC = (props) => {
         <Layout.Header className={styles['site-layout-background']}>
           <Row align="middle" justify="space-between">
             <Col>
-              {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                className: styles['trigger'],
-                onClick: toggle,
-              })}
+              {createElement(
+                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                {
+                  className: styles['trigger'],
+                  onClick: toggle,
+                },
+              )}
             </Col>
             <Col>
               <Button type="link" onClick={() => setLocale('zh-CN', false)}>

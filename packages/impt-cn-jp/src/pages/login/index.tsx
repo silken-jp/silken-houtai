@@ -39,7 +39,11 @@ const LoginForm: React.FC = () => {
             rules={[{ required: true, message: <Fragment /> }]}
             className={styles.FormItem}
           >
-            <Input prefix={<PhoneOutlined />} placeholder="電話" className={styles.input} />
+            <Input
+              prefix={<PhoneOutlined />}
+              placeholder="電話"
+              className={styles.input}
+            />
           </Form.Item>
           <Form.Item
             name="password"

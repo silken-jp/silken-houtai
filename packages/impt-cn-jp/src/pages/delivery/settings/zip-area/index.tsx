@@ -10,7 +10,10 @@ import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import ZipAreaForm from '@/components/Form/ZipAreaForm';
 import { useIntlFormat } from '@/services/useIntl';
 import { getZipAreas, createZipArea } from '@/services/request/ziparea';
-import { updateNameByZipAreaId, deleteByZipAreaId } from '@/services/request/ziparea';
+import {
+  updateNameByZipAreaId,
+  deleteByZipAreaId,
+} from '@/services/request/ziparea';
 
 export interface ZipAreaProps {}
 
@@ -18,7 +21,8 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   // state
   const [areaData, setAreaData] = useState<any>();
   const [intlMenu] = useIntlFormat('menu');
-  const { formType, formProps, handleOpen } = useSKForm.useForm<{ name: string }>();
+  const { formType, formProps, handleOpen } =
+    useSKForm.useForm<{ name: string }>();
 
   // api
   const zipAreasApi = useRequest<any>(getZipAreas);
@@ -56,7 +60,9 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
       const zipAreaId = areaData?._id;
       await deleteByZipAreaId({ zipAreaId });
       setAreaData({});
-      const newSiderData = zipAreasApi?.data?.filter((s: any) => s._id !== zipAreaId);
+      const newSiderData = zipAreasApi?.data?.filter(
+        (s: any) => s._id !== zipAreaId,
+      );
       zipAreasApi?.mutate(newSiderData);
     },
   });
@@ -75,7 +81,10 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
         title: `${intlMenu('setting.zipArea')}`,
         breadcrumb: {
           routes: [
-            { path: '/delivery/settings/zip-area', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/delivery/settings/zip-area',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: intlMenu('setting.zipArea') },
           ],
         },
@@ -84,7 +93,11 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
       <ZipAreaForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Row gutter={12} wrap={false}>
         <Col flex="210px">
-          <ZipAreaSider zipAreasApi={zipAreasApi} onChange={setAreaData} onAdd={handleAdd} />
+          <ZipAreaSider
+            zipAreasApi={zipAreasApi}
+            onChange={setAreaData}
+            onAdd={handleAdd}
+          />
         </Col>
         <Col flex="auto">
           {areaData?.name ? (
@@ -92,7 +105,10 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
               title={areaData?.name}
               extra={<Actions onEdit={handleEdit} onDelete={handleDelete} />}
             >
-              <ZipAreaContent areaData={areaData} updateZipAreaApi={updateZipAreaApi} />
+              <ZipAreaContent
+                areaData={areaData}
+                updateZipAreaApi={updateZipAreaApi}
+              />
             </Card>
           ) : (
             <Card>

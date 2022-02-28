@@ -16,10 +16,14 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
   const options = useMemo(() => {
     return props?.dataSource?.map((i) => i.zipcode) || [];
   }, props.dataSource);
-  const { allSelected, isSelected, toggle, toggleAll, partiallySelected, selected } = useSelections(
-    options,
-    props?.defaultSelected,
-  );
+  const {
+    allSelected,
+    isSelected,
+    toggle,
+    toggleAll,
+    partiallySelected,
+    selected,
+  } = useSelections(options, props?.defaultSelected);
 
   // 去除city
   const fixSelected = selected.filter((s) => s !== props.cityCode);
@@ -46,10 +50,20 @@ const CheckBoxGroup: React.FC<CheckBoxGroupProps> = (props) => {
   return (
     <div>
       <Space>
-        <Checkbox checked={allSelected} onClick={toggleAll} indeterminate={partiallySelected} />
+        <Checkbox
+          checked={allSelected}
+          onClick={toggleAll}
+          indeterminate={partiallySelected}
+        />
         {options.length > 1 ? <a onClick={setTrue}>{name}</a> : name}
       </Space>
-      <Drawer title={name} visible={visible} width={400} closable={false} onClose={setFalse}>
+      <Drawer
+        title={name}
+        visible={visible}
+        width={400}
+        closable={false}
+        onClose={setFalse}
+      >
         <Row style={{ padding: '10px 0' }}>
           {props.dataSource?.map((item) => {
             return (

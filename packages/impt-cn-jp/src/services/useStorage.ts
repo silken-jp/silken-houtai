@@ -31,7 +31,7 @@ export function setUserInfo(data: any) {
 }
 
 export function removeUserInfo() {
-  localStorage.getItem(loginKey);
+  localStorage.removeItem(loginKey);
 }
 
 export function getUserInfo(): userLogin {

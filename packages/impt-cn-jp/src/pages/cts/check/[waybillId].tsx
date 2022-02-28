@@ -1,10 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Card, Form, Space, Button, Modal, Input, message, Spin, Tag } from 'antd';
+import {
+  Card,
+  Form,
+  Space,
+  Button,
+  Modal,
+  Input,
+  message,
+  Spin,
+  Tag,
+} from 'antd';
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams, useHistory } from 'umi';
 ////
 import { getUserInfo } from '@/services/useStorage';
-import { getWaybill, moveWaybill, updateWaybill } from '@/services/request/waybill';
+import {
+  getWaybill,
+  moveWaybill,
+  updateWaybill,
+} from '@/services/request/waybill';
 import AllCheckForm from './components/AllCheckForm';
 import FormTypeModal from './components/Modal/FormTypeModal';
 import SearchModal from './components/Modal/SearchModal';
@@ -31,9 +45,12 @@ function checkFocus() {
 export interface WaybillContainerProps {}
 const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
-  const { data, error, loading } = useRequest(async () => await getWaybill({ waybillId }), {
-    refreshDeps: [waybillId],
-  });
+  const { data, error, loading } = useRequest(
+    async () => await getWaybill({ waybillId }),
+    {
+      refreshDeps: [waybillId],
+    },
+  );
 
   if (loading)
     return (
@@ -50,7 +67,10 @@ export interface WaybillCheckProps {
 }
 const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const [urlIndex, setUrlIndex] = useState(0);
-  const [commandState, setCommandState] = useState({ visible: false, command: '' });
+  const [commandState, setCommandState] = useState({
+    visible: false,
+    command: '',
+  });
   const [form] = Form.useForm();
   const history = useHistory();
 
@@ -151,14 +171,18 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   });
 
   useKeyPress('F10', () => {
-    window.open(window.location.origin + window.location.pathname + '#/cts/check/import');
+    window.open(
+      window.location.origin + window.location.pathname + '#/cts/check/import',
+    );
   });
 
   useKeyPress('ctrl.x', async () => {
     if (checkFocus()) {
       try {
         await handleMoveWaybill(99);
-        location.assign(window.location.origin + window.location.pathname + '#/home');
+        location.assign(
+          window.location.origin + window.location.pathname + '#/home',
+        );
       } catch (error) {
         message.error('退出失败,请重试');
       }
@@ -269,7 +293,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         <Input
           value={commandState.command}
           autoFocus
-          onChange={(e) => setCommandState({ visible: true, command: e.target.value })}
+          onChange={(e) =>
+            setCommandState({ visible: true, command: e.target.value })
+          }
           onPressEnter={(e) => {
             if (commandState?.command?.endsWith('..')) {
               postFocus({ modal: 'search' });
@@ -293,11 +319,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
               <Button>Exit（Ctrl + x）</Button>
             </Link>
             <Tag>
-              {['Other', 'Normal', 'Hold', 'SendBack'][props?.dataSource?.waybill_status || 1]}
+              {
+                ['Other', 'Normal', 'Hold', 'SendBack'][
+                  props?.dataSource?.waybill_status || 1
+                ]
+              }
             </Tag>
             <Form.Item
               noStyle
-              shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}
+              shouldUpdate={(a, b) =>
+                a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
+              }
             >
               {({ getFieldValue }) => {
                 const formType = getFieldValue('formType');
@@ -345,10 +377,15 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         ]}
       >
         <Form.Item
-          shouldUpdate={(a, b) => a?.formType !== b?.formType || a?.IDAType !== b?.IDAType}
+          shouldUpdate={(a, b) =>
+            a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
+          }
         >
           {({ getFieldValue }) => (
-            <AllCheckForm formType={getFieldValue('formType')} IDAType={getFieldValue('IDAType')} />
+            <AllCheckForm
+              formType={getFieldValue('formType')}
+              IDAType={getFieldValue('IDAType')}
+            />
           )}
         </Form.Item>
       </Card>

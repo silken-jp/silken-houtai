@@ -31,7 +31,9 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
       }
     };
     channel.onmessageerror = (ev) => {
-      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+      throw new Error(
+        'BroadcastChannel Error while deserializing: ' + ev.origin,
+      );
     };
     return () => channel?.close();
   }, []);
@@ -45,7 +47,10 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
             item?.value?.toUpperCase()?.includes(searchText?.toUpperCase()) ||
             item?.label?.toUpperCase()?.includes(searchText?.toUpperCase()),
         )
-        .map((item: any) => ({ ...item, label: `${item?.value}: ${item?.label}` })),
+        .map((item: any) => ({
+          ...item,
+          label: `${item?.value}: ${item?.label}`,
+        })),
     );
   };
 

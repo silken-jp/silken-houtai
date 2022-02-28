@@ -34,7 +34,11 @@ const DriverForm: React.FC<DriverFormProps> = (props) => {
         <Form.Item label="电话" name="tel" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="密码" name="password" rules={[{ required: props?.type === 'add' }]}>
+        <Form.Item
+          label="密码"
+          name="password"
+          rules={[{ required: props?.type === 'add' }]}
+        >
           <Input.Password placeholder="input password" />
         </Form.Item>
       </Form>

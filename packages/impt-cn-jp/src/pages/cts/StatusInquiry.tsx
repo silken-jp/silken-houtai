@@ -1,4 +1,14 @@
-import { Form, Table, Input, Button, Row, Col, Card, Space, Select } from 'antd';
+import {
+  Form,
+  Table,
+  Input,
+  Button,
+  Row,
+  Col,
+  Card,
+  Space,
+  Select,
+} from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -25,7 +35,12 @@ const StatusInquiry: React.FC = () => {
             { path: '', breadcrumbName: 'Status Inquiry' },
           ],
         },
-        title: <Select defaultValue={'all'} options={[{ value: 'all', label: 'ALL' }]} />,
+        title: (
+          <Select
+            defaultValue={'all'}
+            options={[{ value: 'all', label: 'ALL' }]}
+          />
+        ),
       }}
     >
       <Form form={form} className="sk-table-search">

@@ -21,7 +21,10 @@ const driver: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
 
   // api
-  const getTableData = async (pageData: PaginatedParams[0], formData: Object) => {
+  const getTableData = async (
+    pageData: PaginatedParams[0],
+    formData: Object,
+  ) => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
@@ -57,7 +60,10 @@ const driver: React.FC = () => {
         title: `${intlMenu('setting.driver')}`,
         breadcrumb: {
           routes: [
-            { path: '/delivery/settings/driver', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/delivery/settings/driver',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: intlMenu('setting.driver') },
           ],
         },

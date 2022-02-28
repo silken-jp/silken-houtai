@@ -3,6 +3,7 @@
 **/*.ejs
 **/*.html
 dist/
+public/
 .vscode
 packages/**/package.json
 packages/**/.umi

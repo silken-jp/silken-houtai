@@ -1,5 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Modal, Descriptions, Radio, Input, Space, Button, Table, Form } from 'antd';
+import {
+  Modal,
+  Descriptions,
+  Radio,
+  Input,
+  Space,
+  Button,
+  Table,
+  Form,
+  Row,
+  Col,
+} from 'antd';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import { useKeyPress, useAntdTable } from 'ahooks';
 ///
@@ -20,31 +31,22 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     const data = await getImporters({
       page: pageData?.current - 1,
       perPage: pageData?.pageSize,
-      // ...formData,
+      ...formData,
       imp_code: formData?.ImpCode,
-      company_name_en: formData?.ImpName,
-      phone: formData?.Tel,
-      zip: formData?.Zip,
-      address_en: formData?.IAD,
     });
     const list = data?.importers?.map((item: any) => ({
       ...item,
       ImpCode: item?.imp_code,
-      ImpName: item?.company_name_en,
-      Tel: item?.phone?.split('-')?.join(''),
-      Zip: item?.zip,
-      IAD: item?.address_en,
-      Add1: item?.add1,
-      Add2: item?.add2,
-      Add3: item?.add3,
-      Add4: item?.add4,
     }));
     return {
       total: data?.totalCount,
       list,
     };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form, manual: true });
+  const { tableProps, search } = useAntdTable(getTableData, {
+    form,
+    manual: true,
+  });
 
   useEffect(() => {
     let channel = new window.BroadcastChannel('sk_focus');
@@ -52,7 +54,9 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
       e.data?.modal === 'search' && setVisible(true);
     };
     channel.onmessageerror = (ev) => {
-      throw new Error('BroadcastChannel Error while deserializing: ' + ev.origin);
+      throw new Error(
+        'BroadcastChannel Error while deserializing: ' + ev.origin,
+      );
     };
     return () => channel?.close();
   }, []);
@@ -75,13 +79,24 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
 
   function handleOK() {
     if (selectedRows.length > 0) {
-      const { ImpCode, ImpName, Tel, Zip, IAD, Add1, Add2, Add3, Add4 } = selectedRows[0];
+      const { ImpCode, ImpName, Tel, Zip, IAD, Add1, Add2, Add3, Add4 } =
+        selectedRows[0];
       if (changeType === 1) {
         props?.form.setFieldsValue({ ImpCode, ImpName });
       } else if (changeType === 2) {
         props?.form.setFieldsValue({ Tel, Zip, IAD, Add1, Add2, Add3, Add4 });
       } else {
-        props?.form.setFieldsValue({ ImpCode, ImpName, Tel, Zip, IAD, Add1, Add2, Add3, Add4 });
+        props?.form.setFieldsValue({
+          ImpCode,
+          ImpName,
+          Tel,
+          Zip,
+          IAD,
+          Add1,
+          Add2,
+          Add3,
+          Add4,
+        });
       }
       setVisible(false);
     }
@@ -90,11 +105,24 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     setVisible(false);
   }
 
-  function changeTarget(values: any[]) {
-    if (values.includes(changeType)) {
-      return { background: '#1890ff', color: '#fff' };
-    }
-    return {};
+  function renderChange(value: number, key: keyof API.Importer) {
+    const isChangeTarget = changeType !== value;
+    const style = isChangeTarget
+      ? { textDecoration: 'line-through', color: '#ddd' }
+      : {};
+    return (
+      <Row>
+        <Col span={11} style={style}>
+          {props?.form?.getFieldValue(key) || 'null'}
+        </Col>
+        {isChangeTarget && (
+          <Col span={13}>
+            {`\u2002\u2002\u2192\u2002\u2002`}
+            {selectedRows?.[0]?.[key] || 'null'}
+          </Col>
+        )}
+      </Row>
+    );
   }
 
   const rowSelection: TableRowSelection<API.Importer> = {
@@ -113,30 +141,16 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
       onCancel={handleCancel}
       footer={
         <Space>
-          <Space>
-            <span>変更項目選択：</span>
-            <Radio.Group
-              size="middle"
-              value={changeType}
-              onChange={(e) => setChangeType(e.target.value)}
-            >
-              <Radio value={1}>1: 輸入者コード + 輸入者名</Radio>
-              <Radio value={2}>2: Tel + Zip + IAD</Radio>
-              <Radio value={3}>3: ALL</Radio>
-            </Radio.Group>
-          </Space>
-          <Space>
-            <Button size="middle" onClick={handleCancel}>
-              Cancel（ESC）
-            </Button>
-            <Button size="middle" type="primary" onClick={handleOK}>
-              Accept（F9）
-            </Button>
-          </Space>
+          <Button size="middle" onClick={handleCancel}>
+            Cancel（ESC）
+          </Button>
+          <Button size="middle" type="primary" onClick={handleOK}>
+            Accept（F9）
+          </Button>
         </Space>
       }
     >
-      <Space direction="vertical">
+      <Space direction="vertical" style={{ width: '100%' }}>
         <Form layout="inline" form={form} onFinish={search?.submit}>
           <Form.Item name="ImpCode">
             <Input placeholder="輸入者コード" style={{ width: 160 }} />
@@ -154,76 +168,62 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
             <Input placeholder="住所" style={{ width: 300 }} />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" onClick={search.submit}>
-              検索
-            </Button>
-            <Button onClick={search.reset} style={{ marginLeft: 16 }}>
-              リセット
-            </Button>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Form.Item>
         </Form>
-        <Space align="start">
-          <Descriptions size="small" title="現在のデータ" column={1}>
-            {changeType !== 2 && (
-              <Descriptions.Item label="9.輸入者コード">
-                {props?.form?.getFieldValue('ImpCode')}
-              </Descriptions.Item>
-            )}
-            {changeType !== 2 && (
-              <Descriptions.Item label="10.輸入者名">
-                {props?.form?.getFieldValue('ImpName')}
-              </Descriptions.Item>
-            )}
-            {changeType !== 1 && (
-              <Descriptions.Item label="16.電話番号">
-                {props?.form?.getFieldValue('Tel')}
-              </Descriptions.Item>
-            )}
-            {changeType !== 1 && (
-              <Descriptions.Item label="11.郵便番号">
-                {props?.form?.getFieldValue('Zip')}
-              </Descriptions.Item>
-            )}
-            {changeType !== 1 && (
-              <Descriptions.Item label="17.住所">
-                {props?.form?.getFieldValue('IAD')}
-              </Descriptions.Item>
-            )}
-          </Descriptions>
-          {selectedRows?.length > 0 && (
-            <Descriptions size="small" title="修正のデータ" column={1}>
-              {changeType !== 2 && (
-                <Descriptions.Item label="9.輸入者コード">
-                  {selectedRows[0].ImpCode}
-                </Descriptions.Item>
-              )}
-              {changeType !== 2 && (
-                <Descriptions.Item label="10.輸入者名">{selectedRows[0].ImpName}</Descriptions.Item>
-              )}
-              {changeType !== 1 && (
-                <Descriptions.Item label="16.電話番号">{selectedRows[0].Tel}</Descriptions.Item>
-              )}
-              {changeType !== 1 && (
-                <Descriptions.Item label="11.郵便番号">{selectedRows[0].Zip}</Descriptions.Item>
-              )}
-              {changeType !== 1 && (
-                <Descriptions.Item label="17.住所">{selectedRows[0].IAD}</Descriptions.Item>
-              )}
-            </Descriptions>
-          )}
-        </Space>
+        <Descriptions
+          size="small"
+          column={1}
+          bordered
+          labelStyle={{ width: 160 }}
+        >
+          <Descriptions.Item>
+            <Space>
+              <span>変更項目選択：</span>
+              <Radio.Group
+                size="middle"
+                value={changeType}
+                onChange={(e) => setChangeType(e.target.value)}
+              >
+                <Radio value={1}>1: 輸入者コード + 輸入者名</Radio>
+                <Radio value={2}>2: Tel + Zip + IAD</Radio>
+                <Radio value={3}>3: ALL</Radio>
+              </Radio.Group>
+            </Space>
+          </Descriptions.Item>
+          <Descriptions.Item label="09.輸入者コード">
+            {renderChange(2, 'ImpCode')}
+          </Descriptions.Item>
+          <Descriptions.Item label="16.電話番号">
+            {renderChange(1, 'Tel')}
+          </Descriptions.Item>
+          <Descriptions.Item label="11.郵便番号">
+            {renderChange(1, 'Zip')}
+          </Descriptions.Item>
+          <Descriptions.Item label="10.輸入者名">
+            {renderChange(2, 'ImpName')}
+          </Descriptions.Item>
+          <Descriptions.Item label="17.住所">
+            {renderChange(1, 'IAD')}
+          </Descriptions.Item>
+        </Descriptions>
         <Table
-          style={{ width: 1200 }}
+          style={{ width: '100%' }}
           rowKey="_id"
           rowSelection={rowSelection}
           {...tableProps}
-          scroll={{ y: 300 }}
+          scroll={{ x: 1200, y: 300 }}
         >
-          <Table.Column width={140} title="輸入者コード" dataIndex="ImpCode" />
-          <Table.Column width={120} title="輸入者名" dataIndex="ImpName" />
-          <Table.Column width={100} title="電話番号" dataIndex="Tel" />
+          <Table.Column width={150} title="輸入者コード" dataIndex="ImpCode" />
+          <Table.Column width={250} title="輸入者名" dataIndex="ImpName" />
+          <Table.Column width={150} title="電話番号" dataIndex="Tel" />
           <Table.Column width={100} title="郵便番号" dataIndex="Zip" />
-          <Table.Column width={200} title="住所" dataIndex="IAD" />
+          <Table.Column width={350} title="住所" dataIndex="IAD" />
         </Table>
       </Space>
     </Modal>

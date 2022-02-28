@@ -59,7 +59,11 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
               textAlign: 'right',
             }}
           >
-            <Button disabled={loading} onClick={handleCancel} style={{ marginRight: 8 }}>
+            <Button
+              disabled={loading}
+              onClick={handleCancel}
+              style={{ marginRight: 8 }}
+            >
               取消
             </Button>
             <Button loading={loading} onClick={handleSubmit} type="primary">
@@ -68,7 +72,11 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
           </div>
         }
       >
-        <ZipAreaContentItem ref={ref} state={stateName} zipAreaId={props.areaData?._id} />
+        <ZipAreaContentItem
+          ref={ref}
+          state={stateName}
+          zipAreaId={props.areaData?._id}
+        />
       </Drawer>
       <Descriptions bordered>
         {ZIP.ZIP_STATES_GROUPS.map((item, key) => {
@@ -77,7 +85,9 @@ const ZipAreaContent: React.FC<ZipAreaContentProps> = (props) => {
               <Row>
                 {item?.states?.map((state, key) => {
                   const cityCount =
-                    props?.areaData?.states?.find(({ name }: any) => name === state)?.count || 0;
+                    props?.areaData?.states?.find(
+                      ({ name }: any) => name === state,
+                    )?.count || 0;
                   const handleOpen = () => {
                     ref?.current?.resetSelected(state);
                     setStateName(state);

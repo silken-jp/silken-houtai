@@ -33,7 +33,11 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
   return (
     <Modal {...modalProps}>
       <Form name="FlightForm" {...formItemLayout} {...formProps}>
-        <Form.Item label="FLIGHT NO" name="flight_no" rules={[{ required: true }]}>
+        <Form.Item
+          label="FLIGHT NO"
+          name="flight_no"
+          rules={[{ required: true }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item label="日本便出発" required>
@@ -50,36 +54,59 @@ const FlightForm: React.FC<FlightFormProps> = (props) => {
                 parser={(v): any => v?.replace(/[^0-9]/gi, '')}
               />
             </Form.Item>
-            <Form.Item shouldUpdate={(a, b) => a.jp_depart_time !== b.jp_depart_time} noStyle>
-              {({ getFieldValue }) => timeToTime(getFieldValue('jp_depart_time'))}
+            <Form.Item
+              shouldUpdate={(a, b) => a.jp_depart_time !== b.jp_depart_time}
+              noStyle
+            >
+              {({ getFieldValue }) =>
+                timeToTime(getFieldValue('jp_depart_time'))
+              }
             </Form.Item>
           </Space>
         </Form.Item>
         <Form.Item label="日本到着" required>
           <Space>
-            <Form.Item label="日本到着" name="arrive_time" rules={[{ required: true }]} noStyle>
+            <Form.Item
+              label="日本到着"
+              name="arrive_time"
+              rules={[{ required: true }]}
+              noStyle
+            >
               <InputNumber
                 min={0}
                 formatter={(v) => (v ? `${v} min` : '')}
                 parser={(v): any => v?.replace(/[^0-9]/gi, '')}
               />
             </Form.Item>
-            <Form.Item shouldUpdate={(a, b) => a.arrive_time !== b.arrive_time} noStyle>
+            <Form.Item
+              shouldUpdate={(a, b) => a.arrive_time !== b.arrive_time}
+              noStyle
+            >
               {({ getFieldValue }) => timeToTime(getFieldValue('arrive_time'))}
             </Form.Item>
           </Space>
         </Form.Item>
         <Form.Item label="通関中" required>
           <Space>
-            <Form.Item label="通関中" name="clearance_time" rules={[{ required: true }]} noStyle>
+            <Form.Item
+              label="通関中"
+              name="clearance_time"
+              rules={[{ required: true }]}
+              noStyle
+            >
               <InputNumber
                 min={0}
                 formatter={(v) => (v ? `${v} min` : '')}
                 parser={(v): any => v?.replace(/[^0-9]/gi, '')}
               />
             </Form.Item>
-            <Form.Item shouldUpdate={(a, b) => a.clearance_time !== b.clearance_time} noStyle>
-              {({ getFieldValue }) => timeToTime(getFieldValue('clearance_time'))}
+            <Form.Item
+              shouldUpdate={(a, b) => a.clearance_time !== b.clearance_time}
+              noStyle
+            >
+              {({ getFieldValue }) =>
+                timeToTime(getFieldValue('clearance_time'))
+              }
             </Form.Item>
           </Space>
         </Form.Item>

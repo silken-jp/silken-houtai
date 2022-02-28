@@ -22,8 +22,10 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUpload(jsonArr: any) {
     const { successCount: count, failedNo } = await importMultiWaybill(jsonArr);
     props?.onUpload?.();
-    const success = count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
-    const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
+    const success =
+      count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
+    const failed =
+      failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
     return { success, failed };
   }
 

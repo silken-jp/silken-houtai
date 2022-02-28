@@ -41,12 +41,20 @@ const CTSStatus: React.FC<CTSStatusProps> = (props) => {
       <Skeleton loading={props?.loading} active paragraph={paragraph}>
         <Row gutter={32}>
           <Col span={6}>
-            <Statistic title="クレンジング済" value={cleansing.count} suffix={`/ ${totalCount}`} />
+            <Statistic
+              title="クレンジング済"
+              value={cleansing.count}
+              suffix={`/ ${totalCount}`}
+            />
             <Progress percent={cleansing.percent} />
           </Col>
           {props?.type === 'IDA' && (
             <Col span={6}>
-              <Statistic title="クリエート済" value={create.count} suffix={`/ ${totalCount}`} />
+              <Statistic
+                title="クリエート済"
+                value={create.count}
+                suffix={`/ ${totalCount}`}
+              />
               <Progress percent={create.percent} />
             </Col>
           )}
@@ -60,7 +68,11 @@ const CTSStatus: React.FC<CTSStatusProps> = (props) => {
           </Col>
           {props?.type === 'MIC' && (
             <Col span={6}>
-              <Statistic title="クリエート済" value={create.count} suffix={`/ ${totalCount}`} />
+              <Statistic
+                title="クリエート済"
+                value={create.count}
+                suffix={`/ ${totalCount}`}
+              />
               <Progress percent={create.percent} />
             </Col>
           )}

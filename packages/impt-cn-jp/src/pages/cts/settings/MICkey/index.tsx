@@ -15,14 +15,35 @@ const MICkey: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.MICkeys>();
 
   // api
-  const getTableData = async (pageData: PaginatedParams[0], formData: Object) => {
+  const getTableData = async (
+    pageData: PaginatedParams[0],
+    formData: Object,
+  ) => {
     try {
       const page = pageData.current - 1;
       const perPage = pageData.pageSize;
       const data: any[] = [
-        { price: [1, 200999], words: 'sweater, T-shirt', code: 'IDA', LS: 'S', tab: 'S' },
-        { price: [200999], words: 'sweater, T-shirt', code: 'MIC', LS: '', tab: 'M' },
-        { price: [20099900], words: 'sweater, T-shirt', code: 'IDA', LS: 'L', tab: 'O' },
+        {
+          price: [1, 200999],
+          words: 'sweater, T-shirt',
+          code: 'IDA',
+          LS: 'S',
+          tab: 'S',
+        },
+        {
+          price: [200999],
+          words: 'sweater, T-shirt',
+          code: 'MIC',
+          LS: '',
+          tab: 'M',
+        },
+        {
+          price: [20099900],
+          words: 'sweater, T-shirt',
+          code: 'IDA',
+          LS: 'L',
+          tab: 'O',
+        },
       ]; // await getAllDrivers();
       return {
         total: data.length,
@@ -55,7 +76,10 @@ const MICkey: React.FC = () => {
         title: `${intlMenu('setting.MICkey')}`,
         breadcrumb: {
           routes: [
-            { path: '/cts/settings/MICkey', breadcrumbName: intlMenu('setting') },
+            {
+              path: '/cts/settings/MICkey',
+              breadcrumbName: intlMenu('setting'),
+            },
             { path: '', breadcrumbName: intlMenu('setting.MICkey') },
           ],
         },
@@ -95,7 +119,9 @@ const MICkey: React.FC = () => {
           <Table.Column
             width={180}
             title="金額設定"
-            render={(row) => `${row?.price?.[0] || 1} ~ ${row?.price?.[1] || ''}`}
+            render={(row) =>
+              `${row?.price?.[0] || 1} ~ ${row?.price?.[1] || ''}`
+            }
           />
           <Table.Column width={800} title="キーワード" dataIndex="words" />
           <Table.Column width={160} title="業務コード" dataIndex="code" />
@@ -106,7 +132,11 @@ const MICkey: React.FC = () => {
             title="操作"
             render={(row: any) => {
               const handleEdit = () => {
-                handleOpen({ title: '編集フォルダ変更', type: 'edit', data: row });
+                handleOpen({
+                  title: '編集フォルダ変更',
+                  type: 'edit',
+                  data: row,
+                });
               };
               const [handleDelete] = deleteConfirm({
                 name: row?.name,

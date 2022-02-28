@@ -59,9 +59,18 @@ const Create: React.FC<CreateProps> = (props) => {
                   options={[
                     { value: 'K', label: 'K:開庁時申告' },
                     { value: 'H', label: 'H:予備申告後の本申告' },
-                    { value: 'Z', label: 'Z:予備申告（貨物搬入時本申告自動起動）' },
-                    { value: 'U', label: 'U:予備申告（本邦到着時貨物引取本申告自動起動）' },
-                    { value: 'S', label: 'S:予備申告（航空貨物の集積場所で本申告自動起動）' },
+                    {
+                      value: 'Z',
+                      label: 'Z:予備申告（貨物搬入時本申告自動起動）',
+                    },
+                    {
+                      value: 'U',
+                      label: 'U:予備申告（本邦到着時貨物引取本申告自動起動）',
+                    },
+                    {
+                      value: 'S',
+                      label: 'S:予備申告（航空貨物の集積場所で本申告自動起動）',
+                    },
                   ]}
                 />
               </Form.Item>
@@ -127,7 +136,11 @@ const Create: React.FC<CreateProps> = (props) => {
           )}
         </Form>
       </Modal>
-      <Button type="primary" disabled={props?.disabled} onClick={() => setVisible(true)}>
+      <Button
+        type="primary"
+        disabled={props?.disabled}
+        onClick={() => setVisible(true)}
+      >
         クリエート
       </Button>
     </>

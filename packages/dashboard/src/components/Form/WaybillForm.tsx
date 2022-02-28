@@ -48,7 +48,10 @@ const WaybillForm: React.FC<WaybillFormProps> = (props) => {
           <Input />
         </Form.Item>
         <Form.Item label="単証入力時間" name="waybill_input_time">
-          <DatePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />
+          <DatePicker
+            showTime={{ format: 'HH:mm' }}
+            format="YYYY-MM-DD HH:mm"
+          />
         </Form.Item>
       </Form>
     </Modal>

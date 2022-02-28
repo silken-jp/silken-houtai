@@ -27,7 +27,10 @@ const ManifestWaybill: React.FC = () => {
   const [tabKey, setTabKey] = useState('MIC');
   const tabParams = tabList?.find(({ key }) => key === tabKey)?.value || {};
   // query
-  const getTableData = async (pageData: any, formData: any): Promise<API.Result> => {
+  const getTableData = async (
+    pageData: any,
+    formData: any,
+  ): Promise<API.Result> => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const data = await getAllWaybills({
@@ -43,7 +46,10 @@ const ManifestWaybill: React.FC = () => {
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form, manual: true });
+  const { tableProps, search } = useAntdTable(getTableData, {
+    form,
+    manual: true,
+  });
 
   const countWaybillsAPI = useRequest(countWaybills, { manual: true });
 
@@ -99,9 +105,14 @@ const ManifestWaybill: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column title="HAWB番号" render={(row) => <WaybillModal dataSource={row} />} />
+          <Table.Column
+            title="HAWB番号"
+            render={(row) => <WaybillModal dataSource={row} />}
+          />
           <Table.Column title="MAWB番号" dataIndex="MAB" />
-          {tabKey === 'Other' && <Table.Column title="コントローラー" dataIndex="" />}
+          {tabKey === 'Other' && (
+            <Table.Column title="コントローラー" dataIndex="" />
+          )}
           <Table.Column
             title="クレンザー"
             render={(row) => findLastPH(row?.process_histories, 1)?.name}

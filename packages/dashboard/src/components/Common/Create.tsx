@@ -59,9 +59,18 @@ const Create: React.FC<CreateProps> = (props) => {
                   options={[
                     { value: 'K', label: 'K:開庁時申告' },
                     { value: 'H', label: 'H:予備申告後の本申告' },
-                    { value: 'Z', label: 'Z:予備申告（貨物搬入時本申告自動起動）' },
-                    { value: 'U', label: 'U:予備申告（本邦到着時貨物引取本申告自動起動）' },
-                    { value: 'S', label: 'S:予備申告（航空貨物の集積場所で本申告自動起動）' },
+                    {
+                      value: 'Z',
+                      label: 'Z:予備申告（貨物搬入時本申告自動起動）',
+                    },
+                    {
+                      value: 'U',
+                      label: 'U:予備申告（本邦到着時貨物引取本申告自動起動）',
+                    },
+                    {
+                      value: 'S',
+                      label: 'S:予備申告（航空貨物の集積場所で本申告自動起動）',
+                    },
                   ]}
                 />
               </Form.Item>
@@ -108,7 +117,9 @@ const Create: React.FC<CreateProps> = (props) => {
               <Form.Item label="5.IC1" name="IC1">
                 <Select
                   placeholder="申告先種別コード"
-                  options={[{ value: 'R', label: 'R:蔵出輸入（引取・特例）申告' }]}
+                  options={[
+                    { value: 'R', label: 'R:蔵出輸入（引取・特例）申告' },
+                  ]}
                 />
               </Form.Item>
               <Form.Item label="6.IC2" name="IC2">
@@ -118,7 +129,10 @@ const Create: React.FC<CreateProps> = (props) => {
                     { value: 'S', label: 'S: SP貨物（航空のみ入力可）' },
                     { value: 'B', label: 'B: OBC貨物（航空のみ入力可）' },
                     { value: 'L', label: 'L: 外交官貨物' },
-                    { value: 'X', label: 'X: MDA貨物（申告等種別「C」のみ入力可）' },
+                    {
+                      value: 'X',
+                      label: 'X: MDA貨物（申告等種別「C」のみ入力可）',
+                    },
                     { value: 'E', label: 'E: EMS' },
                     { value: 'H', label: 'H: 航空郵便物' },
                     { value: 'M', label: 'M: 海上郵便物（海上のみ入力可）' },
@@ -160,7 +174,11 @@ const Create: React.FC<CreateProps> = (props) => {
           )}
         </Form>
       </Modal>
-      <Button type="primary" disabled={props?.disable} onClick={() => setVisible(true)}>
+      <Button
+        type="primary"
+        disabled={props?.disable}
+        onClick={() => setVisible(true)}
+      >
         クリエート
       </Button>
     </>

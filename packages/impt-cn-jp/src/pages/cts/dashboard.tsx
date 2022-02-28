@@ -1,10 +1,36 @@
-import { Row, Col, Card, Tabs, Space, DatePicker, Radio, Statistic, Progress, Select } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Tabs,
+  Space,
+  DatePicker,
+  Radio,
+  Statistic,
+  Progress,
+  Select,
+} from 'antd';
 import { Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
-import { PieChart, Pie, Cell, Tooltip, Label, ResponsiveContainer } from 'recharts';
-import { ComposedChart, Area, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Label,
+  ResponsiveContainer,
+} from 'recharts';
+import {
+  ComposedChart,
+  Area,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 
 const SumChart: React.FC = () => {
   const data = [
@@ -67,7 +93,9 @@ const SKPieChart: React.FC = () => {
           fill="#8884d8"
           paddingAngle={0}
           dataKey="value"
-          label={(a) => `${a.name}: ${a.value} (${(a.value / sum).toFixed(1)})%`}
+          label={(a) =>
+            `${a.name}: ${a.value} (${(a.value / sum).toFixed(1)})%`
+          }
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -86,7 +114,12 @@ const Dashboard: React.FC<dashboardProps> = () => {
 
   return (
     <PageContainer
-      title={<Select defaultValue={'all'} options={[{ value: 'all', label: 'ALL' }]} />}
+      title={
+        <Select
+          defaultValue={'all'}
+          options={[{ value: 'all', label: 'ALL' }]}
+        />
+      }
       header={{
         breadcrumb: {
           routes: [
@@ -111,7 +144,11 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
         <Col span={6}>
           <Card>
-            <Statistic title="ブローカーチェック済" value={870} suffix="/ 1000" />
+            <Statistic
+              title="ブローカーチェック済"
+              value={870}
+              suffix="/ 1000"
+            />
             <Progress percent={87} />
           </Card>
         </Col>

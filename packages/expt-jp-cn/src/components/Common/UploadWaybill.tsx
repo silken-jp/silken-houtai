@@ -1,7 +1,10 @@
 import { Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { createMultiWaybill, updateMultiWaybill } from '@/services/request/waybill';
+import {
+  createMultiWaybill,
+  updateMultiWaybill,
+} from '@/services/request/waybill';
 
 const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
 
@@ -23,16 +26,20 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUploadCreate(jsonArr: any) {
     const { successCount: count, failedNo } = await createMultiWaybill(jsonArr);
     props?.onUploadCreate();
-    const success = count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
-    const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
+    const success =
+      count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
+    const failed =
+      failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
     return { success, failed };
   }
 
   async function onUploadUpdate(jsonArr: any) {
     const { successCount: count, failedNo } = await updateMultiWaybill(jsonArr);
     props?.onUploadUpdate();
-    const success = count > 0 ? successFormat(count, jsonArr.length - 1, '更新') : null;
-    const failed = failedNo?.length > 0 ? failedFormat(!!success, failedNo, '更新') : null;
+    const success =
+      count > 0 ? successFormat(count, jsonArr.length - 1, '更新') : null;
+    const failed =
+      failedNo?.length > 0 ? failedFormat(!!success, failedNo, '更新') : null;
     return { success, failed };
   }
 

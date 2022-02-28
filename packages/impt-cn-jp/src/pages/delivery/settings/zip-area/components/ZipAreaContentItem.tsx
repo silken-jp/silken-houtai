@@ -11,19 +11,22 @@ export interface ZipAreaContentProps {
   zipAreaId: string;
 }
 
-const ZipAreaContentItem: React.ForwardRefRenderFunction<any, ZipAreaContentProps> = (
-  props,
-  ref,
-) => {
+const ZipAreaContentItem: React.ForwardRefRenderFunction<
+  any,
+  ZipAreaContentProps
+> = (props, ref) => {
   // state
   // 双向绑定所有的二级drawer, key为city的zipcode，value为address的zipcode[]
   const [zipcodeMap, { set }] = useMap<string | number, string[]>([]);
 
   // api
-  const zipcodesApi = useRequest<any>(() => getZipcodesByState({ state: props?.state }), {
-    refreshDeps: [props?.state],
-    formatResult: (res: any) => res.map(({ _id, ...item }: any) => item),
-  });
+  const zipcodesApi = useRequest<any>(
+    () => getZipcodesByState({ state: props?.state }),
+    {
+      refreshDeps: [props?.state],
+      formatResult: (res: any) => res.map(({ _id, ...item }: any) => item),
+    },
+  );
   const selectedCodesApi = useRequest<any>(
     () =>
       getZipAreaCodesByState({
@@ -69,10 +72,13 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<any, ZipAreaContentProp
   return (
     <Row>
       {citySource?.map(({ zipcode, city }: any, key: number) => {
-        const dataSource = zipcodesApi?.data?.filter((item: any) => item.city === city) || [];
+        const dataSource =
+          zipcodesApi?.data?.filter((item: any) => item.city === city) || [];
         const defaultSelected: string[] =
           selectedCodesApi?.data?.zipcodes
-            ?.filter((item: any) => dataSource.some((d: any) => d.zipcode === item.zipcode))
+            ?.filter((item: any) =>
+              dataSource.some((d: any) => d.zipcode === item.zipcode),
+            )
             ?.map((d: any) => d.zipcode) || [];
         function handleChange(values: any[]) {
           set(zipcode, values);

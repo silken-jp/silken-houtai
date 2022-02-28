@@ -13,8 +13,23 @@ import {
 import { Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 
-import { PieChart, Pie, Cell, Tooltip, Label, ResponsiveContainer } from 'recharts';
-import { ComposedChart, Area, Bar, XAxis, YAxis, CartesianGrid, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Label,
+  ResponsiveContainer,
+} from 'recharts';
+import {
+  ComposedChart,
+  Area,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Legend,
+} from 'recharts';
 
 const SumChart: React.FC = () => {
   const data = [
@@ -77,7 +92,9 @@ const SKPieChart: React.FC = () => {
           fill="#8884d8"
           paddingAngle={0}
           dataKey="value"
-          label={(a) => `${a.name}: ${a.value} (${(a.value / sum).toFixed(1)})%`}
+          label={(a) =>
+            `${a.name}: ${a.value} (${(a.value / sum).toFixed(1)})%`
+          }
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -97,7 +114,12 @@ const Dashboard: React.FC<dashboardProps> = () => {
       <Row gutter={8}>
         <Col span={8}>
           <Card>
-            <Descriptions size="small" layout="vertical" bordered title="2022年02月04日">
+            <Descriptions
+              size="small"
+              layout="vertical"
+              bordered
+              title="2022年02月04日"
+            >
               <Descriptions.Item label="件数">0</Descriptions.Item>
               <Descriptions.Item label="重量">0</Descriptions.Item>
               <Descriptions.Item label="個数">0</Descriptions.Item>
@@ -108,7 +130,12 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <Descriptions size="small" layout="vertical" bordered title="2022年02月累計">
+            <Descriptions
+              size="small"
+              layout="vertical"
+              bordered
+              title="2022年02月累計"
+            >
               <Descriptions.Item label="件数">0</Descriptions.Item>
               <Descriptions.Item label="重量">0</Descriptions.Item>
               <Descriptions.Item label="個数">0</Descriptions.Item>
@@ -119,7 +146,12 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <Descriptions size="small" layout="vertical" bordered title="2022年01月実績">
+            <Descriptions
+              size="small"
+              layout="vertical"
+              bordered
+              title="2022年01月実績"
+            >
               <Descriptions.Item label="件数">43735</Descriptions.Item>
               <Descriptions.Item label="重量">8823.1</Descriptions.Item>
               <Descriptions.Item label="個数">43735</Descriptions.Item>

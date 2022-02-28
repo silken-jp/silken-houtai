@@ -30,8 +30,12 @@ const Waybill: React.FC<WaybillProps> = (props) => {
         }
       >
         <Descriptions column={3} style={{ marginBottom: -16 }}>
-          <Descriptions.Item label="HAWB番号">{props?.dataSource?.HAB}</Descriptions.Item>
-          <Descriptions.Item label="MAWB番号">{props?.dataSource?.MAB}</Descriptions.Item>
+          <Descriptions.Item label="HAWB番号">
+            {props?.dataSource?.HAB}
+          </Descriptions.Item>
+          <Descriptions.Item label="MAWB番号">
+            {props?.dataSource?.MAB}
+          </Descriptions.Item>
           {/* <Descriptions.Item label="派送单号"> </Descriptions.Item> */}
           {/* <Descriptions.Item label="货物名称">肥宅快乐水</Descriptions.Item> */}
           {/* <Descriptions.Item label="重量">12kg</Descriptions.Item> */}
@@ -40,15 +44,21 @@ const Waybill: React.FC<WaybillProps> = (props) => {
         <br />
         <Card size="small" title="寄件人信息">
           <Descriptions column={1} style={{ marginBottom: -16 }}>
-            <Descriptions.Item label="寄件人">{props?.dataSource?.EPN}</Descriptions.Item>
+            <Descriptions.Item label="寄件人">
+              {props?.dataSource?.EPN}
+            </Descriptions.Item>
             <Descriptions.Item label="寄件联系方式"> - </Descriptions.Item>
-            <Descriptions.Item label="寄件人地址">{props?.dataSource?.EAD}</Descriptions.Item>
+            <Descriptions.Item label="寄件人地址">
+              {props?.dataSource?.EAD}
+            </Descriptions.Item>
           </Descriptions>
         </Card>
         <br />
         <Card size="small" title="收件人信息">
           <Descriptions column={1} style={{ marginBottom: -16 }}>
-            <Descriptions.Item label="收件人">{props?.dataSource?.receiver_name}</Descriptions.Item>
+            <Descriptions.Item label="收件人">
+              {props?.dataSource?.receiver_name}
+            </Descriptions.Item>
             <Descriptions.Item label="收件人联系方式">
               {props?.dataSource?.receiver_tel}
             </Descriptions.Item>

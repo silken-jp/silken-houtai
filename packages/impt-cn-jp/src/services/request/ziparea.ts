@@ -69,11 +69,14 @@ interface UpdateZipAreaCodes {
   zipcodes: API.ZipCode[];
 }
 export async function updateZipCodesByZipAreaId(params: UpdateZipAreaCodes) {
-  return request<any>(ApiURL + '/zip_areas/update_zipcodes/' + params.zipAreaId, {
-    method: 'PUT',
-    data: {
-      state: params.state,
-      zipcodes: params.zipcodes,
+  return request<any>(
+    ApiURL + '/zip_areas/update_zipcodes/' + params.zipAreaId,
+    {
+      method: 'PUT',
+      data: {
+        state: params.state,
+        zipcodes: params.zipcodes,
+      },
     },
-  });
+  );
 }

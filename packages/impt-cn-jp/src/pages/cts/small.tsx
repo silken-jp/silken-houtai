@@ -33,7 +33,10 @@ const SmallWaybill: React.FC = () => {
   const [tabKey, setTabKey] = useState('AID');
   const tabParams = tabList?.find(({ key }) => key === tabKey)?.value || {};
   // query
-  const getTableData = async (pageData: any, formData: any): Promise<API.Result> => {
+  const getTableData = async (
+    pageData: any,
+    formData: any,
+  ): Promise<API.Result> => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const data = await getAllWaybills({
@@ -49,7 +52,10 @@ const SmallWaybill: React.FC = () => {
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form, manual: true });
+  const { tableProps, search } = useAntdTable(getTableData, {
+    form,
+    manual: true,
+  });
 
   const countWaybillsAPI = useRequest(countWaybills, { manual: true });
 
@@ -102,9 +108,14 @@ const SmallWaybill: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column title="HAWB番号" render={(row) => <WaybillModal dataSource={row} />} />
+          <Table.Column
+            title="HAWB番号"
+            render={(row) => <WaybillModal dataSource={row} />}
+          />
           <Table.Column title="MAWB番号" dataIndex="MAB" />
-          {tabKey === 'Other' && <Table.Column title="コントローラー" dataIndex="" />}
+          {tabKey === 'Other' && (
+            <Table.Column title="コントローラー" dataIndex="" />
+          )}
           <Table.Column title="書類作成者" dataIndex="" />
           <Table.Column
             title="クレンザー"

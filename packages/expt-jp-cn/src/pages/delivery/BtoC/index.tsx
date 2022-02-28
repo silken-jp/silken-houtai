@@ -84,7 +84,12 @@ const waybill: React.FC = () => {
       </Form>
       <Card
         title="運送状リスト"
-        extra={<UploadWaybill onUploadCreate={search.submit} onUploadUpdate={search.submit} />}
+        extra={
+          <UploadWaybill
+            onUploadCreate={search.submit}
+            onUploadUpdate={search.submit}
+          />
+        }
       >
         <Table rowKey="_id" {...tableProps}>
           <Table.Column title="ID" render={(_, __, i) => i + 1} />

@@ -1,6 +1,11 @@
 import { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
-import { CloudFilled, FormOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import {
+  CloudFilled,
+  FormOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
 import { useIntlFormat } from '../services/useIntl';
@@ -34,7 +39,11 @@ const Index: React.FC = (props) => {
           <CloudFilled className={styles['icon']} />
           {!collapsed && <span className={styles['text']}>S.C.LOGISTICS</span>}
         </div>
-        <Menu theme="dark" mode="inline" selectedKeys={[history?.location?.pathname]}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={[history?.location?.pathname]}
+        >
           <Menu.Item key="/dashboard">
             <Link to="/dashboard">ダッシュボード</Link>
           </Menu.Item>
@@ -43,7 +52,11 @@ const Index: React.FC = (props) => {
               <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
           </Menu.SubMenu>
-          <Menu.SubMenu key="/CSManagement" icon={<FormOutlined />} title="CS管理">
+          <Menu.SubMenu
+            key="/CSManagement"
+            icon={<FormOutlined />}
+            title="CS管理"
+          >
             <Menu.Item key="/CSManagement/permit">
               <Link to="/CSManagement/permit">貨物状況確認</Link>
             </Menu.Item>
@@ -51,7 +64,11 @@ const Index: React.FC = (props) => {
               <Link to="/CSManagement/cargoIssues">貨物問題リスト</Link>
             </Menu.Item>
           </Menu.SubMenu>
-          <Menu.SubMenu key="/delivery" icon={<FormOutlined />} title="配送管理">
+          <Menu.SubMenu
+            key="/delivery"
+            icon={<FormOutlined />}
+            title="配送管理"
+          >
             <Menu.Item key="/delivery/self">
               <Link to="/delivery/self">自社配送状況確認</Link>
             </Menu.Item>
@@ -65,10 +82,13 @@ const Index: React.FC = (props) => {
         <Layout.Header className={styles['site-layout-background']}>
           <Row align="middle" justify="space-between">
             <Col>
-              {createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                className: styles['trigger'],
-                onClick: toggle,
-              })}
+              {createElement(
+                collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+                {
+                  className: styles['trigger'],
+                  onClick: toggle,
+                },
+              )}
             </Col>
             <Col>
               <Button type="link" onClick={() => setLocale('zh-CN', false)}>

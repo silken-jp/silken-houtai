@@ -49,7 +49,11 @@ const LoginForm: React.FC = () => {
             rules={[{ required: true, message: <Fragment /> }]}
             className={styles.FormItem}
           >
-            <Input prefix={<UserOutlined />} placeholder="账号:admin" className={styles.input} />
+            <Input
+              prefix={<UserOutlined />}
+              placeholder="账号:admin"
+              className={styles.input}
+            />
           </Form.Item>
           <Form.Item
             name="password"

@@ -20,12 +20,16 @@ export declare const useForm: <T>() => {
     title: string;
     dataSource: T;
     visible: boolean;
-    onVisibleChange: import('react').Dispatch<import('react').SetStateAction<boolean>>;
+    onVisibleChange: import('react').Dispatch<
+      import('react').SetStateAction<boolean>
+    >;
   };
   handleOpen: (parma: { title: string; type: string; data?: any }) => void;
   updateState: {
     setTitle: import('react').Dispatch<import('react').SetStateAction<string>>;
-    setVisible: import('react').Dispatch<import('react').SetStateAction<boolean>>;
+    setVisible: import('react').Dispatch<
+      import('react').SetStateAction<boolean>
+    >;
     setDataSource: import('react').Dispatch<import('react').SetStateAction<T>>;
   };
 };
