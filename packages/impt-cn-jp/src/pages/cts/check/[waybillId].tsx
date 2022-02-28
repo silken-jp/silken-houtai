@@ -75,7 +75,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    const handleExit = () => handleMoveWaybill(99);
+    const handleExit = () => onMoveWaybill(99);
     window.addEventListener('beforeunload', handleExit);
     return () => {
       window.removeEventListener('beforeunload', handleExit);
@@ -87,9 +87,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     postImporter({ url: urls[urlIndex] });
   }, [props?.dataSource?._id]);
 
-  async function handleMoveWaybill(move: -1 | 1 | 99) {
+  function onMoveWaybill(move: -1 | 1 | 99) {
     const { name } = getUserInfo();
-    return await moveWaybill({
+    return moveWaybill({
       move,
       type: !props?.dataSource?.MAB ? 0 : 1,
       waybill: props?.dataSource?._id,
@@ -100,7 +100,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     });
   }
 
-  async function handleSubmit(waybill_status: number) {
+  async function onSubmit(waybill_status: number) {
     form
       .validateFields()
       .then(async (values) => {
@@ -127,27 +127,27 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   useKeyPress('h', () => {
     if (checkFocus()) {
-      handleHold();
+      handleHold.run();
     }
   });
 
   useKeyPress('n', () => {
     if (checkFocus()) {
-      handleNext();
+      handleNext.run();
     }
   });
 
   useKeyPress('p', () => {
     if (checkFocus()) {
-      handlePrevious();
+      handlePrevious.run();
     }
   });
 
-  useKeyPress('s', () => {
-    if (checkFocus()) {
-      handleSendBack();
-    }
-  });
+  // useKeyPress('s', () => {
+  //   if (checkFocus()) {
+  //     handleSendBack.run();
+  //   }
+  // });
 
   useKeyPress('F2', () => {
     if (checkFocus()) {
@@ -166,7 +166,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   useKeyPress('F9', () => {
     if (checkFocus()) {
-      handleAccept();
+      handleAccept.run();
     }
   });
 
@@ -179,10 +179,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   useKeyPress('ctrl.x', async () => {
     if (checkFocus()) {
       try {
-        await handleMoveWaybill(99);
-        location.assign(
-          window.location.origin + window.location.pathname + '#/home',
-        );
+        await onMoveWaybill(99);
+        history.replace('/home');
       } catch (error) {
         message.error('退出失败,请重试');
       }
@@ -195,9 +193,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     commandState.visible && setCommandState({ visible: false, command: '' });
   }
 
-  async function handlePrevious() {
+  // 执行函数 未防抖
+  async function onPrevious() {
     try {
-      const res = await handleMoveWaybill(-1);
+      const res = await onMoveWaybill(-1);
       if (res?._id) {
         history.replace('/cts/check/' + res._id);
       } else {
@@ -212,9 +211,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   }
 
-  async function handleNext() {
+  async function onNext() {
     try {
-      const res = await handleMoveWaybill(1);
+      const res = await onMoveWaybill(1);
       if (res?._id) {
         history.replace('/cts/check/' + res._id);
       } else {
@@ -229,44 +228,42 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   }
 
-  async function handleHold() {
-    const onOk = async () => {
-      await handleNext();
-      await handleSubmit(2);
-    };
-    form.isFieldsTouched()
-      ? Modal.confirm({
-          title: 'Hold',
-          content: `データの変更を保存して[Hold]しますか?`,
-          onCancel: async () => {
-            await handleNext();
-          },
-          onOk,
-        })
-      : await onOk();
+  async function onHold() {
+    await onNext();
+    await onSubmit(2);
   }
 
-  async function handleSendBack() {
-    const onOk = async () => {
-      await handleNext();
-      await handleSubmit(3);
-    };
-    form.isFieldsTouched()
-      ? Modal.confirm({
-          title: 'Send Back',
-          content: `データの変更を保存して[Send Back]しますか?`,
-          onCancel: async () => {
-            await handleNext();
-          },
-          onOk,
-        })
-      : await onOk();
+  // async function onSendBack() {
+  //   await onNext();
+  //   await onSubmit(3);
+  // }
+
+  async function onAccept() {
+    await onNext();
+    await onSubmit(1);
   }
 
-  async function handleAccept() {
-    await handleNext();
-    await handleSubmit(1);
-  }
+  // 防抖
+  const handlePrevious = useRequest(onPrevious, {
+    debounceWait: 100,
+    manual: true,
+  });
+  const handleNext = useRequest(onNext, {
+    debounceWait: 100,
+    manual: true,
+  });
+  const handleHold = useRequest(onHold, {
+    debounceWait: 100,
+    manual: true,
+  });
+  // const handleSendBack = useRequest(onSendBack, {
+  //   debounceWait: 100,
+  //   manual: true,
+  // });
+  const handleAccept = useRequest(onAccept, {
+    debounceWait: 100,
+    manual: true,
+  });
 
   return (
     <Form
@@ -359,19 +356,19 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           </Space>
         }
         actions={[
-          <Button type="text" onClick={handlePrevious}>
+          <Button type="text" onClick={handlePrevious.run}>
             Previous（P）
           </Button>,
-          <Button type="text" onClick={handleNext}>
+          <Button type="text" onClick={handleNext.run}>
             Next（N）
           </Button>,
-          <Button type="text" onClick={handleHold}>
+          <Button type="text" onClick={handleHold.run}>
             Hold（H）
           </Button>,
-          // <Button type="text" onClick={handleSendBack}>
+          // <Button type="text" onClick={handleSendBack.run}>
           //   Send Back（B）
           // </Button>,
-          <Button type="text" onClick={handleAccept}>
+          <Button type="text" onClick={handleAccept.run}>
             Accept（F9）
           </Button>,
         ]}

@@ -23,7 +23,7 @@ export interface SearchModalProps {
 const SearchModal: React.FC<SearchModalProps> = (props) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
-  const [changeType, setChangeType] = useState(3);
+  const [changeType, setChangeType] = useState<number>(3);
   const [selectedRows, setSelectedRows] = useState<API.Importer[]>([]);
 
   // query
@@ -32,15 +32,10 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
       page: pageData?.current - 1,
       perPage: pageData?.pageSize,
       ...formData,
-      imp_code: formData?.ImpCode,
     });
-    const list = data?.importers?.map((item: any) => ({
-      ...item,
-      ImpCode: item?.imp_code,
-    }));
     return {
       total: data?.totalCount,
-      list,
+      list: data?.importers,
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, {
@@ -78,7 +73,9 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
   });
 
   function handleOK() {
-    if (selectedRows.length > 0) {
+    if (!changeType) {
+      setVisible(false);
+    } else if (selectedRows.length > 0) {
       const { ImpCode, ImpName, Tel, Zip, IAD, Add1, Add2, Add3, Add4 } =
         selectedRows[0];
       if (changeType === 1) {
@@ -108,17 +105,17 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
   function renderChange(value: number, key: keyof API.Importer) {
     const isChangeTarget = changeType !== value;
     const style = isChangeTarget
-      ? { textDecoration: 'line-through', color: '#ddd' }
+      ? { textDecoration: 'line-through', color: '#9f9f9f' }
       : {};
     return (
       <Row>
         <Col span={11} style={style}>
-          {props?.form?.getFieldValue(key) || 'null'}
+          {props?.form?.getFieldValue(key)}
         </Col>
         {isChangeTarget && (
           <Col span={13}>
             {`\u2002\u2002\u2192\u2002\u2002`}
-            {selectedRows?.[0]?.[key] || 'null'}
+            {selectedRows?.[0]?.[key]}
           </Col>
         )}
       </Row>
@@ -219,7 +216,7 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
           {...tableProps}
           scroll={{ x: 1200, y: 300 }}
         >
-          <Table.Column width={150} title="輸入者コード" dataIndex="ImpCode" />
+          <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={250} title="輸入者名" dataIndex="ImpName" />
           <Table.Column width={150} title="電話番号" dataIndex="Tel" />
           <Table.Column width={100} title="郵便番号" dataIndex="Zip" />

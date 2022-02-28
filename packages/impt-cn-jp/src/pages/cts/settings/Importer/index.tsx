@@ -11,25 +11,18 @@ const Importer: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
 
   // api
-  const getTableData = async (
-    pageData: any,
-    formData: API.Importer,
-  ): Promise<any> => {
-    try {
-      const page = pageData.current - 1;
-      const perPage = pageData.pageSize;
-      const data = await getImporters({
-        page,
-        perPage,
-        ...formData,
-      });
-      return {
-        total: data?.totalCount,
-        list: data?.importers,
-      };
-    } catch (error: any) {
-      return { error };
-    }
+  const getTableData = async (pageData: any, formData: API.Importer) => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    const data = await getImporters({
+      page,
+      perPage,
+      ...formData,
+    });
+    return {
+      total: data?.totalCount,
+      list: data?.importers,
+    };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -51,7 +44,7 @@ const Importer: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
           <Col span={4}>
-            <Form.Item label="法人番号" name="imp_code">
+            <Form.Item label="法人番号" name="ImpCode">
               <Input placeholder="法人番号" />
             </Form.Item>
           </Col>
@@ -90,11 +83,10 @@ const Importer: React.FC = () => {
       <Card title="法人輸入者リスト">
         <Table
           rowKey="_id"
-          loading={tableProps.loading}
-          dataSource={tableProps.dataSource}
+          {...tableProps}
           scroll={{ x: 3300, y: 'calc(100vh - 550px)' }}
         >
-          <Table.Column width={150} title="法人番号" dataIndex="imp_code" />
+          <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
           <Table.Column width={300} title="会社名(en)" dataIndex="ImpName" />
           <Table.Column
