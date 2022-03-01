@@ -21,7 +21,7 @@ export interface SearchModalProps {
 }
 
 function checkFocus() {
-  return document.activeElement?.nodeName !== 'INPUT';
+  return (document.activeElement as any)?.type !== 'text';
 }
 
 const SearchModal: React.FC<SearchModalProps> = (props) => {
@@ -59,6 +59,10 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     };
     return () => channel?.close();
   }, []);
+
+  useKeyPress('1', () => {
+    checkFocus();
+  });
 
   useKeyPress(97, () => {
     visible && checkFocus() && setChangeType(1);
