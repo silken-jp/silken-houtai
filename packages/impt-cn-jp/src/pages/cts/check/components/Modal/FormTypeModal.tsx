@@ -41,7 +41,13 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
     setVisible(false);
   }
   function handleOk() {
-    form.setFieldsValue({ formType, IDAType, LS, IC1, IC2 });
+    const NT1 = form?.getFieldValue(
+      form.getFieldValue('formType') === formType ? 'NT1' : 'NT2',
+    );
+    const NT2 = form?.getFieldValue(
+      form.getFieldValue('formType') === formType ? 'NT2' : 'NT1',
+    );
+    form.setFieldsValue({ formType, IDAType, LS, IC1, IC2, NT1, NT2 });
     handleCancel();
   }
   function handleChangeLS(v: string) {

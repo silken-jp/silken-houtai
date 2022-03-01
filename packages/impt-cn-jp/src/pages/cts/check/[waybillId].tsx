@@ -110,6 +110,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           user: _id,
           waybillId: props?.dataSource?._id,
           process_status: 2,
+          process_type: 1,
           waybill_status,
         });
       })
