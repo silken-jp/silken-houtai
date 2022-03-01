@@ -179,16 +179,20 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   useKeyPress('ctrl.x', async () => {
     if (checkFocus()) {
-      try {
-        await onMoveWaybill(99);
-        history.replace('/home');
-      } catch (error) {
-        message.error('退出失败,请重试');
-      }
+      onExit();
     } else {
       postFocus({ blur: true });
     }
   });
+
+  async function onExit() {
+    try {
+      await onMoveWaybill(99);
+      history.goBack();
+    } catch (error) {
+      message.error('Exit失敗、もう一度試してください');
+    }
+  }
 
   function handleCancel() {
     commandState.visible && setCommandState({ visible: false, command: '' });
@@ -310,12 +314,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       <SearchModal form={form} />
       <Card
         size="default"
-        bodyStyle={{ height: 'calc(100vh - 112px)' }}
+        bodyStyle={{ height: 'calc(100vh - 112px)', overflow: 'auto' }}
         title={
           <Space>
-            <Link to="/home">
-              <Button>Exit（Ctrl + x）</Button>
-            </Link>
+            <Button onClick={onExit}>Exit（Ctrl + x）</Button>
             <Tag>
               {
                 ['Other', 'Normal', 'Hold', 'SendBack'][

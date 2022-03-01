@@ -60,13 +60,13 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     return () => channel?.close();
   }, []);
 
-  useKeyPress(49, () => {
+  useKeyPress(97, () => {
     visible && checkFocus() && setChangeType(1);
   });
-  useKeyPress(50, () => {
+  useKeyPress(98, () => {
     visible && checkFocus() && setChangeType(2);
   });
-  useKeyPress(51, () => {
+  useKeyPress(99, () => {
     visible && checkFocus() && setChangeType(3);
   });
   useKeyPress('esc', () => {
@@ -80,19 +80,27 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     if (!changeType) {
       setVisible(false);
     } else if (selectedRows.length > 0) {
-      const { ImpCode, ImpName, Tel, Zip, IAD, Add1, Add2, Add3, Add4 } =
+      const { ImpCode, ImpName, Tel, Zip, Add1, Add2, Add3, Add4 } =
         selectedRows[0];
       if (changeType === 1) {
         props?.form.setFieldsValue({ ImpCode, ImpName });
       } else if (changeType === 2) {
-        props?.form.setFieldsValue({ Tel, Zip, IAD, Add1, Add2, Add3, Add4 });
+        props?.form.setFieldsValue({
+          Tel,
+          Zip,
+          IAD: '',
+          Add1,
+          Add2,
+          Add3,
+          Add4,
+        });
       } else {
         props?.form.setFieldsValue({
           ImpCode,
           ImpName,
           Tel,
           Zip,
-          IAD,
+          IAD: '',
           Add1,
           Add2,
           Add3,
