@@ -20,6 +20,10 @@ export interface SearchModalProps {
   form: any;
 }
 
+function checkFocus() {
+  return document.activeElement?.nodeName !== 'INPUT';
+}
+
 const SearchModal: React.FC<SearchModalProps> = (props) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
@@ -56,20 +60,20 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
     return () => channel?.close();
   }, []);
 
-  useKeyPress('1', () => {
-    visible && setChangeType(1);
+  useKeyPress(49, () => {
+    visible && checkFocus() && setChangeType(1);
   });
-  useKeyPress('2', () => {
-    visible && setChangeType(2);
+  useKeyPress(50, () => {
+    visible && checkFocus() && setChangeType(2);
   });
-  useKeyPress('3', () => {
-    visible && setChangeType(3);
+  useKeyPress(51, () => {
+    visible && checkFocus() && setChangeType(3);
   });
   useKeyPress('esc', () => {
-    visible && handleCancel();
+    visible && checkFocus() && handleCancel();
   });
   useKeyPress('F9', () => {
-    visible && handleOK();
+    visible && checkFocus() && handleOK();
   });
 
   function handleOK() {

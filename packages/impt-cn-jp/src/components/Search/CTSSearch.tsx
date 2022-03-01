@@ -11,7 +11,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
   const advanceSearchForm = (
     <div className="sk-table-search">
       <Form form={form}>
-        <Row>
+        {/* <Row>
           <Col span={8}>
             <Space>
               <Form.Item label="クレンザー">
@@ -63,57 +63,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               </Form.Item>
             </Space>
           </Col>
-        </Row>
-
-        <Row>
-          <Col span={16}>
-            <Space>
-              <Form.Item label="申告">
-                <Select
-                  placeholder="STATUS"
-                  options={[
-                    { value: '0', label: '0' },
-                    { value: '2', label: '1' },
-                    { value: '2', label: '2' },
-                  ]}
-                />
-              </Form.Item>
-              <Form.Item>
-                <Input placeholder="申告番号" />
-              </Form.Item>
-              <Form.Item>
-                <Select
-                  placeholder="申告者"
-                  options={[
-                    { value: '0', label: 'Aさん' },
-                    { value: '1', label: 'Bさん' },
-                    { value: '2', label: 'Cさん' },
-                  ]}
-                />
-              </Form.Item>
-              <Form.Item>
-                <DatePicker.RangePicker />
-              </Form.Item>
-            </Space>
-          </Col>
-          <Col span={8}>
-            <Space>
-              <Form.Item label="許可">
-                <Select
-                  placeholder="STATUS"
-                  options={[
-                    { value: '0', label: '許可済み' },
-                    { value: '1', label: '未許可' },
-                  ]}
-                  allowClear
-                />
-              </Form.Item>
-              <Form.Item>
-                <DatePicker.RangePicker />
-              </Form.Item>
-            </Space>
-          </Col>
-        </Row>
+        </Row> */}
 
         <Row gutter={24}>
           <Col span={4}>
@@ -132,9 +82,9 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={24}>
             <Form.Item label="HAWB番号" name="HAB">
-              <Input placeholder="HAWB番号" />
+              <Input.TextArea placeholder="HAWB番号" />
             </Form.Item>
           </Col>
         </Row>
