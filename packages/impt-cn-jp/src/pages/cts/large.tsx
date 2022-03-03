@@ -10,7 +10,10 @@ import CTSStatus from '@/components/Common/CTSStatus';
 import UploadWaybill from '@/components/Common/UploadWaybill';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills, countWaybills } from '@/services/request/waybill';
+import {
+  getAllWaybillsAdvance,
+  countWaybills,
+} from '@/services/request/waybill';
 import { findLastPH } from '@/utils/helper';
 
 const tabList = [
@@ -33,21 +36,22 @@ const LargeWaybill: React.FC = () => {
   const [tabKey, setTabKey] = useState('AID');
   const tabParams = tabList?.find(({ key }) => key === tabKey)?.value || {};
   // query
-  const getTableData = async (
-    pageData: any,
-    formData: any,
-  ): Promise<API.Result> => {
+  const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const data = await getAllWaybills({
+    const data = await getAllWaybillsAdvance({
       page,
       perPage,
       sortField: 'createdAt',
       sortOrder: -1,
       LS: 'L',
-      waybill_type: 0,
       ...formData,
-      MAB: formData?.MAB || '',
+      clsStartDate: formData?.clsStartDate?.toString(),
+      clsEndDate: formData?.clsEndDate?.toString(),
+      brcStartDate: formData?.brcStartDate?.toString(),
+      brcEndDate: formData?.brcEndDate?.toString(),
+      crtStartDate: formData?.crtStartDate?.toString(),
+      crtEndDate: formData?.crtEndDate?.toString(),
       ...tabParams,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
@@ -73,7 +77,6 @@ const LargeWaybill: React.FC = () => {
         LS: 'L',
         waybill_type: 0,
         ...formData,
-        MAB: formData?.MAB || '',
         ...tabParams,
       });
     },

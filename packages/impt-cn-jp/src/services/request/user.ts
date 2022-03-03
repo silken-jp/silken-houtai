@@ -3,10 +3,14 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有用户 GET /api/users
-interface GetAllUsers {}
-export async function getAllDrivers(params?: GetAllUsers) {
+interface GetAllUsers extends API.User {
+  page: number;
+  perPage: number;
+}
+export async function getAllUsers(params?: GetAllUsers) {
   return request<any>(ApiURL + '/users', {
     method: 'GET',
+    params,
   });
 }
 
@@ -58,7 +62,7 @@ export async function UpdateUser(params: UpdateUser) {
 interface DeleteByUserId {
   userId: API.ID;
 }
-export async function deleteByDriverId(params: DeleteByUserId) {
+export async function deleteByUserId(params: DeleteByUserId) {
   return request<any>(ApiURL + '/users/' + params.userId, {
     method: 'DELETE',
   });

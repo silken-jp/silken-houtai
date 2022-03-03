@@ -1,4 +1,6 @@
 import { Form, Input, Button, Row, Col, Select, DatePicker } from 'antd';
+import { useRequest } from 'ahooks';
+import { getAllUsers } from '@/services/request/user';
 
 export interface CTSSearchProps {
   form: any;
@@ -8,91 +10,108 @@ export interface CTSSearchProps {
 const CTSSearch: React.FC<CTSSearchProps> = (props) => {
   const { form, search } = props;
 
+  const getData = async (params: any) => {
+    return await getAllUsers({ page: 0, perPage: 9999, ...params });
+  };
+  const { data } = useRequest(getData, { cacheKey: 'allUsers' });
+
+  let CLSOpts = [];
+  let BRCOpts = [];
+  let CRTOpts = [];
+
+  for (const item of data?.users || []) {
+    const opt = { value: item?._id, label: item?.name };
+    item?.is_cleanser && CLSOpts.push(opt);
+    item?.is_broker && BRCOpts.push(opt);
+    item?.is_creator && CRTOpts.push(opt);
+  }
+
   const advanceSearchForm = (
     <div className="sk-table-search">
       <Form form={form}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CLS">
+            <Form.Item label="CLS" name="cleansers[]">
               <Select
                 mode="multiple"
                 allowClear
-                placeholder="クレンザー"
-                options={[
-                  { value: 'FURUKI', label: 'FURUKI' },
-                  { value: 'KOGA', label: 'KOGA' },
-                  { value: 'YAN', label: 'YAN' },
-                  { value: 'YANG', label: 'YANG' },
-                  { value: 'YUAN', label: 'YUAN' },
-                  { value: 'SHANG', label: 'SHANG' },
-                  { value: 'IKARASHI', label: 'IKARASHI' },
-                  { value: 'ANBE', label: 'ANBE' },
-                ]}
+                placeholder="cleansers"
+                options={CLSOpts}
               />
             </Form.Item>
           </Col>
-          <Col span={16}>
-            <Form.Item>
-              <DatePicker.RangePicker />
+          <Col>
+            <Form.Item name="clsStartDate">
+              <DatePicker placeholder="start date" />
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item name="clsEndDate">
+              <DatePicker placeholder="end date" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="BRC">
+            <Form.Item label="BRC" name="brokers[]">
               <Select
                 mode="multiple"
                 allowClear
-                placeholder="ブローカー "
-                options={[
-                  { value: 'FURUKI', label: 'FURUKI' },
-                  { value: 'KOGA', label: 'KOGA' },
-                ]}
+                placeholder="brokers"
+                options={BRCOpts}
               />
             </Form.Item>
           </Col>
-          <Col span={16}>
-            <Form.Item>
-              <DatePicker.RangePicker />
+          <Col>
+            <Form.Item name="brcStartDate">
+              <DatePicker placeholder="start date" />
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item name="brcEndDate">
+              <DatePicker placeholder="end date" />
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row gutter={24}>
           <Col span={8}>
-            <Form.Item label="CRT">
+            <Form.Item label="CRT" name="creators[]">
               <Select
                 mode="multiple"
                 allowClear
-                placeholder="クリエーター"
-                options={[
-                  { value: 'FURUKI', label: 'FURUKI' },
-                  { value: 'KOGA', label: 'KOGA' },
-                  { value: 'YAN', label: 'YAN' },
-                  { value: 'YANG', label: 'YANG' },
-                  { value: 'YUAN', label: 'YUAN' },
-                  { value: 'SHANG', label: 'SHANG' },
-                  { value: 'IKARASHI', label: 'IKARASHI' },
-                  { value: 'ANBE', label: 'ANBE' },
-                ]}
+                placeholder="creators"
+                options={CRTOpts}
               />
             </Form.Item>
           </Col>
-          <Col span={16}>
-            <Form.Item>
-              <DatePicker.RangePicker />
+          <Col>
+            <Form.Item name="crtStartDate">
+              <DatePicker placeholder="start date" />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="crtEndDate">
+              <DatePicker placeholder="end date" />
             </Form.Item>
           </Col>
         </Row>
 
         {/* <Row gutter={24}>
           <Col span={12}>
-            <Form.Item label="申告番号" name="HAB">
+            <Form.Item label="申告番号">
               <Input.TextArea placeholder="申告番号" rows={1}/>
             </Form.Item>
           </Col>
         </Row> */}
 
         <Row gutter={24}>
-          <Col span={4}>
+          <Col>
             <Form.Item label="代理商名" name="agent">
               <Select
                 placeholder="代理商名"
+                disabled
                 options={[
                   { value: 'aaa', label: '佐川' },
                   { value: 'bbb', label: '大和' },
@@ -100,8 +119,8 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={4}>
-            <Form.Item label="STATUS" name="process_status">
+          <Col>
+            <Form.Item label="STATUS" name="status">
               <Select
                 placeholder="STATUS"
                 options={[
@@ -115,13 +134,16 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={6}>
-            <Form.Item label="MAWB番号" name="MAB">
+          <Col>
+            <Form.Item label="MAWB番号" name="mawbs">
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
+        </Row>
+
+        <Row>
           <Col span={24}>
-            <Form.Item label="HAWB番号">
+            <Form.Item label="HAWB番号" name="hawbs">
               <Input.TextArea placeholder="HAWB番号" rows={1} />
             </Form.Item>
           </Col>
@@ -154,6 +176,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                 allowClear
                 onChange={search.submit}
                 placeholder="代理商名"
+                disabled
                 options={[
                   { value: 'aaa', label: '佐川' },
                   { value: 'bbb', label: '大和' },
@@ -162,7 +185,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
             </Form.Item>
           </Col>
           <Col span={3}>
-            <Form.Item name="process_status">
+            <Form.Item name="status">
               <Select
                 allowClear
                 onChange={search.submit}
@@ -179,7 +202,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item name="MAB">
+            <Form.Item name="mawbs">
               <Input.Search placeholder="MAWB番号" onSearch={search.submit} />
             </Form.Item>
           </Col>

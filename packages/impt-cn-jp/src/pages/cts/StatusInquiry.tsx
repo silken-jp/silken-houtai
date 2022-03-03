@@ -13,6 +13,7 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
+import { getStatusInquiry } from '@/services/request/waybill';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -20,9 +21,15 @@ const StatusInquiry: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
 
   // api
-  const getTableData = async (_: any, formData: Object) => {
-    const data: any[] = []; // await getAllWaybills(formData)
-    return { total: data.length, list: data };
+  const getTableData = async (pageData: any, formData: any) => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    const data = await getStatusInquiry({
+      page,
+      perPage,
+      ...formData,
+    });
+    return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -35,27 +42,27 @@ const StatusInquiry: React.FC = () => {
             { path: '', breadcrumbName: 'Status Inquiry' },
           ],
         },
-        title: (
-          <Select
-            defaultValue={'all'}
-            options={[{ value: 'all', label: 'ALL' }]}
-          />
-        ),
+        title: 'Status Inquiry',
       }}
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item label="MAWB番号">
+          <Col span={4}>
+            <Form.Item label="代理商">
+              <Select disabled options={[{ value: 'all', label: 'ALL' }]} />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label="MAWB番号" name="MAB">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item label="FlightNo">
+          <Col span={4}>
+            <Form.Item label="FlightNo" name="flightNo">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
+          <Col span={12}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
                 <Button type="primary" onClick={search.submit}>
@@ -69,12 +76,12 @@ const StatusInquiry: React.FC = () => {
       </Form>
       <Card>
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column width={180} title="MAWB番号" />
+          <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
           <Table.Column width={180} title="FlightNo" />
           <Table.Column width={180} title="FlightDate" />
-          <Table.Column width={180} title="個数" />
-          <Table.Column width={180} title="重量（KG）" />
-          <Table.Column width={180} title="件数" />
+          <Table.Column width={180} title="件数" dataIndex="NOCount" />
+          <Table.Column width={180} title="個数" dataIndex="waybillCount" />
+          <Table.Column width={180} title="重量（KG）" dataIndex="GWCount" />
           <Table.Column width={180} title="ショート" />
           <Table.Column width={180} title="オーバー" />
           <Table.Column width={180} title="MIC許可" />

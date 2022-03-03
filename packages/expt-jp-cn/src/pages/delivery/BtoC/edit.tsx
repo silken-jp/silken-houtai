@@ -1,6 +1,5 @@
 import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
 import { useAntdTable } from 'ahooks';
-import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 import dayjs from 'dayjs';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -22,16 +21,12 @@ const waybill: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   // api
-  const getTableData = async (_: PaginatedParams[0], formData: Object) => {
-    try {
-      const data = await getAllWaybills(formData);
-      return {
-        total: data.length,
-        list: data,
-      };
-    } catch (error: any) {
-      return { error };
-    }
+  const getTableData = async (_: any, formData: Object) => {
+    const data = await getAllWaybills(formData);
+    return {
+      total: data.length,
+      list: data,
+    };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 

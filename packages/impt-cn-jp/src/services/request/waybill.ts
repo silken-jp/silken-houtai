@@ -70,6 +70,8 @@ export async function importMultiWaybill(params: ImportMultiWaybill) {
 // 更新运单 PATCH /api/waybills/:id
 interface UpdateWaybill extends API.Waybill {
   waybillId: API.ID;
+  // [ , clean , brock , create]
+  process_type?: 0 | 1 | 2 | 3;
 }
 export async function updateWaybill(params: UpdateWaybill) {
   const { waybillId, ...data } = params;
@@ -107,5 +109,41 @@ export async function moveWaybill(params: MoveWaybill) {
     data: {
       ...params,
     },
+  });
+}
+
+// 获取所有MAB运单 GET /api/waybills/mawbs
+interface GetStatusInquiry extends API.Waybill {
+  page: number;
+  perPage: number;
+}
+export async function getStatusInquiry(params?: GetStatusInquiry) {
+  return request<any>(ApiURL + '/waybills/mawbs', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取运单的自定义搜索 GET /api/waybills/advance
+interface GetAllWaybillsAdvance extends API.Waybill {
+  page: number;
+  perPage: number;
+  cleaners?: string[];
+  ctsStartDate?: Date;
+  ctsEndDate?: Date;
+  blockers?: string[];
+  brcStartDate?: Date;
+  brcEndDate?: Date;
+  creators?: string[];
+  crtStartDate?: Date;
+  crtEndDate?: Date;
+  mawbs?: string;
+  hawbs?: string;
+  status?: number;
+}
+export async function getAllWaybillsAdvance(params?: GetAllWaybillsAdvance) {
+  return request<any>(ApiURL + '/waybills/advance', {
+    method: 'GET',
+    params,
   });
 }

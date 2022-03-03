@@ -17,6 +17,7 @@ declare namespace API {
     password?: string;
     is_cleanser?: boolean;
     is_broker?: boolean;
+    is_creator?: boolean;
   };
   type Driver = {
     _id?: ID;
@@ -58,6 +59,7 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
 
+    flightNo?: string;
     VSN?: string;
     ARR?: string;
     MAB?: string;
