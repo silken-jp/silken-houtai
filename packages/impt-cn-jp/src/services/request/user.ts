@@ -25,6 +25,7 @@ export async function createUser(params: CreateUser) {
       password: params?.password,
       is_cleanser: params?.is_cleanser,
       is_broker: params?.is_broker,
+      is_creator: params?.is_creator,
     },
   });
 }
@@ -45,7 +46,7 @@ export async function userSingIn(params: UserSingIn) {
 interface UpdateUser extends API.User {
   userId: API.ID;
 }
-export async function UpdateUser(params: UpdateUser) {
+export async function updateUser(params: UpdateUser) {
   return request<any>(ApiURL + '/users/' + params.userId, {
     method: 'PATCH',
     data: {
@@ -54,15 +55,16 @@ export async function UpdateUser(params: UpdateUser) {
       password: params?.password,
       is_cleanser: params?.is_cleanser,
       is_broker: params?.is_broker,
+      is_creator: params?.is_creator,
     },
   });
 }
 
 // 删除用户 DELETE /api/users/:id
-interface DeleteByUserId {
+interface DeleteUserById {
   userId: API.ID;
 }
-export async function deleteByUserId(params: DeleteByUserId) {
+export async function deleteUserById(params: DeleteUserById) {
   return request<any>(ApiURL + '/users/' + params.userId, {
     method: 'DELETE',
   });

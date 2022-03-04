@@ -1,8 +1,9 @@
-import { Result } from 'ahooks/lib/useRequest/src/types';
 import { Row, Col, Statistic, Progress, Skeleton } from 'antd';
 
-export interface CTSStatusProps extends Result<any, any> {
+export interface CTSStatusProps {
   type: 'MIC' | 'IDA';
+  loading: boolean;
+  dataSource: any;
 }
 
 const paragraph = { rows: 1 };
@@ -34,7 +35,7 @@ function useData(data: any) {
 }
 
 const CTSStatus: React.FC<CTSStatusProps> = (props) => {
-  const { cleansing, broker, create, totalCount } = useData(props?.data);
+  const { cleansing, broker, create, totalCount } = useData(props?.dataSource);
 
   return (
     <div className="sk-table-stat">

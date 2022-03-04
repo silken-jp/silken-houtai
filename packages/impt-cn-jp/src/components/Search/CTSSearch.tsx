@@ -1,6 +1,7 @@
 import { Form, Input, Button, Row, Col, Select, DatePicker } from 'antd';
 import { useRequest } from 'ahooks';
 import { getAllUsers } from '@/services/request/user';
+import { getAllAgents } from '@/services/request/agent';
 
 export interface CTSSearchProps {
   form: any;
@@ -13,7 +14,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
   const getData = async (params: any) => {
     return await getAllUsers({ page: 0, perPage: 9999, ...params });
   };
-  const { data } = useRequest(getData, { cacheKey: 'allUsers' });
+  const { data } = useRequest(getData, { cacheKey: 'userOpts' });
+  const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
+
+  const agents =
+    allAgentsAPI?.data?.map((item: any) => ({
+      value: item?._id,
+      label: item?.name,
+    })) || [];
 
   let CLSOpts = [];
   let BRCOpts = [];
@@ -109,20 +117,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
         <Row gutter={24}>
           <Col>
             <Form.Item label="代理商名" name="agent">
-              <Select
-                placeholder="代理商名"
-                disabled
-                options={[
-                  { value: 'aaa', label: '佐川' },
-                  { value: 'bbb', label: '大和' },
-                ]}
-              />
+              <Select allowClear placeholder="代理商名" options={agents} />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item label="STATUS" name="status">
               <Select
                 placeholder="STATUS"
+                allowClear
                 options={[
                   { value: '0', label: 'CLS Undone' },
                   { value: '1', label: 'CLS Done' },
@@ -176,11 +178,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                 allowClear
                 onChange={search.submit}
                 placeholder="代理商名"
-                disabled
-                options={[
-                  { value: 'aaa', label: '佐川' },
-                  { value: 'bbb', label: '大和' },
-                ]}
+                options={agents}
               />
             </Form.Item>
           </Col>

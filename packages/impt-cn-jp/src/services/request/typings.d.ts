@@ -10,6 +10,12 @@ declare namespace API {
     zipcode?: String;
     address?: String;
   };
+  type Agent = {
+    _id?: ID;
+    name?: string;
+    account?: string;
+    password?: string;
+  };
   type User = {
     _id?: ID;
     name?: string;

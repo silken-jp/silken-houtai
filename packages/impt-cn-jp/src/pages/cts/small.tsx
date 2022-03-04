@@ -1,90 +1,21 @@
-import { useState } from 'react';
-import { Form, Table, Card, Space } from 'antd';
-import { useAntdTable, useRequest } from 'ahooks';
+import { Table, Card, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
 import Cleansing from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
-import UploadWaybill from '@/components/Common/UploadWaybill';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
-import {
-  getAllWaybillsAdvance,
-  countWaybills,
-} from '@/services/request/waybill';
-import { findLastPH } from '@/utils/helper';
-
-const tabList = [
-  { tab: 'AID', key: 'AID', value: { waybill_status: 1 } },
-  { tab: 'ASD', key: 'ASD', value: { waybill_status: 1 } },
-  { tab: 'AHK', key: 'AHK', value: { waybill_status: 1 } },
-  { tab: 'AHT', key: 'AHT', value: { waybill_status: 1 } },
-  { tab: 'AIS', key: 'AIS', value: { waybill_status: 1 } },
-  { tab: 'AIW', key: 'AIW', value: { waybill_status: 1 } },
-  { tab: 'AST', key: 'AST', value: { waybill_status: 1 } },
-  { tab: 'Hold', key: 'Hold', value: { waybill_status: 2 } },
-  { tab: 'SendBack', key: 'SendBack', value: { waybill_status: 3 } },
-  { tab: 'Other', key: 'Other', value: { waybill_status: 0 } },
-];
+import { dayFormat } from '@/utils/helper/day';
+import { useCTS } from '@/services/useCTS';
 
 const SmallWaybill: React.FC = () => {
-  // state
-  const [form] = Form.useForm();
+  const { form, tabKey, meta, tableProps, search, cardProps } = useCTS('S');
   const [intlMenu] = useIntlFormat('menu');
-  const [tabKey, setTabKey] = useState('AID');
-  const tabParams = tabList?.find(({ key }) => key === tabKey)?.value || {};
-  // query
-  const getTableData = async (pageData: any, formData: any) => {
-    const page = pageData.current - 1;
-    const perPage = pageData.pageSize;
-    const data = await getAllWaybillsAdvance({
-      page,
-      perPage,
-      sortField: 'createdAt',
-      sortOrder: -1,
-      LS: 'S',
-      ...formData,
-      clsStartDate: formData?.clsStartDate?.toString(),
-      clsEndDate: formData?.clsEndDate?.toString(),
-      brcStartDate: formData?.brcStartDate?.toString(),
-      brcEndDate: formData?.brcEndDate?.toString(),
-      crtStartDate: formData?.crtStartDate?.toString(),
-      crtEndDate: formData?.crtEndDate?.toString(),
-      ...tabParams,
-    });
-    return { total: data?.totalCount, list: data?.waybills || [] };
-  };
-  const { tableProps, search } = useAntdTable(getTableData, {
-    form,
-    manual: true,
-  });
-
-  const countWaybillsAPI = useRequest(countWaybills, { manual: true });
-
-  const handleTabChange = (key: string) => {
-    setTabKey(key);
-    search.submit();
-  };
-
-  const fixSearch = {
-    ...search,
-    submit: async () => {
-      search.submit();
-      const formData = form.getFieldsValue();
-      countWaybillsAPI.run({
-        LS: 'S',
-        waybill_type: 0,
-        ...formData,
-        ...tabParams,
-      });
-    },
-  };
 
   return (
     <PageContainer
-      title="Small"
       header={{
         breadcrumb: {
           routes: [
@@ -92,21 +23,18 @@ const SmallWaybill: React.FC = () => {
             { path: '', breadcrumbName: 'Small' },
           ],
         },
-        extra: <UploadWaybill onUpload={search.submit} />,
       }}
     >
-      <CTSSearch form={form} search={fixSearch} />
+      <CTSSearch form={form} search={search} />
 
-      <CTSStatus {...countWaybillsAPI} type="IDA" />
+      <CTSStatus dataSource={meta} loading={tableProps?.loading} type="IDA" />
 
       <Card
-        tabList={tabList}
-        onTabChange={handleTabChange}
-        activeTabKey={tabKey}
+        {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="S" MAB={form.getFieldValue('MAB')} {...tabParams} />
-            <Create type="IDA" disabled={!form.getFieldValue('MAB')} />
+            <Cleansing LS="S" MAB={form.getFieldValue('MAB')} />
+            <Create type="IDA" large disabled={!form.getFieldValue('MAB')} />
           </Space>
         }
       >
@@ -120,29 +48,20 @@ const SmallWaybill: React.FC = () => {
             <Table.Column title="コントローラー" dataIndex="" />
           )}
           <Table.Column title="書類作成者" dataIndex="" />
-          <Table.Column
-            title="クレンザー"
-            render={(row) => findLastPH(row?.process_histories, 1)?.name}
-          />
+          <Table.Column title="クレンザー" dataIndex="cleanserName" />
           <Table.Column
             title="クレンジング時間"
-            render={(row) => findLastPH(row?.process_histories, 1)?.time}
+            render={(row) => dayFormat(row?.clsDate)}
           />
-          <Table.Column
-            title="クリエーター"
-            render={(row) => findLastPH(row?.process_histories, 2)?.name}
-          />
+          <Table.Column title="クリエーター" dataIndex="creatorName" />
           <Table.Column
             title="クリエート時間"
-            render={(row) => findLastPH(row?.process_histories, 2)?.time}
+            render={(row) => dayFormat(row?.crtDate)}
           />
-          <Table.Column
-            title="ブローカー"
-            render={(row) => findLastPH(row?.process_histories, 3)?.name}
-          />
+          <Table.Column title="ブローカー" dataIndex="brokerName" />
           <Table.Column
             title="ブローカーチェック時間"
-            render={(row) => findLastPH(row?.process_histories, 3)?.time}
+            render={(row) => dayFormat(row?.brcDate)}
           />
           <Table.Column title="申告番号" dataIndex="" />
           <Table.Column title="申告者" dataIndex="" />

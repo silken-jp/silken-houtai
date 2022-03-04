@@ -51,7 +51,14 @@ const Index: React.FC = (props) => {
           theme="dark"
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
+          defaultOpenKeys={['/cts']}
         >
+          <Menu.Item key="/agent">
+            <Link to="/agent">代理商管理</Link>
+          </Menu.Item>
+          <Menu.Item key="/user">
+            <Link to="/user">ユーザー管理</Link>
+          </Menu.Item>
           <Menu.SubMenu
             key="/cts"
             icon={<FormOutlined />}
@@ -63,14 +70,12 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/cts/StatusInquiry">
               <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
-            <Menu.SubMenu key="/cts/IDA" title={'IDA'}>
-              <Menu.Item key="/cts/large">
-                <Link to="/cts/large">Large</Link>
-              </Menu.Item>
-              <Menu.Item key="/cts/small">
-                <Link to="/cts/small">Small</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
+            <Menu.Item key="/cts/large">
+              <Link to="/cts/large">IDA-Large</Link>
+            </Menu.Item>
+            <Menu.Item key="/cts/small">
+              <Link to="/cts/small">IDA-Small</Link>
+            </Menu.Item>
             <Menu.Item key="/cts/manifest">
               <Link to="/cts/manifest">MIC</Link>
             </Menu.Item>

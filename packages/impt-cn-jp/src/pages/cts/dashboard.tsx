@@ -9,11 +9,8 @@ import {
   Statistic,
   Progress,
   Select,
+  Table,
 } from 'antd';
-import { Table } from 'antd';
-import { PageContainer } from '@ant-design/pro-layout';
-////
-import { useIntlFormat } from '@/services/useIntl';
 import {
   PieChart,
   Pie,
@@ -21,8 +18,6 @@ import {
   Tooltip,
   Label,
   ResponsiveContainer,
-} from 'recharts';
-import {
   ComposedChart,
   Area,
   Bar,
@@ -31,6 +26,11 @@ import {
   CartesianGrid,
   Legend,
 } from 'recharts';
+import { PageContainer } from '@ant-design/pro-layout';
+import { useRequest } from 'ahooks';
+////
+import { getAllAgents } from '@/services/request/agent';
+import { useIntlFormat } from '@/services/useIntl';
 
 const SumChart: React.FC = () => {
   const data = [
@@ -111,13 +111,22 @@ export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
   const [intlMenu] = useIntlFormat('menu');
+  const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
+
+  const agents =
+    allAgentsAPI?.data?.map((item: any) => ({
+      value: item?._id,
+      label: item?.name,
+    })) || [];
 
   return (
     <PageContainer
       title={
         <Select
-          defaultValue={'all'}
-          options={[{ value: 'all', label: 'ALL' }]}
+          allowClear
+          placeholder="代理商"
+          style={{ width: 200 }}
+          options={agents}
         />
       }
       header={{
