@@ -3,6 +3,7 @@ import { Form } from 'antd';
 import { useAntdTable } from 'ahooks';
 ////
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
+import { getSearchParams, setSearchParams } from '@/services/useStorage';
 
 // waybill_status ["Other","Normal","Hold","SendBack"];
 const tabList = {
@@ -47,14 +48,14 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     brokerCount: 0,
     createCount: 0,
   });
-  const tabParams = tabList[LS]?.find(({ key }) => key === tabKey)?.value || {};
+  const tabValues = tabList[LS]?.find(({ key }) => key === tabKey)?.value || {};
   // query
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const params = {
       ...formData,
-      ...tabParams,
+      ...tabValues,
       page,
       perPage,
       sortField: 'createdAt',
@@ -67,7 +68,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       crtStartDate: formData?.crtStartDate?.toString(),
       crtEndDate: formData?.crtEndDate?.toString(),
     };
-    localStorage.setItem(`sk-waybill-search-${LS}`, JSON.stringify(params));
+    setSearchParams(LS, params);
     const data = await getAllWaybillsAdvance(params);
     setMeta({
       totalCount: data?.totalCount || 0,
@@ -79,10 +80,8 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   };
 
   useEffect(() => {
-    const temp = JSON.parse(
-      localStorage.getItem(`sk-waybill-search-${LS}`) || '{}',
-    );
-    form.setFieldsValue({ ...temp });
+    const params = getSearchParams(LS);
+    form.setFieldsValue({ ...params });
   }, []);
 
   const { tableProps, search } = useAntdTable(getTableData, { form });

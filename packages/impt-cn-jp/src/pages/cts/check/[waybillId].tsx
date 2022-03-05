@@ -13,7 +13,7 @@ import {
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams, useHistory } from 'umi';
 ////
-import { getUserInfo } from '@/services/useStorage';
+import { getUserInfo, getSearchParams } from '@/services/useStorage';
 import {
   getWaybill,
   moveWaybill,
@@ -89,18 +89,16 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   function onMoveWaybill(move: -1 | 1 | 99) {
     const { name } = getUserInfo();
+    const params = getSearchParams(props?.dataSource?.LS);
     return moveWaybill({
       move,
-      type: !props?.dataSource?.MAB ? 0 : 1,
-      waybill: props?.dataSource?._id,
-      MAB: props?.dataSource?.MAB || '',
-      LS: form.getFieldValue('LS'),
       current_processor: name,
-      waybill_status: props?.dataSource?.waybill_status || 1,
+      waybill: props?.dataSource?._id,
+      ...params,
     });
   }
 
-  async function onSubmit(waybill_status: number) {
+  async function onSubmit(waybill_status: number, process_status: number) {
     form
       .validateFields()
       .then(async (values) => {
@@ -109,7 +107,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           ...values,
           user: _id,
           waybillId: props?.dataSource?._id,
-          process_status: 2,
+          process_status,
           process_type: 1,
           waybill_status,
         });
@@ -202,8 +200,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onPrevious() {
     try {
       const res = await onMoveWaybill(-1);
-      if (res?._id) {
-        history.replace('/cts/check/' + res._id);
+      if (res) {
+        history.replace('/cts/check/' + res);
       } else {
         throw 'すでに最初の件です';
       }
@@ -219,8 +217,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onNext() {
     try {
       const res = await onMoveWaybill(1);
-      if (res?._id) {
-        history.replace('/cts/check/' + res._id);
+      if (res) {
+        history.replace('/cts/check/' + res);
       } else {
         throw 'すでに最後の件です';
       }
@@ -235,17 +233,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   async function onHold() {
     await onNext();
-    await onSubmit(2);
+    await onSubmit(2, 0);
   }
 
   // async function onSendBack() {
   //   await onNext();
-  //   await onSubmit(3);
+  //   await onSubmit(3,0);
   // }
 
   async function onAccept() {
     await onNext();
-    await onSubmit(1);
+    await onSubmit(1, 2);
   }
 
   // 防抖

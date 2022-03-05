@@ -34,7 +34,7 @@ const ManifestWaybill: React.FC = () => {
         {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="M" MAB={form.getFieldValue('MAB')} />
+            <Cleansing LS="M" />
             <Button type="primary" disabled={!form.getFieldValue('MAB')}>
               ブローカーチェック
             </Button>

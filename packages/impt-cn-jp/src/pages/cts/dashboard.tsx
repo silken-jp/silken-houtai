@@ -114,7 +114,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
 
   const agents =
-    allAgentsAPI?.data?.map((item: any) => ({
+    allAgentsAPI?.data?.agents?.map((item: any) => ({
       value: item?._id,
       label: item?.name,
     })) || [];

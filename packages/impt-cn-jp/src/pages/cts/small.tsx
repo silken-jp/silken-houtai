@@ -33,7 +33,7 @@ const SmallWaybill: React.FC = () => {
         {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="S" MAB={form.getFieldValue('MAB')} />
+            <Cleansing LS="S" />
             <Create type="IDA" large disabled={!form.getFieldValue('MAB')} />
           </Space>
         }

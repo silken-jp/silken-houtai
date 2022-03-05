@@ -37,3 +37,16 @@ export function removeUserInfo() {
 export function getUserInfo(): userLogin {
   return JSON.parse(localStorage.getItem(loginKey) || '{}');
 }
+
+export function setSearchParams(LS: string, data: any) {
+  localStorage.setItem(`sk-waybill-search-${LS}`, JSON.stringify(data));
+}
+
+export function removeSearchParams() {
+  localStorage.removeItem(loginKey);
+}
+
+export function getSearchParams(LS?: string) {
+  if (!LS) return {};
+  return JSON.parse(localStorage.getItem(`sk-waybill-search-${LS}`) || '{}');
+}

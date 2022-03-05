@@ -33,7 +33,7 @@ const LargeWaybill: React.FC = () => {
         {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="L" MAB={form.getFieldValue('MAB')} />
+            <Cleansing LS="L" />
             <Create type="IDA" large disabled={!form.getFieldValue('MAB')} />
           </Space>
         }

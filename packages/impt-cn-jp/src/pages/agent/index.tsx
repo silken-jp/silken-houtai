@@ -27,10 +27,7 @@ const StatusInquiry: React.FC = () => {
       perPage,
       ...formData,
     });
-    if (data?.totalCount) {
-      return { total: data?.totalCount, list: data?.agents || [] };
-    }
-    return { total: data?.length, list: data || [] };
+    return { total: data?.totalCount, list: data?.agents || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 

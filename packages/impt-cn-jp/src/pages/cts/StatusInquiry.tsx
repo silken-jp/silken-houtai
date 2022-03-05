@@ -81,7 +81,11 @@ const StatusInquiry: React.FC = () => {
           <Table.Column width={180} title="FlightDate" />
           <Table.Column width={180} title="件数" dataIndex="NOCount" />
           <Table.Column width={180} title="個数" dataIndex="waybillCount" />
-          <Table.Column width={180} title="重量（KG）" dataIndex="GWCount" />
+          <Table.Column
+            width={180}
+            title="重量（KG）"
+            render={(row) => row?.GWCount?.toFixed(2)}
+          />
           <Table.Column width={180} title="ショート" />
           <Table.Column width={180} title="オーバー" />
           <Table.Column width={180} title="MIC許可" />

@@ -96,12 +96,8 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
 // 批量创建导入 POST /api/waybills/move
 interface MoveWaybill {
   move: number;
-  type: number;
-  waybill?: string;
-  MAB: string;
-  LS: string;
   current_processor: string;
-  waybill_status: number;
+  waybill?: string;
 }
 export async function moveWaybill(params: MoveWaybill) {
   return request<any>(ApiURL + '/waybills/move', {
