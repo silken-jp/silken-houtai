@@ -55,7 +55,7 @@ const ManifestWaybill: React.FC = () => {
           <Table.Column title="クレンザー" dataIndex="cleanserName" />
           <Table.Column
             title="クレンジング時間"
-            render={(row) => dayFormat(row?.crtDate)}
+            render={(row) => dayFormat(row?.clsDate)}
           />
           <Table.Column title="ブローカー" dataIndex="brokerName" />
           <Table.Column
