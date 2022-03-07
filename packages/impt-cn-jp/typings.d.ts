@@ -15,3 +15,8 @@ interface userLogin {
   token: string;
   expiryDate: string;
 }
+
+interface OPTION {
+  value: string;
+  label: string;
+}

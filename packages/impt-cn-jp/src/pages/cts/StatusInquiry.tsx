@@ -98,7 +98,7 @@ const StatusInquiry: React.FC = () => {
             width={180}
             title="フォワーダー"
             render={(row) =>
-              agentOptions?.find((a: any) => a?.value === row?.agentId)?.name
+              agentOptions?.find((item) => item?.value === row?.agentId)?.label
             }
           />
           <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
