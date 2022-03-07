@@ -43,46 +43,43 @@ const StatusInquiry: React.FC = () => {
     }
   };
   const handleAdd = () => {
-    handleOpen({ title: '新規代理商', type: 'add', data: null });
+    handleOpen({ title: '新規フォワーダー', type: 'add', data: null });
   };
 
   return (
     <PageContainer
-      title="代理商管理"
+      title="フォワーダー管理"
       header={{
         breadcrumb: {
-          routes: [{ path: '/agent', breadcrumbName: '代理商管理' }],
+          routes: [{ path: '/agent', breadcrumbName: 'フォワーダー管理' }],
         },
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
+        <Row justify="end" gutter={16}>
           <Col span={4}>
-            <Form.Item label="代理商名" name="name">
-              <Input />
+            <Form.Item name="name">
+              <Input placeholder="フォワーダー名" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="アカウント" name="account">
-              <Input />
+            <Form.Item name="account">
+              <Input placeholder="アカウント" />
             </Form.Item>
           </Col>
-          <Col span={4}></Col>
-          <Col span={12}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
-            </Form.Item>
+          <Col>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>
       <AgentForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title="代理商名リスト"
+        title="フォワーダー名リスト"
         extra={
           <Button type="primary" onClick={handleAdd}>
             + 新規
@@ -90,12 +87,17 @@ const StatusInquiry: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={300} title="代理商名" dataIndex="name" />
+          <Table.Column width={300} title="フォワーダー名" dataIndex="name" />
           <Table.Column title="アカウント" dataIndex="account" />
           <Table.Column
             width={300}
             title="アプロード"
-            render={() => <UploadWaybill onUpload={search.submit} />}
+            render={(row) => (
+              <UploadWaybill
+                payload={{ agent: row?._id }}
+                onUpload={search.submit}
+              />
+            )}
           />
           <Table.Column
             width={100}
@@ -103,7 +105,7 @@ const StatusInquiry: React.FC = () => {
             render={(row: any) => {
               const handleEdit = () => {
                 handleOpen({
-                  title: '編集代理商',
+                  title: '編集フォワーダー',
                   type: 'edit',
                   data: row,
                 });

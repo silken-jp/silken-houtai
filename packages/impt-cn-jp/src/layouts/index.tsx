@@ -5,6 +5,8 @@ import {
   SettingOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
+  GlobalOutlined,
+  UserOutlined,
   CarOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
@@ -53,10 +55,10 @@ const Index: React.FC = (props) => {
           selectedKeys={[history?.location?.pathname]}
           defaultOpenKeys={['/cts']}
         >
-          <Menu.Item key="/agent">
-            <Link to="/agent">代理商管理</Link>
+          <Menu.Item icon={<GlobalOutlined />} key="/agent">
+            <Link to="/agent">フォワーダー管理</Link>
           </Menu.Item>
-          <Menu.Item key="/user">
+          <Menu.Item icon={<UserOutlined />} key="/user">
             <Link to="/user">ユーザー管理</Link>
           </Menu.Item>
           <Menu.SubMenu

@@ -42,41 +42,39 @@ const Importer: React.FC = () => {
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
+        <Row justify="end" gutter={16}>
           <Col span={4}>
-            <Form.Item label="法人番号" name="ImpCode">
+            <Form.Item name="ImpCode">
               <Input placeholder="法人番号" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="輸出入者符号" name="code">
+            <Form.Item name="code">
               <Input placeholder="輸出入者符号" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="会社名" name="ImpName">
+            <Form.Item name="ImpName">
               <Input placeholder="会社名(en)" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="郵便" name="Zip">
+            <Form.Item name="Zip">
               <Input placeholder="郵便番号" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="電話" name="Tel">
+            <Form.Item name="Tel">
               <Input placeholder="電話" />
             </Form.Item>
           </Col>
-          <Col span={4}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
-            </Form.Item>
+          <Col>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>

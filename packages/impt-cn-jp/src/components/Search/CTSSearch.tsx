@@ -1,7 +1,7 @@
 import { Form, Input, Button, Row, Col, Select, DatePicker } from 'antd';
 import { useRequest } from 'ahooks';
 import { getAllUsers } from '@/services/request/user';
-import { getAllAgents } from '@/services/request/agent';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 export interface CTSSearchProps {
   form: any;
@@ -15,13 +15,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
     return await getAllUsers({ page: 0, perPage: 9999, ...params });
   };
   const { data } = useRequest(getData, { cacheKey: 'userOpts' });
-  const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
-
-  const agents =
-    allAgentsAPI?.data?.agents?.map((item: any) => ({
-      value: item?._id,
-      label: item?.name,
-    })) || [];
+  const { agentOptions } = useAgentOptions();
 
   let CLSOpts = [];
   let BRCOpts = [];
@@ -116,8 +110,12 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
 
         <Row gutter={24}>
           <Col>
-            <Form.Item label="代理商名" name="agent">
-              <Select allowClear placeholder="代理商名" options={agents} />
+            <Form.Item label="フォワーダー名" name="agent">
+              <Select
+                allowClear
+                placeholder="フォワーダー名"
+                options={agentOptions}
+              />
             </Form.Item>
           </Col>
           <Col>
@@ -177,8 +175,8 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               <Select
                 allowClear
                 onChange={search.submit}
-                placeholder="代理商名"
-                options={agents}
+                placeholder="フォワーダー名"
+                options={agentOptions}
               />
             </Form.Item>
           </Col>

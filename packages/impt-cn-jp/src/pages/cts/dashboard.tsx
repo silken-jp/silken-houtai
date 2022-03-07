@@ -27,10 +27,9 @@ import {
   Legend,
 } from 'recharts';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useRequest } from 'ahooks';
 ////
-import { getAllAgents } from '@/services/request/agent';
 import { useIntlFormat } from '@/services/useIntl';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 const SumChart: React.FC = () => {
   const data = [
@@ -111,22 +110,16 @@ export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
   const [intlMenu] = useIntlFormat('menu');
-  const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
-
-  const agents =
-    allAgentsAPI?.data?.agents?.map((item: any) => ({
-      value: item?._id,
-      label: item?.name,
-    })) || [];
+  const { agentOptions } = useAgentOptions();
 
   return (
     <PageContainer
       title={
         <Select
           allowClear
-          placeholder="代理商"
+          placeholder="フォワーダー"
           style={{ width: 200 }}
-          options={agents}
+          options={agentOptions}
         />
       }
       header={{

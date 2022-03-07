@@ -78,22 +78,19 @@ const MICkey: React.FC = () => {
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item label="キーワード" name="words">
+        <Row justify="end" gutter={16}>
+          <Col span={6}>
+            <Form.Item name="words">
               <Input placeholder="キーワード" />
             </Form.Item>
           </Col>
-          <Col span={8}></Col>
-          <Col span={8}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
-            </Form.Item>
+          <Col>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>

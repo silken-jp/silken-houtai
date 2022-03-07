@@ -15,6 +15,7 @@ const failedFormat = (success: boolean, failedNo: string[], type: string) => ({
 });
 
 export interface UploadWaybillProps {
+  payload?: any;
   onUpload?: () => void;
 }
 
@@ -40,6 +41,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     const { successCount: count, failedNo } = await importMultiWaybill({
       waybills,
+      ...props?.payload,
     });
     props?.onUpload?.();
     const success =

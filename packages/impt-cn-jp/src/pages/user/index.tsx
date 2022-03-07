@@ -56,27 +56,24 @@ const StatusInquiry: React.FC = () => {
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
+        <Row justify="end" gutter={16}>
           <Col span={4}>
-            <Form.Item label="ユーザー名" name="name">
-              <Input />
+            <Form.Item name="name">
+              <Input placeholder="ユーザー名" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="電話" name="tel">
-              <Input />
+            <Form.Item name="tel">
+              <Input placeholder="電話" />
             </Form.Item>
           </Col>
-          <Col span={4}></Col>
-          <Col span={12}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
-            </Form.Item>
+          <Col>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>
@@ -93,15 +90,15 @@ const StatusInquiry: React.FC = () => {
           <Table.Column width={300} title="ユーザー名" dataIndex="name" />
           <Table.Column title="電話" dataIndex="tel" />
           <Table.Column
-            title="is_cleanser"
+            title="cleanser"
             render={(row) => row?.is_cleanser && <CheckCircleTwoTone />}
           />
           <Table.Column
-            title="is_broker"
+            title="broker"
             render={(row) => row?.is_broker && <CheckCircleTwoTone />}
           />
           <Table.Column
-            title="is_creator"
+            title="creator"
             render={(row) => row?.is_creator && <CheckCircleTwoTone />}
           />
           <Table.Column

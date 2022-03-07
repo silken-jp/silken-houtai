@@ -2,7 +2,7 @@ import { request } from 'umi';
 
 const { ApiURL } = process.env;
 
-// 获取所有代理店 GET /api/agents
+// 获取所有フォワーダー GET /api/agents
 interface GetAllAgents extends API.Agent {
   page: number;
   perPage: number;
@@ -14,7 +14,7 @@ export async function getAllAgents(params?: GetAllAgents) {
   });
 }
 
-// 创建代理店 POST /api/agents
+// 创建フォワーダー POST /api/agents
 interface CreateAgent extends API.Agent {}
 export async function createAgent(params: CreateAgent) {
   return request<any>(ApiURL + '/agents', {
@@ -27,7 +27,7 @@ export async function createAgent(params: CreateAgent) {
   });
 }
 
-// 代理店login POST /auth-agents/signin
+// フォワーダーlogin POST /auth-agents/signin
 interface AgentSingIn extends API.Agent {}
 export async function userSingIn(params: AgentSingIn) {
   return request<any>(ApiURL + '/auth-agents/signin', {
@@ -39,7 +39,7 @@ export async function userSingIn(params: AgentSingIn) {
   });
 }
 
-// 更新代理店 PATCH /api/agents/:id
+// 更新フォワーダー PATCH /api/agents/:id
 interface UpdateAgent extends API.Agent {
   agentId: API.ID;
 }
@@ -54,7 +54,7 @@ export async function updateAgent(params: UpdateAgent) {
   });
 }
 
-// 删除代理店 DELETE /api/agents/:id
+// 删除フォワーダー DELETE /api/agents/:id
 interface DeleteAgentById {
   agentId: API.ID;
 }
@@ -64,7 +64,7 @@ export async function deleteAgentById(params: DeleteAgentById) {
   });
 }
 
-// 获取单个代理店 GET /api/agents/:id
+// 获取单个フォワーダー GET /api/agents/:id
 interface GetAgent {
   agentId: API.ID;
 }

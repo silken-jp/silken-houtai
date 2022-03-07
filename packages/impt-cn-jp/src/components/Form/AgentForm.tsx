@@ -28,8 +28,12 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
   return (
     <Modal {...modalProps}>
       <Form name="AgentForm" {...formItemLayout} {...formProps}>
-        <Form.Item label="代理商名" name="name" rules={[{ required: true }]}>
-          <Input placeholder="代理商名" autoComplete="off" />
+        <Form.Item
+          label="フォワーダー名"
+          name="name"
+          rules={[{ required: true }]}
+        >
+          <Input placeholder="フォワーダー名" autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="アカウント"
