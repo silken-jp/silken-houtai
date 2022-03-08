@@ -82,20 +82,20 @@ const Importer: React.FC = () => {
         <Table
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 3300, y: 'calc(100vh - 550px)' }}
+          scroll={{ x: 2000, y: 'calc(100vh - 550px)' }}
         >
           <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
           <Table.Column width={300} title="会社名(en)" dataIndex="ImpName" />
-          <Table.Column
+          {/* <Table.Column
             width={300}
             title="会社名(jp)"
             dataIndex="company_name_jp"
-          />
+          /> */}
+          <Table.Column width={700} title="住所(en)" dataIndex="IAD" />
+          {/* <Table.Column width={800} title="住所(jp)" dataIndex="address_jp" /> */}
           <Table.Column width={150} title="郵便番号" dataIndex="Zip" />
           <Table.Column width={150} title="電話" dataIndex="Tel" />
-          <Table.Column width={700} title="住所(en)" dataIndex="IAD" />
-          <Table.Column width={800} title="住所(jp)" dataIndex="address_jp" />
         </Table>
       </Card>
     </PageContainer>

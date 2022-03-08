@@ -11,7 +11,7 @@ import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
 const LargeWaybill: React.FC = () => {
-  const { form, tabKey, meta, tableProps, search, cardProps } = useCTS('L');
+  const { form, state, tableProps, search, cardProps } = useCTS('L');
   const [intlMenu] = useIntlFormat('menu');
 
   return (
@@ -27,7 +27,11 @@ const LargeWaybill: React.FC = () => {
     >
       <CTSSearch form={form} search={search} />
 
-      <CTSStatus dataSource={meta} loading={tableProps?.loading} type="IDA" />
+      <CTSStatus
+        dataSource={state.meta}
+        loading={tableProps?.loading}
+        type="IDA"
+      />
 
       <Card
         {...cardProps}
@@ -38,13 +42,13 @@ const LargeWaybill: React.FC = () => {
           </Space>
         }
       >
-        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 3000 }}>
           <Table.Column
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
           />
           <Table.Column title="MAWB番号" dataIndex="MAB" />
-          {tabKey === 'Other' && (
+          {state.tabKey === 'Other' && (
             <Table.Column title="コントローラー" dataIndex="" />
           )}
           <Table.Column title="書類作成者" dataIndex="" />

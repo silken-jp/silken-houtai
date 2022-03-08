@@ -171,14 +171,14 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
           <Form.Item name="ImpName">
             <Input placeholder="輸入者名" style={{ width: 200 }} autoFocus />
           </Form.Item>
-          <Form.Item name="Tel">
-            <Input placeholder="電話番号" style={{ width: 140 }} />
+          <Form.Item name="IAD">
+            <Input placeholder="住所" style={{ width: 300 }} />
           </Form.Item>
           <Form.Item name="Zip">
             <Input placeholder="郵便番号" style={{ width: 100 }} />
           </Form.Item>
-          <Form.Item name="IAD">
-            <Input placeholder="住所" style={{ width: 300 }} />
+          <Form.Item name="Tel">
+            <Input placeholder="電話番号" style={{ width: 140 }} />
           </Form.Item>
           <Form.Item>
             <Space>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Form } from 'antd';
-import { useAntdTable } from 'ahooks';
+import { useAntdTable, useKeyPress } from 'ahooks';
+import { TableRowSelection } from 'antd/lib/table/interface';
+import { useHistory } from 'umi';
 ////
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 import { getSearchParams, setSearchParams } from '@/services/useStorage';
@@ -40,8 +42,11 @@ const tabList = {
 };
 
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
+  const history = useHistory();
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState(LS === 'M' ? 'MIC' : 'AID');
+  const [selectedRows, setSelectedRows] = useState<API.Waybill[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [meta, setMeta] = useState({
     totalCount: 0,
     cleansingCount: 0,
@@ -86,21 +91,42 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
 
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
+  useKeyPress('enter', () => {
+    if (selectedRows?.[0]?._id) {
+      history.push(`/cts/check/${selectedRows?.[0]?._id}`);
+    }
+  });
+
   const handleTabChange = (key: string) => {
     setTabKey(key);
     search.submit();
   };
 
+  const rowSelection: TableRowSelection<API.Waybill> = {
+    type: 'radio',
+    fixed: true,
+    selectedRowKeys,
+    onChange: (keys: any, rows: API.Waybill[]) => {
+      setSelectedRowKeys(keys);
+      setSelectedRows(rows);
+    },
+  };
+
   return {
     form,
-    tabKey,
-    meta,
-    tableProps,
+    search,
+    state: {
+      tabKey,
+      meta,
+    },
+    tableProps: {
+      ...tableProps,
+      rowSelection,
+    },
     cardProps: {
       tabList: tabList[LS],
       onTabChange: handleTabChange,
       activeTabKey: tabKey,
     },
-    search,
   };
 };
