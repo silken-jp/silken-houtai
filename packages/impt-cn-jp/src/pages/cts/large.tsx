@@ -38,7 +38,7 @@ const LargeWaybill: React.FC = () => {
           </Space>
         }
       >
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
           <Table.Column
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}

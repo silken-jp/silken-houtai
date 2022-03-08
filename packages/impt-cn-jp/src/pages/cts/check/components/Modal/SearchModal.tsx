@@ -212,17 +212,17 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
           <Descriptions.Item label="09.輸入者コード">
             {renderChange(2, 'ImpCode')}
           </Descriptions.Item>
-          <Descriptions.Item label="16.電話番号">
-            {renderChange(1, 'Tel')}
-          </Descriptions.Item>
-          <Descriptions.Item label="11.郵便番号">
-            {renderChange(1, 'Zip')}
-          </Descriptions.Item>
           <Descriptions.Item label="10.輸入者名">
             {renderChange(2, 'ImpName')}
           </Descriptions.Item>
           <Descriptions.Item label="17.住所">
             {renderChange(1, 'IAD')}
+          </Descriptions.Item>
+          <Descriptions.Item label="11.郵便番号">
+            {renderChange(1, 'Zip')}
+          </Descriptions.Item>
+          <Descriptions.Item label="16.電話番号">
+            {renderChange(1, 'Tel')}
           </Descriptions.Item>
         </Descriptions>
         <Table
@@ -234,9 +234,9 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
         >
           <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={250} title="輸入者名" dataIndex="ImpName" />
-          <Table.Column width={150} title="電話番号" dataIndex="Tel" />
-          <Table.Column width={100} title="郵便番号" dataIndex="Zip" />
           <Table.Column width={350} title="住所" dataIndex="IAD" />
+          <Table.Column width={100} title="郵便番号" dataIndex="Zip" />
+          <Table.Column width={150} title="電話番号" dataIndex="Tel" />
         </Table>
       </Space>
     </Modal>

@@ -42,7 +42,7 @@ const ManifestWaybill: React.FC = () => {
           </Space>
         }
       >
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
           <Table.Column
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
@@ -51,7 +51,6 @@ const ManifestWaybill: React.FC = () => {
           {tabKey === 'Other' && (
             <Table.Column title="コントローラー" dataIndex="" />
           )}
-          <Table.Column title="書類作成者" dataIndex="" />
           <Table.Column title="クレンザー" dataIndex="cleanserName" />
           <Table.Column
             title="クレンジング時間"
