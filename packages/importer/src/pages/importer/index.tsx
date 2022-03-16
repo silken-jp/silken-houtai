@@ -1,6 +1,8 @@
 import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { Link } from 'umi';
+import { PrinterOutlined } from '@ant-design/icons';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getImporters } from '@/services/request/importer';
@@ -84,6 +86,15 @@ const Importer: React.FC = () => {
           {...tableProps}
           scroll={{ x: 2000, y: 'calc(100vh - 550px)' }}
         >
+          <Table.Column
+            width={50}
+            title=""
+            render={(row) => (
+              <Link to={`/print/${row?._id}`} target="_blank">
+                <PrinterOutlined />
+              </Link>
+            )}
+          />
           <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
           <Table.Column width={300} title="会社名(en)" dataIndex="ImpName" />

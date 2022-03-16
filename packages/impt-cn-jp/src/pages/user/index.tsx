@@ -88,7 +88,7 @@ const StatusInquiry: React.FC = () => {
       >
         <Table rowKey="_id" {...tableProps}>
           <Table.Column width={300} title="ユーザー名" dataIndex="name" />
-          <Table.Column title="電話" dataIndex="tel" />
+          <Table.Column title="メール" dataIndex="email" />
           <Table.Column
             title="cleanser"
             render={(row) => row?.is_cleanser && <CheckCircleTwoTone />}

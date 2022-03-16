@@ -20,7 +20,6 @@ declare namespace API {
     _id?: ID;
     name?: string;
     tel?: string;
-    email?: string;
     password?: string;
     is_cleanser?: boolean;
     is_broker?: boolean;
@@ -42,20 +41,6 @@ declare namespace API {
     clearance_time?: number;
     createdAt?: string;
     updatedAt?: string;
-  };
-  type WaybillMonthStat = {
-    mawbThisMonthCount: number;
-    mawbLastMonthCount: number;
-    mawbTodayCount: number;
-    waybillThisMonthCount: number;
-    waybillLastMonthCount: number;
-    waybillTodayCount: number;
-    NOThisMonthCount: number;
-    NOLastMonthCount: number;
-    NOTodayCount: number;
-    GWThisMonthCount: number;
-    GWLastMonthCount: number;
-    GWTodayCount: number;
   };
   type Waybill = {
     _id?: ID;

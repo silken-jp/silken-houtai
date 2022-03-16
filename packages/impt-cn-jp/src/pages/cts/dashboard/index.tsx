@@ -6,70 +6,20 @@ import {
   Space,
   DatePicker,
   Radio,
-  Statistic,
-  Progress,
+  Descriptions,
   Select,
   Table,
 } from 'antd';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Label,
-  ResponsiveContainer,
-  ComposedChart,
-  Area,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Legend,
-} from 'recharts';
+import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useRequest } from 'ahooks';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 ////
+import SumChart from './components/SumChart';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
-
-const SumChart: React.FC = () => {
-  const data = [
-    { name: '2021年08月', sum: 1000, s0: 8, s1: 800, s2: 6, s3: 1 },
-    { name: '2021年09月', sum: 1234, s0: 6, s1: 800, s2: 28, s3: 1 },
-    { name: '2021年10月', sum: 1345, s0: 5, s1: 1200, s2: 52, s3: 2 },
-    { name: '2021年11月', sum: 1565, s0: 3, s1: 1200, s2: 70, s3: 3 },
-    { name: '2021年12月', sum: 2353, s0: 7, s1: 1800, s2: 30, s3: 4 },
-    { name: '2022年01月', sum: 2346, s0: 2, s1: 2000, s2: 300, s3: 3 },
-  ];
-
-  return (
-    <div style={{ width: '100%', height: 300 }}>
-      <ResponsiveContainer>
-        <ComposedChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20,
-          }}
-        >
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey="name" scale="band" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Area type="monotone" dataKey="sum" fill="#8884d8" stroke="#8884d8" />
-          <Bar dataKey="s0" barSize={10} fill="#FF8042" />
-          <Bar dataKey="s1" barSize={10} fill="#00C49F" />
-          <Bar dataKey="s2" barSize={10} fill="#0088FE" />
-          <Bar dataKey="s3" barSize={10} fill="#FFBB28" />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+import { getMonthStat } from '@/services/request/waybill';
 
 const SKPieChart: React.FC = () => {
   const data = [
@@ -109,13 +59,34 @@ const SKPieChart: React.FC = () => {
 export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
+  // state
+  const [agentId, setAgentId] = useState();
+  const today = dayjs()?.format('YYYY年MM月DD日');
+  const thisMonth = dayjs()?.format('YYYY年MM月累計');
+  const lastMonth = dayjs()?.subtract(1, 'month')?.format('YYYY年MM月実績');
+
+  // store
   const [intlMenu] = useIntlFormat('menu');
   const { agentOptions } = useAgentOptions();
+
+  // api
+  const getMonthStatAsync = async (agentId?: string) => {
+    return await getMonthStat({ agentId });
+  };
+  const mouthStatAPI = useRequest(getMonthStatAsync);
+
+  // action
+  const handleChangeAgent = (v: any) => {
+    setAgentId(v);
+    mouthStatAPI?.run(v);
+  };
 
   return (
     <PageContainer
       title={
         <Select
+          value={agentId}
+          onChange={handleChangeAgent}
           allowClear
           placeholder="フォワーダー"
           style={{ width: 200 }}
@@ -132,32 +103,61 @@ const Dashboard: React.FC<dashboardProps> = () => {
       }}
     >
       <Row gutter={8}>
-        <Col span={6}>
-          <Card>
-            <Statistic title="クレンジング済" value={1000} suffix="/ 1000" />
-            <Progress percent={100} />
+        <Col span={8}>
+          <Card size="small" loading={mouthStatAPI?.loading}>
+            <Descriptions size="small" title={today} column={2}>
+              <Descriptions.Item label="件数">
+                {mouthStatAPI?.data?.waybillTodayCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="重量">
+                {mouthStatAPI?.data?.GWTodayCount?.toFixed(2)}
+              </Descriptions.Item>
+              <Descriptions.Item label="個数">
+                {mouthStatAPI?.data?.NOTodayCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="MAWB">
+                {mouthStatAPI?.data?.mawbTodayCount}
+              </Descriptions.Item>
+              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
+            </Descriptions>
           </Card>
         </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="クリエート済" value={1000} suffix="/ 1000" />
-            <Progress percent={100} />
+        <Col span={8}>
+          <Card size="small" loading={mouthStatAPI?.loading}>
+            <Descriptions size="small" title={thisMonth} column={2}>
+              <Descriptions.Item label="件数">
+                {mouthStatAPI?.data?.waybillThisMonthCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="重量">
+                {mouthStatAPI?.data?.GWThisMonthCount?.toFixed(2)}
+              </Descriptions.Item>
+              <Descriptions.Item label="個数">
+                {mouthStatAPI?.data?.NOThisMonthCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="MAWB">
+                {mouthStatAPI?.data?.mawbThisMonthCount}
+              </Descriptions.Item>
+              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
+            </Descriptions>
           </Card>
         </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic
-              title="ブローカーチェック済"
-              value={870}
-              suffix="/ 1000"
-            />
-            <Progress percent={87} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <Statistic title="申告済" value={870} suffix="/ 1000" />
-            <Progress percent={87} />
+        <Col span={8}>
+          <Card size="small" loading={mouthStatAPI?.loading}>
+            <Descriptions size="small" title={lastMonth} column={2}>
+              <Descriptions.Item label="件数">
+                {mouthStatAPI?.data?.waybillLastMonthCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="重量">
+                {mouthStatAPI?.data?.GWLastMonthCount?.toFixed(2)}
+              </Descriptions.Item>
+              <Descriptions.Item label="個数">
+                {mouthStatAPI?.data?.NOLastMonthCount}
+              </Descriptions.Item>
+              <Descriptions.Item label="MAWB">
+                {mouthStatAPI?.data?.mawbLastMonthCount}
+              </Descriptions.Item>
+              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
+            </Descriptions>
           </Card>
         </Col>
       </Row>
@@ -179,10 +179,10 @@ const Dashboard: React.FC<dashboardProps> = () => {
               }
             >
               <Tabs.TabPane tab="MIC" key="MIC">
-                <SumChart />
+                <SumChart dataSource={[]} />
               </Tabs.TabPane>
               <Tabs.TabPane tab="IDA" key="IDA">
-                <SumChart />
+                <SumChart dataSource={[]} />
               </Tabs.TabPane>
             </Tabs>
           </Card>

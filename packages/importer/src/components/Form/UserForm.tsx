@@ -19,7 +19,7 @@ const UserForm: React.FC<UserFormProps> = (props) => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         name: props?.dataSource?.name || '',
-        email: props?.dataSource?.email || '',
+        tel: props?.dataSource?.tel || '',
         password: props?.dataSource?.password || '',
         is_cleanser: !!props?.dataSource?.is_cleanser,
         is_broker: !!props?.dataSource?.is_broker,
@@ -34,8 +34,8 @@ const UserForm: React.FC<UserFormProps> = (props) => {
         <Form.Item label="名前" name="name" rules={[{ required: true }]}>
           <Input placeholder="名前" autoComplete="off" />
         </Form.Item>
-        <Form.Item label="メール" name="email" rules={[{ required: true }]}>
-          <Input placeholder="メール" autoComplete="off" />
+        <Form.Item label="電話" name="tel" rules={[{ required: true }]}>
+          <Input placeholder="電話" autoComplete="off" />
         </Form.Item>
         {props?.type === 'add' && (
           <Form.Item

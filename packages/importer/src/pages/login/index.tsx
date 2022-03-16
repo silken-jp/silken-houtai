@@ -5,7 +5,6 @@ import { useState, Fragment } from 'react';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Form, Input, Button, message } from 'antd';
 ////
-import { userSingIn } from '@/services/request/user';
 import { setUserInfo } from '@/services/useStorage';
 import styles from './login.less';
 
@@ -15,16 +14,21 @@ const LoginForm: React.FC = () => {
 
   const onFinish = async (values: any) => {
     try {
-      await setLoading(true);
-      const res = await userSingIn({ ...values });
-      const remainingMilliseconds = 24 * 60 * 60 * 1000;
-      const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-      setUserInfo({ ...res, expiryDate });
-      await setLoading(false);
-      window.location.reload();
+      setLoading(true);
+      if (values?.email === 'user' && values?.password === '123456') {
+        const remainingMilliseconds = 24 * 60 * 60 * 1000;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds,
+        );
+        setUserInfo({ _id: 'user', expiryDate });
+        setLoading(false);
+        window.location.reload();
+      } else {
+        throw 'email or password is wrong.';
+      }
     } catch (error: any) {
       message.warning(error?.message || error);
-      await setLoading(false);
+      setLoading(false);
     }
   };
 

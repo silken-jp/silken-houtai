@@ -22,7 +22,6 @@ export async function createUser(params: CreateUser) {
     data: {
       name: params?.name,
       tel: params?.tel,
-      email: params?.email,
       password: params?.password,
       is_cleanser: params?.is_cleanser,
       is_broker: params?.is_broker,
@@ -37,7 +36,7 @@ export async function userSingIn(params: UserSingIn) {
   return request<any>(ApiURL + '/auth-users/signin', {
     method: 'POST',
     data: {
-      email: params?.email,
+      tel: params?.tel,
       password: params?.password,
     },
   });
@@ -53,7 +52,6 @@ export async function updateUser(params: UpdateUser) {
     data: {
       name: params?.name,
       tel: params?.tel,
-      email: params?.email,
       password: params?.password,
       is_cleanser: params?.is_cleanser,
       is_broker: params?.is_broker,
