@@ -10,7 +10,7 @@ import styles from './index.less';
 
 const Index: React.FC = (props) => {
   const history = useHistory();
-  const isFull = ['/login', '/print/'].some((item: any) =>
+  const isFull = ['/login', '/print'].some((item: any) =>
     history?.location?.pathname?.startsWith(item),
   );
 

@@ -1,14 +1,22 @@
+import { useState } from 'react';
 import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
-import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Link } from 'umi';
 import { PrinterOutlined } from '@ant-design/icons';
+import { useAntdTable } from 'ahooks';
+import { Link } from 'umi';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getImporters } from '@/services/request/importer';
 
+function postImporter({ selectedRows }: any) {
+  const channel = new BroadcastChannel('sk_importer_print');
+  channel.postMessage({ selectedRows });
+}
+
 const Importer: React.FC = () => {
   // state
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
 
@@ -27,6 +35,36 @@ const Importer: React.FC = () => {
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+
+  //
+  const rowSelection = {
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRowKeys(keys);
+      setSelectedRows(rows);
+    },
+  };
+  const resetKeys = () => {
+    setSelectedRowKeys([]);
+    setSelectedRows([]);
+  };
+  const handlePrint = () => {
+    if (selectedRows?.length > 0) {
+      const data = selectedRows?.map(
+        ({ code, Zip, address_jp, company_name_jp, Tel }) => ({
+          code,
+          Zip,
+          address_jp,
+          company_name_jp,
+          Tel,
+        }),
+      );
+      const temp = new URLSearchParams();
+      temp.append('data', JSON.stringify(data));
+      window.open(window.location.origin + '#/print?' + temp);
+    }
+  };
 
   return (
     <PageContainer
@@ -80,21 +118,30 @@ const Importer: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card title="法人輸入者リスト">
+      <Card
+        title={'法人輸入者リスト'}
+        extra={
+          <Space>
+            <div>selected {selectedRows?.length} items</div>
+            <Button type="link" onClick={resetKeys}>
+              reset
+            </Button>
+            <Button
+              type="primary"
+              onClick={handlePrint}
+              icon={<PrinterOutlined />}
+            >
+              プリント
+            </Button>
+          </Space>
+        }
+      >
         <Table
           rowKey="_id"
           {...tableProps}
+          rowSelection={rowSelection}
           scroll={{ x: 2000, y: 'calc(100vh - 550px)' }}
         >
-          <Table.Column
-            width={50}
-            title=""
-            render={(row) => (
-              <Link to={`/print/${row?._id}`} target="_blank">
-                <PrinterOutlined />
-              </Link>
-            )}
-          />
           <Table.Column width={150} title="法人番号" dataIndex="ImpCode" />
           <Table.Column width={150} title="輸出入者符号" dataIndex="code" />
           <Table.Column width={300} title="会社名(en)" dataIndex="ImpName" />
