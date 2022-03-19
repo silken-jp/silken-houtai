@@ -9,6 +9,7 @@ import {
   message,
   Spin,
   Tag,
+  Alert,
 } from 'antd';
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams, useHistory } from 'umi';
@@ -47,9 +48,7 @@ const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
   const { data, error, loading } = useRequest(
     async () => await getWaybill({ waybillId }),
-    {
-      refreshDeps: [waybillId],
-    },
+    { refreshDeps: [waybillId] },
   );
 
   if (loading)
@@ -66,6 +65,7 @@ export interface WaybillCheckProps {
   dataSource?: API.Waybill;
 }
 const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
+  // state
   const [urlIndex, setUrlIndex] = useState(0);
   const [commandState, setCommandState] = useState({
     visible: false,
@@ -73,7 +73,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   });
   const [form] = Form.useForm();
   const history = useHistory();
-
+  const userInfo = getUserInfo();
+  const process_status = props?.dataSource?.process_status || 0;
+  const current_processor = props?.dataSource?.current_processor || '';
+  const disabled = process_status === 1 && current_processor !== userInfo?.name;
+  //effect
   useEffect(() => {
     const handleExit = () => onMoveWaybill(99);
     window.addEventListener('beforeunload', handleExit);
@@ -83,16 +87,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   }, []);
 
   useEffect(() => {
+    // import PDF联动
     setUrlIndex(!urlIndex ? 1 : 0);
     postImporter({ url: urls[urlIndex] });
   }, [props?.dataSource?._id]);
 
+  // action
   function onMoveWaybill(move: -1 | 1 | 99) {
-    const { name } = getUserInfo();
     const params = getSearchParams(props?.dataSource?.LS);
     return moveWaybill({
       move,
-      current_processor: name,
+      current_processor: userInfo?.name,
       waybill: props?.dataSource?._id,
       ...params,
     });
@@ -102,10 +107,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     form
       .validateFields()
       .then(async (values) => {
-        const { _id } = getUserInfo();
         await updateWaybill({
           ...values,
-          user: _id,
+          user: userInfo?._id,
           waybillId: props?.dataSource?._id,
           process_status,
           process_type: 1,
@@ -117,37 +121,33 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       });
   }
 
+  // 快捷键
   useKeyPress('e', () => {
     if (checkFocus()) {
       form.getFieldValue('formType') === 'IDA' && postFocus({ no: '14.' });
       form.getFieldValue('formType') === 'MIC' && postFocus({ no: '50.' });
     }
   });
-
   useKeyPress('h', () => {
     if (checkFocus()) {
       handleHold.run();
     }
   });
-
   useKeyPress('n', () => {
     if (checkFocus()) {
       handleNext.run();
     }
   });
-
   useKeyPress('p', () => {
     if (checkFocus()) {
       handlePrevious.run();
     }
   });
-
   // useKeyPress('s', () => {
   //   if (checkFocus()) {
   //     handleSendBack.run();
   //   }
   // });
-
   useKeyPress('F2', () => {
     if (checkFocus()) {
       setCommandState({ visible: true, command: '' });
@@ -162,19 +162,16 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       }
     }
   });
-
   useKeyPress('F9', () => {
     if (checkFocus()) {
       handleAccept.run();
     }
   });
-
   useKeyPress('F10', () => {
     window.open(
       window.location.origin + window.location.pathname + '#/cts/check/import',
     );
   });
-
   useKeyPress('ctrl.x', async () => {
     if (checkFocus()) {
       onExit();
@@ -213,7 +210,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       }
     }
   }
-
   async function onNext() {
     try {
       const res = await onMoveWaybill(1);
@@ -230,23 +226,23 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       }
     }
   }
-
   async function onHold() {
+    if (disabled) return;
     await onNext();
     await onSubmit(2, 0);
   }
-
   // async function onSendBack() {
+  //   if (disabled) return;
   //   await onNext();
   //   await onSubmit(3,0);
   // }
-
   async function onAccept() {
+    if (disabled) return;
     await onNext();
     await onSubmit(1, 2);
   }
 
-  // 防抖
+  // 执行函数 防抖处理
   const handlePrevious = useRequest(onPrevious, {
     debounceWait: 100,
     manual: true,
@@ -309,7 +305,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           placeholder="隠し欄表示: １ ｜ カーソル移動: 33. ｜ サーチ: 13.."
         />
       </Modal>
-      <SearchModal form={form} />
+      {!disabled && <SearchModal form={form} />}
       <Card
         size="default"
         bodyStyle={{ height: 'calc(100vh - 112px)', overflow: 'auto' }}
@@ -350,7 +346,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         }
         extra={
           <Space>
-            <FormTypeModal form={form} />
+            <FormTypeModal form={form} disabled={disabled} />
             <Link to="/cts/check/import" target="_blank">
               <Button>インボイス(F10)</Button>
             </Link>
@@ -363,17 +359,25 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button type="text" onClick={handleNext.run}>
             Next（N）
           </Button>,
-          <Button type="text" onClick={handleHold.run}>
+          <Button disabled={disabled} type="text" onClick={handleHold.run}>
             Hold（H）
           </Button>,
           // <Button type="text" onClick={handleSendBack.run}>
           //   Send Back（B）
           // </Button>,
-          <Button type="text" onClick={handleAccept.run}>
+          <Button disabled={disabled} type="text" onClick={handleAccept.run}>
             Accept（F9）
           </Button>,
         ]}
       >
+        {disabled && (
+          <>
+            <Alert
+              message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
+            />
+            <br />
+          </>
+        )}
         <Form.Item
           shouldUpdate={(a, b) =>
             a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
@@ -383,6 +387,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             <AllCheckForm
               formType={getFieldValue('formType')}
               IDAType={getFieldValue('IDAType')}
+              disabled={disabled}
             />
           )}
         </Form.Item>

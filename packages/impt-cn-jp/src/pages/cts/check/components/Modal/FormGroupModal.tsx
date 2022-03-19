@@ -4,7 +4,9 @@ import { useKeyPress } from 'ahooks';
 ////
 import CheckFormBasic from '../Form/CheckFormBasic';
 
-export interface FormGroupModelProps {}
+export interface FormGroupModelProps {
+  disabled: boolean;
+}
 
 const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
   const [dataSource, setDataSource] = useState<any[][]>([[]]);
@@ -209,7 +211,7 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
         </Button>
       }
     >
-      <CheckFormBasic dataSource={dataSource} />
+      <CheckFormBasic dataSource={dataSource} disabled={props?.disabled} />
     </Modal>
   );
 };

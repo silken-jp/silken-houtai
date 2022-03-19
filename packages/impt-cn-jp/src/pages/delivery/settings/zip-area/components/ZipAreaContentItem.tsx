@@ -20,14 +20,14 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
   const [zipcodeMap, { set }] = useMap<string | number, string[]>([]);
 
   // api
-  const zipcodesApi = useRequest<any>(
+  const zipcodesApi = useRequest<any, any[]>(
     () => getZipcodesByState({ state: props?.state }),
     {
       refreshDeps: [props?.state],
-      formatResult: (res: any) => res.map(({ _id, ...item }: any) => item),
+      onSuccess: (res: any) => res.map(({ _id, ...item }: any) => item),
     },
   );
-  const selectedCodesApi = useRequest<any>(
+  const selectedCodesApi = useRequest(
     () =>
       getZipAreaCodesByState({
         state: props?.state,

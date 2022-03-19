@@ -4,10 +4,11 @@ import MICForm from './Form/MICForm';
 export interface AllCheckFormProps {
   IDAType: string;
   formType: string;
+  disabled: boolean;
 }
 
 const AllCheckForm: React.FC<AllCheckFormProps> = (props) => {
-  if (props?.formType === 'MIC') return <MICForm />;
+  if (props?.formType === 'MIC') return <MICForm disabled={props?.disabled} />;
   switch (props?.IDAType) {
     case 'C':
       return <AIDForm />;

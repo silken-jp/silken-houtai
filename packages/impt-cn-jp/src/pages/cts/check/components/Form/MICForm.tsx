@@ -1,7 +1,10 @@
 import CheckFormBasic from './CheckFormBasic';
 
+interface MICFormProps {
+  disabled: boolean;
+}
 // Todo: 9,10,24 search可能
-const MICForm: React.FC = (props) => {
+const MICForm: React.FC<MICFormProps> = (props) => {
   const manifestItems = [
     [
       // { no: 2, limit: 11, name: 'ICN', holder: '申告番号' },
@@ -108,7 +111,9 @@ const MICForm: React.FC = (props) => {
     ],
   ];
 
-  return <CheckFormBasic dataSource={manifestItems} />;
+  return (
+    <CheckFormBasic dataSource={manifestItems} disabled={props?.disabled} />
+  );
 };
 
 export default MICForm;

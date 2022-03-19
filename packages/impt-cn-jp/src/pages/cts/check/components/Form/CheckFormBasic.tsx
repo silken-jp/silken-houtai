@@ -6,6 +6,7 @@ import { CODE_SOURCE } from '@/utils/constant';
 // IP3 = FR2 = IN2
 export interface CheckFormProps {
   dataSource: any[][];
+  disabled?: boolean;
 }
 
 interface ToolTipInputProps {
@@ -15,6 +16,7 @@ interface ToolTipInputProps {
   holder?: string;
   limit: number;
   source: any[];
+  disabled?: boolean;
   onChange: (v: any) => void;
 }
 export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
@@ -66,6 +68,7 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
         onChange={props?.onChange}
         options={options}
         onSearch={onSearch}
+        disabled={props?.disabled}
         placeholder={props?.holder}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       >
@@ -77,12 +80,14 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
               width: props?.limit * 5 + 50,
               fontFamily: 'monospace',
             }}
+            disabled={props?.disabled}
             autoSize={{ minRows: 2, maxRows: 2 }}
           />
         ) : (
           <Input
             ref={ref}
             data-no={props?.no}
+            disabled={props?.disabled}
             style={{
               width: props?.limit * 10 + (props?.limit > 20 ? 50 : 20),
               fontFamily: 'monospace',
@@ -118,7 +123,11 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
                 name={item?.name}
                 rules={rules}
               >
-                <ToolTipInput {...item} source={source} />
+                <ToolTipInput
+                  {...item}
+                  source={source}
+                  disabled={props?.disabled}
+                />
               </Form.Item>
             );
           })}

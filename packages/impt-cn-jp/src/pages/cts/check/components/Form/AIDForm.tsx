@@ -1,9 +1,11 @@
 import CheckFormBasic from './CheckFormBasic';
 import FormGroupModel from '../Modal/FormGroupModal';
 
-export interface AIDFormProps {}
+export interface AIDFormProps {
+  disabled: boolean;
+}
 
-const AIDForm: React.FC<AIDFormProps> = () => {
+const AIDForm: React.FC<AIDFormProps> = (props) => {
   const AIDItems = [
     [
       { no: 7, limit: 1, name: 'SKB', holder: '識別符号' },
@@ -225,8 +227,8 @@ const AIDForm: React.FC<AIDFormProps> = () => {
 
   return (
     <>
-      <CheckFormBasic dataSource={AIDItems} />
-      <FormGroupModel />
+      <CheckFormBasic dataSource={AIDItems} disabled={props?.disabled} />
+      <FormGroupModel disabled={props?.disabled} />
     </>
   );
 };

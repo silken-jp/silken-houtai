@@ -25,7 +25,7 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
     useSKForm.useForm<{ name: string }>();
 
   // api
-  const zipAreasApi = useRequest<any>(getZipAreas);
+  const zipAreasApi = useRequest(getZipAreas);
 
   // actions
   const handleSubmit = async (values: any) => {

@@ -17,6 +17,7 @@ const Importer: React.FC<ImporterProps> = () => {
     };
     return () => channel?.close();
   }, []);
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <object

@@ -6,6 +6,7 @@ import { ToolTipInput } from '../Form/CheckFormBasic';
 
 export interface FormTypeModalProps {
   form: any;
+  disabled: boolean;
 }
 
 function postFocus({ no, modal, blur }: any) {
@@ -191,7 +192,7 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
           </Form.Item>
         )}
       </Modal>
-      <Button onClick={handleOpen} type="primary">
+      <Button disabled={props?.disabled} onClick={handleOpen} type="primary">
         業務コード変更(F8)
       </Button>
     </>

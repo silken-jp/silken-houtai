@@ -57,6 +57,14 @@ declare namespace API {
     GWLastMonthCount: number;
     GWTodayCount: number;
   };
+  type WaybillDateStat = Array<{
+    sum: number;
+    s0: number;
+    s1: number;
+    s2: number;
+    s3: number;
+    name: string;
+  }>;
   type Waybill = {
     _id?: ID;
     mawb_no?: string;
@@ -79,6 +87,7 @@ declare namespace API {
     waybill_status: number;
     createdAt?: string;
     updatedAt?: string;
+    current_processor?: string;
 
     flightNo?: string;
     VSN?: string;

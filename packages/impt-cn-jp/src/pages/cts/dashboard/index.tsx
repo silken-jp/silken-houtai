@@ -2,64 +2,35 @@ import {
   Row,
   Col,
   Card,
-  Tabs,
   Space,
   DatePicker,
   Radio,
+  Button,
   Descriptions,
   Select,
   Table,
 } from 'antd';
-import { PieChart, Pie, Cell, Label, ResponsiveContainer } from 'recharts';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'ahooks';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 ////
 import SumChart from './components/SumChart';
+import PieChart from './components/PieChart';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
-import { getMonthStat } from '@/services/request/waybill';
-
-const SKPieChart: React.FC = () => {
-  const data = [
-    { name: '申告STATUS 1', value: 400 },
-    { name: '申告STATUS 2', value: 300 },
-    { name: '申告STATUS 3', value: 260 },
-    { name: '未申告', value: 40 },
-  ];
-  const sum = data.reduce((a, b) => a + b.value, 0);
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-  return (
-    <ResponsiveContainer width="100%" height={400} minHeight={400}>
-      <PieChart>
-        <Pie
-          data={data}
-          cx={'50%'}
-          cy={200}
-          innerRadius={120}
-          outerRadius={150}
-          fill="#8884d8"
-          paddingAngle={0}
-          dataKey="value"
-          label={(a) =>
-            `${a.name}: ${a.value} (${(a.value / sum).toFixed(1)})%`
-          }
-        >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
-          <Label position="center">合計：{sum} (100%)</Label>
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
-  );
-};
+import { getMonthStat, getDateStat } from '@/services/request/waybill';
 
 export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
   // state
+  const [sumChartState, setSumChartState] = useState({
+    startDate: dayjs()?.startOf('month') as any,
+    endDate: dayjs() as any,
+    displayType: '1',
+    waybillType: 'MIC',
+  });
   const [agentId, setAgentId] = useState();
   const today = dayjs()?.format('YYYY年MM月DD日');
   const thisMonth = dayjs()?.format('YYYY年MM月累計');
@@ -70,15 +41,34 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const { agentOptions } = useAgentOptions();
 
   // api
-  const getMonthStatAsync = async (agentId?: string) => {
-    return await getMonthStat({ agentId });
+  const getDateStatAsync = async (agentId: any) => {
+    return await getDateStat({
+      agentId,
+      displayType: sumChartState?.displayType,
+      startDate: sumChartState?.startDate?.format(),
+      endDate: sumChartState?.endDate?.format(),
+    });
   };
-  const mouthStatAPI = useRequest(getMonthStatAsync);
+  const mouthStatAPI = useRequest(getMonthStat);
+  const dateStatAPI = useRequest(getDateStatAsync);
 
   // action
-  const handleChangeAgent = (v: any) => {
-    setAgentId(v);
-    mouthStatAPI?.run(v);
+  const handleChangeAgent = (agentId: any) => {
+    setAgentId(agentId);
+    mouthStatAPI?.run({ agentId });
+    dateStatAPI?.run(agentId);
+  };
+  const handleChangeWaybillType = (waybillType: any) => {
+    setSumChartState({ ...sumChartState, waybillType });
+  };
+  const handleChangeDisplayType = (e: any) => {
+    setSumChartState({ ...sumChartState, displayType: e?.target?.value });
+  };
+  const handleChangeDateRange = ([startDate, endDate]: any) => {
+    setSumChartState({ ...sumChartState, startDate, endDate });
+  };
+  const handleDateStat = () => {
+    dateStatAPI?.run(agentId);
   };
 
   return (
@@ -164,27 +154,39 @@ const Dashboard: React.FC<dashboardProps> = () => {
       <br />
       <Row>
         <Col span={24}>
-          <Card size="small">
-            <Tabs
-              tabBarExtraContent={
-                <Space>
-                  <Radio.Group defaultValue="a" buttonStyle="solid">
-                    <Radio.Button value="a">本日</Radio.Button>
-                    <Radio.Button value="b">今週</Radio.Button>
-                    <Radio.Button value="c">今月</Radio.Button>
-                    <Radio.Button value="d">今年</Radio.Button>
-                  </Radio.Group>
-                  <DatePicker.RangePicker />
-                </Space>
-              }
-            >
-              <Tabs.TabPane tab="MIC" key="MIC">
-                <SumChart dataSource={[]} />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab="IDA" key="IDA">
-                <SumChart dataSource={[]} />
-              </Tabs.TabPane>
-            </Tabs>
+          <Card
+            title={
+              <Select
+                value={sumChartState.waybillType}
+                onChange={handleChangeWaybillType}
+                options={[
+                  { value: 'MIC', label: 'MIC' },
+                  { value: 'IDA', label: 'IDA' },
+                ]}
+              />
+            }
+            extra={
+              <Space>
+                <Radio.Group
+                  value={sumChartState.displayType}
+                  onChange={handleChangeDisplayType}
+                >
+                  <Radio.Button value="1">日</Radio.Button>
+                  <Radio.Button value="2">月</Radio.Button>
+                  <Radio.Button value="3">年</Radio.Button>
+                </Radio.Group>
+                <DatePicker.RangePicker
+                  value={[sumChartState.startDate, sumChartState.endDate]}
+                  onChange={handleChangeDateRange}
+                  allowClear={false}
+                />
+                <Button type="primary" onClick={handleDateStat}>
+                  更新
+                </Button>
+              </Space>
+            }
+          >
+            <SumChart dataSource={dateStatAPI?.data} />
           </Card>
         </Col>
       </Row>
@@ -214,7 +216,14 @@ const Dashboard: React.FC<dashboardProps> = () => {
               </Radio.Group>
             }
           >
-            <SKPieChart />
+            <PieChart
+              dataSource={[
+                { name: '申告STATUS 1', value: 400 },
+                { name: '申告STATUS 2', value: 300 },
+                { name: '申告STATUS 3', value: 260 },
+                { name: '未申告', value: 40 },
+              ]}
+            />
           </Card>
         </Col>
       </Row>

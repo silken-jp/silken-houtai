@@ -11,19 +11,11 @@ import {
 } from 'recharts';
 
 interface SumChartProps {
-  dataSource: any[];
+  dataSource?: API.WaybillDateStat;
 }
 
 const SumChart: React.FC<SumChartProps> = (props) => {
-  const data = [
-    { name: '2021年08月', sum: 1000, s0: 8, s1: 800, s2: 6, s3: 1 },
-    { name: '2021年09月', sum: 1234, s0: 6, s1: 800, s2: 28, s3: 1 },
-    { name: '2021年10月', sum: 1345, s0: 5, s1: 1200, s2: 52, s3: 2 },
-    { name: '2021年11月', sum: 1565, s0: 3, s1: 1200, s2: 70, s3: 3 },
-    { name: '2021年12月', sum: 2353, s0: 7, s1: 1800, s2: 30, s3: 4 },
-    { name: '2022年01月', sum: 2346, s0: 2, s1: 2000, s2: 300, s3: 3 },
-  ];
-
+  const data = props?.dataSource || [];
   return (
     <div style={{ width: '100%', height: 300 }}>
       <ResponsiveContainer>

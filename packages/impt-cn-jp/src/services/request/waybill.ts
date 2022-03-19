@@ -144,7 +144,7 @@ export async function getAllWaybillsAdvance(params?: GetAllWaybillsAdvance) {
   });
 }
 
-// 获取所有MAB运单 GET /api/waybills/month_stat
+// 获取所有MAB月度统计 GET /api/waybills/month_stat
 interface GetMonthStat {
   agentId?: API.ID;
 }
@@ -152,6 +152,22 @@ export async function getMonthStat(
   params?: GetMonthStat,
 ): Promise<API.WaybillMonthStat> {
   return request<any>(ApiURL + '/waybills/month_stat', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取waybills统计 GET /api/waybills/month_stat
+interface GetDateStat {
+  agentId?: API.ID;
+  startDate: Date;
+  endDate: Date;
+  displayType: string;
+}
+export async function getDateStat(
+  params?: GetDateStat,
+): Promise<API.WaybillDateStat> {
+  return request<any>(ApiURL + '/waybills/date_stat', {
     method: 'GET',
     params,
   });
