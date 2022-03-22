@@ -163,9 +163,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   });
   useKeyPress('F9', () => {
-    if (checkFocus()) {
-      handleAccept.run();
-    }
+    handleAccept.run();
   });
   useKeyPress('F10', () => {
     window.open(
@@ -273,6 +271,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         IDAType: '',
         NOF: 'R',
         PF: '00010544650858',
+        REF: disabled ? '' : userInfo?.name,
         ...props?.dataSource,
       }}
     >
@@ -370,14 +369,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           </Button>,
         ]}
       >
-        {disabled && (
-          <>
-            <Alert
-              message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
-            />
-            <br />
-          </>
-        )}
         <Form.Item
           shouldUpdate={(a, b) =>
             a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
@@ -391,6 +382,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             />
           )}
         </Form.Item>
+        {disabled && (
+          <Alert
+            message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
+          />
+        )}
       </Card>
     </Form>
   );

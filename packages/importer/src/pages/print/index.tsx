@@ -40,7 +40,7 @@ const ImporterPrint: React.FC<ImporterPrintProps> = () => {
             {importers?.map(({ key, ...item }) => {
               const style: React.CSSProperties = {
                 marginBottom: '1mm',
-                padding: '2mm',
+                padding: '1mm',
                 width: '86mm',
                 height: '42mm',
                 display: 'flex',
@@ -55,7 +55,10 @@ const ImporterPrint: React.FC<ImporterPrintProps> = () => {
                       <>
                         <div>〒 {item?.Zip}</div>
                         <div>{item?.address_jp}</div>
-                        <div>{item?.company_name_jp}</div>
+                        <div>
+                          <div>{item?.company_name_jp}</div>
+                          <div>ご担当者　様</div>
+                        </div>
                         <Row align="bottom" justify="space-between">
                           <Col>{item?.Tel}</Col>
                           <Col style={{ color: '#d9363e' }}>
