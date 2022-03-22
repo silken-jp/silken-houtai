@@ -51,7 +51,9 @@ const ZipAreaContentItem: React.ForwardRefRenderFunction<
           }
         }
         const zipcodes: any[] = codes.map((code) => {
-          const res = zipcodesApi?.data?.find((d: any) => d.zipcode === code);
+          const res = zipcodesApi?.data?.zipcodes?.find(
+            (d: any) => d.zipcode === code,
+          );
           return res;
         });
         return { zipcodes, count };

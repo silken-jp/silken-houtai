@@ -62,7 +62,9 @@ const Importer: React.FC = () => {
       );
       const temp = new URLSearchParams();
       temp.append('data', JSON.stringify(data));
-      window.open(window.location.origin + '#/print?' + temp);
+      window.open(
+        window.location.origin + window.location.pathname + '#/print?' + temp,
+      );
     }
   };
 
