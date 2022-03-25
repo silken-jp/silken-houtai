@@ -3,7 +3,7 @@ import { history } from 'umi';
 import { utils } from '@silken-houtai/core';
 import { checkUserLogin } from '@/services/useStorage';
 
-const loginKey = utils.STORAGE_KEY + 'userLogin';
+const loginKey = utils.STORAGE_KEY + 'agentLogin';
 
 /**
  *

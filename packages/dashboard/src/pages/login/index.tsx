@@ -4,37 +4,27 @@
 import { useState, Fragment } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Form, Input, Button, message } from 'antd';
-
-import { utils } from '@silken-houtai/core';
+////
+import { setAgentInfo } from '@/services/useStorage';
+import { agentSingIn } from '@/services/request/agent';
 import styles from './login.less';
 
 const LoginForm: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
-  // const {
-  //   userLogin: [, setUserLogin],
-  // } = wxStorageState;
-
   const onFinish = async (values: any) => {
     try {
-      await setLoading(true);
-      // const { data } = await client.query({
-      //   query: GQL.Auth.TEACHER_LOGIN,
-      //   variables: values,
-      // });
+      setLoading(true);
+      const { password, ...data } = await agentSingIn({ ...values });
       const remainingMilliseconds = 24 * 60 * 60 * 1000;
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-      // setUserLogin({ ...data.TeacherLogin, expiryDate });
-      localStorage.setItem(
-        utils.STORAGE_KEY + 'userLogin',
-        JSON.stringify({ token: 'aaa', expiryDate }),
-      );
-      await setLoading(false);
+      setAgentInfo({ ...data, expiryDate });
+      setLoading(false);
       window.location.reload();
     } catch (error: any) {
-      message.warning(error.message);
-      await setLoading(false);
+      message.error(error?.data?.message);
+      setLoading(false);
     }
   };
 
@@ -42,16 +32,16 @@ const LoginForm: React.FC = () => {
     <div className={styles.loginLayout}>
       <Form form={form} onFinish={onFinish} className={styles.form}>
         <div className={styles.login}>
-          <div className={styles.title}>物流管理系统</div>
-          <div className={styles.subtitle}>后台管理</div>
+          <div className={styles.title}>S.C.LOGISTICS</div>
+          <div className={styles.subtitle}>フォワーダーシステム</div>
           <Form.Item
-            name="email"
+            name="account"
             rules={[{ required: true, message: <Fragment /> }]}
             className={styles.FormItem}
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder="账号:admin"
+              placeholder="account"
               className={styles.input}
             />
           </Form.Item>
@@ -63,7 +53,7 @@ const LoginForm: React.FC = () => {
             <Input.Password
               prefix={<LockOutlined />}
               type="password"
-              placeholder="密码:111111"
+              placeholder="password"
               className={styles.input}
             />
           </Form.Item>
@@ -76,7 +66,7 @@ const LoginForm: React.FC = () => {
               block={true}
               className={styles.submit}
             >
-              登录
+              ログイン
             </Button>
           </Form.Item>
         </div>

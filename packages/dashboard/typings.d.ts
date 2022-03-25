@@ -8,3 +8,15 @@ declare module '*.svg' {
   const url: string;
   export default url;
 }
+
+interface agentLogin {
+  _id: string;
+  name: string;
+  account: string;
+  expiryDate: string;
+}
+
+interface OPTION {
+  value: string;
+  label: string;
+}

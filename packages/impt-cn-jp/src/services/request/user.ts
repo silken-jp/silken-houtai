@@ -40,6 +40,7 @@ export async function userSingIn(params: UserSingIn) {
       email: params?.email,
       password: params?.password,
     },
+    skipErrorHandler: true,
   });
 }
 

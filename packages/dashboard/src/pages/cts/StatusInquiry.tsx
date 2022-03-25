@@ -1,65 +1,107 @@
-import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
+import {
+  Form,
+  Table,
+  Input,
+  Button,
+  Row,
+  Col,
+  Card,
+  Space,
+  DatePicker,
+} from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
+import { getAgentInfo } from '@/services/useStorage';
+import { getStatusInquiry } from '@/services/request/waybill';
 
 const StatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
 
+  // store
+  const agentInfo = getAgentInfo();
+  const agentId = agentInfo?._id;
+
   // api
-  const getTableData = async (_: any, formData: Object) => {
-    const data: any[] = []; // await getAllWaybills(formData)
-    return { total: data.length, list: data };
+  const getTableData = async (pageData: any, formData: any) => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    const data = await getStatusInquiry({
+      page,
+      perPage,
+      agentId,
+      ...formData,
+      flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
+      flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
+    });
+    return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   return (
     <PageContainer
-      title="Status Inquiry"
+      title={agentInfo?.name}
       header={{
         breadcrumb: {
           routes: [
-            { path: '/cts/dashboard', breadcrumbName: intlMenu('cts') },
+            { path: '/cts/StatusInquiry', breadcrumbName: intlMenu('cts') },
             { path: '', breadcrumbName: 'Status Inquiry' },
           ],
         },
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item label="MAWB番号">
-              <Input />
+        <Row justify="end" gutter={16}>
+          <Col span={3}>
+            <Form.Item name="MAB">
+              <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item label="FlightNo">
-              <Input />
+          <Col span={3}>
+            <Form.Item name="flightNo">
+              <Input placeholder="FlightNo" />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item style={{ textAlign: 'right' }}>
-              <Space>
-                <Button type="primary" onClick={search.submit}>
-                  検索
-                </Button>
-                <Button onClick={search.reset}>リセット</Button>
-              </Space>
+          <Col>
+            <Form.Item name="flightStartDate">
+              <DatePicker placeholder="flight start date" />
             </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="flightEndDate">
+              <DatePicker placeholder="flight end date" />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Space>
+              <Button type="primary" onClick={search.submit}>
+                検索
+              </Button>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>
       <Card>
         <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
-          <Table.Column width={180} title="MAWB番号" />
+          <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
           <Table.Column width={180} title="FlightNo" />
-          <Table.Column width={180} title="FlightDate" />
-          <Table.Column width={180} title="個数" />
-          <Table.Column width={180} title="重量（KG）" />
-          <Table.Column width={180} title="件数" />
+          <Table.Column
+            width={180}
+            title="FlightDate"
+            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
+          />
+          <Table.Column width={180} title="件数" dataIndex="NOCount" />
+          <Table.Column width={180} title="個数" dataIndex="waybillCount" />
+          <Table.Column
+            width={180}
+            title="重量（KG）"
+            render={(row) => row?.GWCount?.toFixed(2)}
+          />
           <Table.Column width={180} title="ショート" />
           <Table.Column width={180} title="オーバー" />
           <Table.Column width={180} title="MIC許可" />

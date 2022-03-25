@@ -15,16 +15,16 @@ const LoginForm: React.FC = () => {
 
   const onFinish = async (values: any) => {
     try {
-      await setLoading(true);
+      setLoading(true);
       const { password, ...res } = await userSingIn({ ...values });
       const remainingMilliseconds = 24 * 60 * 60 * 1000;
       const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
       setUserInfo({ ...res, expiryDate });
-      await setLoading(false);
+      setLoading(false);
       window.location.reload();
     } catch (error: any) {
-      message.warning(error?.message || error);
-      await setLoading(false);
+      message.error(error?.data?.message);
+      setLoading(false);
     }
   };
 

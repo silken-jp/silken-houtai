@@ -10,6 +10,12 @@ declare namespace API {
     zipcode?: String;
     address?: String;
   };
+  type Agent = {
+    _id?: ID;
+    name?: string;
+    account?: string;
+    password?: string;
+  };
   type Driver = {
     _id?: ID;
     name?: string;
@@ -27,6 +33,28 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
   };
+  type WaybillMonthStat = {
+    mawbThisMonthCount: number;
+    mawbLastMonthCount: number;
+    mawbTodayCount: number;
+    waybillThisMonthCount: number;
+    waybillLastMonthCount: number;
+    waybillTodayCount: number;
+    NOThisMonthCount: number;
+    NOLastMonthCount: number;
+    NOTodayCount: number;
+    GWThisMonthCount: number;
+    GWLastMonthCount: number;
+    GWTodayCount: number;
+  };
+  type WaybillDateStat = Array<{
+    sum: number;
+    s0: number;
+    s1: number;
+    s2: number;
+    s3: number;
+    name: string;
+  }>;
   type Waybill = {
     _id?: ID;
     mawb_no?: string;

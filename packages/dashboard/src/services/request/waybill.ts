@@ -101,3 +101,68 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
     method: 'DELETE',
   });
 }
+
+// 获取所有MAB运单 GET /api/waybills/mawbs
+interface GetStatusInquiry extends API.Waybill {
+  page: number;
+  perPage: number;
+}
+export async function getStatusInquiry(params?: GetStatusInquiry) {
+  return request<any>(ApiURL + '/waybills/mawbs', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取运单的自定义搜索 GET /api/waybills/advance
+interface GetAllWaybillsAdvance extends API.Waybill {
+  page: number;
+  perPage: number;
+  cleaners?: string[];
+  ctsStartDate?: Date;
+  ctsEndDate?: Date;
+  blockers?: string[];
+  brcStartDate?: Date;
+  brcEndDate?: Date;
+  creators?: string[];
+  crtStartDate?: Date;
+  crtEndDate?: Date;
+  mawbs?: string;
+  hawbs?: string;
+  status?: number;
+}
+export async function getAllWaybillsAdvance(params?: GetAllWaybillsAdvance) {
+  return request<any>(ApiURL + '/waybills/advance', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取所有MAB月度统计 GET /api/waybills/month_stat
+interface GetMonthStat {
+  agentId?: API.ID;
+}
+export async function getMonthStat(
+  params?: GetMonthStat,
+): Promise<API.WaybillMonthStat> {
+  return request<any>(ApiURL + '/waybills/month_stat', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取waybills统计 GET /api/waybills/month_stat
+interface GetDateStat {
+  agentId?: API.ID;
+  startDate: Date;
+  endDate: Date;
+  displayType: string;
+}
+export async function getDateStat(
+  params?: GetDateStat,
+): Promise<API.WaybillDateStat> {
+  return request<any>(ApiURL + '/waybills/date_stat', {
+    method: 'GET',
+    params,
+  });
+}

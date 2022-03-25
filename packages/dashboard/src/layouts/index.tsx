@@ -8,7 +8,8 @@ import {
 } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
-import { useIntlFormat } from '../services/useIntl';
+import { removeAgentInfo } from '@/services/useStorage';
+// import { useIntlFormat } from '../services/useIntl';
 import styles from './index.less';
 
 const Index: React.FC = (props) => {
@@ -22,7 +23,12 @@ const Index: React.FC = (props) => {
     setCollapsed(!collapsed);
   };
 
-  const [intlMenu] = useIntlFormat('menu');
+  // const [intlMenu] = useIntlFormat('menu');
+
+  const handleLogOut = () => {
+    removeAgentInfo();
+    window.location.reload();
+  };
 
   return isFull ? (
     <>{props?.children}</>
@@ -44,8 +50,8 @@ const Index: React.FC = (props) => {
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
         >
-          <Menu.Item key="/dashboard">
-            <Link to="/dashboard">ダッシュボード</Link>
+          <Menu.Item key="/home">
+            <Link to="/home">ダッシュボード</Link>
           </Menu.Item>
           <Menu.SubMenu key="/cts" icon={<FormOutlined />} title="通関管理">
             <Menu.Item key="/cts/StatusInquiry">
@@ -96,6 +102,9 @@ const Index: React.FC = (props) => {
               </Button>
               <Button type="link" onClick={() => setLocale('ja-JP', false)}>
                 日
+              </Button>
+              <Button style={{ margin: '0 24px' }} onClick={handleLogOut}>
+                ログアウト
               </Button>
             </Col>
           </Row>
