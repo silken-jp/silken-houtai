@@ -3,7 +3,9 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills extends API.Waybill {}
+interface GetAllWaybills extends API.Waybill {
+  agent: string;
+}
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
     method: 'GET',

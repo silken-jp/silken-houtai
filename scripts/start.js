@@ -10,10 +10,10 @@ const prompts = [
     type: 'list',
     pageSize: 11,
     choices: [
-      { name: 'dashboard', value: '@sk-houtai/dashboard' },
-      { name: 'import-cn-jp', value: 'i-cn-jp' },
-      { name: 'export-jp-cn', value: 'e-jp-cn' },
-      { name: 'importer', value: 'importer' },
+      { name: 'forwarder', value: '@sk-houtai/forwarder' },
+      { name: 'import-cn-jp', value: '@sk-houtai/i-cn-jp' },
+      { name: 'export-jp-cn', value: '@sk-houtai/e-jp-cn' },
+      { name: 'importer', value: '@sk-houtai/importer' },
     ],
   },
 ];

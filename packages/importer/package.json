@@ -1,5 +1,5 @@
 {
-  "name": "importer",
+  "name": "@sk-houtai/importer",
   "version": "1.0.0",
   "private": true,
   "scripts": {

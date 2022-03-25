@@ -1,7 +1,8 @@
-import { Form, Table, Input, Button, Row, Col, Card } from 'antd';
+import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllWaybills } from '@/services/request/waybill';
 
@@ -9,14 +10,22 @@ const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const agentInfo = getAgentInfo();
 
   // api
-  const getTableData = async (_: any, formData: API.Waybill) => {
-    const data = [] || (await getAllWaybills(formData));
-    return {
-      total: data.length,
-      list: data,
+  const getTableData = async (pageData: any, formData: any) => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    const params = {
+      ...formData,
+      agent: agentInfo?._id,
+      page,
+      perPage,
+      sortField: 'createdAt',
+      sortOrder: -1,
     };
+    const data = await getAllWaybills(params);
+    return { total: data?.totalCount, list: data?.waybills?.data || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -39,33 +48,35 @@ const waybill: React.FC = () => {
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
+        <Row justify="end" gutter={16}>
+          <Col span={6}>
             <Form.Item label="HAWB番号">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
+          <Col span={6}>
             <Form.Item label="MAWB番号">
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={12} sm={12} md={12} lg={8} xxl={8}>
-            <Form.Item style={{ textAlign: 'right' }}>
+          <Col>
+            <Space>
               <Button type="primary" onClick={search.submit}>
                 検索
               </Button>
-              <Button onClick={search.reset} style={{ marginLeft: 16 }}>
-                リセット
-              </Button>
-            </Form.Item>
+              <Button onClick={search.reset}>リセット</Button>
+            </Space>
           </Col>
         </Row>
       </Form>
       <Card>
         <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
-          <Table.Column width={180} title="フォワーダー" />
-          <Table.Column width={180} title="コンメン" />
+          <Table.Column
+            width={180}
+            title="フォワーダー"
+            render={() => agentInfo?.name}
+          />
+          <Table.Column width={180} title="コンメン" />
           <Table.Column width={180} title="状態" />
           <Table.Column width={180} title="許可書" />
           <Table.Column width={180} title="HAWB番号" />

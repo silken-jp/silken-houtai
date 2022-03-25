@@ -66,21 +66,9 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/CSManagement/permit">
               <Link to="/CSManagement/permit">貨物状況確認</Link>
             </Menu.Item>
-            <Menu.Item key="/CSManagement/cargoIssues">
+            {/* <Menu.Item key="/CSManagement/cargoIssues">
               <Link to="/CSManagement/cargoIssues">貨物問題リスト</Link>
-            </Menu.Item>
-          </Menu.SubMenu>
-          <Menu.SubMenu
-            key="/delivery"
-            icon={<FormOutlined />}
-            title="配送管理"
-          >
-            <Menu.Item key="/delivery/self">
-              <Link to="/delivery/self">自社配送状況確認</Link>
-            </Menu.Item>
-            <Menu.Item key="/delivery/other">
-              <Link to="/delivery/other">他社配送状況確認</Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
