@@ -6,6 +6,6 @@ export default defineConfig({
       ApiURL: 'https://api.sclogi.jp',
     },
   },
-  publicPath: '/dashboard/',
-  outputPath: '../../public/dashboard',
+  publicPath: '/forwarder/',
+  outputPath: '../../public/forwarder',
 });

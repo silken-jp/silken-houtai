@@ -40,7 +40,7 @@ function postFocus({ no, modal, blur }: any) {
 }
 
 function checkFocus() {
-  return document.activeElement?.nodeName !== 'INPUT';
+  return document.activeElement?.nodeName === 'BODY';
 }
 
 export interface WaybillContainerProps {}
@@ -104,21 +104,21 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   }
 
   async function onSubmit(waybill_status: number, process_status: number) {
-    form
-      .validateFields()
-      .then(async (values) => {
-        await updateWaybill({
-          ...values,
-          user: userInfo?._id,
-          waybillId: props?.dataSource?._id,
-          process_status,
-          process_type: 1,
-          waybill_status,
-        });
-      })
-      .catch((err) => {
-        throw err;
+    try {
+      const values = form.getFieldsValue(true);
+      await form.validateFields();
+      await updateWaybill({
+        ...values,
+        user: userInfo?._id,
+        waybillId: props?.dataSource?._id,
+        process_status,
+        process_type: 1,
+        waybill_status,
       });
+      message.success('Accept success.');
+    } catch (err) {
+      throw err;
+    }
   }
 
   // 快捷键
@@ -163,7 +163,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   });
   useKeyPress('F9', () => {
-    handleAccept.run();
+    if (checkFocus()) {
+      handleAccept.run();
+    }
   });
   useKeyPress('F10', () => {
     window.open(
@@ -201,11 +203,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         throw 'すでに最初の件です';
       }
     } catch (error: any) {
-      if (error?.message) {
-        message.warning(error?.message);
-      } else {
-        message.warning(error);
-      }
+      throw error;
     }
   }
   async function onNext() {
@@ -217,27 +215,35 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         throw 'すでに最後の件です';
       }
     } catch (error: any) {
-      if (error?.message) {
-        message.warning(error?.message);
-      } else {
-        message.warning(error);
-      }
+      throw error;
     }
   }
   async function onHold() {
-    if (disabled) return;
-    await onNext();
-    await onSubmit(2, 0);
+    try {
+      if (disabled) return;
+      await onSubmit(2, 0);
+      await onNext();
+    } catch (error) {
+      message.warning('Hold Error');
+    }
   }
   // async function onSendBack() {
-  //   if (disabled) return;
-  //   await onNext();
-  //   await onSubmit(3,0);
+  //   try {
+  //     if (disabled) return;
+  //     await onSubmit(3,0);
+  //     await onNext();
+  //   } catch (error) {
+  //     message.warning("SendBack Error");
+  //   }
   // }
   async function onAccept() {
-    if (disabled) return;
-    await onNext();
-    await onSubmit(1, 2);
+    try {
+      if (disabled) return;
+      await onSubmit(1, 2);
+      await onNext();
+    } catch (error) {
+      message.warning('Accept Error');
+    }
   }
 
   // 执行函数 防抖处理

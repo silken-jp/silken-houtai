@@ -11,43 +11,43 @@ const AllCheckForm: React.FC<AllCheckFormProps> = (props) => {
   if (props?.formType === 'MIC') return <MICForm disabled={props?.disabled} />;
   switch (props?.IDAType) {
     case 'C':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'F':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'Y':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'H':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'N':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'J':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'P':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'S':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'M':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'A':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'G':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'K':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'D':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'U':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'L':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'B':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'E':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     case 'R':
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
     default:
-      return <AIDForm />;
+      return <AIDForm disabled={props?.disabled} />;
   }
 };
 

@@ -109,7 +109,9 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
             const source = CODE_SOURCE?.[item?.name] || [];
             const arr = source?.map((s: any) => s.value);
             let rules: any[] = [{ required: item?.required }];
-            if (arr.length > 0) {
+            if (item?.ruleType) {
+              rules.push({ type: item?.ruleType });
+            } else if (arr.length > 0) {
               rules.push({ type: 'enum', enum: ['', ...arr] });
             } else {
               rules.push({ max: item?.limit });
