@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Form } from 'antd';
-import { useAntdTable, useKeyPress } from 'ahooks';
+import { useAntdTable } from 'ahooks';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import { useHistory } from 'umi';
 ////
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
-import { getSearchParams, setSearchParams } from '@/services/useStorage';
+import {
+  getSearchParams,
+  setSearchParams,
+  setSelectedParams,
+} from '@/services/useStorage';
 
 // waybill_status ["Other","Normal","Hold","SendBack"];
 const tabList = {
@@ -91,22 +95,18 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
 
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
-  useKeyPress('enter', () => {
-    if (selectedRows?.[0]?._id) {
-      history.push(`/cts/check/${selectedRows?.[0]?._id}`);
-    }
-  });
-
   const handleTabChange = (key: string) => {
     setTabKey(key);
     search.submit();
   };
 
   const rowSelection: TableRowSelection<API.Waybill> = {
-    type: 'radio',
+    type: 'checkbox',
     fixed: true,
     selectedRowKeys,
+    preserveSelectedRowKeys: true,
     onChange: (keys: any, rows: API.Waybill[]) => {
+      setSelectedParams(LS, keys);
       setSelectedRowKeys(keys);
       setSelectedRows(rows);
     },

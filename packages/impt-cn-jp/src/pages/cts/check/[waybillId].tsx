@@ -14,7 +14,12 @@ import {
 import { useKeyPress, useRequest } from 'ahooks';
 import { Link, useParams, useHistory } from 'umi';
 ////
-import { getUserInfo, getSearchParams } from '@/services/useStorage';
+import {
+  getUserInfo,
+  getSearchParams,
+  getSelectedParams,
+  removeSelectedParams,
+} from '@/services/useStorage';
 import {
   getWaybill,
   moveWaybill,
@@ -77,6 +82,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const process_status = props?.dataSource?.process_status || 0;
   const current_processor = props?.dataSource?.current_processor || '';
   const disabled = process_status === 1 && current_processor !== userInfo?.name;
+  const search = new URLSearchParams(history.location.search);
+  const actionType = search.get('actionType');
+  const actionLS = search.get('LS');
+
   //effect
   useEffect(() => {
     const handleExit = () => onMoveWaybill(99);
@@ -94,13 +103,30 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   // action
   function onMoveWaybill(move: -1 | 1 | 99) {
-    const params = getSearchParams(props?.dataSource?.LS);
-    return moveWaybill({
-      move,
-      current_processor: userInfo?.name,
-      waybill: props?.dataSource?._id,
-      ...params,
-    });
+    if (!props?.dataSource?.LS) return;
+    if (actionType === '1') {
+      const params = getSearchParams(props.dataSource.LS);
+      return moveWaybill({
+        move,
+        current_processor: userInfo?.name,
+        waybill: props?.dataSource?._id,
+        ...params,
+      });
+    } else {
+      const selectedKeys = getSelectedParams(actionLS);
+      const index = selectedKeys?.findIndex?.(
+        (i: any) => i === props?.dataSource?._id,
+      );
+      if (move === -1) {
+        if (index === 0) return null;
+        return selectedKeys?.[index - 1];
+      } else if (move === 1) {
+        if (index === selectedKeys?.length) null;
+        return selectedKeys?.[index + 1];
+      } else if (move === 99) {
+        return removeSelectedParams(props.dataSource.LS);
+      }
+    }
   }
 
   async function onSubmit(waybill_status: number, process_status: number) {
@@ -115,9 +141,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         process_type: 1,
         waybill_status,
       });
-      message.success('Accept success.');
-    } catch (err) {
-      throw err;
+    } catch (err: any) {
+      throw 'Submit Error';
     }
   }
 
@@ -198,24 +223,24 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     try {
       const res = await onMoveWaybill(-1);
       if (res) {
-        history.replace('/cts/check/' + res);
+        history.replace('/cts/check/' + res + history.location.search);
       } else {
         throw 'すでに最初の件です';
       }
     } catch (error: any) {
-      throw error;
+      message.warning(error);
     }
   }
   async function onNext() {
     try {
       const res = await onMoveWaybill(1);
       if (res) {
-        history.replace('/cts/check/' + res);
+        history.replace('/cts/check/' + res + history.location.search);
       } else {
         throw 'すでに最後の件です';
       }
     } catch (error: any) {
-      throw error;
+      message.warning(error);
     }
   }
   async function onHold() {
@@ -223,8 +248,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       if (disabled) return;
       await onSubmit(2, 0);
       await onNext();
-    } catch (error) {
-      message.warning('Hold Error');
+      message.success('Hold Success.');
+    } catch (error: any) {
+      message.warning(error);
     }
   }
   // async function onSendBack() {
@@ -232,6 +258,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   //     if (disabled) return;
   //     await onSubmit(3,0);
   //     await onNext();
+  //    message.success('SendBack Success.');
   //   } catch (error) {
   //     message.warning("SendBack Error");
   //   }
@@ -241,8 +268,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       if (disabled) return;
       await onSubmit(1, 2);
       await onNext();
-    } catch (error) {
-      message.warning('Accept Error');
+      message.success('Accept Success.');
+    } catch (error: any) {
+      message.warning(error);
     }
   }
 

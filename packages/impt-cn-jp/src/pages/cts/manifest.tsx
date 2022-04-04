@@ -1,8 +1,9 @@
-import { Table, Button, Card, Space } from 'antd';
+import { Table, Card, Space, Row } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
-import Cleansing from '@/components/Common/Cleansing';
+import Brock, { BrockBYSource } from '@/components/Common/Brock';
+import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
 import WaybillModal from '@/components/Modal/WaybillModal';
@@ -11,8 +12,9 @@ import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
 const ManifestWaybill: React.FC = () => {
-  const { form, state, tableProps, search, cardProps } = useCTS('M');
   const [intlMenu] = useIntlFormat('menu');
+  const { form, state, tableProps, search, cardProps } = useCTS('M');
+  const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
   return (
     <PageContainer
@@ -28,6 +30,15 @@ const ManifestWaybill: React.FC = () => {
     >
       <CTSSearch form={form} search={search} />
 
+      <Row justify="end" className="sk-table-stat">
+        <Space>
+          <span>サーチ結果で実行する</span>
+          <Cleansing LS="M" />
+          <Brock LS="M" />
+          <Create type="MIC" disabled={!form.getFieldValue('MAB')} />
+        </Space>
+      </Row>
+
       <CTSStatus
         dataSource={state.meta}
         loading={tableProps?.loading}
@@ -38,11 +49,14 @@ const ManifestWaybill: React.FC = () => {
         {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="M" />
-            <Button type="primary" disabled={!form.getFieldValue('MAB')}>
-              ブローカーチェック
-            </Button>
-            <Create type="MIC" disabled={!form.getFieldValue('MAB')} />
+            <span>selected: {selected} items</span>
+            <CleansingBYSource
+              LS="M"
+              dataSource={tableProps?.rowSelection?.selectedRowKeys}
+            />
+            <BrockBYSource
+              dataSource={tableProps?.rowSelection?.selectedRowKeys}
+            />
           </Space>
         }
       >

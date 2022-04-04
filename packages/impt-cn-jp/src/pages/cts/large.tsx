@@ -1,8 +1,8 @@
-import { Table, Card, Space } from 'antd';
+import { Table, Card, Space, Row } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
-import Cleansing from '@/components/Common/Cleansing';
+import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
 import WaybillModal from '@/components/Modal/WaybillModal';
@@ -13,6 +13,7 @@ import { useCTS } from '@/services/useCTS';
 const LargeWaybill: React.FC = () => {
   const { form, state, tableProps, search, cardProps } = useCTS('L');
   const [intlMenu] = useIntlFormat('menu');
+  const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
   return (
     <PageContainer
@@ -27,6 +28,14 @@ const LargeWaybill: React.FC = () => {
     >
       <CTSSearch form={form} search={search} />
 
+      <Row justify="end" className="sk-table-stat">
+        <Space>
+          <span>サーチ結果で実行する</span>
+          <Cleansing LS="L" />
+          <Create type="IDA" disabled={!form.getFieldValue('MAB')} />
+        </Space>
+      </Row>
+
       <CTSStatus
         dataSource={state.meta}
         loading={tableProps?.loading}
@@ -37,8 +46,11 @@ const LargeWaybill: React.FC = () => {
         {...cardProps}
         tabBarExtraContent={
           <Space>
-            <Cleansing LS="L" />
-            <Create type="IDA" large disabled={!form.getFieldValue('MAB')} />
+            <span>selected: {selected} items</span>
+            <CleansingBYSource
+              LS="L"
+              dataSource={tableProps?.rowSelection?.selectedRowKeys}
+            />
           </Space>
         }
       >

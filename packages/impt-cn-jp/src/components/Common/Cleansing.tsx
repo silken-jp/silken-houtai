@@ -22,7 +22,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
         ...params,
       });
       if (res) {
-        history.push('/cts/check/' + res);
+        history.push(`/cts/check/${res}?LS=${LS}&actionType=1`);
       } else {
         throw 'この条件を満たすもの、見付かりません';
       }
@@ -38,4 +38,38 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
   );
 };
 
+export interface CleansingBYSourceProps {
+  LS: 'L' | 'S' | 'M';
+  dataSource?: any[];
+}
+
+const CleansingBYSource: React.FC<CleansingBYSourceProps> = (props) => {
+  const { LS, dataSource } = props;
+  const history = useHistory();
+
+  const handleMoveWaybill = async () => {
+    try {
+      if (dataSource?.[0]) {
+        history.push(`/cts/check/${dataSource[0]}?LS=${LS}`);
+      } else {
+        throw 'error';
+      }
+    } catch (error: any) {
+      message.warning(error);
+    }
+  };
+
+  return (
+    <Button
+      size="small"
+      type="dashed"
+      disabled={!dataSource?.length}
+      onClick={handleMoveWaybill}
+    >
+      クレンジング
+    </Button>
+  );
+};
+
+export { CleansingBYSource };
 export default Cleansing;

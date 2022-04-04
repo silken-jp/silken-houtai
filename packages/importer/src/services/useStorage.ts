@@ -42,8 +42,8 @@ export function setSearchParams(LS: string, data: any) {
   localStorage.setItem(`sk-waybill-search-${LS}`, JSON.stringify(data));
 }
 
-export function removeSearchParams() {
-  localStorage.removeItem(loginKey);
+export function removeSearchParams(LS: string) {
+  localStorage.removeItem(`sk-waybill-search-${LS}`);
 }
 
 export function getSearchParams(LS?: string) {

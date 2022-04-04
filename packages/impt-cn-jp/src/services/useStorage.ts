@@ -42,11 +42,26 @@ export function setSearchParams(LS: string, data: any) {
   localStorage.setItem(`sk-waybill-search-${LS}`, JSON.stringify(data));
 }
 
-export function removeSearchParams() {
-  localStorage.removeItem(loginKey);
+export function removeSearchParams(LS: string) {
+  localStorage.removeItem(`sk-waybill-search-${LS}`);
 }
 
 export function getSearchParams(LS?: string) {
   if (!LS) return {};
   return JSON.parse(localStorage.getItem(`sk-waybill-search-${LS}`) || '{}');
+}
+
+export function setSelectedParams(LS: string, data: any) {
+  sessionStorage.setItem(`sk-waybill-selected-${LS}`, JSON.stringify(data));
+}
+
+export function removeSelectedParams(LS: string) {
+  sessionStorage.removeItem(`sk-waybill-selected-${LS}`);
+}
+
+export function getSelectedParams(LS?: string | null) {
+  if (!LS) return {};
+  return JSON.parse(
+    sessionStorage.getItem(`sk-waybill-selected-${LS}`) || '{}',
+  );
 }
