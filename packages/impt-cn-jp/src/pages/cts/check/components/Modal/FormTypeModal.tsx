@@ -3,8 +3,9 @@ import { Form, Modal, Button } from 'antd';
 import { useKeyPress } from 'ahooks';
 ////
 import { ToolTipInput } from '../Form/CheckFormBasic';
+import { CODE_SOURCE } from '@/utils/constant';
 
-export interface FormTypeModalProps {
+export interface WaybillTypeModalProps {
   form: any;
   disabled: boolean;
 }
@@ -14,11 +15,11 @@ function postFocus({ no, modal, blur }: any) {
   channel.postMessage({ no, modal, blur });
 }
 
-const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
+const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
   const form = props?.form;
   const [visible, setVisible] = useState(false);
-  const [formType, setFormType] = useState('');
-  const [IDAType, setIDAType] = useState('');
+  const [waybill_type, setWaybillType] = useState('');
+  const [IDA_type, setIDA_type] = useState('');
   const [LS, setLS] = useState('');
   const [IC1, setIC1] = useState('');
   const [IC2, setIC2] = useState('');
@@ -31,8 +32,8 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
 
   //form type modal
   function handleOpen() {
-    setFormType(form.getFieldValue('formType'));
-    setIDAType(form.getFieldValue('IDAType'));
+    setWaybillType(form.getFieldValue('waybill_type'));
+    setIDA_type(form.getFieldValue('IDA_type'));
     setLS(form.getFieldValue('LS'));
     setIC1(form.getFieldValue('IC1') || 'R');
     setIC2(form.getFieldValue('IC2') || 'S');
@@ -43,25 +44,25 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
   }
   function handleOk() {
     const NT1 = form?.getFieldValue(
-      form.getFieldValue('formType') === formType ? 'NT1' : 'NT2',
+      form.getFieldValue('waybill_type') === waybill_type ? 'NT1' : 'NT2',
     );
     const NT2 = form?.getFieldValue(
-      form.getFieldValue('formType') === formType ? 'NT2' : 'NT1',
+      form.getFieldValue('waybill_type') === waybill_type ? 'NT2' : 'NT1',
     );
-    form.setFieldsValue({ formType, IDAType, LS, IC1, IC2, NT1, NT2 });
+    form.setFieldsValue({ waybill_type, IDA_type, LS, IC1, IC2, NT1, NT2 });
     handleCancel();
   }
   function handleChangeLS(v: string) {
     setLS(v);
     if (v === 'M') {
-      setFormType('MIC');
-      setIDAType('');
+      setWaybillType('MIC');
+      setIDA_type('');
       setIC1('R');
       setIC2('');
     }
     if (v === 'L' || v === 'S') {
-      setFormType('IDA');
-      setIDAType('');
+      setWaybillType('IDA');
+      setIDA_type('');
       setIC1('R');
       setIC2('S');
     }
@@ -106,37 +107,19 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
               { value: 'MIC', label: 'MIC' },
             ]}
             limit={3}
-            value={formType}
-            onChange={setFormType}
+            disabled={true}
+            value={waybill_type}
+            onChange={setWaybillType}
           />
         </Form.Item>
-        {formType === 'IDA' && (
+        {waybill_type === 'IDA' && (
           <>
             <Form.Item label="申告種別">
               <ToolTipInput
-                source={[
-                  { value: 'C', label: 'AID: 輸入申告（申告納税）' },
-                  { value: 'F', label: 'AID: 輸入申告（賦課課税）' },
-                  { value: 'Y', label: 'ASD: 輸入申告（少額関税無税）' },
-                  { value: 'H', label: 'AHK: 輸入（引取）申告' },
-                  { value: 'N', label: 'AHK: 特例委託輸入（引取）申告' },
-                  { value: 'J', label: 'AHT: 輸入（引取・特例）申告' },
-                  { value: 'P', label: 'AHT: 特例委託輸入（引取・特例）申告' },
-                  { value: 'S', label: 'AIS: 蔵入承認申請' },
-                  { value: 'M', label: 'AIS: 移入承認申請' },
-                  { value: 'A', label: 'AIS: 総保入承認申請' },
-                  { value: 'G', label: 'AIS: 展示等申告' },
-                  { value: 'K', label: 'AIW: 蔵出輸入申告（申告納税）' },
-                  { value: 'D', label: 'AIW: 蔵出輸入申告（賦課納税）' },
-                  { value: 'U', label: 'AIW: 移出輸入申告（申告納税）' },
-                  { value: 'L', label: 'AIW: 移出輸入申告（賦課納税）' },
-                  { value: 'B', label: 'AIW: 総保出輸入申告（申告納税）' },
-                  { value: 'E', label: 'AIW: 総保出輸入申告（賦課納税）' },
-                  { value: 'R', label: 'AST: 蔵出輸入（引取・特例）申告' },
-                ]}
+                source={CODE_SOURCE['IDA_TYPE']}
                 limit={1}
-                value={IDAType}
-                onChange={setIDAType}
+                value={IDA_type}
+                onChange={setIDA_type}
               />
             </Form.Item>
             <Form.Item label="5.IC1">
@@ -144,13 +127,7 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
                 limit={1}
                 value={IC1}
                 onChange={setIC1}
-                source={[
-                  { value: 'R', label: 'R: 一般申告（緊急通関貨物）' },
-                  { value: 'T', label: 'T: 一般申告（特別通関貨物） ' },
-                  { value: 'Y', label: 'Y: 横持ち申告' },
-                  { value: 'K', label: 'K: 横持ち申告（緊急通関貨物） ' },
-                  { value: 'E', label: 'E: 自由化申告（緊急通関貨物）' },
-                ]}
+                source={CODE_SOURCE['IC1']}
               />
             </Form.Item>
             <Form.Item label="6.IC2">
@@ -158,36 +135,18 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
                 limit={1}
                 value={IC2}
                 onChange={setIC2}
-                source={[
-                  { value: 'S', label: 'S: SP貨物（航空のみ入力可）' },
-                  { value: 'B', label: 'B: OBC貨物（航空のみ入力可）' },
-                  { value: 'L', label: 'L: 外交官貨物' },
-                  {
-                    value: 'X',
-                    label: 'X: MDA貨物（申告等種別「C」のみ入力可）',
-                  },
-                  { value: 'E', label: 'E: EMS' },
-                  { value: 'H', label: 'H: 航空郵便物' },
-                  { value: 'M', label: 'M: 海上郵便物（海上のみ入力可）' },
-                  { value: 'U', label: 'U: SAL' },
-                ]}
+                source={CODE_SOURCE['IC2']}
               />
             </Form.Item>
           </>
         )}
-        {formType === 'MIC' && (
+        {waybill_type === 'MIC' && (
           <Form.Item label="4.IC1">
             <ToolTipInput
               limit={1}
               value={IC1}
               onChange={setIC1}
-              source={[
-                { value: 'R', label: 'R: 一般申告（緊急通関貨物）' },
-                { value: 'T', label: 'T: 一般申告（特別通関貨物） ' },
-                { value: 'Y', label: 'Y: 横持ち申告' },
-                { value: 'K', label: 'K: 横持ち申告（緊急通関貨物） ' },
-                { value: 'E', label: 'E: 自由化申告（緊急通関貨物）' },
-              ]}
+              source={CODE_SOURCE['IC2']}
             />
           </Form.Item>
         )}
@@ -199,4 +158,4 @@ const FormTypeModal: React.FC<FormTypeModalProps> = (props) => {
   );
 };
 
-export default FormTypeModal;
+export default WaybillTypeModal;

@@ -79,17 +79,18 @@ declare namespace API {
     receiver_tel?: string;
     receiver_zip?: string;
     track_history?: any[];
-    io_type: 0 | 1;
-    waybill_type: 0 | 1;
-    LS?: 'L' | 'S' | 'M';
-    process_status: number;
-    waybill_input_time?: string;
-    waybill_status: number;
     createdAt?: string;
     updatedAt?: string;
     current_processor?: string;
+    io_type: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
+    waybill_type: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
+    IDA_type: string; // IDA类型
+    process_status: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
+    waybill_input_time?: string;
+    waybill_status: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
 
     flightNo?: string;
+    LS?: 'L' | 'S' | 'M';
     VSN?: string;
     ARR?: string;
     MAB?: string;

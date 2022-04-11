@@ -135,6 +135,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       await form.validateFields();
       await updateWaybill({
         ...values,
+        waybill_type: 1, // TODO: api改为string后删除
         user: userInfo?._id,
         waybillId: props?.dataSource?._id,
         process_status,
@@ -149,8 +150,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   // 快捷键
   useKeyPress('e', () => {
     if (checkFocus()) {
-      form.getFieldValue('formType') === 'IDA' && postFocus({ no: '14.' });
-      form.getFieldValue('formType') === 'MIC' && postFocus({ no: '50.' });
+      const waybill_type = form.getFieldValue('waybill_type');
+      waybill_type === 'IDA' && postFocus({ no: '14.' });
+      waybill_type === 'MIC' && postFocus({ no: '50.' });
     }
   });
   useKeyPress('h', () => {
@@ -178,11 +180,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       setCommandState({ visible: true, command: '' });
     } else {
       const no = (document.activeElement as HTMLInputElement)?.dataset?.no;
-      const formType = form.getFieldValue('formType');
-      if (formType === 'IDA' && (no === '13' || no === '14')) {
+      const waybill_type = form.getFieldValue('waybill_type');
+      if (waybill_type === 'IDA' && (no === '13' || no === '14')) {
         postFocus({ modal: 'search' });
       }
-      if (formType === 'MIC' && (no === '9' || no === '10')) {
+      if (waybill_type === 'MIC' && (no === '9' || no === '10')) {
         postFocus({ modal: 'search' });
       }
     }
@@ -301,12 +303,14 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       size="small"
       form={form}
       initialValues={{
-        formType: ['IDA', 'MIC'][props?.dataSource?.waybill_type || 1],
-        IDAType: '',
         NOF: 'R',
         PF: '00010544650858',
         REF: disabled ? '' : userInfo?.name,
         ...props?.dataSource,
+        // TODO: api改为string后删除
+        waybill_type: { L: 'IDA', S: 'IDA', M: 'MIC' }[
+          props?.dataSource?.LS || 'M'
+        ],
       }}
     >
       <Modal
@@ -355,20 +359,21 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             <Form.Item
               noStyle
               shouldUpdate={(a, b) =>
-                a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
+                a?.waybill_type !== b?.waybill_type ||
+                a?.IDA_type !== b?.IDA_type
               }
             >
               {({ getFieldValue }) => {
-                const formType = getFieldValue('formType');
-                const IDAType = getFieldValue('IDAType');
+                const waybill_type = getFieldValue('waybill_type');
+                const IDA_type = getFieldValue('IDA_type');
                 const LS = getFieldValue('LS');
                 const IC1 = getFieldValue('IC1');
                 const IC2 = getFieldValue('IC2');
                 return (
                   <Space>
                     {LS && <span>L・S・M識別: {LS}</span>}
-                    {formType && <span>業務コード: {formType}</span>}
-                    {IDAType && <span>申告種別: {IDAType}</span>}
+                    {waybill_type && <span>業務コード: {waybill_type}</span>}
+                    {IDA_type && <span>申告種別: {IDA_type}</span>}
                     {IC1 && <span>申告先種別コード:{IC1}</span>}
                     {IC2 && <span>申告貨物識別:{IC2}</span>}
                   </Space>
@@ -405,13 +410,13 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       >
         <Form.Item
           shouldUpdate={(a, b) =>
-            a?.formType !== b?.formType || a?.IDAType !== b?.IDAType
+            a?.waybill_type !== b?.waybill_type || a?.IDA_type !== b?.IDA_type
           }
         >
           {({ getFieldValue }) => (
             <AllCheckForm
-              formType={getFieldValue('formType')}
-              IDAType={getFieldValue('IDAType')}
+              waybill_type={getFieldValue('waybill_type')}
+              IDA_type={getFieldValue('IDA_type')}
               disabled={disabled}
             />
           )}
