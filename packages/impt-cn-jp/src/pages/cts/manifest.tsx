@@ -1,4 +1,4 @@
-import { Table, Card, Space, Row } from 'antd';
+import { Table, Card, Space, Row, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
@@ -15,6 +15,9 @@ const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
   const { form, state, tableProps, search, cardProps } = useCTS('M');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
+
+  const status = form.getFieldValue('status');
+  const MAB = form.getFieldValue('MAB');
 
   return (
     <PageContainer
@@ -33,9 +36,9 @@ const ManifestWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="M" />
-          <Brock LS="M" />
-          <Create type="MIC" disabled={!form.getFieldValue('MAB')} />
+          <Cleansing LS="M" disabled={![, '0'].includes(status)} />
+          <Brock LS="M" disabled={![, '1', '2'].includes(status)} />
+          <Create type="MIC" disabled={!MAB} />
         </Space>
       </Row>
 
@@ -50,11 +53,15 @@ const ManifestWaybill: React.FC = () => {
         tabBarExtraContent={
           <Space>
             <span>selected: {selected} items</span>
+            <Button size="small" type="link" onClick={state.handleClear}>
+              clear
+            </Button>
             <CleansingBYSource
               LS="M"
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             <BrockBYSource
+              LS="M"
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
           </Space>

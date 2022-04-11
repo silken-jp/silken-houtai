@@ -39,6 +39,7 @@ const MICkeyForm: React.FC<MICkeyFormProps> = (props) => {
             <Form.Item noStyle name={['price', 1]}>
               <InputNumber placeholder="max" min={1} />
             </Form.Item>
+            <span>円</span>
           </Space>
         </Form.Item>
         <Form.Item label="key-words" name="words" rules={[{ required: true }]}>

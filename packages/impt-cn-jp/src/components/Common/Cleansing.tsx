@@ -6,10 +6,11 @@ import { moveWaybill } from '@/services/request/waybill';
 
 export interface CleansingProps {
   LS: 'L' | 'S' | 'M';
+  disabled: boolean;
 }
 
 const Cleansing: React.FC<CleansingProps> = (props) => {
-  const { LS } = props;
+  const { LS, disabled } = props;
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
@@ -32,7 +33,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
   };
 
   return (
-    <Button type="primary" onClick={handleMoveWaybill}>
+    <Button type="primary" onClick={handleMoveWaybill} disabled={disabled}>
       クレンジング
     </Button>
   );
@@ -40,11 +41,12 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
 
 export interface CleansingBYSourceProps {
   LS: 'L' | 'S' | 'M';
+  disabled?: boolean;
   dataSource?: any[];
 }
 
 const CleansingBYSource: React.FC<CleansingBYSourceProps> = (props) => {
-  const { LS, dataSource } = props;
+  const { LS, dataSource, disabled } = props;
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
@@ -63,7 +65,7 @@ const CleansingBYSource: React.FC<CleansingBYSourceProps> = (props) => {
     <Button
       size="small"
       type="dashed"
-      disabled={!dataSource?.length}
+      disabled={disabled || !dataSource?.length}
       onClick={handleMoveWaybill}
     >
       クレンジング

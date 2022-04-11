@@ -6,10 +6,11 @@ import { moveWaybill } from '@/services/request/waybill';
 
 export interface BrockProps {
   LS: 'L' | 'S' | 'M';
+  disabled: boolean;
 }
 
 const Brock: React.FC<BrockProps> = (props) => {
-  const { LS } = props;
+  const { LS, disabled } = props;
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
@@ -33,18 +34,20 @@ const Brock: React.FC<BrockProps> = (props) => {
   };
 
   return (
-    <Button type="primary" onClick={handleMoveWaybill}>
+    <Button type="primary" onClick={handleMoveWaybill} disabled={disabled}>
       ブローカーチェック
     </Button>
   );
 };
 
 export interface BrockBYSourceProps {
+  LS: 'L' | 'S' | 'M';
+  disabled?: boolean;
   dataSource?: any[];
 }
 
 const BrockBYSource: React.FC<BrockBYSourceProps> = (props) => {
-  const { dataSource } = props;
+  const { LS, dataSource, disabled } = props;
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
@@ -64,7 +67,7 @@ const BrockBYSource: React.FC<BrockBYSourceProps> = (props) => {
     <Button
       size="small"
       type="dashed"
-      disabled={!dataSource?.length}
+      disabled={disabled || !dataSource?.length}
       onClick={handleMoveWaybill}
     >
       ブローカーチェック

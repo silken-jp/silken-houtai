@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Form } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import { useHistory } from 'umi';
 ////
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 import {
@@ -46,10 +45,8 @@ const tabList = {
 };
 
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
-  const history = useHistory();
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState(LS === 'M' ? 'MIC' : 'AID');
-  const [selectedRows, setSelectedRows] = useState<API.Waybill[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [meta, setMeta] = useState({
     totalCount: 0,
@@ -100,15 +97,19 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     search.submit();
   };
 
+  const handleClear = () => {
+    setSelectedParams(LS, []);
+    setSelectedRowKeys([]);
+  };
+
   const rowSelection: TableRowSelection<API.Waybill> = {
     type: 'checkbox',
     fixed: true,
     selectedRowKeys,
     preserveSelectedRowKeys: true,
-    onChange: (keys: any, rows: API.Waybill[]) => {
+    onChange: (keys: any) => {
       setSelectedParams(LS, keys);
       setSelectedRowKeys(keys);
-      setSelectedRows(rows);
     },
   };
 
@@ -118,6 +119,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     state: {
       tabKey,
       meta,
+      handleClear,
     },
     tableProps: {
       ...tableProps,
