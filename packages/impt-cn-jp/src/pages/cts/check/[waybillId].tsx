@@ -311,6 +311,18 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         waybill_type: { L: 'IDA', S: 'IDA', M: 'MIC' }[
           props?.dataSource?.LS || 'M'
         ],
+        cardList: [
+          {
+            CMD: '980000000',
+            CM2: '0',
+            CMN: props?.dataSource?.CMN,
+          },
+          {
+            CMD: '980000000',
+            CM2: '0',
+            CMN: '',
+          },
+        ],
       }}
     >
       <Modal

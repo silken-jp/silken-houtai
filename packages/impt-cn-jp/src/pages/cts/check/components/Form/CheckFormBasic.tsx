@@ -7,6 +7,7 @@ import { CODE_SOURCE } from '@/utils/constant';
 export interface CheckFormProps {
   dataSource: any[][];
   disabled?: boolean;
+  basicName?: any[];
 }
 
 interface ToolTipInputProps {
@@ -116,13 +117,14 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
             } else {
               rules.push({ max: item?.limit });
             }
+            const name = [...(props?.basicName || []), item?.name];
             return (
               <Form.Item
                 className="form-hidden-message"
                 key={item?.no}
                 style={{ marginBottom: 0 }}
                 label={`${item?.no}.${item?.name}`}
-                name={item?.name}
+                name={name}
                 rules={rules}
               >
                 <ToolTipInput
