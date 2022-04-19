@@ -110,8 +110,15 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
             const source = CODE_SOURCE?.[item?.name] || [];
             const arr = source?.map((s: any) => s.value);
             let rules: any[] = [{ required: item?.required }];
-            if (item?.ruleType) {
-              rules.push({ type: item?.ruleType });
+            if (item?.ruleType === 'number') {
+              rules.push({
+                validator: async (_: any, value: any) => {
+                  // const reg = "^[0-9]+(.[0-9]{1})?$"
+                  if (value) {
+                    return Promise.resolve();
+                  }
+                },
+              });
             } else if (arr.length > 0) {
               rules.push({ type: 'enum', enum: ['', ...arr] });
             } else {

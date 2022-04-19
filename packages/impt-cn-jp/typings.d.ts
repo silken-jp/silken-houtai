@@ -9,14 +9,7 @@ declare module '*.svg' {
   export default url;
 }
 
-interface userLogin {
-  _id: string;
-  name: string;
-  email: string;
-  tel: string;
-  is_cleanser: boolean;
-  is_broker: boolean;
-  is_creator: boolean;
+interface userLogin extends API.User {
   expiryDate: string;
 }
 

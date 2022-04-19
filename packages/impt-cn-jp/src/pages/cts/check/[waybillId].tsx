@@ -141,6 +141,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         process_status,
         process_type: 1,
         waybill_status,
+        REF: values?.REF + ' ' + userInfo?.initialName,
       });
     } catch (err: any) {
       throw 'Submit Error';
@@ -368,6 +369,20 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 ]
               }
             </Tag>
+            {process_status > 1 && (
+              <Tag>
+                {
+                  [
+                    'wait cleansing',
+                    'doing cleansing',
+                    'done cleansing',
+                    'doing broker check',
+                    'done broker check',
+                    'done created',
+                  ][process_status]
+                }
+              </Tag>
+            )}
             <Form.Item
               noStyle
               shouldUpdate={(a, b) =>

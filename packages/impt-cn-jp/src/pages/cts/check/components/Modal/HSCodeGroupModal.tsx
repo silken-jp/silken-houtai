@@ -71,14 +71,16 @@ const DeepList: React.FC<{ cardKey: number }> = (props) => {
           <MinusCircleOutlined />
         </Button>
       )}
-      <Button
-        type="text"
-        onClick={() => {
-          deepList.insert(index + 1, '');
-        }}
-      >
-        <PlusCircleOutlined />
-      </Button>
+      {deepList.list.length < 6 && (
+        <Button
+          type="text"
+          onClick={() => {
+            deepList.insert(index + 1, '');
+          }}
+        >
+          <PlusCircleOutlined />
+        </Button>
+      )}
     </Space>
   );
 
@@ -111,14 +113,16 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
               <MinusCircleOutlined />
             </Button>
           )}
-          <Button
-            type="text"
-            onClick={() => {
-              cardList.insert(index + 1, '');
-            }}
-          >
-            <PlusCircleOutlined />
-          </Button>
+          {cardList.list.length < 99 && (
+            <Button
+              type="text"
+              onClick={() => {
+                cardList.insert(index + 1, '');
+              }}
+            >
+              <PlusCircleOutlined />
+            </Button>
+          )}
         </div>
       }
     >

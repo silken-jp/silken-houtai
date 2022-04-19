@@ -21,6 +21,7 @@ export async function createUser(params: CreateUser) {
     method: 'POST',
     data: {
       name: params?.name,
+      initialName: params?.initialName,
       tel: params?.tel,
       email: params?.email,
       password: params?.password,
@@ -53,6 +54,7 @@ export async function updateUser(params: UpdateUser) {
     method: 'PATCH',
     data: {
       name: params?.name,
+      initialName: params?.initialName,
       tel: params?.tel,
       email: params?.email,
       password: params?.password,

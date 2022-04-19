@@ -29,7 +29,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
     startDate: dayjs()?.startOf('month') as any,
     endDate: dayjs() as any,
     displayType: '1',
-    waybillType: '',
+    waybillType: undefined,
   });
   const [agentId, setAgentId] = useState();
   const today = dayjs()?.format('YYYY年MM月DD日');
@@ -160,6 +160,8 @@ const Dashboard: React.FC<dashboardProps> = () => {
                 value={sumChartState.waybillType}
                 onChange={handleChangeWaybillType}
                 allowClear
+                placeholder="MIC/IDA"
+                style={{ width: 100 }}
                 options={[
                   { value: 'MIC', label: 'MIC' },
                   { value: 'IDA', label: 'IDA' },

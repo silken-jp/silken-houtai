@@ -88,6 +88,11 @@ const StatusInquiry: React.FC = () => {
       >
         <Table rowKey="_id" {...tableProps}>
           <Table.Column width={300} title="ユーザー名" dataIndex="name" />
+          <Table.Column
+            width={300}
+            title="initialName"
+            dataIndex="initialName"
+          />
           <Table.Column title="メール" dataIndex="email" />
           <Table.Column
             title="cleanser"

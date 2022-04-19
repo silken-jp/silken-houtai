@@ -19,6 +19,7 @@ declare namespace API {
   type User = {
     _id?: ID;
     name?: string;
+    initialName?: string;
     tel?: string;
     email?: string;
     password?: string;
