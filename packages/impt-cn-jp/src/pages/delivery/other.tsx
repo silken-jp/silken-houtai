@@ -13,6 +13,7 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import dayjs from 'dayjs';
 ////
+import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
 import { getDeliveries } from '@/services/request/delivery';
 
@@ -70,7 +71,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={intlMenu('delivery.other')}>
+      <Card title={intlMenu('delivery.other')} extra={<UploadDeliveryFile />}>
         <Table {...tableProps} rowKey="_id">
           <Table.Column title="status" render={(row) => STATUS[row?.status]} />
           <Table.Column title="waybill" dataIndex="waybill" />
