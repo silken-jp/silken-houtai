@@ -59,12 +59,12 @@ const StatusInquiry: React.FC = () => {
         <Row justify="end" gutter={16}>
           <Col span={4}>
             <Form.Item name="name">
-              <Input placeholder="ユーザー名" />
+              <Input placeholder="名前" />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item name="tel">
-              <Input placeholder="電話" />
+            <Form.Item name="initialName">
+              <Input placeholder="initialName" />
             </Form.Item>
           </Col>
           <Col>
@@ -87,7 +87,7 @@ const StatusInquiry: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={300} title="ユーザー名" dataIndex="name" />
+          <Table.Column width={300} title="名前" dataIndex="name" />
           <Table.Column
             width={300}
             title="initialName"
