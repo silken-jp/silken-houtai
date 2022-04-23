@@ -108,9 +108,10 @@ declare namespace API {
     receiver_tel?: string;
     receiver_zip?: string;
     track_history?: any[];
-    io_type: 0 | 1;
-    waybill_type: 0 | 1;
-    LS?: 'L' | 'S';
+    io_type?: number;
+    waybill_type?: number;
+    waybill_status?: number;
+    LS?: 'L' | 'S' | 'M';
   };
   type Importer = {
     _id?: ID;

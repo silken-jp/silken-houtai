@@ -120,6 +120,8 @@ export async function getStatusInquiry(params?: GetStatusInquiry) {
 interface GetAllWaybillsAdvance extends API.Waybill {
   page: number;
   perPage: number;
+  sortField: string;
+  sortOrder: number;
   cleaners?: string[];
   ctsStartDate?: Date;
   ctsEndDate?: Date;
