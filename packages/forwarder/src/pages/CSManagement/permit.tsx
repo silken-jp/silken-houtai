@@ -140,7 +140,7 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder="項目名"
                 options={[
-                  { label: 'FLIGHT NO', value: '1', disabled: true },
+                  { label: 'FLIGHT NO', value: 'VSN' },
                   { label: '個数', value: 'NO' },
                   { label: '重量（KG）', value: 'GW' },
                   { label: '審査検査区分', value: '2', disabled: true },
@@ -202,7 +202,7 @@ const waybill: React.FC = () => {
             title="フォワーダー"
             render={() => agentInfo?.name}
           /> */}
-          <Table.Column width={180} title="コンメン" />
+          <Table.Column width={180} title="コメント" />
           <Table.Column width={180} title="状態" />
           <Table.Column width={180} title="許可書" />
           <Table.Column width={180} title="HAWB番号" dataIndex="HAB" />
@@ -218,24 +218,17 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="社内整理番号" />
           <Table.Column width={180} title="タイプ" />
           <Table.Column width={180} title="識別" dataIndex="waybill_type" />
-          <Table.Column width={180} title="FLIGHT NO" />
-          <Table.Column width={180} title="FLIGHT DATE" />
-          <Table.Column width={180} title="申告番号" />
+          <Table.Column width={180} title="FLIGHT NO" dataIndex="VSN" />
+          <Table.Column width={180} title="FLIGHT DATE" dataIndex="DATE" />
+          <Table.Column width={180} title="申告番号" dataIndex="ICN" />
           <Table.Column width={180} title="個数" dataIndex="NO" />
           <Table.Column width={180} title="重量（ＫＧ）" dataIndex="GW" />
-          <Table.Column width={180} title="審査検査区分" />
-          <Table.Column width={180} title="関税" />
-          <Table.Column width={180} title="消費税" />
-          <Table.Column width={180} title="地方消費税" />
-          <Table.Column width={180} title="納税額合計" />
-          <Table.Column width={180} title="申告等種別" />
-          <Table.Column width={180} title="大額・少額識別" />
-          <Table.Column width={180} title="申告先種別コード" />
-          <Table.Column width={180} title="口座識別" />
-          <Table.Column width={180} title="納付方法" />
-          <Table.Column width={180} title="通関蔵置場" />
-          <Table.Column width={180} title="記事（税関用）" />
-          <Table.Column width={180} title="作成日時" />
+          <Table.Column width={180} title="審査検査区分" render={() => '3k'} />
+          <Table.Column width={180} title="関税" render={() => 0} />
+          <Table.Column width={180} title="消費税" render={() => 0} />
+          <Table.Column width={180} title="地方消費税" render={() => 0} />
+          <Table.Column width={180} title="納税額合計" render={() => 0} />
+          <Table.Column width={180} title="作成日時" dataIndex="createAt" />
         </Table>
       </Card>
     </PageContainer>
