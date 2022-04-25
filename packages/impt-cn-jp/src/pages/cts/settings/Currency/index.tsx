@@ -20,7 +20,7 @@ const failedFormat = (success: boolean, failedNo: string[]) => ({
 });
 
 function fixItemToObj(params: any[]) {
-  let waybills = [];
+  let res = [];
   const headers: string[] = params[0];
   for (let i = 1; i < params.length; i++) {
     const line = params?.[i];
@@ -31,9 +31,9 @@ function fixItemToObj(params: any[]) {
         obj[headers?.[j]?.trim?.()] = line?.[j]?.toString?.();
       }
     }
-    waybills.push(obj);
+    res.push(obj);
   }
-  return waybills;
+  return res;
 }
 
 const Currency: React.FC = () => {
@@ -48,7 +48,7 @@ const Currency: React.FC = () => {
       list: data,
     };
   };
-  const { tableProps } = useAntdTable(getTableData);
+  const { tableProps, refresh } = useAntdTable(getTableData);
 
   async function handleUpload(arr: any[]) {
     arr.splice(0, 4, [
@@ -63,8 +63,8 @@ const Currency: React.FC = () => {
     const { successCount: count, failedNo } = await importMultiCurrency({
       currencies,
     });
-    const success =
-      count > 0 ? successFormat(count, currencies.length - 1) : null;
+    refresh();
+    const success = count > 0 ? successFormat(count, currencies.length) : null;
     const failed =
       failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
 
