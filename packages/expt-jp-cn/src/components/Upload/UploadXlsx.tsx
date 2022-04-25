@@ -13,14 +13,14 @@ interface UploadXlsxProps {
 const key = 'uploadXlsx';
 
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
-  const text = props?.text || '导入';
+  const text = props?.text || 'upload';
   const handleUpload = async (jsonArr: any[]) => {
     const sum = jsonArr?.length - 1;
     try {
       notification.open({
         key,
-        message: `正在导入`,
-        description: `本次导入共计 ${sum} 条数据，请稍作等待`,
+        message: `uploading`,
+        description: `Please wait for a total of ${sum} data to be imported.`,
         duration: null,
         placement: 'bottomRight',
       });
@@ -43,7 +43,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
     } catch (error: any) {
       notification.open({
         key,
-        message: '导入失败',
+        message: 'Upload failed',
         description: JSON.stringify(error?.message),
         duration: null,
         placement: 'bottomRight',
@@ -65,7 +65,8 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       // XLSX自带了一个工具把导入的数据转成json
       var jsonArr = XLSX.utils.sheet_to_json(first_worksheet, {
         header: 1,
-        raw: false,
+        raw: true,
+        blankrows: false,
       });
       handleUpload(jsonArr);
     };

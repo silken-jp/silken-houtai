@@ -27,6 +27,15 @@ declare namespace API {
     is_broker?: boolean;
     is_creator?: boolean;
   };
+  type Currency = {
+    _id?: ID;
+    country_name?: string;
+    currency_name?: string;
+    ISO?: string;
+    per_jpy?: string;
+    hundred_jpy?: string;
+    updatedAt?: string;
+  };
   type Driver = {
     _id?: ID;
     name?: string;
