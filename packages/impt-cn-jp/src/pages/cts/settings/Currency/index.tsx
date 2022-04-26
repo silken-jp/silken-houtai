@@ -51,7 +51,7 @@ const Currency: React.FC = () => {
   const { tableProps, refresh } = useAntdTable(getTableData);
 
   async function handleUpload(arr: any[]) {
-    arr.splice(0, 4, [
+    arr.unshift([
       '',
       'country_name',
       'currency_name',

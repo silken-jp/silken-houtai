@@ -3,6 +3,9 @@ import { Layout, Menu, Row, Col, Button } from 'antd';
 import {
   CloudFilled,
   FormOutlined,
+  SendOutlined,
+  ProfileOutlined,
+  DashboardOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
 } from '@ant-design/icons';
@@ -50,17 +53,17 @@ const Index: React.FC = (props) => {
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
         >
-          <Menu.Item key="/home">
+          <Menu.Item key="/home" icon={<DashboardOutlined />}>
             <Link to="/home">ダッシュボード</Link>
           </Menu.Item>
-          <Menu.SubMenu key="/cts" icon={<FormOutlined />} title="通関管理">
+          <Menu.SubMenu key="/cts" icon={<ProfileOutlined />} title="通関管理">
             <Menu.Item key="/cts/StatusInquiry">
               <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
           </Menu.SubMenu>
           <Menu.SubMenu
             key="/CSManagement"
-            icon={<FormOutlined />}
+            icon={<SendOutlined />}
             title="CS管理"
           >
             <Menu.Item key="/CSManagement/permit">
