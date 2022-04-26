@@ -11,7 +11,8 @@ import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
 const SmallWaybill: React.FC = () => {
-  const { form, state, tableProps, search, cardProps } = useCTS('S');
+  const { form, state, tableProps, search, cardProps, disActions } =
+    useCTS('S');
   const [intlMenu] = useIntlFormat('menu');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
@@ -31,8 +32,8 @@ const SmallWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="L" />
-          <Create type="IDA" disabled={!form.getFieldValue('MAB')} />
+          <Cleansing LS="L" disabled={disActions.cleansing} />
+          <Create type="IDA" disabled={disActions.create} />
         </Space>
       </Row>
 

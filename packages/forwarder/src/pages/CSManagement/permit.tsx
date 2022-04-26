@@ -215,7 +215,6 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="お問い合わせ番号" />
           <Table.Column width={180} title="追跡" />
           <Table.Column width={180} title="配送業者" />
-          <Table.Column width={180} title="社内整理番号" />
           <Table.Column width={180} title="タイプ" />
           <Table.Column width={180} title="識別" dataIndex="waybill_type" />
           <Table.Column width={180} title="FLIGHT NO" dataIndex="VSN" />
@@ -223,7 +222,7 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="申告番号" dataIndex="ICN" />
           <Table.Column width={180} title="個数" dataIndex="NO" />
           <Table.Column width={180} title="重量（ＫＧ）" dataIndex="GW" />
-          <Table.Column width={180} title="審査検査区分" render={() => '3k'} />
+          <Table.Column width={180} title="審査検査区分" />
           <Table.Column width={180} title="関税" render={() => 0} />
           <Table.Column width={180} title="消費税" render={() => 0} />
           <Table.Column width={180} title="地方消費税" render={() => 0} />

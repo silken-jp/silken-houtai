@@ -125,6 +125,11 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       ...tableProps,
       rowSelection,
     },
+    disActions: {
+      cleansing: form.getFieldValue('status') !== '0',
+      brock: form.getFieldValue('status') !== '2',
+      create: !form.getFieldValue('mawbs'),
+    },
     cardProps: {
       tabList: tabList[LS],
       onTabChange: handleTabChange,

@@ -13,11 +13,9 @@ import { useCTS } from '@/services/useCTS';
 
 const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
-  const { form, state, tableProps, search, cardProps } = useCTS('M');
+  const { form, state, tableProps, search, cardProps, disActions } =
+    useCTS('M');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
-
-  const status = form.getFieldValue('status');
-  const MAB = form.getFieldValue('MAB');
 
   return (
     <PageContainer
@@ -36,9 +34,9 @@ const ManifestWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="M" disabled={![, '0'].includes(status)} />
-          <Brock LS="M" disabled={![, '1', '2'].includes(status)} />
-          <Create type="MIC" disabled={!MAB} />
+          <Cleansing LS="M" disabled={disActions.cleansing} />
+          <Brock LS="M" disabled={disActions.brock} />
+          <Create type="MIC" disabled={disActions.create} />
         </Space>
       </Row>
 
