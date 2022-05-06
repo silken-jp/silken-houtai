@@ -35,7 +35,7 @@ const Brock: React.FC<BrockProps> = (props) => {
 
   return (
     <Button type="primary" onClick={handleMoveWaybill} disabled={disabled}>
-      ブローカーチェック
+      マスブローカーチェック
     </Button>
   );
 };
@@ -70,7 +70,7 @@ const BrockBYSource: React.FC<BrockBYSourceProps> = (props) => {
       disabled={disabled || !dataSource?.length}
       onClick={handleMoveWaybill}
     >
-      ブローカーチェック
+      シングルブローカーチェック
     </Button>
   );
 };

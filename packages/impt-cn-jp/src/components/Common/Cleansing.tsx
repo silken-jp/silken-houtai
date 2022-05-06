@@ -34,7 +34,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
 
   return (
     <Button type="primary" onClick={handleMoveWaybill} disabled={disabled}>
-      クレンジング
+      マスクレンジング
     </Button>
   );
 };
@@ -68,7 +68,7 @@ const CleansingBYSource: React.FC<CleansingBYSourceProps> = (props) => {
       disabled={disabled || !dataSource?.length}
       onClick={handleMoveWaybill}
     >
-      クレンジング
+      シングルクレンジング
     </Button>
   );
 };

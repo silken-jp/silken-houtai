@@ -1,8 +1,7 @@
-import { Table, Card, Space, Row, Button } from 'antd';
+import { Table, Card, Space, Row } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
-import Brock, { BrockBYSource } from '@/components/Common/Brock';
 import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
@@ -11,20 +10,19 @@ import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
-const ManifestWaybill: React.FC = () => {
-  const [intlMenu] = useIntlFormat('menu');
+const SmallWaybill: React.FC = () => {
   const { form, state, tableProps, search, cardProps, disActions } =
-    useCTS('M');
+    useCTS('S');
+  const [intlMenu] = useIntlFormat('menu');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
   return (
     <PageContainer
       header={{
-        title: 'Manifest',
         breadcrumb: {
           routes: [
-            { path: `/cts/manifest`, breadcrumbName: intlMenu('cts') },
-            { path: '', breadcrumbName: 'Manifest' },
+            { path: `/cts/small`, breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Small' },
           ],
         },
       }}
@@ -34,16 +32,15 @@ const ManifestWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="M" disabled={disActions.cleansing} />
-          <Brock LS="M" disabled={disActions.brock} />
-          <Create type="MIC" disabled={disActions.create} />
+          <Cleansing LS="L" disabled={disActions.cleansing} />
+          <Create LS="S" disabled={disActions.create} />
         </Space>
       </Row>
 
       <CTSStatus
         dataSource={state.meta}
         loading={tableProps?.loading}
-        type="MIC"
+        type="IDA"
       />
 
       <Card
@@ -51,15 +48,13 @@ const ManifestWaybill: React.FC = () => {
         tabBarExtraContent={
           <Space>
             <span>selected: {selected} items</span>
-            <Button size="small" type="link" onClick={state.handleClear}>
-              clear
-            </Button>
             <CleansingBYSource
-              LS="M"
+              LS="S"
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            <BrockBYSource
-              LS="M"
+            <Create
+              LS="S"
+              useSource
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
           </Space>
@@ -74,20 +69,21 @@ const ManifestWaybill: React.FC = () => {
           {state.tabKey === 'Other' && (
             <Table.Column title="コントローラー" dataIndex="" />
           )}
+          <Table.Column title="書類作成者" dataIndex="" />
           <Table.Column title="クレンザー" dataIndex="cleanserName" />
           <Table.Column
             title="クレンジング時間"
             render={(row) => dayFormat(row?.clsDate)}
           />
-          <Table.Column title="ブローカー" dataIndex="brokerName" />
-          <Table.Column
-            title="ブローカーチェック時間"
-            render={(row) => dayFormat(row?.brcDate)}
-          />
           <Table.Column title="クリエーター" dataIndex="creatorName" />
           <Table.Column
             title="クリエート時間"
             render={(row) => dayFormat(row?.crtDate)}
+          />
+          <Table.Column title="ブローカー" dataIndex="brokerName" />
+          <Table.Column
+            title="ブローカーチェック時間"
+            render={(row) => dayFormat(row?.brcDate)}
           />
           <Table.Column title="申告番号" dataIndex="" />
           <Table.Column title="申告者" dataIndex="" />
@@ -101,4 +97,4 @@ const ManifestWaybill: React.FC = () => {
   );
 };
 
-export default ManifestWaybill;
+export default SmallWaybill;

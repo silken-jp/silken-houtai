@@ -34,7 +34,6 @@ const waybill: React.FC = () => {
     if (search2?.key && search2?.value) {
       search[search2.key] = search2.value;
     }
-    console.log(search);
     const data = await getAllWaybillsAdvance({
       ...search,
       waybill_status: 1,

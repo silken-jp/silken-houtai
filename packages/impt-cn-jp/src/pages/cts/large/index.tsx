@@ -10,9 +10,9 @@ import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
-const SmallWaybill: React.FC = () => {
+const LargeWaybill: React.FC = () => {
   const { form, state, tableProps, search, cardProps, disActions } =
-    useCTS('S');
+    useCTS('L');
   const [intlMenu] = useIntlFormat('menu');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
@@ -21,8 +21,8 @@ const SmallWaybill: React.FC = () => {
       header={{
         breadcrumb: {
           routes: [
-            { path: `/cts/small`, breadcrumbName: intlMenu('cts') },
-            { path: '', breadcrumbName: 'Small' },
+            { path: `/cts/large`, breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Large' },
           ],
         },
       }}
@@ -33,7 +33,7 @@ const SmallWaybill: React.FC = () => {
         <Space>
           <span>サーチ結果で実行する</span>
           <Cleansing LS="L" disabled={disActions.cleansing} />
-          <Create type="IDA" disabled={disActions.create} />
+          <Create LS="L" disabled={disActions.create} />
         </Space>
       </Row>
 
@@ -49,7 +49,12 @@ const SmallWaybill: React.FC = () => {
           <Space>
             <span>selected: {selected} items</span>
             <CleansingBYSource
-              LS="S"
+              LS="L"
+              dataSource={tableProps?.rowSelection?.selectedRowKeys}
+            />
+            <Create
+              LS="L"
+              useSource
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
           </Space>
@@ -92,4 +97,4 @@ const SmallWaybill: React.FC = () => {
   );
 };
 
-export default SmallWaybill;
+export default LargeWaybill;

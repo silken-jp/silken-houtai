@@ -7,38 +7,52 @@ export interface CreateProps {
   disabled?: boolean;
   type?: 'MIC' | 'IDA';
   large?: boolean;
+  LS: 'L' | 'S' | 'M';
+  useSource?: boolean;
+  dataSource?: any[];
 }
 
+const ST = [
+  {
+    value: '1AW95',
+    label: '1AW95: 【華南（株）足立保税蔵置場】東京都足立区南花畑4-28-18',
+  },
+  {
+    value: '1CW70',
+    label:
+      '1CW70: 【ケイヒン（株）ワールド流通センター】東京都江東区青海３-2-17',
+  },
+];
+
 const Create: React.FC<CreateProps> = (props) => {
+  const { LS, dataSource, disabled, useSource } = props;
   const [visible, setVisible] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    props?.type === 'MIC' &&
-      form.setFieldsValue({
-        JYO: 'Z',
-        CH: '1A',
-        CHB: '',
-        ICD: dayjs(),
-        ST: '',
-        TTC: '',
-        MAB: '',
-        VSN: '',
-        ARR: dayjs(),
-      });
-    props?.type === 'IDA' &&
-      form.setFieldsValue({
-        CH: '1A',
-        CHB: props?.large ? '55' : '77',
-        CHH: '',
-        CHT: '',
-        ICD: dayjs(),
-        ST: '',
-        TTC: '',
-        BL_: '',
-        VSN: '',
-        ARR: dayjs(),
-      });
+    LS === 'M'
+      ? form.setFieldsValue({
+          JYO: 'Z',
+          CH: '1A',
+          CHB: '',
+          ICD: dayjs(),
+          ST: '',
+          TTC: '',
+          MAB: '',
+          VSN: '',
+          ARR: '',
+        })
+      : form.setFieldsValue({
+          CH: '1A',
+          CHB: props?.LS === 'L' ? '55' : '77',
+          CHH: '',
+          CHT: '',
+          ICD: dayjs(),
+          ST: '',
+          TTC: '',
+          VSN: '',
+          ARR: '',
+        });
   }, [visible]);
 
   return (
@@ -46,16 +60,18 @@ const Create: React.FC<CreateProps> = (props) => {
       <Modal
         title="クリエート"
         visible={visible}
+        width={800}
         forceRender
         onCancel={() => setVisible(false)}
         onOk={() => setVisible(false)}
       >
         <Form form={form}>
-          {props?.type === 'MIC' && (
+          {LS === 'M' ? (
             <>
               <Form.Item label="3.JYO" name="JYO">
                 <Select
                   placeholder="申告条件"
+                  allowClear
                   options={[
                     { value: 'K', label: 'K:開庁時申告' },
                     { value: 'H', label: 'H:予備申告後の本申告' },
@@ -74,17 +90,17 @@ const Create: React.FC<CreateProps> = (props) => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item label="6.CH" name="CH">
+              <Form.Item label="6.CH" name="CH" rules={[{ required: true }]}>
                 <Input placeholder="あて先官署コード" />
               </Form.Item>
-              <Form.Item label="7.CHB" name="CHB">
+              <Form.Item label="7.CHB" name="CHB" rules={[{ required: true }]}>
                 <Input placeholder="あて先部門コード" />
               </Form.Item>
-              <Form.Item label="8.ICD" name="ICD">
+              <Form.Item label="8.ICD" name="ICD" rules={[{ required: true }]}>
                 <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
               </Form.Item>
-              <Form.Item label="21.ST" name="ST">
-                <Select placeholder="通関予定蔵置場コード" />
+              <Form.Item label="21.ST" name="ST" rules={[{ required: true }]}>
+                <Select placeholder="通関予定蔵置場コード" options={ST} />
               </Form.Item>
               <Form.Item label="22.TTC" name="TTC">
                 <Input placeholder="検査立会者" />
@@ -99,13 +115,12 @@ const Create: React.FC<CreateProps> = (props) => {
                 <DatePicker placeholder="入港年月日" format="YYYYMMDD" />
               </Form.Item>
             </>
-          )}
-          {props?.type === 'IDA' && (
+          ) : (
             <>
-              <Form.Item label="8.CH" name="CH">
+              <Form.Item label="8.CH" name="CH" rules={[{ required: true }]}>
                 <Input placeholder="あて先官署コード" />
               </Form.Item>
-              <Form.Item label="9.CHB" name="CHB">
+              <Form.Item label="9.CHB" name="CHB" rules={[{ required: true }]}>
                 <Input placeholder="あて先部門コード" />
               </Form.Item>
               <Form.Item label="10.CHH" name="CHH">
@@ -114,17 +129,14 @@ const Create: React.FC<CreateProps> = (props) => {
               <Form.Item label="11.CHT" name="CHT">
                 <Input placeholder="特例申告あて先部門コード" />
               </Form.Item>
-              <Form.Item label="12.ICD" name="ICD">
+              <Form.Item label="12.ICD" name="ICD" rules={[{ required: true }]}>
                 <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
               </Form.Item>
-              <Form.Item label="24.ST" name="ST">
-                <Select placeholder="通関予定蔵置場コード" />
+              <Form.Item label="24.ST" name="ST" rules={[{ required: true }]}>
+                <Select placeholder="通関予定蔵置場コード" options={ST} />
               </Form.Item>
               <Form.Item label="37.TTC" name="TTC">
                 <Input placeholder="検査立会者" />
-              </Form.Item>
-              <Form.Item label="38.BL_" name="BL_">
-                <Input placeholder="B／L番号／AWB 番号" />
               </Form.Item>
               <Form.Item label="45.VSN" name="VSN">
                 <Input placeholder="積載機名" />
@@ -136,13 +148,24 @@ const Create: React.FC<CreateProps> = (props) => {
           )}
         </Form>
       </Modal>
-      <Button
-        type="primary"
-        disabled={props?.disabled}
-        onClick={() => setVisible(true)}
-      >
-        クリエート
-      </Button>
+      {useSource ? (
+        <Button
+          size="small"
+          type="dashed"
+          disabled={disabled || !dataSource?.length}
+          onClick={() => setVisible(true)}
+        >
+          シングルクリエート
+        </Button>
+      ) : (
+        <Button
+          type="primary"
+          disabled={disabled}
+          onClick={() => setVisible(true)}
+        >
+          マスクリエート
+        </Button>
+      )}
     </>
   );
 };
