@@ -47,6 +47,7 @@ const tabList = {
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState(LS === 'M' ? 'MIC' : 'AID');
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [meta, setMeta] = useState({
     totalCount: 0,
@@ -107,8 +108,9 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     fixed: true,
     selectedRowKeys,
     preserveSelectedRowKeys: true,
-    onChange: (keys: any) => {
+    onChange: (keys: any[], rows: any[]) => {
       setSelectedParams(LS, keys);
+      setSelectedRows(rows);
       setSelectedRowKeys(keys);
     },
   };
@@ -119,6 +121,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     state: {
       tabKey,
       meta,
+      selectedRows,
       handleClear,
     },
     tableProps: {

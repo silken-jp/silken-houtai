@@ -6,6 +6,7 @@ import Brock, { BrockBYSource } from '@/components/Common/Brock';
 import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
+import ExportXlsx from '@/pages/cts/manifest/ExportXlsx';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
@@ -37,6 +38,7 @@ const ManifestWaybill: React.FC = () => {
           <Cleansing LS="M" disabled={disActions.cleansing} />
           <Brock LS="M" disabled={disActions.brock} />
           <Create LS="M" disabled={disActions.create} />
+          <ExportXlsx />
         </Space>
       </Row>
 
@@ -67,6 +69,7 @@ const ManifestWaybill: React.FC = () => {
               useSource
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
+            <ExportXlsx useSource dataSource={state.selectedRows} />
           </Space>
         }
       >
