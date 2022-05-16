@@ -83,7 +83,8 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const current_processor = props?.dataSource?.current_processor || '';
   const disabled = process_status === 1 && current_processor !== userInfo?.name;
   const search = new URLSearchParams(history.location.search);
-  const actionType = search.get('actionType');
+  const actionType = search.get('actionType'); // 选件方式 0:check 1:search
+  const checkType = search.get('checkType'); //  0:cleansing 1:broker check
   const actionLS = search.get('LS');
 
   //effect
@@ -97,6 +98,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   useEffect(() => {
     // import PDF联动
+    form.validateFields();
     setUrlIndex(!urlIndex ? 1 : 0);
     postImporter({ url: urls[urlIndex] });
   }, [props?.dataSource?._id]);
@@ -132,7 +134,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onSubmit(waybill_status: number, process_status: number) {
     try {
       const values = form.getFieldsValue(true);
-      await form.validateFields();
       await updateWaybill({
         ...values,
         waybill_type: 1, // TODO: api改为string后删除
@@ -171,11 +172,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       handlePrevious.run();
     }
   });
-  // useKeyPress('s', () => {
-  //   if (checkFocus()) {
-  //     handleSendBack.run();
-  //   }
-  // });
+  useKeyPress('s', () => {
+    if (checkType === '2' && checkFocus()) {
+      handleSendBack.run();
+    }
+  });
   useKeyPress('F2', () => {
     if (checkFocus()) {
       setCommandState({ visible: true, command: '' });
@@ -249,31 +250,33 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onHold() {
     try {
       if (disabled) return;
-      await onSubmit(2, 0);
+      await onSubmit(2, checkType === '0' ? 0 : 2);
       await onNext();
       message.success('Hold Success.');
     } catch (error: any) {
       message.warning(error);
     }
   }
-  // async function onSendBack() {
-  //   try {
-  //     if (disabled) return;
-  //     await onSubmit(3,0);
-  //     await onNext();
-  //    message.success('SendBack Success.');
-  //   } catch (error) {
-  //     message.warning("SendBack Error");
-  //   }
-  // }
+  async function onSendBack() {
+    try {
+      if (disabled) return;
+      await onSubmit(3, checkType === '0' ? 0 : 2);
+      await onNext();
+      message.success('SendBack Success.');
+    } catch (error) {
+      message.warning('SendBack Error');
+    }
+  }
   async function onAccept() {
     try {
       if (disabled) return;
-      await onSubmit(1, 2);
+      await form.validateFields();
+      await onSubmit(1, checkType === '0' ? 2 : 4);
       await onNext();
       message.success('Accept Success.');
     } catch (error: any) {
-      message.warning(error);
+      const err = error?.errorFields?.[0]?.errors?.[0] || 'submit error';
+      message.warning(err);
     }
   }
 
@@ -290,10 +293,10 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     debounceWait: 100,
     manual: true,
   });
-  // const handleSendBack = useRequest(onSendBack, {
-  //   debounceWait: 100,
-  //   manual: true,
-  // });
+  const handleSendBack = useRequest(onSendBack, {
+    debounceWait: 100,
+    manual: true,
+  });
   const handleAccept = useRequest(onAccept, {
     debounceWait: 100,
     manual: true,
@@ -306,7 +309,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       initialValues={{
         NOF: 'R',
         PF: '00010544650858',
-        REF: disabled ? '' : userInfo?.name,
         ...props?.dataSource,
         // TODO: api改为string后删除
         waybill_type: { L: 'IDA', S: 'IDA', M: 'MIC' }[
@@ -427,9 +429,13 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button disabled={disabled} type="text" onClick={handleHold.run}>
             Hold（H）
           </Button>,
-          // <Button type="text" onClick={handleSendBack.run}>
-          //   Send Back（B）
-          // </Button>,
+          <Button
+            type="text"
+            onClick={handleSendBack.run}
+            disabled={checkType !== '1'}
+          >
+            Send Back（B）
+          </Button>,
           <Button disabled={disabled} type="text" onClick={handleAccept.run}>
             Accept（F9）
           </Button>,

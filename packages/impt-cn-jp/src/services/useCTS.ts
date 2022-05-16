@@ -126,6 +126,10 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     },
     tableProps: {
       ...tableProps,
+      pagination: {
+        ...tableProps.pagination,
+        pageSizeOptions: ['10', '20', '50', '100', '1000'],
+      },
       rowSelection,
     },
     disActions: {

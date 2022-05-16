@@ -14,23 +14,22 @@ const Brock: React.FC<BrockProps> = (props) => {
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
-    message.info('Please waiting.');
-    // try {
-    //   const { name: current_processor } = getUserInfo();
-    //   const params = getSearchParams(LS);
-    //   const res = await moveWaybill({
-    //     move: 0,
-    //     current_processor,
-    //     ...params,
-    //   });
-    //   if (res) {
-    //     history.push('/cts/check/' + res);
-    //   } else {
-    //     throw 'この条件を満たすもの、見付かりません';
-    //   }
-    // } catch (error: any) {
-    //   message.warning(error);
-    // }
+    try {
+      const { name: current_processor } = getUserInfo();
+      const params = getSearchParams(LS);
+      const res = await moveWaybill({
+        move: 0,
+        current_processor,
+        ...params,
+      });
+      if (res) {
+        history.push(`/cts/check/${res}?LS=${LS}&actionType=1&checkType=1`);
+      } else {
+        throw 'この条件を満たすもの、見付かりません';
+      }
+    } catch (error: any) {
+      message.warning(error);
+    }
   };
 
   return (
@@ -51,16 +50,17 @@ const BrockBYSource: React.FC<BrockBYSourceProps> = (props) => {
   const history = useHistory();
 
   const handleMoveWaybill = async () => {
-    message.info('Please waiting.');
-    // try {
-    //   if (dataSource?.[0]) {
-    //     history.push('/cts/check/' + dataSource[0]);
-    //   } else {
-    //     throw 'error';
-    //   }
-    // } catch (error: any) {
-    //   message.warning(error);
-    // }
+    try {
+      if (dataSource?.[0]) {
+        history.push(
+          `/cts/check/${dataSource[0]}?LS=${LS}&actionType=0&checkType=1`,
+        );
+      } else {
+        throw 'error';
+      }
+    } catch (error: any) {
+      message.warning(error);
+    }
   };
 
   return (

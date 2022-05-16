@@ -79,6 +79,10 @@ export async function updateWaybill(params: UpdateWaybill) {
     method: 'PATCH',
     data: {
       ...data,
+      _GW: +(data?.GW || 0),
+      _IP4: +(data?.IP4 || 0),
+      _FR3: +(data?.FR3 || 0),
+      _IN3: +(data?.IN3 || 0),
     },
   });
 }

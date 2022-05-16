@@ -102,7 +102,7 @@ const StatusInquiry: React.FC = () => {
             }
           />
           <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
-          <Table.Column width={180} title="FlightNo" />
+          <Table.Column width={180} title="FlightNo" dataIndex="flightNo" />
           <Table.Column
             width={180}
             title="FlightDate"

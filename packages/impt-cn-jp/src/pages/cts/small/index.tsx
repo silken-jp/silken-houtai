@@ -33,7 +33,7 @@ const SmallWaybill: React.FC = () => {
         <Space>
           <span>サーチ結果で実行する</span>
           <Cleansing LS="L" disabled={disActions.cleansing} />
-          <Create LS="S" disabled={disActions.create} />
+          {/* <Create LS="S" disabled={disActions.create} /> */}
         </Space>
       </Row>
 
@@ -50,13 +50,15 @@ const SmallWaybill: React.FC = () => {
             <span>selected: {selected} items</span>
             <CleansingBYSource
               LS="S"
+              disabled={disActions.cleansing}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            <Create
+            {/* <Create
               LS="S"
               useSource
+              disabled={disActions.create}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            />
+            /> */}
           </Space>
         }
       >

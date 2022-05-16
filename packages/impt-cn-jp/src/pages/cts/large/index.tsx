@@ -33,7 +33,7 @@ const LargeWaybill: React.FC = () => {
         <Space>
           <span>サーチ結果で実行する</span>
           <Cleansing LS="L" disabled={disActions.cleansing} />
-          <Create LS="L" disabled={disActions.create} />
+          {/* <Create LS="L" disabled={disActions.create} /> */}
         </Space>
       </Row>
 
@@ -50,13 +50,15 @@ const LargeWaybill: React.FC = () => {
             <span>selected: {selected} items</span>
             <CleansingBYSource
               LS="L"
+              disabled={disActions.cleansing}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            <Create
+            {/* <Create
               LS="L"
               useSource
+              disabled={disActions.create}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            />
+            /> */}
           </Space>
         }
       >

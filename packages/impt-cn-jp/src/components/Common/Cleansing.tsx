@@ -52,7 +52,9 @@ const CleansingBYSource: React.FC<CleansingBYSourceProps> = (props) => {
   const handleMoveWaybill = async () => {
     try {
       if (dataSource?.[0]) {
-        history.push(`/cts/check/${dataSource[0]}?LS=${LS}`);
+        history.push(
+          `/cts/check/${dataSource[0]}?LS=${LS}&actionType=0&checkType=0`,
+        );
       } else {
         throw 'error';
       }
