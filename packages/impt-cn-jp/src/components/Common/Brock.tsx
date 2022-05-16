@@ -19,6 +19,7 @@ const Brock: React.FC<BrockProps> = (props) => {
       const params = getSearchParams(LS);
       const res = await moveWaybill({
         move: 0,
+        check_type: '1',
         current_processor,
         ...params,
       });

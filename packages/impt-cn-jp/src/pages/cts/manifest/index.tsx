@@ -58,12 +58,12 @@ const ManifestWaybill: React.FC = () => {
             </Button>
             <CleansingBYSource
               LS="M"
-              disabled={disActions.cleansing}
+              // disabled={disActions.cleansing}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             <BrockBYSource
               LS="M"
-              disabled={disActions.brock}
+              // disabled={disActions.brock}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             {/* <Create

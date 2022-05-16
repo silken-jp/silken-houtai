@@ -101,6 +101,7 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
 interface MoveWaybill {
   move: number;
   current_processor: string;
+  check_type: string;
   waybill?: string;
 }
 export async function moveWaybill(params: MoveWaybill) {

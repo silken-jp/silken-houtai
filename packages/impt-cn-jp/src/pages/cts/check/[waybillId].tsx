@@ -110,6 +110,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       const params = getSearchParams(props.dataSource.LS);
       return moveWaybill({
         move,
+        check_type: checkType,
         current_processor: userInfo?.name,
         waybill: props?.dataSource?._id,
         ...params,
@@ -134,13 +135,14 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onSubmit(waybill_status: number, process_status: number) {
     try {
       const values = form.getFieldsValue(true);
+
       await updateWaybill({
         ...values,
         waybill_type: 1, // TODO: api改为string后删除
         user: userInfo?._id,
         waybillId: props?.dataSource?._id,
         process_status,
-        process_type: 1,
+        process_type: checkType === '0' ? 1 : 2,
         waybill_status,
         REF: values?.REF + ' ' + userInfo?.initialName,
       });

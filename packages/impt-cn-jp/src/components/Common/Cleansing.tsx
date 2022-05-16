@@ -19,6 +19,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
       const params = getSearchParams(LS);
       const res = await moveWaybill({
         move: 0,
+        check_type: '0',
         current_processor,
         ...params,
       });
