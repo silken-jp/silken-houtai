@@ -151,7 +151,7 @@ const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
           </Form.Item>
         )}
       </Modal>
-      <Button disabled={props?.disabled} onClick={handleOpen} type="primary">
+      <Button disabled={props?.disabled} onClick={handleOpen}>
         業務コード変更(F8)
       </Button>
     </>

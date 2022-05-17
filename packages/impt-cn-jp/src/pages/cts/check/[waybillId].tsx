@@ -48,6 +48,9 @@ function checkFocus() {
   return document.activeElement?.nodeName === 'BODY';
 }
 
+// Todo: cursor 判断
+// Todo: F9
+
 export interface WaybillContainerProps {}
 const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
@@ -72,6 +75,7 @@ export interface WaybillCheckProps {
 const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   // state
   const [urlIndex, setUrlIndex] = useState(0);
+  const [cursor, setCursor] = useState(false);
   const [commandState, setCommandState] = useState({
     visible: false,
     command: '',
@@ -143,7 +147,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         process_status,
         process_type: checkType === '0' ? 1 : 2,
         waybill_status,
-        REF: `${values?.REF + ' ' || ''}${userInfo?.initialName}`,
+        REF: `${values?.REF ? values.REF + ' ' : ''}${userInfo?.initialName}`,
       });
     } catch (err: any) {
       throw 'Submit Error';
@@ -202,11 +206,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       window.location.origin + window.location.pathname + '#/cts/check/import',
     );
   });
-  useKeyPress('ctrl.x', async () => {
+  useKeyPress('ctrl.q', async () => {
     if (checkFocus()) {
       onExit();
     } else {
       postFocus({ blur: true });
+      setCursor(false);
     }
   });
 
@@ -364,7 +369,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         bodyStyle={{ height: 'calc(100vh - 112px)', overflow: 'auto' }}
         title={
           <Space>
-            <Button onClick={onExit}>Exit（Ctrl + x）</Button>
+            <Button type={cursor ? 'default' : 'primary'} onClick={onExit}>
+              Exit（Ctrl + q）
+            </Button>
             <Tag>
               {
                 ['Other', 'Normal', 'Hold', 'SendBack'][
