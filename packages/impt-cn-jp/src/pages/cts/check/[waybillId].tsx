@@ -134,8 +134,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
 
   async function onSubmit(waybill_status: number, process_status: number) {
     try {
-      const values = form.getFieldsValue(true);
-
+      const values = await form.getFieldsValue(true);
       await updateWaybill({
         ...values,
         waybill_type: 1, // TODO: api改为string后删除

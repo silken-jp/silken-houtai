@@ -24,7 +24,7 @@ const Cleansing: React.FC<CleansingProps> = (props) => {
         ...params,
       });
       if (res) {
-        history.push(`/cts/check/${res}?LS=${LS}&actionType=1`);
+        history.push(`/cts/check/${res}?LS=${LS}&actionType=1&checkType=0`);
       } else {
         throw 'この条件を満たすもの、見付かりません';
       }
