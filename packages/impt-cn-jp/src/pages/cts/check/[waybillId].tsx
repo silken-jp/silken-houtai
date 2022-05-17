@@ -143,7 +143,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         process_status,
         process_type: checkType === '0' ? 1 : 2,
         waybill_status,
-        REF: values?.REF + ' ' + userInfo?.initialName,
+        REF: `${values?.REF + ' ' || ''}${userInfo?.initialName}`,
       });
     } catch (err: any) {
       throw 'Submit Error';
