@@ -99,9 +99,9 @@ const StatusInquiry: React.FC = () => {
           />
           <Table.Column width={150} title="フォワーダー名" dataIndex="name" />
           <Table.Column width={150} title="アカウント" dataIndex="account" />
+          <Table.Column width={140} title="代理店コード" dataIndex="AGT_CD" />
           <Table.Column width={150} title="荷送り人名" dataIndex="SHN" />
           <Table.Column width={150} title="荷送り人電話番号" dataIndex="STL" />
-          <Table.Column width={140} title="代理店コード" dataIndex="AGT_CD" />
           <Table.Column width={800} title="荷送り人住所" dataIndex="SHA" />
           <Table.Column
             width={60}

@@ -46,6 +46,9 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
         >
           <Input placeholder="アカウント" autoComplete="off" />
         </Form.Item>
+        <Form.Item label="代理店コード" name="AGT_CD">
+          <Input placeholder="代理店コード" autoComplete="off" />
+        </Form.Item>
         <Form.Item label="荷送り人名" name="SHN">
           <Input placeholder="荷送り人名" autoComplete="off" />
         </Form.Item>
@@ -54,9 +57,6 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
         </Form.Item>
         <Form.Item label="荷送り人電話番号" name="STL">
           <Input placeholder="荷送り人電話番号" autoComplete="off" />
-        </Form.Item>
-        <Form.Item label="代理店コード" name="AGT_CD">
-          <Input placeholder="代理店コード" autoComplete="off" />
         </Form.Item>
         {props?.type === 'add' && (
           <Form.Item

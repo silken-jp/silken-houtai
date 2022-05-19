@@ -20,9 +20,7 @@ export async function createAgent(params: CreateAgent) {
   return request<any>(ApiURL + '/agents', {
     method: 'POST',
     data: {
-      name: params?.name,
-      account: params?.account,
-      password: params?.password,
+      ...params,
     },
   });
 }
@@ -47,9 +45,7 @@ export async function updateAgent(params: UpdateAgent) {
   return request<any>(ApiURL + '/agents/' + params.agentId, {
     method: 'PATCH',
     data: {
-      name: params?.name,
-      account: params?.account,
-      password: params?.password,
+      ...params,
     },
   });
 }
