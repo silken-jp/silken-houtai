@@ -15,6 +15,10 @@ declare namespace API {
     name?: string;
     account?: string;
     password?: string;
+    SHN?: string;
+    SHA?: string;
+    STL?: string;
+    AGT_CD?: string;
   };
   type User = {
     _id?: ID;

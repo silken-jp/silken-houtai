@@ -86,11 +86,9 @@ const StatusInquiry: React.FC = () => {
           </Button>
         }
       >
-        <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={300} title="フォワーダー名" dataIndex="name" />
-          <Table.Column title="アカウント" dataIndex="account" />
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 1800 }}>
           <Table.Column
-            width={300}
+            width={200}
             title="アプロード"
             render={(row) => (
               <UploadWaybill
@@ -99,8 +97,15 @@ const StatusInquiry: React.FC = () => {
               />
             )}
           />
+          <Table.Column width={150} title="フォワーダー名" dataIndex="name" />
+          <Table.Column width={150} title="アカウント" dataIndex="account" />
+          <Table.Column width={150} title="荷送り人名" dataIndex="SHN" />
+          <Table.Column width={150} title="荷送り人電話番号" dataIndex="STL" />
+          <Table.Column width={140} title="代理店コード" dataIndex="AGT_CD" />
+          <Table.Column width={800} title="荷送り人住所" dataIndex="SHA" />
           <Table.Column
-            width={100}
+            width={60}
+            fixed="right"
             title="操作"
             render={(row: any) => {
               const handleEdit = () => {

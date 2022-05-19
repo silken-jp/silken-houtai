@@ -100,6 +100,10 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
   );
 };
 
+const FormText: React.FC<any> = (props) => {
+  return <>{props?.value}</>;
+};
+
 const CheckForm: React.FC<CheckFormProps> = (props) => {
   return (
     <Space direction="vertical">
@@ -125,22 +129,41 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
               rules.push({ max: item?.limit });
             }
             const name = [...(props?.basicName || []), item?.name];
-            return (
-              <Form.Item
-                className="form-hidden-message"
-                key={item?.no}
-                style={{ marginBottom: 0 }}
-                label={`${item?.no}.${item?.name}`}
-                name={name}
-                rules={rules}
-              >
-                <ToolTipInput
-                  {...item}
-                  source={source}
-                  disabled={props?.disabled}
-                />
-              </Form.Item>
-            );
+            if (item?.type === 'text') {
+              return (
+                <Form.Item
+                  className="form-hidden-message"
+                  key={item?.no}
+                  style={{ marginBottom: 0 }}
+                  dependencies={[item?.name]}
+                >
+                  {({ getFieldValue }) => (
+                    <label>
+                      <span
+                        style={{ color: '#bfbfbf' }}
+                      >{`${item?.no}.${item?.name}:`}</span>
+                      {getFieldValue(item?.name)}
+                    </label>
+                  )}
+                </Form.Item>
+              );
+            } else
+              return (
+                <Form.Item
+                  className="form-hidden-message"
+                  key={item?.no}
+                  style={{ marginBottom: 0 }}
+                  label={`${item?.no}.${item?.name}`}
+                  name={name}
+                  rules={rules}
+                >
+                  <ToolTipInput
+                    {...item}
+                    source={source}
+                    disabled={props?.disabled}
+                  />
+                </Form.Item>
+              );
           })}
         </Space>
       ))}

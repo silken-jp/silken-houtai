@@ -13,7 +13,7 @@ jobs:
       - name: Install packages
         run: lerna bootstrap
       - name: Run yarn build
-        run: yarn build:all
+        run: yarn build @sk-houtai/i-cn-jp
       - name: Upload build result
         uses: actions/upload-artifact@v1
         with:
