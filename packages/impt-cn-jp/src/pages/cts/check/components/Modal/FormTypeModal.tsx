@@ -16,6 +16,7 @@ function postFocus({ no, modal, blur }: any) {
 }
 
 const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
+  // state
   const form = props?.form;
   const [visible, setVisible] = useState(false);
   const [waybill_type, setWaybillType] = useState('');
@@ -72,7 +73,7 @@ const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
     !visible && handleOpen();
   });
 
-  useKeyPress('F9', () => {
+  useKeyPress('ctrl.F9', () => {
     visible && handleOk();
   });
 
@@ -85,7 +86,7 @@ const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
         onCancel={handleCancel}
         onOk={handleOk}
         cancelText="キャンセル(ESC)"
-        okText="確定(F9)"
+        okText="確定(Ctrl + F9)"
       >
         <Form.Item label="3.L・S・M識別">
           <ToolTipInput

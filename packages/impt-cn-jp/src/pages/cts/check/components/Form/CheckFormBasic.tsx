@@ -141,7 +141,7 @@ const CheckForm: React.FC<CheckFormProps> = (props) => {
                     <label>
                       <span
                         style={{ color: '#bfbfbf' }}
-                      >{`${item?.no}.${item?.name}:`}</span>
+                      >{`${item?.no}.${item?.name}：`}</span>
                       {getFieldValue(item?.name)}
                     </label>
                   )}

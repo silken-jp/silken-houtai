@@ -154,7 +154,7 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
     setVisible(false);
   }
 
-  useKeyPress('F9', () => {
+  useKeyPress('ctrl.F9', () => {
     visible && handleCancel();
   });
 

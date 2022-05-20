@@ -197,7 +197,7 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
     setState({ ...state, visible: false });
   }
 
-  useKeyPress('F9', () => {
+  useKeyPress('ctrl.F9', () => {
     state.visible && handleCancel();
   });
 
@@ -207,7 +207,7 @@ const FormGroupModel: React.FC<FormGroupModelProps> = (props) => {
       onCancel={handleCancel}
       footer={
         <Button type="primary" onClick={handleCancel}>
-          確定(F9)
+          確定(Ctrl + F9)
         </Button>
       }
     >

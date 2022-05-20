@@ -23,14 +23,10 @@ export const manifestItems = [
   ],
   [{ no: 50, limit: 40, name: 'CMN', holder: '品名' }],
   [],
-  [
-    { no: 17, limit: 105, name: 'IAD', holder: '輸入者住所', text: 'IADJP' },
-    { type: 'text', no: 17, limit: 105, name: 'IADJP', holder: '輸入者住所' },
-  ],
-  [
-    { no: 10, limit: 70, name: 'ImpName', holder: '輸入者名' },
-    { type: 'text', no: 10, limit: 70, name: 'ImpNameJP', holder: '輸入者名' },
-  ],
+  [{ type: 'text', no: 17, limit: 105, name: 'IADJP', holder: '輸入者住所' }],
+  [{ no: 17, limit: 105, name: 'IAD', holder: '輸入者住所', text: 'IADJP' }],
+  [{ type: 'text', no: 10, limit: 70, name: 'ImpNameJP', holder: '輸入者名' }],
+  [{ no: 10, limit: 70, name: 'ImpName', holder: '輸入者名' }],
   [
     { no: 9, limit: 17, name: 'ImpCode', holder: '輸入者コード' },
     { no: 16, limit: 11, name: 'Tel', holder: '輸入者電話番号' },

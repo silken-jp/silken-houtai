@@ -49,7 +49,6 @@ function checkFocus() {
 }
 
 // Todo: cursor 判断
-// Todo: F9
 
 export interface WaybillContainerProps {}
 const WaybillContainer: React.FC<WaybillContainerProps> = () => {
@@ -196,11 +195,15 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       }
     }
   });
-  useKeyPress('F9', () => {
-    if (checkFocus()) {
-      handleAccept.run();
-    }
-  });
+  useKeyPress(
+    'F9',
+    () => {
+      if (!document.body.className) {
+        handleAccept.run();
+      }
+    },
+    { exactMatch: true },
+  );
   useKeyPress('F10', () => {
     window.open(
       window.location.origin + window.location.pathname + '#/cts/check/import',

@@ -76,7 +76,7 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
   useKeyPress('esc', () => {
     visible && checkFocus() && handleCancel();
   });
-  useKeyPress('F9', () => {
+  useKeyPress('ctrl.F9', () => {
     visible && checkFocus() && handleOK();
   });
 
@@ -155,10 +155,10 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
       footer={
         <Space>
           <Button size="middle" onClick={handleCancel}>
-            Cancel（ESC）
+            キャンセル(ESC)
           </Button>
           <Button size="middle" type="primary" onClick={handleOK}>
-            Accept（F9）
+            確定(Ctrl + F9)
           </Button>
         </Space>
       }
