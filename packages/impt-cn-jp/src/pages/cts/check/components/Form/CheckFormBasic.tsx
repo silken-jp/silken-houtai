@@ -63,7 +63,7 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
   if (props?.name === 'IT') dropdownMatchSelectWidth = 400;
 
   return (
-    <Tooltip trigger={['focus']} title={props?.holder} placement="topLeft">
+    <Tooltip trigger={['focus']} title={props?.holder} placement="bottomLeft">
       <AutoComplete
         value={props?.value}
         onChange={props?.onChange}
