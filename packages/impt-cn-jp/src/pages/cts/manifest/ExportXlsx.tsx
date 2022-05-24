@@ -1,9 +1,10 @@
 import XLSX from 'xlsx';
 import { Button, message } from 'antd';
+import { useRequest } from 'ahooks';
 
+import { dayFormat } from 'src/utils/helper/day';
 import { getSearchParams } from '@/services/useStorage';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
-import { useRequest } from 'ahooks';
 
 export interface ExportXlsxProps {
   useSource?: boolean;
@@ -17,7 +18,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
       handleExport(result?.waybills);
     },
     onError: (err) => {
-      message.error(err);
+      message.error(err?.message);
     },
   });
 
@@ -26,8 +27,8 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
     const fixExportData = data?.map((d: any, i: any) => ({
       NO: i + 1,
       'MASTER AIR WAYBILL NO.': d?.MAB,
-      'FLIGHT NO.': d?.VSN,
-      DATE: d?.ARR,
+      'FLIGHT NO.': d?.flight_no,
+      DATE: dayFormat(d?.ARR, 'YYYY/MM/DD'),
       'HOUSE AIR WAYBILL NO.': d?.HAB,
       PCS: d?.PCS,
       WEIGHT: d?.GW,
