@@ -50,7 +50,6 @@ const SmallWaybill: React.FC = () => {
             <span>selected: {selected} items</span>
             <CleansingBYSource
               LS="S"
-              disabled={disActions.cleansing}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             {/* <Create

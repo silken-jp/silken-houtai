@@ -50,7 +50,6 @@ const LargeWaybill: React.FC = () => {
             <span>selected: {selected} items</span>
             <CleansingBYSource
               LS="L"
-              disabled={disActions.cleansing}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             {/* <Create
