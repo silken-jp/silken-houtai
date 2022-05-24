@@ -22,24 +22,34 @@ const StatusInquiry: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
+    let sorter: any = {};
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortField = pageData?.sorter?.field;
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortField = pageData?.sorter?.field;
+      sorter.sortOrder = -1;
+    }
     const data = await getAllUsers({
       page,
       perPage,
+      ...sorter,
       ...formData,
     });
     return { total: data?.totalCount, list: data?.users || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
 
   // action
   const handleSubmit = async (v: any) => {
     if (formType === 'add') {
       await createUser(v);
-      search.submit();
+      refresh();
     }
     if (formType === 'edit') {
       await updateUser({ userId: formProps?.dataSource?._id, ...v });
-      search.submit();
+      refresh();
     }
   };
   const handleAdd = () => {
@@ -87,12 +97,13 @@ const StatusInquiry: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={300} title="名前" dataIndex="name" />
           <Table.Column
-            width={300}
-            title="initialName"
+            sorter
+            width={150}
+            title="InitialName"
             dataIndex="initialName"
           />
+          <Table.Column sorter width={300} title="名前" dataIndex="name" />
           <Table.Column title="メール" dataIndex="email" />
           <Table.Column
             title="cleanser"

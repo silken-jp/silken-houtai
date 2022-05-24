@@ -44,13 +44,12 @@ const WaybillTypeModal: React.FC<WaybillTypeModalProps> = (props) => {
     setVisible(false);
   }
   function handleOk() {
-    const NT1 = form?.getFieldValue(
-      form.getFieldValue('waybill_type') === waybill_type ? 'NT1' : 'NT2',
-    );
-    const NT2 = form?.getFieldValue(
-      form.getFieldValue('waybill_type') === waybill_type ? 'NT2' : 'NT1',
-    );
-    form.setFieldsValue({ waybill_type, IDA_type, LS, IC1, IC2, NT1, NT2 });
+    let exChange: any = {};
+    if (form.getFieldValue('waybill_type') !== waybill_type) {
+      exChange.NT1 = form?.getFieldValue('NT2');
+      exChange.NT2 = form?.getFieldValue('NT1');
+    }
+    form.setFieldsValue({ waybill_type, IDA_type, LS, IC1, IC2, ...exChange });
     handleCancel();
   }
   function handleChangeLS(v: string) {

@@ -315,6 +315,17 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     <Form
       size="small"
       form={form}
+      onValuesChange={(values, allValues) => {
+        if (
+          'Add1' in values ||
+          'Add2' in values ||
+          'Add3' in values ||
+          'Add4' in values
+        ) {
+          const { Add1 = '', Add2 = '', Add3 = '', Add4 = '' } = allValues;
+          form.setFieldsValue({ IAD: [Add1, Add2, Add3, Add4].join(' ') });
+        }
+      }}
       initialValues={{
         NOF: 'R',
         PF: '00010544650858',

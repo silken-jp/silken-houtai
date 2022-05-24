@@ -44,12 +44,12 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
           </Col>
           <Col>
             <Form.Item name="clsStartDate">
-              <DatePicker placeholder="start date" />
+              <DatePicker placeholder="start date" showTime />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name="clsEndDate">
-              <DatePicker placeholder="end date" />
+              <DatePicker placeholder="end date" showTime />
             </Form.Item>
           </Col>
         </Row>
@@ -67,12 +67,12 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
           </Col>
           <Col>
             <Form.Item name="brcStartDate">
-              <DatePicker placeholder="start date" />
+              <DatePicker placeholder="start date" showTime />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name="brcEndDate">
-              <DatePicker placeholder="end date" />
+              <DatePicker placeholder="end date" showTime />
             </Form.Item>
           </Col>
         </Row>
@@ -90,12 +90,12 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
           </Col>
           <Col>
             <Form.Item name="crtStartDate">
-              <DatePicker placeholder="start date" />
+              <DatePicker placeholder="start date" showTime />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name="crtEndDate">
-              <DatePicker placeholder="end date" />
+              <DatePicker placeholder="end date" showTime />
             </Form.Item>
           </Col>
         </Row>

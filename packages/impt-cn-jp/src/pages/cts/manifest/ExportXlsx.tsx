@@ -2,7 +2,7 @@ import XLSX from 'xlsx';
 import { Button, message } from 'antd';
 import { useRequest } from 'ahooks';
 
-import { dayFormat } from 'src/utils/helper/day';
+import { dayFormat } from '../../../utils/helper/day';
 import { getSearchParams } from '@/services/useStorage';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 

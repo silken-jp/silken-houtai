@@ -29,8 +29,21 @@ const AIDForm: React.FC<AIDFormProps> = (props) => {
     [],
     [
       { no: 13, limit: 17, name: 'ImpCode', holder: '輸入者コード' },
-      { no: 14, limit: 70, name: 'ImpName', holder: '輸入者名' },
       { no: 15, limit: 7, name: 'Zip', holder: '郵便番号' },
+      { no: 20, limit: 11, name: 'Tel', holder: '輸入者電話番号' },
+    ],
+    [
+      {
+        type: 'text',
+        no: 10,
+        limit: 70,
+        name: 'ImpNameJP',
+        holder: '輸入者名',
+      },
+    ],
+    [{ no: 10, limit: 70, name: 'ImpName', holder: '輸入者名' }],
+    [{ type: 'text', no: 17, limit: 105, name: 'IADJP', holder: '輸入者住所' }],
+    [
       { no: 16, limit: 15, name: 'Add1', holder: '住所１（都道府県）' },
       {
         no: 17,
@@ -40,7 +53,6 @@ const AIDForm: React.FC<AIDFormProps> = (props) => {
       },
       { no: 18, limit: 35, name: 'Add3', holder: '住所３（町域名・番 地）' },
       { no: 19, limit: 70, name: 'Add4', holder: '住所４（ビル名ほ か）' },
-      { no: 20, limit: 11, name: 'Tel', holder: '輸入者電話番号' },
     ],
     [],
 
@@ -51,6 +63,9 @@ const AIDForm: React.FC<AIDFormProps> = (props) => {
     [
       { no: 29, limit: 12, name: 'EPC', holder: '仕出人コード' },
       { no: 30, limit: 70, name: 'EPN', holder: '仕出人名' },
+    ],
+    [{ type: 'text', no: 31, limit: 105, name: 'EAD', holder: '仕出人住所' }],
+    [
       {
         no: 31,
         limit: 35,
