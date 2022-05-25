@@ -54,84 +54,128 @@ const Index: React.FC = (props) => {
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
           defaultOpenKeys={['/cts']}
-        >
-          <Menu.Item icon={<GlobalOutlined />} key="/agent">
-            <Link to="/agent">フォワーダー管理</Link>
-          </Menu.Item>
-          <Menu.Item icon={<UserOutlined />} key="/user">
-            <Link to="/user">ユーザー管理</Link>
-          </Menu.Item>
-          <Menu.SubMenu
-            key="/cts"
-            icon={<FormOutlined />}
-            title={intlMenu('cts')}
-          >
-            <Menu.Item key="/cts/dashboard">
-              <Link to="/cts/dashboard">Dashboard</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/StatusInquiry">
-              <Link to="/cts/StatusInquiry">Status Inquiry</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/large">
-              <Link to="/cts/large">IDA-Large</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/small">
-              <Link to="/cts/small">IDA-Small</Link>
-            </Menu.Item>
-            <Menu.Item key="/cts/manifest">
-              <Link to="/cts/manifest">MIC</Link>
-            </Menu.Item>
-
-            <Menu.SubMenu
-              key="/cts/settings"
-              title={intlMenu('cts.settings')}
-              icon={<SettingOutlined />}
-            >
-              <Menu.Item key="/cts/settings/Currency">
-                <Link to="/cts/settings/Currency">為替レート管理</Link>
-              </Menu.Item>
-              <Menu.Item key="/cts/settings/Importer">
-                <Link to="/cts/settings/Importer">法人輸入者管理</Link>
-              </Menu.Item>
-              <Menu.Item key="/cts/settings/MICkey">
-                <Link to="/cts/settings/MICkey">フォルダ変更管理</Link>
-              </Menu.Item>
-              <Menu.Item key="/cts/settings/BlackList">
-                <Link to="/cts/settings/BlackList">ブラックリスト管理</Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          </Menu.SubMenu>
-
-          <Menu.SubMenu
-            key="/delivery"
-            icon={<CarOutlined />}
-            title={intlMenu('delivery')}
-          >
-            <Menu.Item key="/delivery/self">
-              <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
-            </Menu.Item>
-            <Menu.Item key="/delivery/other">
-              <Link to="/delivery/other">{intlMenu('delivery.other')}</Link>
-            </Menu.Item>
-
-            <Menu.SubMenu
-              key="/delivery/settings"
-              title={intlMenu('delivery.settings')}
-              icon={<SettingOutlined />}
-            >
-              <Menu.Item key="/delivery/settings/driver">
-                <Link to="/delivery/settings/driver">
-                  {intlMenu('setting.driver')}
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/delivery/settings/zip-area">
-                <Link to="/delivery/settings/zip-area">
-                  {intlMenu('setting.zipArea')}
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-          </Menu.SubMenu>
-        </Menu>
+          items={[
+            {
+              key: '/agent',
+              icon: <GlobalOutlined />,
+              label: <Link to="/agent">フォワーダー管理</Link>,
+            },
+            {
+              key: '/user',
+              icon: <UserOutlined />,
+              label: <Link to="/user">ユーザー管理</Link>,
+            },
+            {
+              key: '/company',
+              icon: <SettingOutlined />,
+              label: <Link to="/company">会社設定</Link>,
+            },
+            {
+              key: '/cts',
+              icon: <FormOutlined />,
+              label: intlMenu('cts'),
+              children: [
+                {
+                  key: '/cts/dashboard',
+                  label: <Link to="/cts/dashboard">Dashboard</Link>,
+                },
+                {
+                  key: '/cts/StatusInquiry',
+                  label: <Link to="/cts/StatusInquiry">Status Inquiry</Link>,
+                },
+                {
+                  key: '/cts/large',
+                  label: <Link to="/cts/large">IDA-Large</Link>,
+                },
+                {
+                  key: '/cts/small',
+                  label: <Link to="/cts/small">IDA-Small</Link>,
+                },
+                {
+                  key: '/cts/manifest',
+                  label: <Link to="/cts/manifest">MIC</Link>,
+                },
+                {
+                  key: '/cts/settings',
+                  icon: <SettingOutlined />,
+                  label: intlMenu('cts.settings'),
+                  children: [
+                    {
+                      key: '/cts/settings/Currency',
+                      label: (
+                        <Link to="/cts/settings/Currency">為替レート管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/Importer',
+                      label: (
+                        <Link to="/cts/settings/Importer">法人輸入者管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/MICkey',
+                      label: (
+                        <Link to="/cts/settings/MICkey">フォルダ変更管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/BlackList',
+                      label: (
+                        <Link to="/cts/settings/BlackList">
+                          ブラックリスト管理
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              key: '/delivery',
+              icon: <CarOutlined />,
+              label: intlMenu('delivery'),
+              children: [
+                {
+                  key: '/delivery/self',
+                  label: (
+                    <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
+                  ),
+                },
+                {
+                  key: '/delivery/other',
+                  label: (
+                    <Link to="/delivery/other">
+                      {intlMenu('delivery.other')}
+                    </Link>
+                  ),
+                },
+                {
+                  key: '/delivery/settings',
+                  icon: <SettingOutlined />,
+                  label: intlMenu('cts.settings'),
+                  children: [
+                    {
+                      key: '/delivery/settings/driver',
+                      label: (
+                        <Link to="/delivery/settings/driver">
+                          {intlMenu('setting.driver')}
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: '/delivery/settings/zip-area',
+                      label: (
+                        <Link to="/delivery/settings/zip-area">
+                          {intlMenu('setting.zipArea')}
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+              ],
+            },
+          ]}
+        />
       </Layout.Sider>
       <Layout className={styles['site-layout']}>
         <Layout.Header className={styles['site-layout-background']}>

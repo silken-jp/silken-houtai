@@ -20,6 +20,30 @@ declare namespace API {
     STL?: string;
     AGT_CD?: string;
   };
+  type Company = {
+    _id?: ID;
+    company_name?: string;
+    company_name_en?: string;
+    company_add?: string;
+    company_add_en?: string;
+    company_tel?: string;
+    url?: string;
+    office_name?: string;
+    office_name_en?: string;
+    office_add?: string;
+    office_add_en?: string;
+    office_zip?: string;
+    office_tel?: string;
+    office_fax?: string;
+    user_code?: string;
+    system_category?: string;
+    industry_category?: string;
+    broker_code?: string;
+    BW_code?: string;
+    BW_add?: string;
+    BW_add_en?: string;
+    BW_tel?: string;
+  };
   type User = {
     _id?: ID;
     name?: string;
