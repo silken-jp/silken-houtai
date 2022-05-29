@@ -165,6 +165,46 @@ declare namespace API {
     IN3?: string;
     Zip?: string;
   };
+  type Track = {
+    waybill?: string;
+    // お問い合わせ送り状NO: 361190298405(27,39)
+    HAB?: string;
+    // 出荷日: 20220517(19,27)
+    delivery_day?: Date;
+    // 個数：F1,H1,L1,M1,N1(77,81)
+    no?: string;
+    // 集荷営業所：F1(52,58)
+    pickup_office?: string;
+    // 集荷電話：F1(88,100)
+    pickup_tel?: string;
+    // 集荷FAX：F1(102,114)
+    pickup_fax?: string;
+    // 配達営業所：M1(52,58)
+    delivery_office?: string;
+    // 配達電話：M1(88,100)
+    delivery_tel?: string;
+    // 配達FAX：M1(102,114)
+    delivery_fax?: string;
+    // 配達情報(M1): 0300(159, 163)
+    delivery_code?: string;
+    filename?: string;
+    history?: Array<{
+      // レコード: M1(0,2)
+      record_id?: string;
+      // 担当営業所: (52,58)
+      office?: string;
+      // 集配区分: 4(209)
+      category?: string;
+      // 集配区分: 日文解释
+      category_jp?: string;
+      // 集配状態: 0413(210, 214)
+      code?: string;
+      // 集配状態: 日文解释
+      code_jp?: string;
+      // 報告時間: 121800(76,82) 報告日: 20220522(214,222)
+      datetime?: Date;
+    }>;
+  };
   type Importer = {
     _id?: ID;
     code?: string;

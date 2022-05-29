@@ -14,6 +14,16 @@ export async function getAllAgents(params?: GetAllAgents) {
   });
 }
 
+// 获取单个フォワーダー GET /api/agents/:id
+interface GetAgent {
+  agentId: API.ID;
+}
+export async function getAgent(params: GetAgent) {
+  return request<API.Agent>(ApiURL + '/agents/' + params.agentId, {
+    method: 'GET',
+  });
+}
+
 // 创建フォワーダー POST /api/agents
 interface CreateAgent extends API.Agent {}
 export async function createAgent(params: CreateAgent) {
@@ -57,15 +67,5 @@ interface DeleteAgentById {
 export async function deleteAgentById(params: DeleteAgentById) {
   return request<any>(ApiURL + '/agents/' + params.agentId, {
     method: 'DELETE',
-  });
-}
-
-// 获取单个フォワーダー GET /api/agents/:id
-interface GetAgent {
-  agentId: API.ID;
-}
-export async function getAgent(params: GetAgent) {
-  return request<API.Agent>(ApiURL + '/agents/' + params.agentId, {
-    method: 'GET',
   });
 }

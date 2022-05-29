@@ -32,7 +32,7 @@ export async function createUser(params: CreateUser) {
   });
 }
 
-// 创建用户 POST /api/users
+// 登陆 POST /auth-users/signin
 interface UserSingIn extends API.User {}
 export async function userSingIn(params: UserSingIn) {
   return request<any>(ApiURL + '/auth-users/signin', {

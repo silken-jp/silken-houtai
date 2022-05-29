@@ -62,6 +62,7 @@ const ManifestWaybill: React.FC = () => {
             />
             <BrockBYSource
               LS="M"
+              disabled={state.tabKey !== 'MIC'}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             {/* <Create

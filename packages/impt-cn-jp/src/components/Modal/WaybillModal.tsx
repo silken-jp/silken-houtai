@@ -37,10 +37,6 @@ const Waybill: React.FC<WaybillProps> = (props) => {
           <Descriptions.Item label="MAWB番号">
             {props?.dataSource?.MAB}
           </Descriptions.Item>
-          {/* <Descriptions.Item label="派送单号"> </Descriptions.Item> */}
-          {/* <Descriptions.Item label="货物名称">肥宅快乐水</Descriptions.Item> */}
-          {/* <Descriptions.Item label="重量">12kg</Descriptions.Item> */}
-          {/* <Descriptions.Item label="快递员">吴昊</Descriptions.Item> */}
         </Descriptions>
         <br />
         <Card size="small" title="輸入者詳細">

@@ -1,11 +1,17 @@
 import { Upload, message, Button, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
+import { importMultiTracks } from '@/services/request/track';
+import { useRequest } from 'ahooks';
+
 export interface UploadDeliveryFileProps {}
 
 const { ApiURL } = process.env;
 
 const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
+  const importAPI = useRequest(importMultiTracks, {
+    manual: true,
+  });
   const props = {
     action: ApiURL + '/waybills/put_delivery',
     headers: {
@@ -21,12 +27,17 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
       }
     },
   };
+
   return (
     <Space>
       <Upload {...props}>
         <Button icon={<UploadOutlined />}>Upload</Button>
       </Upload>
-      <Button type="primary" disabled>
+      <Button
+        type="primary"
+        loading={importAPI.loading}
+        onClick={importAPI.run}
+      >
         更新
       </Button>
     </Space>

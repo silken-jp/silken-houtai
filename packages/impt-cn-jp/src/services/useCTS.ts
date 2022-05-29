@@ -55,7 +55,8 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     brokerCount: 0,
     createCount: 0,
   });
-  const tabValues = tabList[LS]?.find(({ key }) => key === tabKey)?.value || {};
+  const tabValues: any =
+    tabList[LS]?.find(({ key }) => key === tabKey)?.value || {};
   // query
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -134,7 +135,9 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     },
     disActions: {
       cleansing: form.getFieldValue('status') !== '0',
-      brock: form.getFieldValue('status') !== '2',
+      brock:
+        form.getFieldValue('status') !== '2' ||
+        tabValues['waybill_status'] !== 1,
       create: !form.getFieldValue('mawbs'),
     },
     cardProps: {

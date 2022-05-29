@@ -48,6 +48,21 @@ function checkFocus() {
   return document.activeElement?.nodeName === 'BODY';
 }
 
+interface RenderLabel {
+  value: any;
+  label: string;
+}
+const RenderLabel: React.FC<RenderLabel> = (props) => (
+  <>
+    {props?.value && (
+      <span>
+        <span style={{ color: '#bfbfbf' }}>{props.label}: </span>
+        {props.value}
+      </span>
+    )}
+  </>
+);
+
 // Todo: cursor 判断
 
 export interface WaybillContainerProps {}
@@ -176,7 +191,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       handlePrevious.run();
     }
   });
-  useKeyPress('s', () => {
+  useKeyPress('b', () => {
     if (checkType === '2' && checkFocus()) {
       handleSendBack.run();
     }
@@ -393,7 +408,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 ]
               }
             </Tag>
-            {process_status > 1 && (
+            {/* {process_status > 1 && (
               <Tag>
                 {
                   [
@@ -406,7 +421,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                   ][process_status]
                 }
               </Tag>
-            )}
+            )} */}
+            <RenderLabel value={props.dataSource?.MAB} label="MAB" />
+          </Space>
+        }
+        extra={
+          <Space>
             <Form.Item
               noStyle
               shouldUpdate={(a, b) =>
@@ -422,19 +442,15 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 const IC2 = getFieldValue('IC2');
                 return (
                   <Space>
-                    {LS && <span>L・S・M識別: {LS}</span>}
-                    {waybill_type && <span>業務コード: {waybill_type}</span>}
-                    {IDA_type && <span>申告種別: {IDA_type}</span>}
-                    {IC1 && <span>申告先種別コード:{IC1}</span>}
-                    {IC2 && <span>申告貨物識別:{IC2}</span>}
+                    <RenderLabel value={LS} label="L・S・M識別" />
+                    <RenderLabel value={waybill_type} label="業務コード" />
+                    <RenderLabel value={IDA_type} label="申告種別" />
+                    <RenderLabel value={IC1} label="申告先種別コード" />
+                    <RenderLabel value={IC2} label="申告貨物識別" />
                   </Space>
                 );
               }}
             </Form.Item>
-          </Space>
-        }
-        extra={
-          <Space>
             <FormTypeModal form={form} disabled={disabled} />
             <Link to="/cts/check/import" target="_blank">
               <Button>インボイス(F10)</Button>
