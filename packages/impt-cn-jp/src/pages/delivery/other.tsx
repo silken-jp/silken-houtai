@@ -43,12 +43,12 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={16}>
-          <Col span={16}>
-            <Form.Item label="お問い合せ送り状NO">
+          <Col span={8}>
+            <Form.Item label="お問い合せ送り状NO" name="HAB">
               <Input />
             </Form.Item>
           </Col>
-          <Col span={8}>
+          <Col span={16}>
             <Form.Item style={{ textAlign: 'right' }}>
               <Space>
                 <Button type="primary" onClick={search.submit}>
@@ -64,7 +64,15 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         <Table {...tableProps} rowKey="_id">
           <Table.Column
             title="配達情報"
-            render={(row) => row?.history?.[row?.history?.length - 1]?.code_jp}
+            render={(row) => {
+              let his: any[] = Array.from(row?.history || []);
+              his?.sort(
+                (a: any, b: any) =>
+                  new Date(a?.datatime).getTime() -
+                  new Date(b?.datatime).getTime(),
+              );
+              return his?.[his?.length - 1]?.code_jp;
+            }}
           />
           <Table.Column
             title="お問い合せ送り状NO"
@@ -75,12 +83,18 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
             render={(row) => dayFormat(row?.delivery_day, 'YYYY年MM月DD日')}
           />
           <Table.ColumnGroup title="集荷営業所">
-            <Table.Column title="所名" dataIndex="pickup_office" />
+            <Table.Column
+              title="所名"
+              render={(row) => `${row.pickup_office} 営業所`}
+            />
             <Table.Column title="TEL" dataIndex="pickup_tel" />
             <Table.Column title="FAX" dataIndex="pickup_fax" />
           </Table.ColumnGroup>
           <Table.ColumnGroup title="配達営業所">
-            <Table.Column title="所名" dataIndex="delivery_office" />
+            <Table.Column
+              title="所名"
+              render={(row) => `${row.delivery_office} 営業所`}
+            />
             <Table.Column title="TEL" dataIndex="delivery_tel" />
             <Table.Column title="FAX" dataIndex="delivery_fax" />
           </Table.ColumnGroup>

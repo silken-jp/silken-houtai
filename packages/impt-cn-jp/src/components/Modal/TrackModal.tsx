@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Descriptions, Card, Modal, Button, Timeline } from 'antd';
+import { Descriptions, Space, Modal, Button, Timeline, Tag } from 'antd';
 import { dayFormat } from '@/utils/helper/day';
+import { HistoryOutlined } from '@ant-design/icons';
 
 export interface TrackModalProps {
   dataSource: API.Track;
@@ -14,11 +15,11 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
   function handleCancel() {
     setVisible(false);
   }
-  console.log(props?.dataSource);
+
   return (
     <>
       <Modal
-        title="TrackModal"
+        title="追跡情報"
         width={800}
         visible={visible}
         onCancel={handleCancel}
@@ -33,19 +34,26 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
         <Timeline>
           {props?.dataSource?.history?.map((item, key) => {
             return (
-              <Timeline.Item key={key} color="green">
+              <Timeline.Item key={key}>
                 <span>
-                  {item?.code_jp} {dayFormat(item?.datetime, 'MM/DD H:mm')}{' '}
-                  {item?.office}
+                  <p>{dayFormat(item?.datetime, 'YYYY年MM月DD日 H:mm')}</p>
+                  <p>
+                    <Tag color="blue">{item?.code_jp}</Tag>
+                    {item?.office} 営業所
+                  </p>
                 </span>
               </Timeline.Item>
             );
           })}
         </Timeline>
       </Modal>
-      <Button type="link" onClick={handleOpen}>
+      <Space>
         {props?.dataSource?.HAB}
-      </Button>
+        <Button type="link" onClick={handleOpen}>
+          <HistoryOutlined />
+          追跡
+        </Button>
+      </Space>
     </>
   );
 };
