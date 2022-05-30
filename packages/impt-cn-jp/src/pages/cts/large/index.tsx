@@ -5,6 +5,7 @@ import Create from '@/components/Common/Create';
 import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
+import ExportXlsx from '@/components/Export/ExportXlsx';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
@@ -32,8 +33,9 @@ const LargeWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="L" disabled={disActions.cleansing} />
+          <Cleansing LS="L" disabled={true || disActions.cleansing} />
           {/* <Create LS="L" disabled={disActions.create} /> */}
+          <ExportXlsx LS="L" />
         </Space>
       </Row>
 
@@ -50,6 +52,7 @@ const LargeWaybill: React.FC = () => {
             <span>selected: {selected} items</span>
             <CleansingBYSource
               LS="L"
+              disabled
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
             {/* <Create
@@ -58,6 +61,7 @@ const LargeWaybill: React.FC = () => {
               disabled={disActions.create}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             /> */}
+            <ExportXlsx LS="L" useSource dataSource={state.selectedRows} />
           </Space>
         }
       >

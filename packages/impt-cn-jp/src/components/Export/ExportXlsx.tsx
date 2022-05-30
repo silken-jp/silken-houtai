@@ -2,11 +2,12 @@ import XLSX from 'xlsx';
 import { Button, message } from 'antd';
 import { useRequest } from 'ahooks';
 
-import { dayFormat } from '../../../utils/helper/day';
+import { dayFormat } from '@/utils/helper/day';
 import { getSearchParams } from '@/services/useStorage';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 
 export interface ExportXlsxProps {
+  LS: 'L' | 'S' | 'M';
   useSource?: boolean;
   dataSource?: any[];
 }
@@ -96,7 +97,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
     if (props?.useSource) {
       handleExport(props?.dataSource || []);
     } else {
-      run({ ...getSearchParams('M'), perPage: 100000000 });
+      run({ ...getSearchParams(props?.LS), perPage: 100000000 });
     }
   };
 
