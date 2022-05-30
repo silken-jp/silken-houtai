@@ -120,12 +120,12 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
     current_processor?: string;
-    io_type: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
-    waybill_type: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
-    IDA_type: string; // IDA类型
-    process_status: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
+    io_type?: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
+    waybill_type?: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
+    IDA_type?: string; // IDA类型
+    process_status?: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
     waybill_input_time?: string;
-    waybill_status: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
+    waybill_status?: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
 
     flightNo?: string;
     LS?: 'L' | 'S' | 'M';
@@ -167,6 +167,7 @@ declare namespace API {
   };
   type Track = {
     waybill?: string;
+    agent?: string;
     // お問い合わせ送り状NO: 361190298405(27,39)
     HAB?: string;
     // 出荷日: 20220517(19,27)

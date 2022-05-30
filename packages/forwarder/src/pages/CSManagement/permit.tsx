@@ -12,10 +12,14 @@ import {
 } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useRequest } from 'umi';
 ////
 import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybillsAdvance } from '@/services/request/waybill';
+import { getAllWaybills } from '@/services/request/waybill';
+import { getAllTracks } from '@/services/request/track';
+import { dayFormat } from '@/utils/helper/day';
+import TrackModal from '@/components/Modal/TrackModal';
 
 const waybill: React.FC = () => {
   // state
@@ -34,16 +38,27 @@ const waybill: React.FC = () => {
     if (search2?.key && search2?.value) {
       search[search2.key] = search2.value;
     }
-    const data = await getAllWaybillsAdvance({
+    const data = await getAllWaybills({
       ...search,
-      waybill_status: 1,
-      LS: 'M',
+      agent: agentInfo._id,
       page,
       perPage,
       sortField: 'createdAt',
       sortOrder: -1,
     });
-    return { total: data?.totalCount, list: data?.waybills };
+    const res = await getAllTracks({
+      page,
+      perPage,
+      HAB: data?.waybills?.map((item: any) => item?.HAB).join(' '),
+      agent: agentInfo._id,
+    });
+    return {
+      total: data?.totalCount,
+      list: data?.waybills?.map((item: any) => ({
+        ...item,
+        track: res?.tracks?.find((t: any) => t?.HAB === item?.HAB),
+      })),
+    };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -196,14 +211,9 @@ const waybill: React.FC = () => {
       </Form>
       <Card>
         <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
-          {/* <Table.Column
-            width={180}
-            title="フォワーダー"
-            render={() => agentInfo?.name}
-          /> */}
           <Table.Column width={180} title="コメント" />
-          <Table.Column width={180} title="状態" />
-          <Table.Column width={180} title="許可書" />
+          <Table.Column width={120} title="状態" />
+          <Table.Column width={100} title="許可書" />
           <Table.Column width={180} title="HAWB番号" dataIndex="HAB" />
           <Table.Column width={180} title="MAWB番号" dataIndex="MAB" />
           <Table.Column width={180} title="通関開始日" />
@@ -211,13 +221,23 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="搬入日時" />
           <Table.Column width={180} title="許可日時" />
           <Table.Column width={180} title="搬出日時" />
-          <Table.Column width={180} title="お問い合わせ番号" />
-          <Table.Column width={180} title="追跡" />
+          <Table.Column width={180} title="お問い合わせ番号" dataIndex="HAB" />
+          <Table.Column
+            width={180}
+            title="追跡"
+            render={(row) => {
+              return <TrackModal dataSource={row?.track} />;
+            }}
+          />
           <Table.Column width={180} title="配送業者" />
           <Table.Column width={180} title="タイプ" />
           <Table.Column width={180} title="識別" dataIndex="waybill_type" />
-          <Table.Column width={180} title="FLIGHT NO" dataIndex="VSN" />
-          <Table.Column width={180} title="FLIGHT DATE" dataIndex="DATE" />
+          <Table.Column width={180} title="FLIGHT NO" dataIndex="flight_no" />
+          <Table.Column
+            width={180}
+            title="FLIGHT DATE"
+            render={(row) => dayFormat(row?.DATE)}
+          />
           <Table.Column width={180} title="申告番号" dataIndex="ICN" />
           <Table.Column width={180} title="個数" dataIndex="NO" />
           <Table.Column width={180} title="重量（ＫＧ）" dataIndex="GW" />

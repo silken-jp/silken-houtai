@@ -105,7 +105,7 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
 }
 
 // 获取所有MAB运单 GET /api/waybills/mawbs
-interface GetStatusInquiry extends API.Waybill {
+interface GetStatusInquiry extends Partial<API.Waybill> {
   page: number;
   perPage: number;
   agentId: string;

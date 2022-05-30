@@ -33,16 +33,21 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const agentId = agentInfo?._id;
 
   // api
-  const MAWB3daysAPI = useAntdTable(async (pageData: any) => {
-    const data = await getStatusInquiry({
-      page: pageData.current - 1,
-      perPage: pageData.pageSize,
-      agentId,
-      flightStartDate: dayjs().add(-3, 'day')?.format('YYYY/MM/DD'),
-      flightEndDate: dayjs()?.format('YYYY/MM/DD'),
-    });
-    return { total: data?.totalCount, list: data?.mawbs || [] };
-  });
+  const MAWB3daysAPI = useAntdTable(
+    async (pageData: any) => {
+      const data = await getStatusInquiry({
+        page: pageData.current - 1,
+        perPage: pageData.pageSize,
+        agentId,
+        flightStartDate: dayjs().add(-3, 'day')?.format('YYYY/MM/DD'),
+        flightEndDate: dayjs()?.format('YYYY/MM/DD'),
+      });
+      return { total: data?.totalCount, list: data?.mawbs || [] };
+    },
+    {
+      defaultPageSize: 3,
+    },
+  );
 
   const mawbAPI = useAntdTable(
     async (pageData: any, formData: any) => {
@@ -54,7 +59,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
       });
       return { total: data?.totalCount, list: data?.mawbs || [] };
     },
-    { form, manual: true },
+    { form, manual: true, defaultPageSize: 3 },
   );
   const mouthStatAPI = useRequest(async () => await getMonthStat({ agentId }));
 
@@ -150,28 +155,36 @@ const Dashboard: React.FC<dashboardProps> = () => {
       </Table>
       <br /> */}
       <Card
+        size="small"
         title={
           <Space>
             <span>MAWB情報（直近3日間）</span>
-            <Button>更新</Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={MAWB3daysAPI?.search.submit}
+            >
+              更新
+            </Button>
           </Space>
         }
       >
-        <Table {...MAWB3daysAPI.tableProps}>
+        <Table size="small" rowKey="_id" {...MAWB3daysAPI.tableProps}>
           <Table.Column title="MAWBNo" dataIndex="_id" />
           <Table.Column title="FLIGHT NO" dataIndex="flightNo" />
           <Table.Column
             title="FLIGHT DATE"
             render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column title="件数" />
+          <Table.Column title="件数" dataIndex="NOCount" />
           <Table.Column title="状態" />
         </Table>
       </Card>
       <br />
       <Card
+        size="small"
         title={
-          <Form layout="inline" form={form}>
+          <Form size="small" layout="inline" form={form}>
             <Form.Item label="MAWBNo" name="MAB">
               <Input placeholder="MAWBNo" />
             </Form.Item>
@@ -179,13 +192,15 @@ const Dashboard: React.FC<dashboardProps> = () => {
               <Input placeholder="HAWBNo" />
             </Form.Item>
             <Space>
-              <Button onClick={mawbAPI.search.submit}>検索</Button>
+              <Button type="primary" onClick={mawbAPI.search.submit}>
+                検索
+              </Button>
               <Button onClick={mawbAPI.search.reset}>リセット</Button>
             </Space>
           </Form>
         }
       >
-        <Table {...mawbAPI.tableProps}>
+        <Table size="small" rowKey="_id" {...mawbAPI.tableProps}>
           <Table.Column title="FLIGHT NO" dataIndex="flightNo" />
           <Table.Column
             title="FLIGHT DATE"
@@ -197,7 +212,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
             render={() => form.getFieldValue('HAB')}
           />
           <Table.Column title="件数" dataIndex="NOCount" />
-          {/* <Table.Column title="状態" /> */}
+          <Table.Column title="状態" />
         </Table>
       </Card>
     </PageContainer>
