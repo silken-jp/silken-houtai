@@ -10,43 +10,9 @@ import {
   setSelectedParams,
 } from '@/services/useStorage';
 
-// waybill_status ["Other","Normal","Hold","SendBack"];
-const tabList = {
-  L: [
-    { tab: 'AID', key: 'AID', value: { waybill_status: 1 } },
-    { tab: 'ASD', key: 'ASD', value: { waybill_status: 1 } },
-    { tab: 'AHK', key: 'AHK', value: { waybill_status: 1 } },
-    { tab: 'AHT', key: 'AHT', value: { waybill_status: 1 } },
-    { tab: 'AIS', key: 'AIS', value: { waybill_status: 1 } },
-    { tab: 'AIW', key: 'AIW', value: { waybill_status: 1 } },
-    { tab: 'AST', key: 'AST', value: { waybill_status: 1 } },
-    { tab: 'Hold', key: 'Hold', value: { waybill_status: 2 } },
-    { tab: 'SendBack', key: 'SendBack', value: { waybill_status: 3 } },
-    { tab: 'Other', key: 'Other', value: { waybill_status: 0 } },
-  ],
-  S: [
-    { tab: 'AID', key: 'AID', value: { waybill_status: 1 } },
-    { tab: 'ASD', key: 'ASD', value: { waybill_status: 1 } },
-    { tab: 'AHK', key: 'AHK', value: { waybill_status: 1 } },
-    { tab: 'AHT', key: 'AHT', value: { waybill_status: 1 } },
-    { tab: 'AIS', key: 'AIS', value: { waybill_status: 1 } },
-    { tab: 'AIW', key: 'AIW', value: { waybill_status: 1 } },
-    { tab: 'AST', key: 'AST', value: { waybill_status: 1 } },
-    { tab: 'Hold', key: 'Hold', value: { waybill_status: 2 } },
-    { tab: 'SendBack', key: 'SendBack', value: { waybill_status: 3 } },
-    { tab: 'Other', key: 'Other', value: { waybill_status: 0 } },
-  ],
-  M: [
-    { tab: 'MIC', key: 'MIC', value: { waybill_status: 1 } },
-    { tab: 'Hold', key: 'Hold', value: { waybill_status: 2 } },
-    { tab: 'SendBack', key: 'SendBack', value: { waybill_status: 3 } },
-    { tab: 'Other', key: 'Other', value: { waybill_status: 0 } },
-  ],
-};
-
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const [form] = Form.useForm();
-  const [tabKey, setTabKey] = useState(LS === 'M' ? 'MIC' : 'AID');
+  const [tabKey, setTabKey] = useState('1');
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [meta, setMeta] = useState({
@@ -54,16 +20,34 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     cleansingCount: 0,
     brokerCount: 0,
     createCount: 0,
+    tabCount: [0, 0, 0, 0],
   });
-  const tabValues: any =
-    tabList[LS]?.find(({ key }) => key === tabKey)?.value || {};
+  const tabArr = [
+    {
+      key: '1',
+      tab: `Normal(${meta?.tabCount?.[1] || 0})`,
+    },
+    {
+      key: '2',
+      tab: `Hold(${meta?.tabCount?.[2] || 0})`,
+    },
+    {
+      key: '3',
+      tab: `SendBack(${meta?.tabCount?.[3] || 0})`,
+    },
+    {
+      key: '0',
+      tab: `Other(${meta?.tabCount?.[0] || 0})`,
+    },
+  ];
+
   // query
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const params = {
       ...formData,
-      ...tabValues,
+      waybill_status: +tabKey,
       page,
       perPage,
       sortField: 'createdAt',
@@ -83,6 +67,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       cleansingCount: data?.cleansingCount || 0,
       brokerCount: data?.brokerCount || 0,
       createCount: data?.createCount || 0,
+      tabCount: data?.tabCount || [0, 0, 0, 0],
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
   };
@@ -94,7 +79,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
 
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
-  const handleTabChange = (key: string) => {
+  const handleTabChange = (key: any) => {
     setTabKey(key);
     search.submit();
   };
@@ -135,13 +120,11 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     },
     disActions: {
       cleansing: form.getFieldValue('status') !== '0',
-      brock:
-        form.getFieldValue('status') !== '2' ||
-        tabValues['waybill_status'] !== 1,
+      brock: form.getFieldValue('status') !== '2' || tabKey !== '1',
       create: !form.getFieldValue('mawbs'),
     },
     cardProps: {
-      tabList: tabList[LS],
+      tabList: tabArr,
       onTabChange: handleTabChange,
       activeTabKey: tabKey,
     },
