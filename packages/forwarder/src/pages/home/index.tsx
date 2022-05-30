@@ -10,17 +10,19 @@ import {
   Input,
 } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useRequest } from 'ahooks';
+import { useAntdTable, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getAgentInfo } from '@/services/useStorage';
-import { getMonthStat } from '@/services/request/waybill';
+import { getMonthStat, getStatusInquiry } from '@/services/request/waybill';
+import { dayFormat } from '@/utils/helper/day';
 
 export interface dashboardProps {}
 
 const Dashboard: React.FC<dashboardProps> = () => {
   // state
+  const [form] = Form.useForm();
   const today = dayjs()?.format('YYYY年MM月DD日');
   const thisMonth = dayjs()?.format('YYYY年MM月累計');
   const lastMonth = dayjs()?.subtract(1, 'month')?.format('YYYY年MM月実績');
@@ -31,6 +33,29 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const agentId = agentInfo?._id;
 
   // api
+  const MAWB3daysAPI = useAntdTable(async (pageData: any) => {
+    const data = await getStatusInquiry({
+      page: pageData.current - 1,
+      perPage: pageData.pageSize,
+      agentId,
+      flightStartDate: dayjs().add(-3, 'day')?.format('YYYY/MM/DD'),
+      flightEndDate: dayjs()?.format('YYYY/MM/DD'),
+    });
+    return { total: data?.totalCount, list: data?.mawbs || [] };
+  });
+
+  const mawbAPI = useAntdTable(
+    async (pageData: any, formData: any) => {
+      const data = await getStatusInquiry({
+        page: pageData.current - 1,
+        perPage: pageData.pageSize,
+        agentId,
+        ...formData,
+      });
+      return { total: data?.totalCount, list: data?.mawbs || [] };
+    },
+    { form, manual: true },
+  );
   const mouthStatAPI = useRequest(async () => await getMonthStat({ agentId }));
 
   return (
@@ -105,7 +130,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
       </Row>
       <br />
-      <Table
+      {/* <Table
         title={() => (
           <Space>
             <span>対応未完了問題（直近一週間）</span>
@@ -123,46 +148,58 @@ const Dashboard: React.FC<dashboardProps> = () => {
         <Table.Column title="通知者" />
         <Table.Column title="登録者" />
       </Table>
-      <br />
-      <Table
-        title={() => (
+      <br /> */}
+      <Card
+        title={
           <Space>
             <span>MAWB情報（直近3日間）</span>
             <Button>更新</Button>
           </Space>
-        )}
+        }
       >
-        <Table.Column title="会社名" />
-        <Table.Column title="MAWBNo" />
-        <Table.Column title="FLIGHT NO" />
-        <Table.Column title="FLIGHT DATE" />
-        <Table.Column title="件数" />
-        <Table.Column title="状態" />
-      </Table>
-      <Table
-        title={() => (
-          <Form layout="inline">
-            <Form.Item label="MAWBNo">
+        <Table {...MAWB3daysAPI.tableProps}>
+          <Table.Column title="MAWBNo" dataIndex="_id" />
+          <Table.Column title="FLIGHT NO" dataIndex="flightNo" />
+          <Table.Column
+            title="FLIGHT DATE"
+            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
+          />
+          <Table.Column title="件数" />
+          <Table.Column title="状態" />
+        </Table>
+      </Card>
+      <br />
+      <Card
+        title={
+          <Form layout="inline" form={form}>
+            <Form.Item label="MAWBNo" name="MAB">
               <Input placeholder="MAWBNo" />
             </Form.Item>
-            <Form.Item label="HAWBNo">
+            <Form.Item label="HAWBNo" name="HAB">
               <Input placeholder="HAWBNo" />
             </Form.Item>
             <Space>
-              <Button>検索</Button>
-              <Button>リセット</Button>
+              <Button onClick={mawbAPI.search.submit}>検索</Button>
+              <Button onClick={mawbAPI.search.reset}>リセット</Button>
             </Space>
           </Form>
-        )}
+        }
       >
-        <Table.Column title="会社名" />
-        <Table.Column title="FLIGHT NO" />
-        <Table.Column title="FLIGHT DATE" />
-        <Table.Column title="MAWBNo" />
-        <Table.Column title="HAWBNo" />
-        <Table.Column title="件数" />
-        <Table.Column title="状態" />
-      </Table>
+        <Table {...mawbAPI.tableProps}>
+          <Table.Column title="FLIGHT NO" dataIndex="flightNo" />
+          <Table.Column
+            title="FLIGHT DATE"
+            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
+          />
+          <Table.Column title="MAWBNo" dataIndex="_id" />
+          <Table.Column
+            title="HAWBNo"
+            render={() => form.getFieldValue('HAB')}
+          />
+          <Table.Column title="件数" dataIndex="NOCount" />
+          {/* <Table.Column title="状態" /> */}
+        </Table>
+      </Card>
     </PageContainer>
   );
 };

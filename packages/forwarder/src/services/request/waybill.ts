@@ -108,6 +108,9 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
 interface GetStatusInquiry extends API.Waybill {
   page: number;
   perPage: number;
+  agentId: string;
+  flightStartDate: string;
+  flightEndDate: string;
 }
 export async function getStatusInquiry(params?: GetStatusInquiry) {
   return request<any>(ApiURL + '/waybills/mawbs', {

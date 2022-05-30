@@ -13,6 +13,7 @@ import {
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
@@ -49,6 +50,7 @@ const StatusInquiry: React.FC = () => {
           ],
         },
         title: 'Status Inquiry',
+        // extra: <UploadImages />,
       }}
     >
       <Form form={form} className="sk-table-search">
