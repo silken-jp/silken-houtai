@@ -13,9 +13,9 @@ jobs:
       - name: Install packages
         run: lerna bootstrap
       - name: Run yarn build
-        # run: yarn build:all
+        run: yarn build:all
         # run: yarn build @sk-houtai/forwarder
-        run: yarn build @sk-houtai/i-cn-jp
+        # run: yarn build @sk-houtai/i-cn-jp
         # run: yarn build @sk-houtai/e-jp-cn
         # run: yarn build @sk-houtai/importer
       - name: Upload build result
