@@ -65,7 +65,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
             </Form.Item>
           </Col>
           <Col span={3}>
-            <Form.Item name="agentId">
+            <Form.Item name="agent">
               <Select
                 placeholder="フォワーダー"
                 allowClear

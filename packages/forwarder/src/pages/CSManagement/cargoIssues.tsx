@@ -56,38 +56,16 @@ const waybill: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
-          <Col flex="100px">
+          <Col flex="150px">
             <Form.Item name="waybill_type">
               <Select
                 allowClear
-                placeholder="識別"
+                placeholder="状態"
                 options={[
-                  { label: 'MIC', value: 'MIC' },
-                  { label: 'IDA', value: 'IDA' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="通関結果"
-                options={[
-                  { label: '許可', value: '1', disabled: true },
-                  { label: '未許可', value: '2', disabled: true },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="100px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="納税"
-                options={[
-                  { label: '有税', value: '1', disabled: true },
-                  { label: '無税', value: '2', disabled: true },
+                  { label: '問題作成', value: '1' },
+                  { label: '代理店対応中', value: '2' },
+                  { label: 'SC対応中', value: '3' },
+                  { label: '対応完了', value: '4' },
                 ]}
               />
             </Form.Item>
@@ -101,79 +79,62 @@ const waybill: React.FC = () => {
             <Form.Item>
               <Select
                 allowClear
-                placeholder="タイプ"
+                placeholder="問題該当"
                 options={[
-                  { label: 'BtoC', value: 'BtoC', disabled: true },
-                  { label: 'BtoB', value: 'BtoB', disabled: true },
-                  {
-                    label: 'AMAZON FBA',
-                    value: 'AMAZON FBA',
-                    disabled: true,
-                  },
+                  { label: '破損', value: '1' },
+                  { label: '搬入時破損', value: '2' },
+                  { label: '住所不明', value: '3' },
+                  { label: '受取辞退', value: '4' },
+                  { label: 'ラベル剥がれ', value: '5' },
+                  { label: '長期不在', value: '6' },
+                  { label: '住所変更', value: '7' },
+                  { label: '滅却', value: '8' },
+                  { label: '代替品', value: '9' },
+                  { label: '紛失', value: '0' },
                 ]}
               />
+            </Form.Item>
+          </Col>
+          <Col flex="150px">
+            <Form.Item>
+              <Select
+                allowClear
+                placeholder="返品状態"
+                options={[
+                  { label: '返品済', value: '1' },
+                  { label: '未', value: '2' },
+                  { label: '搬入時', value: '3' },
+                  { label: '滅却', value: '4' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="150px">
+            <Form.Item>
+              <Input placeholder="伝票番号" />
+            </Form.Item>
+          </Col>
+          <Col flex="150px">
+            <Form.Item>
+              <Input placeholder="新伝票番号" />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={8}>
+          <Col flex="auto">
+            <Form.Item>
+              <Input placeholder="HAWB番号" />
             </Form.Item>
           </Col>
           <Col flex="270px">
             <Form.Item>
               <DatePicker.RangePicker
                 disabled
-                placeholder={['許可開始日', '許可終了日']}
+                placeholder={['登録開始日', '登録終了日']}
               />
             </Form.Item>
           </Col>
-          <Col flex="150px">
-            <Form.Item name={['search1', 'key']}>
-              <Select
-                allowClear
-                placeholder="項目名"
-                options={[
-                  { label: 'FLIGHT NO', value: 'VSN' },
-                  { label: '個数', value: 'NO' },
-                  { label: '重量（KG）', value: 'GW' },
-                  { label: '審査検査区分', value: '2', disabled: true },
-                  { label: '関税', value: '3', disabled: true },
-                  { label: '消費税', value: '4', disabled: true },
-                  { label: '地方消費税', value: '5', disabled: true },
-                  { label: '納税額合計', value: '6', disabled: true },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="100px">
-            <Form.Item name={['search1', 'value']}>
-              <Input placeholder="検査内容" />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={8}>
-          <Col flex="150px">
-            <Form.Item name={['search2', 'key']}>
-              <Select
-                allowClear
-                placeholder="項目名"
-                options={[
-                  { label: 'HAWB番号', value: 'HAB' },
-                  { label: 'お問い合わせ番号', value: '1', disabled: true },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="auto">
-            <Form.Item name={['search2', 'value']}>
-              <Input placeholder="HAWB番号/お問い合わせ番号/申告番号" />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="配送業者"
-                options={[{ label: '佐川急便', value: '1', disabled: true }]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="200px">
+          <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
                 検索

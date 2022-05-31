@@ -87,7 +87,11 @@ const StatusInquiry: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table
+          rowKey="_id"
+          {...tableProps}
+          scroll={{ x: 2000, y: 'calc(100vh - 470px)' }}
+        >
           <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
           <Table.Column width={180} title="FlightNo" />
           <Table.Column

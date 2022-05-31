@@ -135,25 +135,31 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
       </Row>
       <br />
-      {/* <Table
-        title={() => (
+      <Card
+        size="small"
+        title={
           <Space>
             <span>対応未完了問題（直近一週間）</span>
-            <Button>更新</Button>
+            <Button size="small" type="primary">
+              更新
+            </Button>
           </Space>
-        )}
+        }
       >
-        <Table.Column title="会社名" />
-        <Table.Column title="MAWBNo" />
-        <Table.Column title="HAWBNo" />
-        <Table.Column title="問題" />
-        <Table.Column title="状態" />
-        <Table.Column title="連絡日" />
-        <Table.Column title="連絡方法" />
-        <Table.Column title="通知者" />
-        <Table.Column title="登録者" />
-      </Table>
-      <br /> */}
+        <Table size="small" rowKey="_id">
+          <Table.Column title="会社名" />
+          <Table.Column title="MAWBNo" />
+          <Table.Column title="HAWBNo" />
+          <Table.Column title="問題" />
+          <Table.Column title="状態" />
+          <Table.Column title="連絡日" />
+          <Table.Column title="連絡方法" />
+          <Table.Column title="通知者" />
+          <Table.Column title="登録者" />
+        </Table>
+      </Card>
+
+      <br />
       <Card
         size="small"
         title={

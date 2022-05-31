@@ -81,6 +81,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
 
   const handleTabChange = (key: any) => {
     setTabKey(key);
+    handleClear();
     search.submit();
   };
 

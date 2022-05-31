@@ -12,7 +12,6 @@ import {
 } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useRequest } from 'umi';
 ////
 import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
@@ -39,7 +38,9 @@ const waybill: React.FC = () => {
       search[search2.key] = search2.value;
     }
     const data = await getAllWaybills({
-      ...search,
+      ...JSON.parse(JSON.stringify(search), (_, value) =>
+        value === null || value === '' ? undefined : value,
+      ),
       agent: agentInfo._id,
       page,
       perPage,
@@ -47,7 +48,7 @@ const waybill: React.FC = () => {
       sortOrder: -1,
     });
     const res = await getAllTracks({
-      page,
+      page: 0,
       perPage,
       HAB: data?.waybills?.map((item: any) => item?.HAB).join(' '),
       agent: agentInfo._id,
@@ -80,7 +81,11 @@ const waybill: React.FC = () => {
         },
       }}
     >
-      <Form form={form} className="sk-table-search">
+      <Form
+        form={form}
+        className="sk-table-search"
+        initialValues={{ search2: { key: 'HAB' } }}
+      >
         <Row gutter={8}>
           <Col flex="100px">
             <Form.Item name="waybill_type">
@@ -154,7 +159,7 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder="項目名"
                 options={[
-                  { label: 'FLIGHT NO', value: 'VSN' },
+                  { label: 'FLIGHT NO', value: 'flight_no' },
                   { label: '個数', value: 'NO' },
                   { label: '重量（KG）', value: 'GW' },
                   { label: '審査検査区分', value: '2', disabled: true },
@@ -195,11 +200,11 @@ const waybill: React.FC = () => {
               <Select
                 allowClear
                 placeholder="配送業者"
-                options={[{ label: '佐川急便', value: '1', disabled: true }]}
+                options={[{ label: '佐川急便', value: '1' }]}
               />
             </Form.Item>
           </Col>
-          <Col flex="200px">
+          <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
                 検索
@@ -210,7 +215,19 @@ const waybill: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
+        <Table
+          rowKey="_id"
+          {...tableProps}
+          scroll={{ x: 6000, y: 'calc(100vh - 530px)' }}
+        >
+          <Table.Column width={180} title="お問い合わせ番号" dataIndex="HAB" />
+          <Table.Column
+            width={180}
+            title="追跡"
+            render={(row) => {
+              return <TrackModal dataSource={row?.track} />;
+            }}
+          />
           <Table.Column width={180} title="コメント" />
           <Table.Column width={120} title="状態" />
           <Table.Column width={100} title="許可書" />
@@ -221,14 +238,6 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="搬入日時" />
           <Table.Column width={180} title="許可日時" />
           <Table.Column width={180} title="搬出日時" />
-          <Table.Column width={180} title="お問い合わせ番号" dataIndex="HAB" />
-          <Table.Column
-            width={180}
-            title="追跡"
-            render={(row) => {
-              return <TrackModal dataSource={row?.track} />;
-            }}
-          />
           <Table.Column width={180} title="配送業者" />
           <Table.Column width={180} title="タイプ" />
           <Table.Column width={180} title="識別" dataIndex="waybill_type" />
