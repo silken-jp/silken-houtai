@@ -124,19 +124,21 @@ const StatusInquiry: React.FC = () => {
               return (
                 <Space>
                   <span>{row?._id}</span>
-                  <Popconfirm
-                    title={`【MAWB番号 ${row?._id} 合${row?.waybillCount}個 】 を全て削除しますか?`}
-                    onConfirm={confirm}
-                    okButtonProps={{
-                      loading: deleteALLWaybills.loading,
-                    }}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button size="small" type="link">
-                      <DeleteOutlined />
-                    </Button>
-                  </Popconfirm>
+                  {row?._id && (
+                    <Popconfirm
+                      title={`【MAWB番号 ${row?._id} 合${row?.waybillCount}個 】 を全て削除しますか?`}
+                      onConfirm={confirm}
+                      okButtonProps={{
+                        loading: deleteALLWaybills.loading,
+                      }}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button size="small" type="link">
+                        <DeleteOutlined />
+                      </Button>
+                    </Popconfirm>
+                  )}
                 </Space>
               );
             }}
