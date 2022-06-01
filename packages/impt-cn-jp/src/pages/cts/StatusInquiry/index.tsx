@@ -7,17 +7,22 @@ import {
   Col,
   Card,
   Space,
+  Popconfirm,
   DatePicker,
   Select,
 } from 'antd';
-import { useAntdTable } from 'ahooks';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { DeleteOutlined } from '@ant-design/icons';
 ////
 import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
-import { getStatusInquiry } from '@/services/request/waybill';
+import {
+  deleteALLWaybillsByMAWB,
+  getStatusInquiry,
+} from '@/services/request/waybill';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -38,7 +43,10 @@ const StatusInquiry: React.FC = () => {
     });
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
+  const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
+    manual: true,
+  });
 
   return (
     <PageContainer
@@ -103,7 +111,36 @@ const StatusInquiry: React.FC = () => {
               agentOptions?.find((item) => item?.value === row?.agentId)?.label
             }
           />
-          <Table.Column width={200} title="MAWB番号" dataIndex="_id" />
+          <Table.Column
+            width={200}
+            title="MAWB番号"
+            render={(row) => {
+              const confirm = async () => {
+                await deleteALLWaybills.runAsync({
+                  mawb: row?._id,
+                });
+                refresh();
+              };
+              return (
+                <Space>
+                  <span>{row?._id}</span>
+                  <Popconfirm
+                    title={`【MAWB番号 ${row?._id} 合${row?.waybillCount}個 】 を全て削除しますか?`}
+                    onConfirm={confirm}
+                    okButtonProps={{
+                      loading: deleteALLWaybills.loading,
+                    }}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button size="small" type="link">
+                      <DeleteOutlined />
+                    </Button>
+                  </Popconfirm>
+                </Space>
+              );
+            }}
+          />
           <Table.Column width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column width={150} title="FlightNo" dataIndex="flightNo" />
           <Table.Column
