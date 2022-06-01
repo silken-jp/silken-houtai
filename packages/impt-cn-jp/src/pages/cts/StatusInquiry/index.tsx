@@ -95,36 +95,37 @@ const StatusInquiry: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 2000 }}>
+        <Table rowKey="_id" {...tableProps} scroll={{ x: 2500 }}>
           <Table.Column
-            width={180}
+            width={200}
             title="フォワーダー"
             render={(row) =>
               agentOptions?.find((item) => item?.value === row?.agentId)?.label
             }
           />
-          <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
-          <Table.Column width={180} title="FlightNo" dataIndex="flightNo" />
+          <Table.Column width={200} title="MAWB番号" dataIndex="_id" />
+          <Table.Column width={150} title="仕出地" dataIndex="PSC" />
+          <Table.Column width={150} title="FlightNo" dataIndex="flightNo" />
           <Table.Column
-            width={180}
+            width={200}
             title="FlightDate"
             render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column width={180} title="件数" dataIndex="NOCount" />
-          <Table.Column width={180} title="個数" dataIndex="waybillCount" />
+          <Table.Column width={150} title="件数" dataIndex="NOCount" />
+          <Table.Column width={150} title="個数" dataIndex="waybillCount" />
           <Table.Column
-            width={180}
+            width={150}
             title="重量（KG）"
             render={(row) => row?.GWCount?.toFixed(2)}
           />
-          <Table.Column width={180} title="ショート" />
-          <Table.Column width={180} title="オーバー" />
-          <Table.Column width={180} title="MIC許可" />
-          <Table.Column width={180} title="MIC未許可" />
-          <Table.Column width={180} title="IDC許可" />
-          <Table.Column width={180} title="IDC未許可" />
-          <Table.Column width={180} title="HAWB未許可" />
-          <Table.Column width={180} title="登録時間" />Ï
+          <Table.Column width={150} title="ショート" />
+          <Table.Column width={150} title="オーバー" />
+          <Table.Column width={150} title="MIC許可" />
+          <Table.Column width={150} title="MIC未許可" />
+          <Table.Column width={150} title="IDC許可" />
+          <Table.Column width={150} title="IDC未許可" />
+          <Table.Column width={150} title="HAWB未許可" />
+          <Table.Column width={150} title="登録時間" />Ï
         </Table>
       </Card>
     </PageContainer>

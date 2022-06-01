@@ -241,11 +241,11 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="配送業者" />
           <Table.Column width={180} title="タイプ" />
           <Table.Column width={180} title="識別" dataIndex="waybill_type" />
-          <Table.Column width={180} title="FLIGHT NO" dataIndex="flight_no" />
+          <Table.Column width={180} title="FLIGHT NO" dataIndex="flightNo" />
           <Table.Column
             width={180}
             title="FLIGHT DATE"
-            render={(row) => dayFormat(row?.DATE)}
+            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
           />
           <Table.Column width={180} title="申告番号" dataIndex="ICN" />
           <Table.Column width={180} title="個数" dataIndex="NO" />

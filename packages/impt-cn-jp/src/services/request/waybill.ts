@@ -97,6 +97,16 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
   });
 }
 
+// 按MAWB删除运单 DELETE /api/waybills/mawb
+interface DeleteALLWaybillsByMAWB {
+  mawb: string;
+}
+export async function deleteALLWaybillsByMAWB(params: DeleteALLWaybillsByMAWB) {
+  return request<any>(ApiURL + '/waybills/mawb/' + params.mawb, {
+    method: 'DELETE',
+  });
+}
+
 // 批量创建导入 POST /api/waybills/move
 interface MoveWaybill {
   move: number;

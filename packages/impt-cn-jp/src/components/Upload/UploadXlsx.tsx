@@ -54,22 +54,23 @@ const rightHeader = [
 function checkHeader(params: any[]) {
   for (const header of rightHeader) {
     if (!params.includes(header)) {
-      return false;
+      return {
+        success: false,
+        message: `Did't find column 【${header}】, please check the table header.`,
+      };
     }
   }
-  return true;
+  return { success: true };
 }
 
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   const text = props?.text || 'upload';
   const handleUpload = async (jsonArr: any[]) => {
     const sum = jsonArr?.length - 1;
+    const checkRes = checkHeader(jsonArr?.[0]);
     try {
-      if (!checkHeader(jsonArr?.[0])) {
-        throw {
-          message:
-            'The uploaded file is not in the correct format, please check the table header.',
-        };
+      if (!checkRes.success) {
+        throw checkRes;
       }
       notification.open({
         key,
