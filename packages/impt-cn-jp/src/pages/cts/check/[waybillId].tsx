@@ -99,11 +99,15 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const userInfo = getUserInfo();
   const process_status = props?.dataSource?.process_status || 0;
   const current_processor = props?.dataSource?.current_processor || '';
-  const disabled = process_status === 1 && current_processor !== userInfo?.name;
   const search = new URLSearchParams(history.location.search);
   const actionType = search.get('actionType'); // 选件方式 0:check 1:search
   const checkType = search.get('checkType'); //  0:cleansing 1:broker check
   const actionLS = search.get('LS');
+  const editDisabled =
+    process_status === 1 && current_processor !== userInfo?.name;
+  const clsDisabled = checkType === '0' && process_status > 2;
+  const brkDisabled = checkType === '1' && process_status < 2;
+  const disabled = editDisabled || clsDisabled || brkDisabled;
 
   //effect
   useEffect(() => {
@@ -153,6 +157,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onSubmit(waybill_status: number, process_status: number) {
     try {
       const values = await form.getFieldsValue(true);
+      const newREF = `${values?.REF ? values.REF + ' ' : ''}${
+        userInfo?.initialName
+      }`;
       await updateWaybill({
         ...values,
         waybill_type: 1, // TODO: api改为string后删除
@@ -161,7 +168,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         process_status,
         process_type: checkType === '0' ? 1 : 2,
         waybill_status,
-        REF: `${values?.REF ? values.REF + ' ' : ''}${userInfo?.initialName}`,
+        REF: newREF?.length > 20 ? values?.REF || '' : newREF,
       });
     } catch (err: any) {
       throw 'Submit Error';
@@ -192,7 +199,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   });
   useKeyPress('b', () => {
-    if (checkType === '2' && checkFocus()) {
+    if (checkType === '1' && checkFocus()) {
       handleSendBack.run();
     }
   });
@@ -401,6 +408,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             <Button type={cursor ? 'default' : 'primary'} onClick={onExit}>
               Exit（Ctrl + q）
             </Button>
+            {checkType === '0' && <Tag color="blue">クレンジング</Tag>}
+            {checkType === '1' && <Tag color="volcano">ブローカーチェック</Tag>}
+            <Tag>MAB: {props.dataSource?.MAB}</Tag>
             <Tag>
               {
                 ['Other', 'Normal', 'Hold', 'SendBack'][
@@ -408,21 +418,18 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 ]
               }
             </Tag>
-            {/* {process_status > 1 && (
-              <Tag>
-                {
-                  [
-                    'wait cleansing',
-                    'doing cleansing',
-                    'done cleansing',
-                    'doing broker check',
-                    'done broker check',
-                    'done created',
-                  ][process_status]
-                }
-              </Tag>
-            )} */}
-            <RenderLabel value={props.dataSource?.MAB} label="MAB" />
+            <Tag>
+              {
+                [
+                  'wait cleansing',
+                  'doing cleansing',
+                  'done cleansing',
+                  'doing broker check',
+                  'done broker check',
+                  'done created',
+                ][process_status]
+              }
+            </Tag>
           </Space>
         }
         extra={
@@ -470,7 +477,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button
             type="text"
             onClick={handleSendBack.run}
-            disabled={checkType !== '1'}
+            disabled={disabled || checkType !== '1'}
           >
             Send Back（B）
           </Button>,
@@ -479,6 +486,28 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           </Button>,
         ]}
       >
+        {disabled && (
+          <>
+            {editDisabled && (
+              <Alert
+                message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
+              />
+            )}
+            {clsDisabled && (
+              <Alert
+                type="warning"
+                message={`ブローカーチェック済の件は、クレンジングできません。確認してください。`}
+              />
+            )}
+            {brkDisabled && (
+              <Alert
+                type="warning"
+                message={`未クレンジングの件は。ブローカーチェックできません。確認してください。`}
+              />
+            )}
+            <br />
+          </>
+        )}
         <Form.Item
           shouldUpdate={(a, b) =>
             a?.waybill_type !== b?.waybill_type || a?.IDA_type !== b?.IDA_type
@@ -492,11 +521,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             />
           )}
         </Form.Item>
-        {disabled && (
-          <Alert
-            message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
-          />
-        )}
       </Card>
     </Form>
   );
