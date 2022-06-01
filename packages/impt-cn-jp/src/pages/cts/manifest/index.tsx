@@ -76,24 +76,39 @@ const ManifestWaybill: React.FC = () => {
       >
         <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 3000 }}>
           <Table.Column
+            width={150}
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
           />
-          <Table.Column title="MAWB番号" dataIndex="MAB" />
-          {state.tabKey === 'Other' && (
+          <Table.Column width={150} title="MAWB番号" dataIndex="MAB" />
+          {state.tabKey === '0' && (
             <Table.Column title="コントローラー" dataIndex="" />
           )}
-          <Table.Column title="クレンザー" dataIndex="cleanserName" />
+          {state.tabKey === '2' && (
+            <Table.Column width={300} title="メモ" dataIndex="holdMemo" />
+          )}
+          {state.tabKey === '3' && (
+            <Table.Column width={300} title="メモ" dataIndex="sendbackMemo" />
+          )}
+          <Table.Column
+            width={150}
+            title="クレンザー"
+            dataIndex="cleanserName"
+          />
           <Table.Column
             title="クレンジング時間"
             render={(row) => dayFormat(row?.clsDate)}
           />
-          <Table.Column title="ブローカー" dataIndex="brokerName" />
+          <Table.Column width={150} title="ブローカー" dataIndex="brokerName" />
           <Table.Column
             title="ブローカーチェック時間"
             render={(row) => dayFormat(row?.brcDate)}
           />
-          <Table.Column title="クリエーター" dataIndex="creatorName" />
+          <Table.Column
+            width={150}
+            title="クリエーター"
+            dataIndex="creatorName"
+          />
           <Table.Column
             title="クリエート時間"
             render={(row) => dayFormat(row?.crtDate)}

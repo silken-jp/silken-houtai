@@ -28,6 +28,8 @@ import {
 import AllCheckForm from './components/AllCheckForm';
 import FormTypeModal from './components/Modal/FormTypeModal';
 import SearchModal from './components/Modal/SearchModal';
+import HoldAction from './components/Action/HoldAction';
+import SendBackAction from './components/Action/SendBackAction';
 
 const urls = [
   'https://bbs.naccscenter.com/naccs/dfw/web/data/ref_6nac/naccs/ida-03.pdf',
@@ -68,7 +70,7 @@ const RenderLabel: React.FC<RenderLabel> = (props) => (
 export interface WaybillContainerProps {}
 const WaybillContainer: React.FC<WaybillContainerProps> = () => {
   const { waybillId } = useParams<any>();
-  const { data, error, loading } = useRequest(
+  const { data, error, loading, refresh } = useRequest(
     async () => await getWaybill({ waybillId }),
     { refreshDeps: [waybillId] },
   );
@@ -80,11 +82,12 @@ const WaybillContainer: React.FC<WaybillContainerProps> = () => {
       </Spin>
     );
   if (error) return <>error...</>;
-  return <WaybillCheck dataSource={data} />;
+  return <WaybillCheck dataSource={data} refresh={refresh} />;
 };
 
 export interface WaybillCheckProps {
   dataSource?: API.Waybill;
+  refresh?: any;
 }
 const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   // state
@@ -183,11 +186,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       waybill_type === 'MIC' && postFocus({ no: '50.' });
     }
   });
-  useKeyPress('h', () => {
-    if (checkFocus()) {
-      handleHold.run();
-    }
-  });
   useKeyPress('n', () => {
     if (checkFocus()) {
       handleNext.run();
@@ -196,11 +194,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   useKeyPress('p', () => {
     if (checkFocus()) {
       handlePrevious.run();
-    }
-  });
-  useKeyPress('b', () => {
-    if (checkType === '1' && checkFocus()) {
-      handleSendBack.run();
     }
   });
   useKeyPress('F2', () => {
@@ -272,6 +265,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       if (res) {
         history.replace('/cts/check/' + res + history.location.search);
       } else {
+        props?.refresh();
         throw 'すでに最後の件です';
       }
     } catch (error: any) {
@@ -471,21 +465,32 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button type="text" onClick={handleNext.run}>
             Next（N）
           </Button>,
-          <Button disabled={disabled} type="text" onClick={handleHold.run}>
-            Hold（H）
-          </Button>,
-          <Button
-            type="text"
-            onClick={handleSendBack.run}
+          <HoldAction disabled={disabled} handleHold={handleHold} />,
+          <SendBackAction
+            handleSendBack={handleSendBack}
             disabled={disabled || checkType !== '1'}
-          >
-            Send Back（B）
-          </Button>,
+          />,
           <Button disabled={disabled} type="text" onClick={handleAccept.run}>
             Accept（F9）
           </Button>,
         ]}
       >
+        {props?.dataSource?.waybill_status === 2 &&
+          !!props?.dataSource?.holdMemo && (
+            <>
+              <Alert message={'holdMemo:' + props?.dataSource?.holdMemo} />
+              <br />
+            </>
+          )}
+        {props?.dataSource?.waybill_status === 3 &&
+          !!props?.dataSource?.sendbackMemo && (
+            <>
+              <Alert
+                message={'sendbackMemo:' + props?.dataSource?.sendbackMemo}
+              />
+              <br />
+            </>
+          )}
         {disabled && (
           <>
             {editDisabled && (

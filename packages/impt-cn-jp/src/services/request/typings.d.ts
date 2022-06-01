@@ -126,6 +126,8 @@ declare namespace API {
     process_status?: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
     waybill_input_time?: string;
     waybill_status?: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
+    holdMemo?: string;
+    sendbackMemo?: string;
 
     flightNo?: string;
     LS?: 'L' | 'S' | 'M';

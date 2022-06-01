@@ -73,9 +73,6 @@ const SearchModal: React.FC<SearchModalProps> = (props) => {
   useKeyPress(99, () => {
     visible && checkFocus() && setChangeType(3);
   });
-  useKeyPress('esc', () => {
-    visible && checkFocus() && handleCancel();
-  });
   useKeyPress('ctrl.F9', () => {
     visible && checkFocus() && handleOK();
   });
