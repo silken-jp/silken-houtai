@@ -11,12 +11,66 @@ interface UploadXlsxProps {
 }
 
 const key = 'uploadXlsx';
+const rightHeader = [
+  'VSN',
+  'DATE',
+  'ARR',
+  'MAB',
+  'HAB',
+  'PCS',
+  'GW',
+  'GWT',
+  'CMN',
+  'SKB',
+  'ImpName',
+  'ImpNameJP',
+  'IAD',
+  'IADJP',
+  'Zip',
+  'Tel',
+  'EPN',
+  'EAD',
+  'EPY_Zip',
+  'EPO',
+  'DST',
+  'PSC',
+  'OR',
+  'IP1',
+  'IP2',
+  'IP3',
+  'IP4',
+  'FR1',
+  'FR2',
+  'FR3',
+  'IN1',
+  'IN2',
+  'IN3',
+  'recever_name',
+  'receiver_add',
+  'receiver_tel',
+  'receiver_zip',
+];
+
+function checkHeader(params: any[]) {
+  for (const header of rightHeader) {
+    if (!params.includes(header)) {
+      return false;
+    }
+  }
+  return true;
+}
 
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   const text = props?.text || 'upload';
   const handleUpload = async (jsonArr: any[]) => {
     const sum = jsonArr?.length - 1;
     try {
+      if (!checkHeader(jsonArr?.[0])) {
+        throw {
+          message:
+            'The uploaded file is not in the correct format, please check the table header.',
+        };
+      }
       notification.open({
         key,
         message: `uploading`,
@@ -63,7 +117,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       // 假设我们的数据在第一个标签
       var first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
       // XLSX自带了一个工具把导入的数据转成json
-      var jsonArr = XLSX.utils.sheet_to_json(first_worksheet, {
+      var jsonArr: any[] = XLSX.utils.sheet_to_json(first_worksheet, {
         header: 1,
         raw: true,
         blankrows: false,
