@@ -93,7 +93,7 @@ const StatusInquiry: React.FC = () => {
           scroll={{ x: 2000, y: 'calc(100vh - 470px)' }}
         >
           <Table.Column width={180} title="MAWB番号" dataIndex="_id" />
-          <Table.Column width={180} title="FlightNo" dataIndex="FlightNo" />
+          <Table.Column width={180} title="FlightNo" dataIndex="flightNo" />
           <Table.Column
             width={180}
             title="FlightDate"
