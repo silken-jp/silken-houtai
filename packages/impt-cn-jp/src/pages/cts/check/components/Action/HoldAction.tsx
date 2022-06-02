@@ -8,6 +8,10 @@ export interface HoldActionProps {
   handleHold?: any;
 }
 
+function checkFocus() {
+  return document.activeElement?.nodeName === 'BODY';
+}
+
 const HoldAction: React.FC<HoldActionProps> = (props) => {
   // state
   const [visible, { setTrue, setFalse }] = useBoolean(false);
@@ -15,7 +19,9 @@ const HoldAction: React.FC<HoldActionProps> = (props) => {
 
   // key press
   useKeyPress('h', () => {
-    !props.disabled && setTrue();
+    if (checkFocus()) {
+      !props.disabled && setTrue();
+    }
   });
   useKeyPress('ctrl.F9', () => {
     visible && handleOK();
