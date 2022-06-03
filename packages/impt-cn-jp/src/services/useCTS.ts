@@ -9,6 +9,7 @@ import {
   setSearchParams,
   setSelectedParams,
 } from '@/services/useStorage';
+import { getAllTrackings } from './request/tracking';
 
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const [form] = Form.useForm();
@@ -62,6 +63,11 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     };
     setSearchParams(LS, params);
     const data = await getAllWaybillsAdvance(params);
+    const { trackings = [] } = await getAllTrackings({
+      page: 0,
+      perPage,
+      BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
+    });
     setMeta({
       totalCount: data?.totalCount || 0,
       cleansingCount: data?.cleansingCount || 0,
@@ -69,7 +75,13 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       createCount: data?.createCount || 0,
       tabCount: data?.tabCount || [0, 0, 0, 0],
     });
-    return { total: data?.totalCount, list: data?.waybills || [] };
+    return {
+      total: data?.totalCount,
+      list: data?.waybills?.map((item: any) => ({
+        ...item,
+        tracking: trackings?.find((t: any) => t?.BL_ === item?.HAB),
+      })),
+    };
   };
 
   useEffect(() => {

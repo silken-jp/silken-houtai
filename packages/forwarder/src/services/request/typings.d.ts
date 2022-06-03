@@ -120,12 +120,14 @@ declare namespace API {
     createdAt?: string;
     updatedAt?: string;
     current_processor?: string;
-    io_type: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
-    waybill_type: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
-    IDA_type: string; // IDA类型
-    process_status: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
+    io_type?: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
+    waybill_type?: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
+    IDA_type?: string; // IDA类型
+    process_status?: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
     waybill_input_time?: string;
-    waybill_status: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
+    waybill_status?: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
+    holdMemo?: string;
+    sendbackMemo?: string;
 
     flightNo?: string;
     LS?: 'L' | 'S' | 'M';
@@ -204,6 +206,26 @@ declare namespace API {
       code_jp?: string;
       // 報告時間: 121800(76,82) 報告日: 20220522(214,222)
       datetime?: Date;
+    }>;
+  };
+  type Tracking = {
+    waybill?: string;
+    // 輸出入区分
+    DAT_TPE?: string;
+    // MAWBNO
+    MAWB_NO?: string;
+    // Ｂ／Ｌ番号／ＡＷＢ 番号
+    BL_?: string;
+    // 識別(MIC/IDA)
+    MIC_IDA?: string;
+    trackingHistory?: Array<{
+      // 作成日時
+      INS_DT?: string;
+      // トラッキングコード
+      TKG_CD?: string;
+      // トラッキング発生日時
+      TKG_DT?: string;
+      RAW_XML?: string;
     }>;
   };
   type Importer = {

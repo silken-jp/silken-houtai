@@ -1,5 +1,6 @@
 import { Table, Card, Space, Row } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+import { CheckCircleTwoTone } from '@ant-design/icons';
 ////
 import Create from '@/components/Common/Create';
 import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
@@ -90,12 +91,22 @@ const LargeWaybill: React.FC = () => {
             title="ブローカーチェック時間"
             render={(row) => dayFormat(row?.brcDate)}
           />
-          <Table.Column title="申告番号" dataIndex="" />
-          <Table.Column title="申告者" dataIndex="" />
-          <Table.Column title="申告時間" dataIndex="" />
-          <Table.Column title="申告STATUS" dataIndex="" />
-          <Table.Column title="許可済み" dataIndex="" />
-          <Table.Column title="許可時間" dataIndex="" />
+          <Table.Column title="申告番号" dataIndex={['tracking', 'ID']} />
+          <Table.Column title="申告者" />
+          <Table.Column title="申告時間" dataIndex={['tracking', 'DEC_date']} />
+          <Table.Column
+            title="申告STATUS"
+            dataIndex={['tracking', 'EXA_DIS']}
+          />
+          <Table.Column
+            title="許可済み"
+            render={(row) =>
+              row?.tracking?.PER_date && (
+                <CheckCircleTwoTone twoToneColor="#1890ff" />
+              )
+            }
+          />
+          <Table.Column title="許可時間" dataIndex={['tracking', 'PER_date']} />
         </Table>
       </Card>
     </PageContainer>

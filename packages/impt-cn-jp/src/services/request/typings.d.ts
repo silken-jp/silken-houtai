@@ -208,6 +208,26 @@ declare namespace API {
       datetime?: Date;
     }>;
   };
+  type Tracking = {
+    waybill?: string;
+    // 輸出入区分
+    DAT_TPE?: string;
+    // MAWBNO
+    MAWB_NO?: string;
+    // Ｂ／Ｌ番号／ＡＷＢ 番号
+    BL_?: string;
+    // 識別(MIC/IDA)
+    MIC_IDA?: string;
+    trackingHistory?: Array<{
+      // 作成日時
+      INS_DT?: string;
+      // トラッキングコード
+      TKG_CD?: string;
+      // トラッキング発生日時
+      TKG_DT?: string;
+      RAW_XML?: string;
+    }>;
+  };
   type Importer = {
     _id?: ID;
     code?: string;
