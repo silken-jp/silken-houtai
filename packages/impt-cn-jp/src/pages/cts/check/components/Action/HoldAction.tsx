@@ -1,15 +1,11 @@
 import { Button, Modal, Form, Input, Space, Card } from 'antd';
 import { useKeyPress, useBoolean } from 'ahooks';
 ////
-import { inputFormats } from './utils';
+import { inputFormats, checkFocus } from './utils';
 
 export interface HoldActionProps {
   disabled?: boolean;
   handleHold?: any;
-}
-
-function checkFocus() {
-  return document.activeElement?.nodeName === 'BODY';
 }
 
 const HoldAction: React.FC<HoldActionProps> = (props) => {
@@ -19,9 +15,7 @@ const HoldAction: React.FC<HoldActionProps> = (props) => {
 
   // key press
   useKeyPress('h', () => {
-    if (checkFocus()) {
-      !props.disabled && setTrue();
-    }
+    !props.disabled && checkFocus() && setTrue();
   });
   useKeyPress('ctrl.F9', () => {
     visible && handleOK();

@@ -1,7 +1,7 @@
 import { Button, Modal, Form, Input, Space, Card } from 'antd';
 import { useKeyPress, useBoolean } from 'ahooks';
 ////
-import { inputFormats } from './utils';
+import { inputFormats, checkFocus } from './utils';
 
 export interface SendBackActionProps {
   disabled?: boolean;
@@ -15,7 +15,7 @@ const SendBackAction: React.FC<SendBackActionProps> = (props) => {
 
   // key press
   useKeyPress('b', () => {
-    !props.disabled && setTrue();
+    !props.disabled && checkFocus() && setTrue();
   });
   useKeyPress('ctrl.F9', () => {
     visible && handleOK();
@@ -34,7 +34,7 @@ const SendBackAction: React.FC<SendBackActionProps> = (props) => {
   return (
     <>
       <Modal
-        title="Hold"
+        title="SendBack"
         visible={visible}
         onCancel={setFalse}
         footer={

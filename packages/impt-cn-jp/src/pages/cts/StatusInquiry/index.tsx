@@ -23,11 +23,13 @@ import {
   deleteALLWaybillsByMAWB,
   getStatusInquiry,
 } from '@/services/request/waybill';
+import { useState } from 'react';
 
 const StatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [selectedRow, setSelectedRow] = useState<any>();
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -47,6 +49,17 @@ const StatusInquiry: React.FC = () => {
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });
+
+  const rowSelection: any = {
+    type: 'radio',
+    onChange: (_: any[], [selectedRow]: any[]) => {
+      setSelectedRow(selectedRow);
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: !record._id,
+      name: record._id,
+    }),
+  };
 
   return (
     <PageContainer
@@ -102,8 +115,35 @@ const StatusInquiry: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card>
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 2500 }}>
+      <Card
+        extra={
+          <Popconfirm
+            title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
+            onConfirm={async () => {
+              await deleteALLWaybills.runAsync({
+                mawb: selectedRow?._id,
+              });
+              setSelectedRow(null);
+              refresh();
+            }}
+            okButtonProps={{
+              loading: deleteALLWaybills.loading,
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button disabled={!selectedRow} type="primary">
+              削除
+            </Button>
+          </Popconfirm>
+        }
+      >
+        <Table
+          rowSelection={rowSelection}
+          rowKey="_id"
+          {...tableProps}
+          scroll={{ x: 2500 }}
+        >
           <Table.Column
             width={200}
             title="フォワーダー"
@@ -111,38 +151,7 @@ const StatusInquiry: React.FC = () => {
               agentOptions?.find((item) => item?.value === row?.agentId)?.label
             }
           />
-          <Table.Column
-            width={200}
-            title="MAWB番号"
-            render={(row) => {
-              const confirm = async () => {
-                await deleteALLWaybills.runAsync({
-                  mawb: row?._id,
-                });
-                refresh();
-              };
-              return (
-                <Space>
-                  <span>{row?._id}</span>
-                  {row?._id && (
-                    <Popconfirm
-                      title={`【MAWB番号 ${row?._id} 合${row?.waybillCount}個 】 を全て削除しますか?`}
-                      onConfirm={confirm}
-                      okButtonProps={{
-                        loading: deleteALLWaybills.loading,
-                      }}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button size="small" type="link">
-                        <DeleteOutlined />
-                      </Button>
-                    </Popconfirm>
-                  )}
-                </Space>
-              );
-            }}
-          />
+          <Table.Column width={200} title="MAWB番号" dataIndex="_id" />
           <Table.Column width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column width={150} title="FlightNo" dataIndex="flightNo" />
           <Table.Column

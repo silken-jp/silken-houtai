@@ -12,3 +12,7 @@ export const inputFormats = [
   '50.CMN',
   '53.NT1',
 ];
+
+export function checkFocus() {
+  return document.activeElement?.nodeName === 'BODY';
+}
