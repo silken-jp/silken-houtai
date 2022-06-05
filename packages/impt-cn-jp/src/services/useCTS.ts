@@ -134,7 +134,8 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     disActions: {
       cleansing: form.getFieldValue('status') !== '0',
       brock: form.getFieldValue('status') !== '2' || tabKey !== '1',
-      create: !form.getFieldValue('mawbs'),
+      create:
+        !form.getFieldValue('mawbs') || !(tableProps?.dataSource?.length > 0),
     },
     cardProps: {
       tabList: tabArr,

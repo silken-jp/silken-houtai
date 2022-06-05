@@ -38,7 +38,11 @@ const ManifestWaybill: React.FC = () => {
           <span>サーチ結果で実行する</span>
           <Cleansing LS="M" disabled={disActions.cleansing} />
           <Brock LS="M" disabled={disActions.brock} />
-          {/* <Create LS="M" disabled={disActions.create} /> */}
+          <Create
+            LS="M"
+            disabled={disActions.create}
+            dataSource={tableProps.dataSource}
+          />
           <ExportXlsx LS="M" />
         </Space>
       </Row>
@@ -65,12 +69,12 @@ const ManifestWaybill: React.FC = () => {
               LS="M"
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            {/* <Create
+            <Create
               LS="M"
               useSource
               disabled={disActions.create}
-              dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            /> */}
+              dataSource={state.selectedRows}
+            />
             <ExportXlsx LS="M" useSource dataSource={state.selectedRows} />
           </Space>
         }

@@ -187,3 +187,17 @@ export async function getDateStat(
     params,
   });
 }
+
+// 获取waybills统计 GET /api/waybills/creating
+interface Creating extends API.Waybill {
+  filter: any;
+  creatorId: API.ID;
+}
+export async function creating(params?: Creating): Promise<any> {
+  return request<any>(ApiURL + '/waybills/creating', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

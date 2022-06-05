@@ -1,12 +1,28 @@
 import { useState, useEffect } from 'react';
-import { Form, Input, Button, Modal, Select, DatePicker } from 'antd';
+import { Form, Input, Button, Modal, Select, DatePicker, message } from 'antd';
 import dayjs from 'dayjs';
 ////
+import { getSearchParams, getUserInfo } from '@/services/useStorage';
+import { creating } from '@/services/request/waybill';
+
+export function findValuesByKey(LS: 'L' | 'S' | 'M', data?: any[]) {
+  return {
+    ...(LS === 'M' && { JYO: 'Z', CHB: data?.[0]?.CHB }),
+    ...(LS === 'L' && { CHB: '55' }),
+    ...(LS === 'S' && { CHB: '77' }),
+    ...(LS !== 'M' && { CHH: data?.[0]?.CHH || '', CHT: data?.[0]?.CHT || '' }),
+    CH: '1A',
+    ICD: data?.[0]?.ICD ? dayjs(data?.[0]?.ICD) : null,
+    ST: data?.[0]?.ST || '',
+    TTC: data?.[0]?.TTC || '',
+    MAB: data?.[0]?.MAB || '',
+    VSN: data?.[0]?.VSN || '',
+    ARR: data?.[0]?.ARR ? dayjs(data?.[0]?.ARR) : null,
+  };
+}
 
 export interface CreateProps {
   disabled?: boolean;
-  type?: 'MIC' | 'IDA';
-  large?: boolean;
   LS: 'L' | 'S' | 'M';
   useSource?: boolean;
   dataSource?: any[];
@@ -25,45 +41,74 @@ const ST = [
 ];
 
 const Create: React.FC<CreateProps> = (props) => {
+  // state
   const { LS, dataSource, disabled, useSource } = props;
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const userInfo = getUserInfo();
 
   useEffect(() => {
-    LS === 'M'
-      ? form.setFieldsValue({
-          JYO: 'Z',
-          CH: '1A',
-          CHB: '',
-          ICD: dayjs(),
-          ST: '',
-          TTC: '',
-          MAB: '',
-          VSN: '',
-          ARR: '',
-        })
-      : form.setFieldsValue({
-          CH: '1A',
-          CHB: props?.LS === 'L' ? '55' : '77',
-          CHH: '',
-          CHT: '',
-          ICD: dayjs(),
-          ST: '',
-          TTC: '',
-          VSN: '',
-          ARR: '',
-        });
+    if (visible) {
+      const defaultValues = findValuesByKey(props.LS, props?.dataSource);
+      form.setFieldsValue(defaultValues);
+    }
   }, [visible]);
+
+  function handleOpen() {
+    setVisible(true);
+  }
+  function handleCancel() {
+    setVisible(false);
+  }
+
+  async function handleSubmit() {
+    try {
+      setLoading(true);
+      const values = await form.validateFields();
+      let { page, perPage, sortField, sortOrder, ...filter } = getSearchParams(
+        props?.LS,
+      );
+      if (useSource) {
+        filter = {
+          hawbs: props?.dataSource?.reduce((a, b) => {
+            let hawbs = a;
+            if (b?.HAB) {
+              !!a && (hawbs += ' ');
+              hawbs += b.HAB;
+            }
+            return hawbs;
+          }, ''),
+        };
+      }
+      await creating({
+        filter,
+        creatorId: userInfo?._id,
+        ...values,
+        ICD: values?.ICD,
+        ARR: values?.ARR,
+      });
+      message.info('create success');
+      setLoading(false);
+      handleCancel();
+    } catch (error) {
+      message.error('create error');
+      setLoading(false);
+    }
+  }
 
   return (
     <>
       <Modal
-        title="クリエート"
+        title={useSource ? 'シングルクリエート' : 'クリエート'}
         visible={visible}
         width={800}
         forceRender
-        onCancel={() => setVisible(false)}
-        onOk={() => setVisible(false)}
+        okButtonProps={{
+          loading,
+        }}
+        onCancel={handleCancel}
+        onOk={handleSubmit}
       >
         <Form form={form}>
           {LS === 'M' ? (
@@ -153,16 +198,12 @@ const Create: React.FC<CreateProps> = (props) => {
           size="small"
           type="dashed"
           disabled={disabled || !dataSource?.length}
-          onClick={() => setVisible(true)}
+          onClick={handleOpen}
         >
           シングルクリエート
         </Button>
       ) : (
-        <Button
-          type="primary"
-          disabled={disabled}
-          onClick={() => setVisible(true)}
-        >
+        <Button type="primary" disabled={disabled} onClick={handleOpen}>
           マスクリエート
         </Button>
       )}
