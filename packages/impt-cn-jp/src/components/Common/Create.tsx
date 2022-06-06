@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, Input, Button, Modal, Select, DatePicker, message } from 'antd';
-import dayjs from 'dayjs';
+import { Form, Input, Button, Modal, Select, message } from 'antd';
 ////
 import { getSearchParams, getUserInfo } from '@/services/useStorage';
 import { creating } from '@/services/request/waybill';
@@ -12,12 +11,12 @@ export function findValuesByKey(LS: 'L' | 'S' | 'M', data?: any[]) {
     ...(LS === 'S' && { CHB: '77' }),
     ...(LS !== 'M' && { CHH: data?.[0]?.CHH || '', CHT: data?.[0]?.CHT || '' }),
     CH: '1A',
-    ICD: data?.[0]?.ICD ? dayjs(data?.[0]?.ICD) : null,
+    ICD: data?.[0]?.ICD,
     ST: data?.[0]?.ST || '',
     TTC: data?.[0]?.TTC || '',
     MAB: data?.[0]?.MAB || '',
     VSN: data?.[0]?.VSN || '',
-    ARR: data?.[0]?.ARR ? dayjs(data?.[0]?.ARR) : null,
+    ARR: data?.[0]?.ARR,
   };
 }
 
@@ -85,8 +84,6 @@ const Create: React.FC<CreateProps> = (props) => {
         filter,
         creatorId: userInfo?._id,
         ...values,
-        ICD: values?.ICD,
-        ARR: values?.ARR,
       });
       message.info('create success');
       setLoading(false);
@@ -142,7 +139,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 <Input placeholder="あて先部門コード" />
               </Form.Item>
               <Form.Item label="8.ICD" name="ICD" rules={[{ required: true }]}>
-                <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
+                <Input placeholder="申告予定年月日" />
               </Form.Item>
               <Form.Item label="21.ST" name="ST" rules={[{ required: true }]}>
                 <Select placeholder="通関予定蔵置場コード" options={ST} />
@@ -157,7 +154,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 <Input placeholder="積載機名" />
               </Form.Item>
               <Form.Item label="37.ARR" name="ARR">
-                <DatePicker placeholder="入港年月日" format="YYYYMMDD" />
+                <Input placeholder="入港年月日" />
               </Form.Item>
             </>
           ) : (
@@ -175,7 +172,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 <Input placeholder="特例申告あて先部門コード" />
               </Form.Item>
               <Form.Item label="12.ICD" name="ICD" rules={[{ required: true }]}>
-                <DatePicker placeholder="申告予定年月日" format="YYYYMMDD" />
+                <Input placeholder="申告予定年月日" />
               </Form.Item>
               <Form.Item label="24.ST" name="ST" rules={[{ required: true }]}>
                 <Select placeholder="通関予定蔵置場コード" options={ST} />
@@ -187,7 +184,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 <Input placeholder="積載機名" />
               </Form.Item>
               <Form.Item label="46.ARR" name="ARR">
-                <DatePicker placeholder="入港年月日" format="YYYYMMDD" />
+                <Input placeholder="入港年月日" />
               </Form.Item>
             </>
           )}
