@@ -34,6 +34,8 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     const data = await getAllTracks({
       page,
       perPage,
+      sortField: 'delivery_day',
+      sortOrder: -1,
       ...formData,
     });
     return {
