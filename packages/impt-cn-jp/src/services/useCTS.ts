@@ -77,10 +77,13 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     });
     return {
       total: data?.totalCount,
-      list: data?.waybills?.map((item: any) => ({
-        ...item,
-        tracking: trackings?.find((t: any) => t?.BL_ === item?.HAB),
-      })),
+      list: data?.waybills?.map((item: any) => {
+        const temp = trackings?.find((t: any) => t?.BL_ === item?.HAB);
+        let tracking = temp?.trackingHistory?.reduce((a: any, b: any) => {
+          return { ...a, [b?.TKG_CD]: b?.TKG_DT };
+        }, temp);
+        return { ...item, tracking };
+      }),
     };
   };
 
@@ -127,7 +130,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       ...tableProps,
       pagination: {
         ...tableProps.pagination,
-        pageSizeOptions: ['10', '20', '50', '100', '1000'],
+        pageSizeOptions: ['10', '20', '50', '100', '500'],
       },
       rowSelection,
     },

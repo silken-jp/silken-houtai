@@ -1,6 +1,5 @@
-import { Table, Card, Space, Row } from 'antd';
+import { Table, Card, Space, Row, Tag } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { CheckCircleTwoTone } from '@ant-design/icons';
 ////
 import Create from '@/components/Common/Create';
 import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
@@ -93,20 +92,41 @@ const SmallWaybill: React.FC = () => {
           />
           <Table.Column title="申告番号" dataIndex={['tracking', 'ID']} />
           <Table.Column title="申告者" />
-          <Table.Column title="申告時間" dataIndex={['tracking', 'DEC_date']} />
           <Table.Column
             title="申告STATUS"
             dataIndex={['tracking', 'EXA_DIS']}
           />
+          <Table.Column title="申告(時間)" dataIndex={['tracking', 'DEC']} />
+          <Table.Column title="許可(時間)" dataIndex={['tracking', 'PER']} />
           <Table.Column
-            title="許可済み"
-            render={(row) =>
-              row?.tracking?.PER_date && (
-                <CheckCircleTwoTone twoToneColor="#1890ff" />
-              )
-            }
+            title="通関開始(時間)"
+            dataIndex={['tracking', 'STT']}
           />
-          <Table.Column title="許可時間" dataIndex={['tracking', 'PER_date']} />
+          <Table.Column
+            title="内点予定(搬入前）/内点(搬入後）(時間)"
+            dataIndex={['tracking', 'PIN/CHN']}
+            render={(row) => (
+              <>
+                {row?.tracking?.PIN && (
+                  <Tag>{`内点予定(搬入前）: ${row?.tracking?.PIN}`}</Tag>
+                )}
+                {row?.tracking?.CHN && (
+                  <Tag>{`内点(搬入後: ${row?.tracking?.CHN}`}</Tag>
+                )}
+              </>
+            )}
+          />
+          <Table.Column title="HCH送信(時間)" dataIndex={['tracking', 'HCH']} />
+          <Table.Column
+            title="搬入スキャン(時間)"
+            dataIndex={['tracking', 'BIN']}
+          />
+          <Table.Column title="HPK送信(時間)" dataIndex={['tracking', 'HPK']} />
+          <Table.Column
+            title="搬出スキャン(時間)"
+            dataIndex={['tracking', 'BOU']}
+          />
+          <Table.Column title="OUT送信(時間)" dataIndex={['tracking', 'OUT']} />
         </Table>
       </Card>
     </PageContainer>
