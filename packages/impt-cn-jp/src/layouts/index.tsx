@@ -101,6 +101,10 @@ const Index: React.FC = (props) => {
                   label: intlMenu('cts.settings'),
                   children: [
                     {
+                      key: '/cts/settings/CMN',
+                      label: <Link to="/cts/settings/CMN">品名管理</Link>,
+                    },
+                    {
                       key: '/cts/settings/Currency',
                       label: (
                         <Link to="/cts/settings/Currency">為替レート管理</Link>

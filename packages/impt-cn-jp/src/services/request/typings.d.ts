@@ -20,6 +20,10 @@ declare namespace API {
     STL?: string;
     AGT_CD?: string;
   };
+  type CMN = {
+    origin_CMN?: string;
+    modifed_CMN?: string;
+  };
   type Company = {
     _id?: ID;
     company_name?: string;

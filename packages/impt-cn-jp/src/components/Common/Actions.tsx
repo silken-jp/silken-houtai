@@ -59,13 +59,15 @@ export function deleteConfirm(props: DeleteConfirmProps) {
   const handleDelete = (value: any) => {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
-      title: `删除【${props?.name}】`,
-      content: `本操作无法撤回，确认删除?`,
+      title: `DELETE【${props?.name}】`,
+      content: `This operation cannot be withdrawn, confirm deletion?`,
+      cancelText: 'cancel',
+      okText: 'OK',
       onOk: async () => {
         try {
           await props?.submit?.(value);
         } catch (error: any) {
-          message.error('删除失败，请稍后再试');
+          message.error('Failed to delete, please try again later');
         }
       },
       ...props,
