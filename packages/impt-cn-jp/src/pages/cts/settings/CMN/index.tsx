@@ -23,7 +23,7 @@ import {
 import { deleteConfirm } from '@/components/Common/Actions';
 import CMNForm from '@/components/Form/CMNForm';
 
-const Importer: React.FC = () => {
+const CMNSetting: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
@@ -87,7 +87,7 @@ const Importer: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/cts/settings/Importer',
+              path: '/cts/settings/CMN',
               breadcrumbName: intlMenu('setting'),
             },
             { path: '', breadcrumbName: '品名変換リスト' },
@@ -216,4 +216,4 @@ const Importer: React.FC = () => {
   );
 };
 
-export default Importer;
+export default CMNSetting;

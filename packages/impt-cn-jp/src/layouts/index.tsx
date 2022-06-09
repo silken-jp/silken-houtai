@@ -105,6 +105,18 @@ const Index: React.FC = (props) => {
                       label: <Link to="/cts/settings/CMN">品名管理</Link>,
                     },
                     {
+                      key: '/cts/settings/GW_FR3',
+                      label: <Link to="/cts/settings/GW_FR3">運賃管理</Link>,
+                    },
+                    {
+                      key: '/cts/settings/GW_IP4',
+                      label: (
+                        <Link to="/cts/settings/GW_IP4">
+                          インボイス価格管理
+                        </Link>
+                      ),
+                    },
+                    {
                       key: '/cts/settings/Currency',
                       label: (
                         <Link to="/cts/settings/Currency">為替レート管理</Link>
