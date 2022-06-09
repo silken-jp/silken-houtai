@@ -46,13 +46,26 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
+    let sorter: any = {};
+    if (typeof pageData?.sorter?.field === 'string') {
+      sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
     const params = {
       ...formData,
+      ...sorter,
       waybill_status: +tabKey,
       page,
       perPage,
-      sortField: 'createdAt',
-      sortOrder: -1,
       LS,
       clsStartDate: formData?.clsStartDate?.toString(),
       clsEndDate: formData?.clsEndDate?.toString(),

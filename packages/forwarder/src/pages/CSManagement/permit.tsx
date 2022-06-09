@@ -40,6 +40,20 @@ const waybill: React.FC = () => {
     if (search2?.key && search2?.value) {
       search[search2.key] = search2.value;
     }
+    let sorter: any = {};
+    if (typeof pageData?.sorter?.field === 'string') {
+      sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
     const data = await getAllWaybills({
       ...JSON.parse(JSON.stringify(search), (_, value) =>
         value === null || value === '' ? undefined : value,
@@ -47,8 +61,7 @@ const waybill: React.FC = () => {
       agent: agentInfo._id,
       page,
       perPage,
-      sortField: 'createdAt',
-      sortOrder: -1,
+      ...sorter,
     });
     const { tracks = [] } = await getAllTracks({
       page: 0,
@@ -229,7 +242,12 @@ const waybill: React.FC = () => {
           {...tableProps}
           scroll={{ x: 6000, y: 'calc(100vh - 530px)' }}
         >
-          <Table.Column width={120} title="お問い合わせ番号" dataIndex="HAB" />
+          <Table.Column
+            sorter
+            width={120}
+            title="お問い合わせ番号"
+            dataIndex="HAB"
+          />
           <Table.Column
             width={200}
             title="追跡"
@@ -239,6 +257,7 @@ const waybill: React.FC = () => {
           />
           {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
+            sorter
             width={150}
             title="申告STATUS"
             dataIndex={['tracking', 'EXA_DIS']}
@@ -255,31 +274,64 @@ const waybill: React.FC = () => {
               ))
             }
           />
-          <Table.Column width={100} title="許可書" />
-          <Table.Column width={150} title="HAWB番号" dataIndex="HAB" />
-          <Table.Column width={150} title="MAWB番号" dataIndex="MAB" />
-          <Table.Column width={150} title="配送業者" />
-          <Table.Column width={150} title="タイプ" />
-          <Table.Column width={80} title="識別" dataIndex="waybill_type" />
-          <Table.Column width={100} title="FLIGHT NO" dataIndex="flightNo" />
+          <Table.Column sorter width={100} title="許可書" />
+          <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
+          <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
+          <Table.Column sorter width={150} title="配送業者" />
+          <Table.Column sorter width={150} title="タイプ" />
           <Table.Column
-            width={100}
-            title="FLIGHT DATE"
-            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
+            sorter
+            width={80}
+            title="識別"
+            dataIndex="waybill_type"
           />
           <Table.Column
+            sorter
+            width={100}
+            title="FLIGHT NO"
+            dataIndex="flightNo"
+          />
+          <Table.Column
+            sorter
+            width={100}
+            title="FLIGHT DATE"
+            dataIndex="flightDate"
+            render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
+          />
+          <Table.Column
+            sorter
             width={180}
             title="申告番号"
             dataIndex={['tracking', 'ID']}
           />
-          <Table.Column width={80} title="個数" dataIndex="NO" />
-          <Table.Column width={100} title="重量（ＫＧ）" dataIndex="GW" />
-          <Table.Column width={150} title="審査検査区分" />
-          <Table.Column width={150} title="関税" render={() => 0} />
-          <Table.Column width={150} title="消費税" render={() => 0} />
-          <Table.Column width={150} title="地方消費税" render={() => 0} />
-          <Table.Column width={150} title="納税額合計" render={() => 0} />
-          <Table.Column width={150} title="作成日時" dataIndex="createAt" />
+          <Table.Column sorter width={80} title="個数" dataIndex="NO" />
+          <Table.Column
+            sorter
+            width={100}
+            title="重量（ＫＧ）"
+            dataIndex="GW"
+          />
+          <Table.Column sorter width={150} title="審査検査区分" />
+          <Table.Column sorter width={150} title="関税" render={() => 0} />
+          <Table.Column sorter width={150} title="消費税" render={() => 0} />
+          <Table.Column
+            sorter
+            width={150}
+            title="地方消費税"
+            render={() => 0}
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="納税額合計"
+            render={() => 0}
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="作成日時"
+            dataIndex="createAt"
+          />
         </Table>
       </Card>
     </PageContainer>

@@ -65,47 +65,66 @@ const LargeWaybill: React.FC = () => {
           </Space>
         }
       >
-        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 3000 }}>
+        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
           <Table.Column
+            sorter
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
           />
-          <Table.Column title="MAWB番号" dataIndex="MAB" />
+          <Table.Column sorter title="MAWB番号" dataIndex="MAB" />
           {state.tabKey === 'Other' && (
             <Table.Column title="コントローラー" dataIndex="" />
           )}
-          <Table.Column title="書類作成者" dataIndex="" />
-          <Table.Column title="クレンザー" dataIndex="cleanserName" />
+          <Table.Column sorter title="書類作成者" dataIndex="" />
+          <Table.Column sorter title="クレンザー" dataIndex="cleanserName" />
           <Table.Column
+            sorter
             title="クレンジング時間"
             render={(row) => dayFormat(row?.clsDate)}
           />
-          <Table.Column title="クリエーター" dataIndex="creatorName" />
+          <Table.Column sorter title="クリエーター" dataIndex="creatorName" />
           <Table.Column
+            sorter
             title="クリエート時間"
             render={(row) => dayFormat(row?.crtDate)}
           />
-          <Table.Column title="ブローカー" dataIndex="brokerName" />
+          <Table.Column sorter title="ブローカー" dataIndex="brokerName" />
           <Table.Column
+            sorter
             title="ブローカーチェック時間"
             render={(row) => dayFormat(row?.brcDate)}
           />
-          <Table.Column title="申告番号" dataIndex={['tracking', 'ID']} />
-          <Table.Column title="申告者" />
           <Table.Column
+            sorter
+            title="申告番号"
+            dataIndex={['tracking', 'ID']}
+          />
+          <Table.Column sorter title="申告者" />
+          <Table.Column
+            sorter
             title="申告STATUS"
             dataIndex={['tracking', 'EXA_DIS']}
           />
-          <Table.Column title="申告(時間)" dataIndex={['tracking', 'DEC']} />
-          <Table.Column title="許可(時間)" dataIndex={['tracking', 'PER']} />
           <Table.Column
+            sorter
+            title="申告(時間)"
+            dataIndex={['tracking', 'DEC']}
+          />
+          <Table.Column
+            sorter
+            title="許可(時間)"
+            dataIndex={['tracking', 'PER']}
+          />
+          <Table.Column
+            sorter
             title="通関開始(時間)"
             dataIndex={['tracking', 'STT']}
           />
           <Table.Column
+            sorter
             title="内点予定(搬入前）/内点(搬入後）(時間)"
-            dataIndex={['tracking', 'PIN/CHN']}
-            render={(row) => (
+            dataIndex={['tracking', 'PIN']}
+            render={(_, row: any) => (
               <>
                 {row?.tracking?.PIN && (
                   <Tag>{`内点予定(搬入前）: ${row?.tracking?.PIN}`}</Tag>
@@ -116,17 +135,31 @@ const LargeWaybill: React.FC = () => {
               </>
             )}
           />
-          <Table.Column title="HCH送信(時間)" dataIndex={['tracking', 'HCH']} />
           <Table.Column
+            sorter
+            title="HCH送信(時間)"
+            dataIndex={['tracking', 'HCH']}
+          />
+          <Table.Column
+            sorter
             title="搬入スキャン(時間)"
             dataIndex={['tracking', 'BIN']}
           />
-          <Table.Column title="HPK送信(時間)" dataIndex={['tracking', 'HPK']} />
           <Table.Column
+            sorter
+            title="HPK送信(時間)"
+            dataIndex={['tracking', 'HPK']}
+          />
+          <Table.Column
+            sorter
             title="搬出スキャン(時間)"
             dataIndex={['tracking', 'BOU']}
           />
-          <Table.Column title="OUT送信(時間)" dataIndex={['tracking', 'OUT']} />
+          <Table.Column
+            sorter
+            title="OUT送信(時間)"
+            dataIndex={['tracking', 'OUT']}
+          />
         </Table>
       </Card>
     </PageContainer>

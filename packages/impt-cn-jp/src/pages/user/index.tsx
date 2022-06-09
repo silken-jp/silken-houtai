@@ -23,12 +23,17 @@ const StatusInquiry: React.FC = () => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     let sorter: any = {};
-    if (pageData?.sorter?.order === 'ascend') {
+    if (typeof pageData?.sorter?.field === 'string') {
       sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;
     }
     if (pageData?.sorter?.order === 'descend') {
-      sorter.sortField = pageData?.sorter?.field;
       sorter.sortOrder = -1;
     }
     const data = await getAllUsers({

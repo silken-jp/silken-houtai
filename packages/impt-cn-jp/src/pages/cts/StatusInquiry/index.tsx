@@ -36,9 +36,24 @@ const StatusInquiry: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
+    let sorter: any = {};
+    if (typeof pageData?.sorter?.field === 'string') {
+      sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
     const data = await getStatusInquiry({
       page,
       perPage,
+      ...sorter,
       ...formData,
       flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
       flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
@@ -145,35 +160,51 @@ const StatusInquiry: React.FC = () => {
           scroll={{ x: 2500 }}
         >
           <Table.Column
+            sorter
             width={200}
             title="フォワーダー"
-            render={(row) =>
-              agentOptions?.find((item) => item?.value === row?.agentId)?.label
+            dataIndex="agentId"
+            render={(agentId) =>
+              agentOptions?.find((item) => item?.value === agentId)?.label
             }
           />
-          <Table.Column width={200} title="MAWB番号" dataIndex="_id" />
-          <Table.Column width={150} title="仕出地" dataIndex="PSC" />
-          <Table.Column width={150} title="FlightNo" dataIndex="flightNo" />
+          <Table.Column sorter width={200} title="MAWB番号" dataIndex="_id" />
+          <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column
+            sorter
+            width={150}
+            title="FlightNo"
+            dataIndex="flightNo"
+          />
+          <Table.Column
+            sorter
             width={200}
             title="FlightDate"
-            render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
+            dataIndex="flightDate"
+            render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column width={150} title="件数" dataIndex="NOCount" />
-          <Table.Column width={150} title="個数" dataIndex="waybillCount" />
+          <Table.Column sorter width={150} title="件数" dataIndex="NOCount" />
           <Table.Column
+            sorter
+            width={150}
+            title="個数"
+            dataIndex="waybillCount"
+          />
+          <Table.Column
+            sorter
             width={150}
             title="重量（KG）"
-            render={(row) => row?.GWCount?.toFixed(2)}
+            dataIndex="GWCount"
+            render={(GWCount) => GWCount?.toFixed(2)}
           />
-          <Table.Column width={150} title="ショート" />
-          <Table.Column width={150} title="オーバー" />
-          <Table.Column width={150} title="MIC許可" />
-          <Table.Column width={150} title="MIC未許可" />
-          <Table.Column width={150} title="IDC許可" />
-          <Table.Column width={150} title="IDC未許可" />
-          <Table.Column width={150} title="HAWB未許可" />
-          <Table.Column width={150} title="登録時間" />Ï
+          <Table.Column sorter width={150} title="ショート" />
+          <Table.Column sorter width={150} title="オーバー" />
+          <Table.Column sorter width={150} title="MIC許可" />
+          <Table.Column sorter width={150} title="MIC未許可" />
+          <Table.Column sorter width={150} title="IDC許可" />
+          <Table.Column sorter width={150} title="IDC未許可" />
+          <Table.Column sorter width={150} title="HAWB未許可" />
+          <Table.Column sorter width={150} title="登録時間" />Ï
         </Table>
       </Card>
     </PageContainer>
