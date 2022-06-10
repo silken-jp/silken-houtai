@@ -1,9 +1,9 @@
-name: deploy to s3
+name: deploy to s3 forwarder
 on:
   push:
     branches: [ prod ]
     paths: 
-        - "packages/forwarder/*"
+        - "packages/forwarder/**"
 
 jobs:
   build:

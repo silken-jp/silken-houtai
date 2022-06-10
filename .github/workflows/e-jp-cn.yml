@@ -1,4 +1,4 @@
-name: deploy to s3
+name: deploy to s3 e-jp-cn
 on:
   push:
     branches: [ prod ]

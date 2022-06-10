@@ -1,9 +1,9 @@
-name: deploy to s3
+name: deploy to s3 importer
 on:
   push:
     branches: [ prod ]
     paths: 
-        - "packages/importer/*"
+        - "packages/importer/**"
 
 jobs:
   build:
