@@ -52,13 +52,12 @@ const GW_FR3Setting: React.FC = () => {
 
   // action
   const handleSubmit = async (v: any) => {
-    const values = { ...v, FR3: v._FR3.toString() };
     if (formType === 'add') {
-      await createGW_FR3(values);
+      await createGW_FR3(v);
       refresh();
     }
     if (formType === 'edit') {
-      await updateGW_FR3({ GW_FR3Id: formProps?.dataSource?._id, ...values });
+      await updateGW_FR3({ GW_FR3Id: formProps?.dataSource?._id, ...v });
       refresh();
     }
   };
@@ -99,7 +98,7 @@ const GW_FR3Setting: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item name="_FR3">
+            <Form.Item name="FR3">
               <Input placeholder="運賃" />
             </Form.Item>
           </Col>
@@ -134,7 +133,7 @@ const GW_FR3Setting: React.FC = () => {
           scroll={{ y: 'calc(100vh - 550px)' }}
         >
           <Table.Column sorter width={150} title="重量" dataIndex="_GW" />
-          <Table.Column sorter width={150} title="運賃" dataIndex="_FR3" />
+          <Table.Column sorter width={150} title="運賃" dataIndex="FR3" />
           <Table.Column sorter width={150} title="通貨" dataIndex="FR2" />
           <Table.Column
             sorter

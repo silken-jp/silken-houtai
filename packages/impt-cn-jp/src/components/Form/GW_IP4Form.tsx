@@ -33,32 +33,28 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
         <Form.Item label="重量" required>
           <Space>
             <Form.Item noStyle name="GW_min" rules={[{ required: true }]}>
-              <InputNumber placeholder="min" min={1} />
+              <InputNumber placeholder="min" min={0.1} step={0.1} />
             </Form.Item>
             <span>~</span>
             <Form.Item noStyle name="GW_max" rules={[{ required: true }]}>
-              <InputNumber placeholder="max" min={1} />
+              <InputNumber placeholder="max" min={0.1} step={0.1} />
             </Form.Item>
             <span>KG</span>
           </Space>
         </Form.Item>
 
-        <Form.Item
-          label="interval"
-          name="interval"
-          rules={[{ required: true }]}
-        >
-          <InputNumber placeholder="interval" autoComplete="off" />
+        <Form.Item label="刻み" name="interval" rules={[{ required: true }]}>
+          <InputNumber placeholder="刻み" autoComplete="off" />
         </Form.Item>
 
         <Form.Item label="インボイス価格" required>
           <Space>
             <Form.Item noStyle name="IP4_min" rules={[{ required: true }]}>
-              <InputNumber placeholder="min" min={1} />
+              <InputNumber placeholder="min" min={0.1} step={0.1} />
             </Form.Item>
             <span>~</span>
             <Form.Item noStyle name="IP4_max" rules={[{ required: true }]}>
-              <InputNumber placeholder="max" min={1} />
+              <InputNumber placeholder="max" min={0.1} step={0.1} />
             </Form.Item>
             <span></span>
           </Space>

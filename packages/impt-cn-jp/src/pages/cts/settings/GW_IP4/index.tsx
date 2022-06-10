@@ -94,7 +94,7 @@ const GW_IP4Setting: React.FC = () => {
           </Col>
           <Col span={4}>
             <Form.Item name="interval">
-              <Input placeholder="interval" />
+              <Input placeholder="刻み" />
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -136,12 +136,7 @@ const GW_IP4Setting: React.FC = () => {
             <Table.Column sorter width={150} title="min" dataIndex="GW_min" />
             <Table.Column sorter width={150} title="max" dataIndex="GW_max" />
           </Table.ColumnGroup>
-          <Table.Column
-            sorter
-            width={150}
-            title="interval"
-            dataIndex="interval"
-          />
+          <Table.Column sorter width={150} title="刻み" dataIndex="interval" />
           <Table.ColumnGroup title="インボイス価格範囲">
             <Table.Column sorter width={150} title="min" dataIndex="IP4_min" />
             <Table.Column sorter width={150} title="max" dataIndex="IP4_max" />
