@@ -14,7 +14,7 @@ import { useRequest } from 'ahooks';
 ////
 import { getCompany, updateCompany } from '@/services/request/company';
 
-const { Header, Content, Footer, Sider } = Layout;
+// const { Header, Content, Footer, Sider } = Layout;
 
 export interface companyProps {}
 
