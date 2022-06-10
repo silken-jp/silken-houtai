@@ -3,7 +3,7 @@ on:
   push:
     branches: [ prod ]
     paths: 
-        - "packages/e-jp-cn"
+        - "packages/e-jp-cn/*"
 
 jobs:
   build:
@@ -16,7 +16,6 @@ jobs:
         run: lerna bootstrap
       - name: Run yarn build
         run: yarn build @sk-houtai/e-jp-cn
-        # run: yarn build @sk-houtai/importer
       - name: Upload build result
         uses: actions/upload-artifact@v1
         with:
