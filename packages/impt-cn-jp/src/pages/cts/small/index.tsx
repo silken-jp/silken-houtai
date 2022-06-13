@@ -12,8 +12,15 @@ import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
 const SmallWaybill: React.FC = () => {
-  const { form, state, tableProps, search, cardProps, disActions } =
-    useCTS('S');
+  const {
+    form,
+    state,
+    tableProps,
+    search,
+    refreshAsync,
+    cardProps,
+    disActions,
+  } = useCTS('S');
   const [intlMenu] = useIntlFormat('menu');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
@@ -34,7 +41,11 @@ const SmallWaybill: React.FC = () => {
         <Space>
           <span>サーチ結果で実行する</span>
           <Cleansing LS="S" disabled={true || disActions.cleansing} />
-          {/* <Create LS="S" disabled={disActions.create} /> */}
+          <Create
+            LS="S"
+            refreshAsync={refreshAsync}
+            disabled={true || disActions.create}
+          />
           <ExportXlsx LS="S" />
         </Space>
       </Row>
@@ -55,12 +66,13 @@ const SmallWaybill: React.FC = () => {
               disabled
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            {/* <Create
+            <Create
               LS="S"
               useSource
-              disabled={disActions.create}
+              refreshAsync={refreshAsync}
+              disabled={true || disActions.create}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            /> */}
+            />
             <ExportXlsx LS="S" useSource dataSource={state.selectedRows} />
           </Space>
         }

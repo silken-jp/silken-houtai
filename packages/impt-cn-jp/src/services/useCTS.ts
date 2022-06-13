@@ -105,7 +105,9 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     form.setFieldsValue({ ...params });
   }, []);
 
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refreshAsync } = useAntdTable(getTableData, {
+    form,
+  });
 
   const handleTabChange = (key: any) => {
     setTabKey(key);
@@ -133,6 +135,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   return {
     form,
     search,
+    refreshAsync,
     state: {
       tabKey,
       meta,

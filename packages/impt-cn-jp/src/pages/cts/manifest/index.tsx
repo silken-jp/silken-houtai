@@ -14,8 +14,15 @@ import { useCTS } from '@/services/useCTS';
 
 const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
-  const { form, state, tableProps, search, cardProps, disActions } =
-    useCTS('M');
+  const {
+    form,
+    state,
+    tableProps,
+    search,
+    refreshAsync,
+    cardProps,
+    disActions,
+  } = useCTS('M');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
   return (
@@ -39,6 +46,7 @@ const ManifestWaybill: React.FC = () => {
           <Brock LS="M" disabled={disActions.brock} />
           <Create
             LS="M"
+            refreshAsync={refreshAsync}
             disabled={disActions.create}
             dataSource={tableProps.dataSource}
           />
@@ -71,6 +79,7 @@ const ManifestWaybill: React.FC = () => {
             <Create
               LS="M"
               useSource
+              refreshAsync={refreshAsync}
               disabled={disActions.create}
               dataSource={state.selectedRows}
             />

@@ -42,7 +42,7 @@ const StatusInquiry: React.FC = () => {
     } else if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
-      sorter.sortField = 'createAt';
+      sorter.sortField = 'flightDate';
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;
@@ -181,6 +181,7 @@ const StatusInquiry: React.FC = () => {
             width={200}
             title="FlightDate"
             dataIndex="flightDate"
+            defaultSortOrder="descend"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
           <Table.Column sorter width={150} title="件数" dataIndex="NOCount" />

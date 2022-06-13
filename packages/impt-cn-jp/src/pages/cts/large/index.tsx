@@ -12,8 +12,15 @@ import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
 
 const LargeWaybill: React.FC = () => {
-  const { form, state, tableProps, search, cardProps, disActions } =
-    useCTS('L');
+  const {
+    form,
+    state,
+    tableProps,
+    search,
+    refreshAsync,
+    cardProps,
+    disActions,
+  } = useCTS('L');
   const [intlMenu] = useIntlFormat('menu');
   const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
 
@@ -34,7 +41,11 @@ const LargeWaybill: React.FC = () => {
         <Space>
           <span>サーチ結果で実行する</span>
           <Cleansing LS="L" disabled={true || disActions.cleansing} />
-          {/* <Create LS="L" disabled={disActions.create} /> */}
+          <Create
+            LS="L"
+            refreshAsync={refreshAsync}
+            disabled={true || disActions.create}
+          />
           <ExportXlsx LS="L" />
         </Space>
       </Row>
@@ -55,12 +66,13 @@ const LargeWaybill: React.FC = () => {
               disabled
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
             />
-            {/* <Create
+            <Create
               LS="L"
               useSource
-              disabled={disActions.create}
+              refreshAsync={refreshAsync}
+              disabled={true || disActions.create}
               dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            /> */}
+            />
             <ExportXlsx LS="L" useSource dataSource={state.selectedRows} />
           </Space>
         }

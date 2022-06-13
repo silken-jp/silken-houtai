@@ -22,6 +22,7 @@ export function findValuesByKey(LS: 'L' | 'S' | 'M', data?: any[]) {
 
 export interface CreateProps {
   disabled?: boolean;
+  refreshAsync: any;
   LS: 'L' | 'S' | 'M';
   useSource?: boolean;
   dataSource?: any[];
@@ -85,6 +86,7 @@ const Create: React.FC<CreateProps> = (props) => {
         creatorId: userInfo?._id,
         ...values,
       });
+      await props?.refreshAsync?.();
       message.info('create success');
       setLoading(false);
       handleCancel();
