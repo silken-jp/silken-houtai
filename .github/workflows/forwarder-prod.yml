@@ -1,4 +1,4 @@
-name: deploy to s3 forwarder
+name: deploy to s3 forwarder-prod
 on:
   push:
     branches: [ prod ]

@@ -1,9 +1,9 @@
-name: deploy to s3 e-jp-cn
+name: deploy to s3 e-jp-cn-prod
 on:
   push:
     branches: [ prod ]
     paths: 
-        - "packages/expt-jp-cn/*"
+        - "packages/expt-jp-cn/**"
 
 jobs:
   build:

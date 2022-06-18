@@ -1,7 +1,7 @@
-name: deploy to s3 i-cn-jp
+name: deploy to s3 i-cn-jp-prod
 on:
   push:
-    branches: [ deploy ]
+    branches: [ prod ]
     paths: 
       - "packages/impt-cn-jp/**"
 
