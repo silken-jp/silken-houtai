@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { Modal, Button, Card, Space } from 'antd';
-import { useKeyPress, useDynamicList } from 'ahooks';
+import { useKeyPress, useDynamicList, useBoolean } from 'ahooks';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 ////
 import CheckFormBasic from '../Form/CheckFormBasic';
@@ -55,9 +54,9 @@ const DeepList: React.FC<{ cardKey: number }> = (props) => {
       <CheckFormBasic
         dataSource={dataSource2}
         basicName={[
-          'cardList',
+          'hsCodeCroup',
           props?.cardKey,
-          'deepList',
+          'taxList',
           deepList.getKey(index),
         ]}
       />
@@ -92,7 +91,8 @@ const DeepList: React.FC<{ cardKey: number }> = (props) => {
 };
 
 const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
-  const [visible, setVisible] = useState(false);
+  // state
+  const [visible, { setFalse, setTrue }] = useBoolean(false);
   const cardList = useDynamicList<any>([0, 1]);
 
   const CardListItem = (index: number, item: any) => (
@@ -128,34 +128,14 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
     >
       <CheckFormBasic
         dataSource={dataSource}
-        basicName={['cardList', cardList.getKey(index)]}
+        basicName={['hsCodeCroup', cardList.getKey(index)]}
       />
       <DeepList cardKey={cardList.getKey(index)} />
     </Card>
   );
-
-  // useEffect(() => {
-  //   let channel = new window.BroadcastChannel('sk_focus');
-  //   channel.onmessage = (e) => {
-  //     if (e.data?.modal === '1') set1();
-  //   };
-  //   channel.onmessageerror = (ev) => {
-  //     throw new Error(
-  //       'BroadcastChannel Error while deserializing: ' + ev.origin,
-  //     );
-  //   };
-  //   return () => channel?.close();
-  // }, []);
-
-  function handleOpen() {
-    setVisible(true);
-  }
-  function handleCancel() {
-    setVisible(false);
-  }
-
+  // key press
   useKeyPress('ctrl.F9', () => {
-    visible && handleCancel();
+    visible && setFalse();
   });
 
   return (
@@ -164,17 +144,17 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
         title="HSコード繰返部"
         width={1200}
         visible={visible}
-        onCancel={handleCancel}
+        onCancel={setFalse}
         footer={
-          <Button type="primary" onClick={handleCancel}>
-            確定(F9)
+          <Button type="primary" onClick={setFalse}>
+            確定(ctrl + F9)
           </Button>
         }
       >
         {cardList?.list?.map((ele, index) => CardListItem(index, ele))}
       </Modal>
-      <Button type="link" onClick={handleOpen}>
-        HSコード繰返部 (DEMO)
+      <Button type="dashed" onClick={setTrue}>
+        HSコード繰返部 (F2, 1)
       </Button>
     </>
   );

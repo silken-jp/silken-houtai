@@ -1,9 +1,9 @@
-name: deploy to s3 i-cn-jp
+name: deploy to s3 e-jp-cn
 on:
   push:
-    branches: [ dev ]
+    branches: [ prod ]
     paths: 
-      - "packages/impt-cn-jp/**"
+        - "packages/expt-jp-cn/*"
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
       - name: Install packages
         run: lerna bootstrap
       - name: Run yarn build
-        run: yarn build @sk-houtai/i-cn-jp
+        run: yarn build @sk-houtai/e-jp-cn
       - name: Upload build result
         uses: actions/upload-artifact@v1
         with:
@@ -38,4 +38,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-northeast-1"
           FROM_PATH: "public/"
-          DEST_PATH: "s3://dev.sclogi.jp"
+          DEST_PATH: "s3://www.sclogi.jp"

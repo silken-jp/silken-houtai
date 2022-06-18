@@ -1,7 +1,7 @@
 name: deploy to s3 i-cn-jp
 on:
   push:
-    branches: [ dev ]
+    branches: [ deploy ]
     paths: 
       - "packages/impt-cn-jp/**"
 
@@ -38,4 +38,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-northeast-1"
           FROM_PATH: "public/"
-          DEST_PATH: "s3://dev.sclogi.jp"
+          DEST_PATH: "s3://www.sclogi.jp"

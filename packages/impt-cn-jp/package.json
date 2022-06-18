@@ -13,6 +13,8 @@
     "@umijs/preset-react": "1.x",
     "ahooks": "^3.3.12",
     "antd-dayjs-webpack-plugin": "^1.0.6",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "recharts": "^2.1.8",
     "umi": "3.x",
     "xlsx": "^0.17.0"

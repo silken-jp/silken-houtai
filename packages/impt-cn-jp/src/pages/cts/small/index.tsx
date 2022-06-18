@@ -40,7 +40,7 @@ const SmallWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="S" disabled={true || disActions.cleansing} />
+          <Cleansing LS="S" disabled={false || disActions.cleansing} />
           <Create
             LS="S"
             refreshAsync={refreshAsync}

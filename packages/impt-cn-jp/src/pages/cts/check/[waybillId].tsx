@@ -346,11 +346,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         NOF: 'R',
         PF: '00010544650858',
         ...props?.dataSource,
-        // TODO: api改为string后删除
-        waybill_type: { L: 'IDA', S: 'IDA', M: 'MIC' }[
-          props?.dataSource?.LS || 'M'
-        ],
-        cardList: [
+        hsCodeGroup: [
           {
             CMD: '980000000',
             CM2: '0',

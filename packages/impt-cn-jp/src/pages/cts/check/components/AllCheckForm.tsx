@@ -1,7 +1,11 @@
 import { Space } from 'antd';
+
 import AIDForm from './Form/AIDForm';
 import MICForm from './Form/MICForm';
 import HSCodeGroupModal from './Modal/HSCodeGroupModal';
+import InvoiceGroupModal from './Modal/InvoiceGroupModal';
+import NoteGroupModal from './Modal/NoteGroupModal';
+import SeaGroupModal from './Modal/SeaGroupModal';
 
 export interface AllCheckFormProps {
   IDA_type: string;
@@ -59,6 +63,9 @@ const AllCheckForm: React.FC<AllCheckFormProps> = (props) => {
       <Space direction="vertical" size="large">
         <Space>
           <HSCodeGroupModal />
+          <InvoiceGroupModal />
+          <NoteGroupModal />
+          <SeaGroupModal />
         </Space>
         {renderIDAForm()}
       </Space>

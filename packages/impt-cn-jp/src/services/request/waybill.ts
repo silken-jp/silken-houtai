@@ -3,7 +3,7 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills extends API.Waybill {
+interface GetAllWaybills extends Partial<API.Waybill> {
   page: number;
   perPage: number;
 }
@@ -15,7 +15,7 @@ export async function getAllWaybills(params?: GetAllWaybills) {
 }
 
 // 计算运单数量 GET /api/waybills/meta
-interface CountWaybills extends API.Waybill {
+interface CountWaybills extends Partial<API.Waybill> {
   page: number;
   perPage: number;
 }
@@ -37,19 +37,12 @@ export async function getWaybill(params: GetWaybill) {
 }
 
 // 创建运单 POST /api/waybills
-interface CreateWaybill extends API.Waybill {}
+interface CreateWaybill extends Partial<API.Waybill> {}
 export async function createWaybill(params: CreateWaybill) {
   return request<any>(ApiURL + '/waybills', {
     method: 'POST',
     data: {
-      mawb_no: params?.mawb_no,
-      hawb_no: params?.hawb_no,
-      jp_delivery_no: params?.jp_delivery_no,
-      cn_delivery_no: params?.cn_delivery_no,
-      jp_delivery_company: params?.jp_delivery_company,
-      cn_delivery_company: params?.cn_delivery_company,
-      flight_no: params?.flight_no,
-      waybill_input_time: params?.waybill_input_time,
+      ...params,
     },
   });
 }
@@ -68,7 +61,7 @@ export async function importMultiWaybill(params: ImportMultiWaybill) {
 }
 
 // 更新运单 PATCH /api/waybills/:id
-interface UpdateWaybill extends API.Waybill {
+interface UpdateWaybill extends Partial<API.Waybill> {
   waybillId: API.ID;
   // [ , clean , brock , create]
   process_type?: 0 | 1 | 2 | 3;
@@ -124,7 +117,7 @@ export async function moveWaybill(params: MoveWaybill) {
 }
 
 // 获取所有MAB运单 GET /api/waybills/mawbs
-interface GetStatusInquiry extends API.Waybill {
+interface GetStatusInquiry extends Partial<API.Waybill> {
   page: number;
   perPage: number;
 }
@@ -136,7 +129,7 @@ export async function getStatusInquiry(params?: GetStatusInquiry) {
 }
 
 // 获取运单的自定义搜索 GET /api/waybills/advance
-interface GetAllWaybillsAdvance extends API.Waybill {
+interface GetAllWaybillsAdvance extends Partial<API.Waybill> {
   page: number;
   perPage: number;
   cleaners?: string[];
@@ -189,7 +182,7 @@ export async function getDateStat(
 }
 
 // 获取waybills统计 GET /api/waybills/creating
-interface Creating extends API.Waybill {
+interface Creating extends Partial<API.Waybill> {
   filter: any;
   creatorId: API.ID;
 }

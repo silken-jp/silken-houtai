@@ -1,9 +1,9 @@
 name: deploy to s3 e-jp-cn
 on:
   push:
-    branches: [ prod ]
+    branches: [ dev ]
     paths: 
-        - "packages/e-jp-cn/*"
+        - "packages/expt-jp-cn/*"
 
 jobs:
   build:
@@ -38,4 +38,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "ap-northeast-1"
           FROM_PATH: "public/"
-          DEST_PATH: "s3://www.sclogi.jp"
+          DEST_PATH: "s3://dev.sclogi.jp"

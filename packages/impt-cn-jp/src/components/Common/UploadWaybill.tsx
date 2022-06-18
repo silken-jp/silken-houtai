@@ -2,8 +2,9 @@ import { Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiWaybill } from '@/services/request/waybill';
+import { getUserInfo } from '@/services/useStorage';
 
-const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
+// const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
 
 const successFormat = (count: number, sum: number, type: string) => ({
   message: `批量${type}导入完成`,
@@ -37,10 +38,13 @@ function fixItemToObj(params: any[]) {
 }
 
 const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
-  async function onUpload(jsonArr: any[]) {
+  const { _id } = getUserInfo();
+
+  async function onUpload(jsonArr: any[], values: any) {
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     const { successCount: count, failedNo } = await importMultiWaybill({
       waybills,
+      ...values,
       ...props?.payload,
     });
     props?.onUpload?.();
@@ -51,14 +55,14 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     return { success, failed };
   }
 
+  const handleUpload = (jsonArr: any[]) => onUpload(jsonArr, {});
+  const handleUploadAuto = (jsonArr: any[]) => onUpload(jsonArr, { user: _id });
+
   return (
     <>
       <Space>
-        {/* <a href={exampleHref} download>
-          テンプレート
-        </a> */}
-        <UploadXlsx onUpload={onUpload} text="IDA" />
-        <UploadXlsx onUpload={onUpload} text="MIC" />
+        <UploadXlsx onUpload={handleUpload} text="手動" />
+        <UploadXlsx onUpload={handleUploadAuto} text="自動" />
       </Space>
     </>
   );

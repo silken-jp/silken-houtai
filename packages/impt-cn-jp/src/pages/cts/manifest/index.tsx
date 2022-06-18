@@ -90,7 +90,7 @@ const ManifestWaybill: React.FC = () => {
         <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
           <Table.Column
             sorter
-            width={150}
+            width={250}
             title="HAWB番号"
             dataIndex="HAB"
             render={(_, row: any) => <WaybillModal dataSource={row} />}
