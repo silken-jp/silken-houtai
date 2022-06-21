@@ -165,7 +165,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
       }`;
       await updateWaybill({
         ...values,
-        waybill_type: 1, // TODO: api改为string后删除
         user: userInfo?._id,
         waybillId: props?.dataSource?._id,
         process_status,

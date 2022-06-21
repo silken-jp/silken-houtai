@@ -375,6 +375,8 @@ declare namespace API {
     IP3: string;
     // インボイス価格
     IP4: string;
+    // originalインボイス価格
+    _NT1: number;
     // インボイス価格_number
     _IP4: number;
     // 運賃通貨コード

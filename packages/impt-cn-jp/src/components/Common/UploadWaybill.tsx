@@ -56,13 +56,13 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   }
 
   const handleUpload = (jsonArr: any[]) => onUpload(jsonArr, {});
-  const handleUploadAuto = (jsonArr: any[]) => onUpload(jsonArr, { user: _id });
+  // const handleUploadAuto = (jsonArr: any[]) => onUpload(jsonArr, { user: _id });
 
   return (
     <>
       <Space>
         <UploadXlsx onUpload={handleUpload} text="手動" />
-        <UploadXlsx onUpload={handleUploadAuto} text="自動" />
+        {/* <UploadXlsx onUpload={handleUploadAuto} text="自動" /> */}
       </Space>
     </>
   );
