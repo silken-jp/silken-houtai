@@ -6,6 +6,6 @@ export default defineConfig({
       ApiURL: 'https://api-dev.sclogi.jp',
     },
   },
-  publicPath: '/houtai-import-cn-jp/',
-  outputPath: '../../public/houtai-import-cn-jp',
+  publicPath: '/importer/',
+  outputPath: '../../public/importer',
 });

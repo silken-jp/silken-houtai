@@ -1,4 +1,4 @@
-# umi project1
+# umi project
 
 ## Getting Started
 
