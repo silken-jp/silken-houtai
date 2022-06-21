@@ -9,8 +9,10 @@
     "docker:build": "bash ./docker/scripts/build.sh",
     "start": "node ./scripts/start start",
     "start:prod": "node ./scripts/start start:prod",
-    "build:all": "lerna run build --parallel",
     "build": "lerna run build --parallel --scope",
+    "build:all": "lerna run build --parallel",
+    "build:all:prod": "lerna run build:prod --parallel",
+    "build:prod": "lerna run build:prod --parallel --scope",
     "tsc": "yarn workspace @silken-houtai/core tsc",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },

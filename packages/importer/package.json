@@ -5,7 +5,8 @@
   "scripts": {
     "start": "UMI_ENV=host umi dev",
     "start:prod": "UMI_ENV=prod umi dev",
-    "build": "UMI_ENV=prod umi build"
+    "build": "UMI_ENV=dev umi build",
+    "build:prod": "UMI_ENV=prod umi build"
   },
   "dependencies": {
     "@ant-design/pro-layout": "6.x",
