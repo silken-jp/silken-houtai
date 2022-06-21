@@ -1,6 +1,7 @@
 import { useRequest } from 'ahooks';
 ////
 import { getAllAgents } from '@/services/request/agent';
+import { getAllUsers } from '@/services/request/user';
 
 export const useAgentOptions = () => {
   const allAgentsAPI = useRequest(getAllAgents, { cacheKey: 'agentOpts' });
@@ -11,4 +12,15 @@ export const useAgentOptions = () => {
     })) || [];
 
   return { agentOptions };
+};
+
+export const useUserOptions = () => {
+  const allUsersAPI = useRequest(getAllUsers, { cacheKey: 'userOpts' });
+  const userOptions: OPTION[] =
+    allUsersAPI?.data?.agents?.map((item: any) => ({
+      value: item?._id,
+      label: item?.name,
+    })) || [];
+
+  return { userOptions };
 };

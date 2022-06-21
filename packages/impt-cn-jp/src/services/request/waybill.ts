@@ -50,6 +50,8 @@ export async function createWaybill(params: CreateWaybill) {
 // 批量创建导入 POST /api/waybills/import-multi
 interface ImportMultiWaybill {
   waybills: API.Waybill[];
+  user?: API.ID;
+  uploader: API.ID;
 }
 export async function importMultiWaybill(params: ImportMultiWaybill) {
   return request<any>(ApiURL + '/waybills/import-multi', {

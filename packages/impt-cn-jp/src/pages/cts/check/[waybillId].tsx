@@ -157,7 +157,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     }
   }
 
-  async function onSubmit(waybill_status: number, process_status: number) {
+  async function onSubmit(waybill_status: number) {
     try {
       const values = await form.getFieldsValue(true);
       const newREF = `${values?.REF ? values.REF + ' ' : ''}${
@@ -167,7 +167,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         ...values,
         user: userInfo?._id,
         waybillId: props?.dataSource?._id,
-        process_status,
+        process_status: checkType === '0' ? 2 : 4,
         process_type: checkType === '0' ? 1 : 2,
         waybill_status,
         REF: newREF?.length > 20 ? values?.REF || '' : newREF,
@@ -274,7 +274,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onHold() {
     try {
       if (disabled) return;
-      await onSubmit(2, checkType === '0' ? 0 : 2);
+      await onSubmit(2);
       await onNext();
       message.success('Hold Success.');
     } catch (error: any) {
@@ -284,7 +284,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   async function onSendBack() {
     try {
       if (disabled) return;
-      await onSubmit(3, checkType === '0' ? 0 : 2);
+      await onSubmit(3);
       await onNext();
       message.success('SendBack Success.');
     } catch (error) {
@@ -295,7 +295,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
     try {
       if (disabled) return;
       await form.validateFields();
-      await onSubmit(1, checkType === '0' ? 2 : 4);
+      await onSubmit(1);
       await onNext();
       message.success('Accept Success.');
     } catch (error: any) {

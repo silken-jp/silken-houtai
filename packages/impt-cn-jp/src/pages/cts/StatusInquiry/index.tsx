@@ -18,7 +18,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
-import { useAgentOptions } from '@/services/useAPIOption';
+import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
   deleteALLWaybillsByMAWB,
   getStatusInquiry,
@@ -33,6 +33,7 @@ const StatusInquiry: React.FC = () => {
 
   // api
   const { agentOptions } = useAgentOptions();
+  const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -98,6 +99,11 @@ const StatusInquiry: React.FC = () => {
                 placeholder="フォワーダー"
                 options={agentOptions}
               />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
+            <Form.Item name="uploader">
+              <Select allowClear placeholder="Uploader" options={userOptions} />
             </Form.Item>
           </Col>
           <Col span={3}>
@@ -168,6 +174,15 @@ const StatusInquiry: React.FC = () => {
               agentOptions?.find((item) => item?.value === agentId)?.label
             }
           />
+          <Table.Column
+            sorter
+            width={150}
+            title="Uploader"
+            dataIndex="uploaderId"
+            render={(uploaderId) =>
+              userOptions?.find((item) => item?.value === uploaderId)?.label
+            }
+          />
           <Table.Column sorter width={200} title="MAWB番号" dataIndex="_id" />
           <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column
@@ -205,7 +220,7 @@ const StatusInquiry: React.FC = () => {
           <Table.Column sorter width={150} title="IDC許可" />
           <Table.Column sorter width={150} title="IDC未許可" />
           <Table.Column sorter width={150} title="HAWB未許可" />
-          <Table.Column sorter width={150} title="登録時間" />Ï
+          <Table.Column sorter width={150} title="登録時間" />
         </Table>
       </Card>
     </PageContainer>
