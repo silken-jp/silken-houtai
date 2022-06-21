@@ -39,3 +39,4 @@ jobs:
           AWS_REGION: "ap-northeast-1"
           FROM_PATH: "public/houtai-import-cn-jp"
           DEST_PATH: "s3://dev.sclogi.jp/houtai-import-cn-jp"
+          OPTIONS: "--delete"
