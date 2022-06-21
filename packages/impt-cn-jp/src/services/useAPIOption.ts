@@ -17,7 +17,7 @@ export const useAgentOptions = () => {
 export const useUserOptions = () => {
   const allUsersAPI = useRequest(getAllUsers, { cacheKey: 'userOpts' });
   const userOptions: OPTION[] =
-    allUsersAPI?.data?.agents?.map((item: any) => ({
+    allUsersAPI?.data?.users?.map((item: any) => ({
       value: item?._id,
       label: item?.name,
     })) || [];
