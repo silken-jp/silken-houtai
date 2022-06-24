@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Form } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import dayjs from 'dayjs';
 ////
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 import {
@@ -10,6 +11,10 @@ import {
   setSelectedParams,
 } from '@/services/useStorage';
 import { getAllTrackings } from './request/tracking';
+
+function getDayData(params: string) {
+  return params ? dayjs(params) : undefined;
+}
 
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const [form] = Form.useForm();
@@ -61,11 +66,11 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       sorter.sortOrder = -1;
     }
     const params = {
-      ...formData,
       ...sorter,
-      waybill_status: +tabKey,
       page,
       perPage,
+      waybill_status: +tabKey,
+      ...formData,
       LS,
       clsStartDate: formData?.clsStartDate?.toString(),
       clsEndDate: formData?.clsEndDate?.toString(),
@@ -101,12 +106,29 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   };
 
   useEffect(() => {
-    const params = getSearchParams(LS);
-    form.setFieldsValue({ ...params });
+    const { page = 0, perPage = 10, ...params } = getSearchParams(LS);
+    setTabKey(params?.waybill_status?.toString() || '1');
+    form.setFieldsValue({
+      ...params,
+      clsStartDate: getDayData(params?.clsStartDate),
+      clsEndDate: getDayData(params?.clsEndDate),
+      brcStartDate: getDayData(params?.brcStartDate),
+      brcEndDate: getDayData(params?.brcEndDate),
+      crtStartDate: getDayData(params?.crtStartDate),
+      crtEndDate: getDayData(params?.crtEndDate),
+    });
+    run(
+      {
+        current: page + 1,
+        pageSize: perPage,
+      },
+      params,
+    );
   }, []);
 
-  const { tableProps, search, refreshAsync } = useAntdTable(getTableData, {
+  const { tableProps, search, refreshAsync, run } = useAntdTable(getTableData, {
     form,
+    manual: true,
   });
 
   const handleTabChange = (key: any) => {

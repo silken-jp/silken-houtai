@@ -5,6 +5,45 @@ import { importMultiWaybill } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
 // const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
+const rightHeader = [
+  'VSN',
+  'DATE',
+  'ARR',
+  'MAB',
+  'HAB',
+  'PCS',
+  'GW',
+  'GWT',
+  'CMN',
+  'SKB',
+  'ImpName',
+  'ImpNameJP',
+  'IAD',
+  'IADJP',
+  'Zip',
+  'Tel',
+  'EPN',
+  'EAD',
+  'EPY_Zip',
+  'EPO',
+  'DST',
+  'PSC',
+  'OR',
+  'IP1',
+  'IP2',
+  'IP3',
+  'IP4',
+  'FR1',
+  'FR2',
+  'FR3',
+  'IN1',
+  'IN2',
+  'IN3',
+  'recever_name',
+  'receiver_add',
+  'receiver_tel',
+  'receiver_zip',
+];
 
 const successFormat = (count: number, sum: number, type: string) => ({
   message: `批量${type}导入完成`,
@@ -62,8 +101,16 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   return (
     <>
       <Space>
-        <UploadXlsx onUpload={handleUpload} text="手動" />
-        <UploadXlsx onUpload={handleUploadAuto} text="自動" />
+        <UploadXlsx
+          onUpload={handleUpload}
+          text="手動"
+          rightHeader={rightHeader}
+        />
+        <UploadXlsx
+          onUpload={handleUploadAuto}
+          text="自動"
+          rightHeader={rightHeader}
+        />
       </Space>
     </>
   );

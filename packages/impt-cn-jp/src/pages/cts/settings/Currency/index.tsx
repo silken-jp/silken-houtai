@@ -112,11 +112,11 @@ const Currency: React.FC = () => {
             title="当該通貨100単位につき(円)"
             dataIndex="hundred_jpy"
           />
-          <Table.Column
+          {/* <Table.Column
             width={200}
             title="更新時間"
             render={(row) => dayFormat(row?.updatedAt)}
-          />
+          /> */}
         </Table>
       </Card>
     </PageContainer>

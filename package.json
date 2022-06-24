@@ -8,6 +8,7 @@
     "docker:start": "bash ./docker/scripts/start.sh",
     "docker:build": "bash ./docker/scripts/build.sh",
     "start": "node ./scripts/start start",
+    "start:dev": "node ./scripts/start start:dev",
     "start:prod": "node ./scripts/start start:prod",
     "build": "lerna run build --parallel --scope",
     "build:all": "lerna run build --parallel",

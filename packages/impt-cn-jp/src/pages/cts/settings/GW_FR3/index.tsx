@@ -1,4 +1,14 @@
-import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
+import {
+  Table,
+  Card,
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  Space,
+  Select,
+} from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -12,6 +22,7 @@ import {
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import GW_FR3Form from '@/components/Form/GW_FR3Form';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 const GW_FR3Setting: React.FC = () => {
   // state
@@ -20,6 +31,7 @@ const GW_FR3Setting: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.CMN>();
 
   // api
+  const { agentOptions } = useAgentOptions();
   const getTableData = async (pageData: any, formData: API.Importer) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -82,27 +94,36 @@ const GW_FR3Setting: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col span={4}>
+          <Col span={3}>
+            <Form.Item name="agent">
+              <Select
+                allowClear
+                placeholder="フォワーダー"
+                options={agentOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
             <Form.Item name="PSC">
               <Input placeholder="積出地コード" />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             <Form.Item name="DST">
               <Input placeholder="取卸港コード" />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             <Form.Item name="_GW">
               <Input placeholder="重量" />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             <Form.Item name="FR3">
               <Input placeholder="運賃" />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={3}>
             <Form.Item name="FR2">
               <Input placeholder="通貨" />
             </Form.Item>
@@ -132,6 +153,15 @@ const GW_FR3Setting: React.FC = () => {
           {...tableProps}
           scroll={{ y: 'calc(100vh - 550px)' }}
         >
+          <Table.Column
+            sorter
+            width={150}
+            title="フォワーダー"
+            dataIndex="agentId"
+            render={(agentId) =>
+              agentOptions?.find((item) => item?.value === agentId)?.label
+            }
+          />
           <Table.Column sorter width={150} title="重量" dataIndex="_GW" />
           <Table.Column sorter width={150} title="運賃" dataIndex="FR3" />
           <Table.Column sorter width={150} title="通貨" dataIndex="FR2" />
