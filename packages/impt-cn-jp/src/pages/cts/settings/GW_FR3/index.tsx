@@ -1,14 +1,4 @@
-import {
-  Table,
-  Card,
-  Button,
-  Form,
-  Input,
-  Row,
-  Col,
-  Space,
-  Select,
-} from 'antd';
+import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -23,15 +13,26 @@ import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import GW_FR3Form from '@/components/Form/GW_FR3Form';
 import { useAgentOptions } from '@/services/useAPIOption';
+import { useState } from 'react';
 
 const GW_FR3Setting: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const [tabKey, setTabKey] = useState('');
   const [intlMenu] = useIntlFormat('menu');
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.CMN>();
 
   // api
-  const { agentOptions } = useAgentOptions();
+  const { agentOptions } = useAgentOptions({
+    fieldNames: {
+      label: 'tab',
+      value: 'key',
+    },
+    onSuccess: (data) => {
+      setTabKey(data?.agents?.[0]?._id || '');
+      search.submit();
+    },
+  });
   const getTableData = async (pageData: any, formData: API.Importer) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -54,22 +55,34 @@ const GW_FR3Setting: React.FC = () => {
       perPage,
       ...sorter,
       ...formData,
+      agent: tabKey,
     });
     return {
       total: data?.totalCount,
       list: data?.gwFr3Settings,
     };
   };
-  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, {
+    form,
+    manual: true,
+  });
 
   // action
+  const handleTabChange = (key: any) => {
+    setTabKey(key);
+    search.submit();
+  };
   const handleSubmit = async (v: any) => {
     if (formType === 'add') {
-      await createGW_FR3(v);
+      await createGW_FR3({ ...v, agent: tabKey });
       refresh();
     }
     if (formType === 'edit') {
-      await updateGW_FR3({ GW_FR3Id: formProps?.dataSource?._id, ...v });
+      await updateGW_FR3({
+        GW_FR3Id: formProps?.dataSource?._id,
+        ...v,
+        agent: tabKey,
+      });
       refresh();
     }
   };
@@ -94,15 +107,6 @@ const GW_FR3Setting: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col span={3}>
-            <Form.Item name="agent">
-              <Select
-                allowClear
-                placeholder="フォワーダー"
-                options={agentOptions}
-              />
-            </Form.Item>
-          </Col>
           <Col span={3}>
             <Form.Item name="PSC">
               <Input placeholder="積出地コード" />
@@ -140,8 +144,10 @@ const GW_FR3Setting: React.FC = () => {
       </Form>
       <GW_FR3Form type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title="重量-運賃管理リスト"
-        extra={
+        activeTabKey={tabKey}
+        tabList={agentOptions}
+        onTabChange={handleTabChange}
+        tabBarExtraContent={
           <Button type="primary" onClick={handleAdd}>
             + 新建
           </Button>
@@ -153,15 +159,6 @@ const GW_FR3Setting: React.FC = () => {
           {...tableProps}
           scroll={{ y: 'calc(100vh - 550px)' }}
         >
-          <Table.Column
-            sorter
-            width={150}
-            title="フォワーダー"
-            dataIndex="agentId"
-            render={(agentId) =>
-              agentOptions?.find((item) => item?.value === agentId)?.label
-            }
-          />
           <Table.Column sorter width={150} title="重量" dataIndex="_GW" />
           <Table.Column sorter width={150} title="運賃" dataIndex="FR3" />
           <Table.Column sorter width={150} title="通貨" dataIndex="FR2" />
