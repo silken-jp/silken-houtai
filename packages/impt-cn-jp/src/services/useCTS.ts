@@ -65,13 +65,12 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    console.log(pageData, sorter);
     const params = {
-      ...sorter,
       page,
       perPage,
       waybill_status: +tabKey,
       ...formData,
+      ...sorter,
       LS,
       clsStartDate: formData?.clsStartDate?.toString(),
       clsEndDate: formData?.clsEndDate?.toString(),
@@ -107,7 +106,13 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   };
 
   useEffect(() => {
-    const { page = 0, perPage = 10, ...params } = getSearchParams(LS);
+    const {
+      page = 0,
+      perPage = 10,
+      sortField,
+      sortOrder,
+      ...params
+    } = getSearchParams(LS);
     setTabKey(params?.waybill_status?.toString() || '1');
     form.setFieldsValue({
       ...params,
@@ -122,6 +127,8 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       {
         current: page + 1,
         pageSize: perPage,
+        sortField,
+        sortOrder,
       },
       params,
     );
