@@ -11,10 +11,13 @@ interface Options {
   onSuccess?: (data: any, params: any) => void;
 }
 export const useAgentOptions = (options?: Options) => {
-  const allAgentsAPI = useRequest(getAllAgents, {
-    cacheKey: 'agentOpts',
-    onSuccess: options?.onSuccess,
-  });
+  const allAgentsAPI = useRequest(
+    () => getAllAgents({ page: 0, perPage: 99999 }),
+    {
+      cacheKey: 'agentOpts',
+      onSuccess: options?.onSuccess,
+    },
+  );
   const agentOptions: any[] =
     allAgentsAPI?.data?.agents?.map((item: any) => ({
       [options?.fieldNames?.value || 'value']: item?._id,
@@ -25,7 +28,10 @@ export const useAgentOptions = (options?: Options) => {
 };
 
 export const useUserOptions = (options?: Options) => {
-  const allUsersAPI = useRequest(getAllUsers, { cacheKey: 'userOpts' });
+  const allUsersAPI = useRequest(
+    () => getAllUsers({ page: 0, perPage: 99999 }),
+    { cacheKey: 'userOpts' },
+  );
   const userOptions: any[] =
     allUsersAPI?.data?.users?.map((item: any) => ({
       [options?.fieldNames?.value || 'value']: item?._id,
