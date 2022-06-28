@@ -52,10 +52,10 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     let sorter: any = {};
-    if (typeof pageData?.sorter?.field === 'string') {
-      sorter.sortField = pageData?.sorter?.field;
-    } else if (Array.isArray(pageData?.sorter?.field)) {
+    if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else if (!!pageData?.sorter?.field) {
+      sorter.sortField = pageData?.sorter?.field;
     } else {
       sorter.sortField = 'createAt';
     }
