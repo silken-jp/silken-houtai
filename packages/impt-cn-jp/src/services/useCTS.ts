@@ -52,7 +52,6 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     let sorter: any = {};
-    console.log(sorter);
     if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else if (!!pageData?.sorter?.field) {
@@ -66,6 +65,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
+    console.log(pageData, sorter);
     const params = {
       ...sorter,
       page,
