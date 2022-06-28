@@ -127,8 +127,10 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       {
         current: page + 1,
         pageSize: perPage,
-        sortField,
-        sortOrder,
+        sorter: {
+          field: sortField,
+          order: sortOrder,
+        },
       },
       params,
     );
