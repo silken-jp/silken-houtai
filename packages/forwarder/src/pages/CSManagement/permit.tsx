@@ -14,6 +14,7 @@ import {
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import ExportXlsx from '@/components/Export/ExportXlsx';
 import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllWaybills } from '@/services/request/waybill';
@@ -236,7 +237,21 @@ const waybill: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card>
+      <Card
+        extra={
+          <ExportXlsx
+            handleRun={() =>
+              getTableData(
+                {
+                  current: 1,
+                  pageSize: 100000,
+                },
+                form.getFieldsValue(true),
+              )
+            }
+          />
+        }
+      >
         <Table
           rowKey="_id"
           {...tableProps}
