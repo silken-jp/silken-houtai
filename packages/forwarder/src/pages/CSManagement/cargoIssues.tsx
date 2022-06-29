@@ -14,11 +14,14 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
+import CargoIssueForm from '@/components/Form/CargoIssueForm';
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
 
   // api
   const getTableData = async (pageData: any, formData: any) => {
@@ -35,6 +38,17 @@ const waybill: React.FC = () => {
     return { total: data?.length, list: data };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+
+  // action
+  const handleSubmit = async (v: any) => {
+    if (formType === 'edit') {
+      // await updateDriver({ driverId: formProps?.dataSource?._id, ...v });
+      search.submit();
+    }
+  };
+  const handleEdit = () => {
+    handleOpen({ title: '編集', type: 'edit', data: null });
+  };
 
   return (
     <PageContainer
@@ -54,6 +68,7 @@ const waybill: React.FC = () => {
         },
       }}
     >
+      <CargoIssueForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
           <Col flex="150px">
@@ -144,7 +159,13 @@ const waybill: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card>
+      <Card
+        extra={
+          <Button type="primary" onClick={handleEdit}>
+            編集
+          </Button>
+        }
+      >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
           <Table.Column width={180} title="フォワーダー" />
           <Table.Column width={180} title="HAWB番号" />
@@ -165,8 +186,8 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="受取人電話番号" />
           <Table.Column width={180} title="受取人" />
           <Table.Column width={180} title="品名" />
-          <Table.Column width={180} title="個数" />
-          <Table.Column width={180} title="重量" />
+          {/* <Table.Column width={180} title="個数" />
+          <Table.Column width={180} title="重量" /> */}
           <Table.Column width={180} title="発送日" />
           <Table.Column width={180} title="処理日" />
           <Table.Column width={180} title="料金科目" />

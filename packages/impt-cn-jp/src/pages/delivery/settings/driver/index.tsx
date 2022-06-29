@@ -1,6 +1,5 @@
 import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
-import { PaginatedParams } from 'ahooks/lib/useAntdTable';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
@@ -21,21 +20,17 @@ const driver: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
 
   // api
-  const getTableData = async (
-    pageData: PaginatedParams[0],
-    formData: Object,
-  ) => {
-    try {
-      const page = pageData.current - 1;
-      const perPage = pageData.pageSize;
-      const data = await getAllDrivers();
-      return {
-        total: data.length,
-        list: data,
-      };
-    } catch (error: any) {
-      return { error };
-    }
+  const getTableData = async (pageData: any, formData: Object) => {
+    const page = pageData.current - 1;
+    const perPage = pageData.pageSize;
+    const data = await getAllDrivers({
+      page,
+      perPage,
+    });
+    return {
+      total: data.length,
+      list: data,
+    };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
