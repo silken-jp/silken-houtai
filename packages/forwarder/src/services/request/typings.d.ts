@@ -93,6 +93,8 @@ declare namespace API {
     agent: Agent;
     created_user: ID;
     updated_user: ID;
+    createdAt?: string;
+    updatedAt?: string;
     // // 通知人
     // receive_user: ID;
     // 問題該当
@@ -107,7 +109,7 @@ declare namespace API {
     // 科目
     reply_subject: string;
     // 回答日
-    reply_date: Date;
+    reply_date: string;
     // 内容
     reply_content: string;
     // 收件人
@@ -122,13 +124,13 @@ declare namespace API {
     CMN: string;
     // -----------自社填写内容-------------
     // 发送日
-    send_date: Date;
+    send_date: string;
     // 新派送单号
     new_tracking_no: string;
     // 对应方式: E-Mail, TEL, FAX
     solve_method: string;
     // 处理日
-    solve_date: Date;
+    solve_date: string;
     price_projects: {
       // 滅却費用、貨物点検
       name: string;

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, Card, Row, Col } from 'antd';
+import { Modal, Form, Input, Card, Row, Col, DatePicker, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
-import { getAgentInfo } from '@/services/useStorage';
+import { dayLocal } from '@/utils/helper/day';
 
 const formItemLayout = {
   labelCol: { span: 9 },
@@ -25,21 +25,44 @@ const shadowStyle: React.CSSProperties = {
   marginBottom: 20,
 };
 
-interface DataSource extends API.Driver {}
+interface DataSource extends API.Issue {}
 
 export interface CargoIssueFormProps
   extends useSKForm.SKFormProps<DataSource> {}
 
 const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
-  const agentInfo = getAgentInfo();
-  console.log(agentInfo);
   const { modalProps, formProps } = useSKForm.useFormBasic(props);
 
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        // name: props?.dataSource?.name || '',
-        // tel: props?.dataSource?.tel || '',
+        // -----------自社填写内容-------------
+        waybill: props?.dataSource?.waybill || {},
+        agent: props?.dataSource?.agent || {},
+        price_projects: props?.dataSource?.price_projects || [],
+        created_user: props?.dataSource?.created_user || '',
+        updated_user: props?.dataSource?.updated_user || '',
+        createdAt: dayLocal(props?.dataSource?.createdAt || ''),
+        updatedAt: dayLocal(props?.dataSource?.updatedAt || ''),
+        issue_category: props?.dataSource?.issue_category || '',
+        issue_detail: props?.dataSource?.issue_detail || '',
+        status: props?.dataSource?.status || '',
+        cargo_status: props?.dataSource?.cargo_status || '',
+        // -----------代理店填写内容-------------
+        reply_subject: props?.dataSource?.reply_subject || '',
+        reply_date: dayLocal(props?.dataSource?.reply_date || ''),
+        reply_content: props?.dataSource?.reply_content || '',
+        receiver_name: props?.dataSource?.receiver_name || '',
+        receiver_tel: props?.dataSource?.receiver_tel || '',
+        receiver_zip: props?.dataSource?.receiver_zip || '',
+        receiver_add: props?.dataSource?.receiver_add || '',
+        CMN: props?.dataSource?.CMN || '',
+        // -----------自社填写内容-------------
+        send_date: dayLocal(props?.dataSource?.send_date || ''),
+        new_tracking_no: props?.dataSource?.new_tracking_no || '',
+        solve_method: props?.dataSource?.solve_method || '',
+        solve_date: dayLocal(props?.dataSource?.solve_date || ''),
+        solve_note: props?.dataSource?.solve_note || '',
       });
     }
   }, [props]);
@@ -50,52 +73,101 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
         <Card title="S.C.LOGISTICS" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item label="MASTER番号" name="">
+              <Form.Item label="MASTER番号" name={['waybill', 'MAB']}>
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="HOUSE番号" name="">
+              <Form.Item label="HOUSE番号" name={['waybill', 'HAB']}>
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="登録者" name="">
+              <Form.Item label="登録者" name={['created_user', 'label']}>
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="伝票番号" name="">
+              <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="代理店" name="">
+              <Form.Item label="代理店" name={['agent', 'name']}>
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="連絡日" name="">
-                <Input disabled />
+              <Form.Item label="連絡日" name="createdAt">
+                <DatePicker disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="問題該当" name="" rules={[{ required: true }]}>
-                <Input disabled />
+              <Form.Item
+                label="問題該当"
+                name="issue_category"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  allowClear
+                  placeholder="問題該当"
+                  disabled
+                  options={[
+                    { label: '破損', value: '破損' },
+                    { label: '搬入時破損', value: '搬入時破損' },
+                    { label: '住所不明', value: '住所不明' },
+                    { label: '受取辞退', value: '受取辞退' },
+                    { label: 'ラベル剥がれ', value: 'ラベル剥がれ' },
+                    { label: '長期不在', value: '長期不在' },
+                    { label: '住所変更', value: '住所変更' },
+                    { label: '滅却', value: '滅却' },
+                    { label: '代替品', value: '代替品' },
+                    { label: '紛失', value: '紛失' },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="返品状態" name="" rules={[{ required: true }]}>
-                <Input disabled />
+              <Form.Item
+                label="返品状態"
+                name="cargo_status"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  allowClear
+                  placeholder="返品状態"
+                  disabled
+                  options={[
+                    { label: '返品済', value: '返品済' },
+                    { label: '未', value: '未' },
+                    { label: '搬入時', value: '搬入時' },
+                    { label: '滅却', value: '滅却' },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="状態" name="">
-                <Input disabled />
+              <Form.Item label="状態" name="status">
+                <Select
+                  allowClear
+                  disabled
+                  placeholder="状態"
+                  options={[
+                    { label: '未処理', value: '未処理' },
+                    { label: '問題作成', value: '問題作成' },
+                    { label: '代理店対応中', value: '代理店対応中' },
+                    { label: 'SC対応中', value: 'SC対応中' },
+                    { label: '対応完了', value: '対応完了' },
+                  ]}
+                />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="問題詳細" name="" {...formRowItemLayout}>
+              <Form.Item
+                label="問題詳細"
+                name="issue_detail"
+                {...formRowItemLayout}
+              >
                 <Input.TextArea rows={7} disabled />
               </Form.Item>
             </Col>
@@ -104,49 +176,65 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
         <Card title="Forwarder" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item label="科目" name="" rules={[{ required: true }]}>
+              <Form.Item
+                label="科目"
+                name="reply_subject"
+                rules={[{ required: true }]}
+              >
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="回答日" name="" rules={[{ required: true }]}>
-                <Input />
+              <Form.Item
+                label="回答日"
+                name="reply_date"
+                rules={[{ required: true }]}
+              >
+                <DatePicker />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="通知者">
-                <Input disabled value={agentInfo?.account} />
+              <Form.Item label="通知者" name={['agent', 'name']}>
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="内容" name="" {...formRowItemLayout}>
+              <Form.Item
+                label="内容"
+                name="reply_content"
+                {...formRowItemLayout}
+              >
                 <Input.TextArea rows={7} />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="受取人" name="">
+              <Form.Item label="受取人" name="receiver_name">
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="受取人電話番号" name="">
+              <Form.Item label="受取人電話番号" name="receiver_tel">
                 <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="受取人郵便番号" name="">
+              <Form.Item label="受取人郵便番号" name="receiver_zip">
                 <Input />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="受取人住所" name="" {...formRowItemLayout}>
+              <Form.Item
+                label="受取人住所"
+                name="receiver_add"
+                {...formRowItemLayout}
+              >
                 <Input />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 label="品名"
-                name=""
+                name="CMN"
                 {...formRowItemLayout}
                 rules={[{ required: true }]}
               >
@@ -158,83 +246,158 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
         <Card title="S.C.LOGISTICS" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item label="発送日" name="">
-                <Input disabled />
+              <Form.Item label="発送日" name="send_date">
+                <DatePicker disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="新伝票番号" name="">
+              <Form.Item label="新伝票番号" name="new_tracking_no">
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8} />
             <Col span={8}>
-              <Form.Item label="対応方法" name="">
+              <Form.Item label="対応方法" name="solve_method">
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="処理日" name="">
+              <Form.Item label="処理日" name="solve_date">
+                <DatePicker disabled />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item label="料金項目" {...formRowItemLayout}>
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金項目1"
+                name={['price_projects', 0, 'name']}
+                {...formHalfItemLayout}
+              >
+                <Select
+                  allowClear
+                  disabled
+                  options={[
+                    { label: '滅却費用', value: '滅却費用' },
+                    { label: '貨物点検', value: '貨物点検' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金1"
+                name={['price_projects', 0, 'price']}
+                {...formHalfItemLayout}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金項目2"
+                name={['price_projects', 1, 'name']}
+                {...formHalfItemLayout}
+              >
+                <Select
+                  allowClear
+                  disabled
+                  options={[
+                    { label: '滅却費用', value: '滅却費用' },
+                    { label: '貨物点検', value: '貨物点検' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金2"
+                name={['price_projects', 1, 'price']}
+                {...formHalfItemLayout}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金項目3"
+                name={['price_projects', 2, 'name']}
+                {...formHalfItemLayout}
+              >
+                <Select
+                  allowClear
+                  disabled
+                  options={[
+                    { label: '滅却費用', value: '滅却費用' },
+                    { label: '貨物点検', value: '貨物点検' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金3"
+                name={['price_projects', 2, 'price']}
+                {...formHalfItemLayout}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金項目4"
+                name={['price_projects', 3, 'name']}
+                {...formHalfItemLayout}
+              >
+                <Select
+                  allowClear
+                  disabled
+                  options={[
+                    { label: '滅却費用', value: '滅却費用' },
+                    { label: '貨物点検', value: '貨物点検' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金4"
+                name={['price_projects', 3, 'price']}
+                {...formHalfItemLayout}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金項目5"
+                name={['price_projects', 4, 'name']}
+                {...formHalfItemLayout}
+              >
+                <Select
+                  allowClear
+                  disabled
+                  options={[
+                    { label: '滅却費用', value: '滅却費用' },
+                    { label: '貨物点検', value: '貨物点検' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="料金5"
+                name={['price_projects', 4, 'price']}
+                {...formHalfItemLayout}
+              >
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col span={24}>
-              <Form.Item label="料金項目" name="" {...formRowItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金項目1" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金1" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金項目2" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金2" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金項目3" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金3" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金項目4" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金4" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金項目5" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item label="料金5" name="" {...formHalfItemLayout}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item label="備考" name="" {...formRowItemLayout}>
+              <Form.Item label="備考" name="solve_note" {...formRowItemLayout}>
                 <Input.TextArea rows={7} disabled />
               </Form.Item>
             </Col>

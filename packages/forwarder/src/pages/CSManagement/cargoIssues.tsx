@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -8,23 +9,27 @@ import {
   Card,
   Space,
   Select,
+  message,
   DatePicker,
 } from 'antd';
+import { TableRowSelection } from 'antd/lib/table/interface';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import CargoIssueForm from '@/components/Form/CargoIssueForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
-import { getAllIssues } from '@/services/request/issue';
+import { getAllIssues, updateIssue } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
 
 const waybill: React.FC = () => {
   // state
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Issue>();
 
   // api
   const { userOptions } = useUserOptions();
@@ -44,12 +49,55 @@ const waybill: React.FC = () => {
   // action
   const handleSubmit = async (v: any) => {
     if (formType === 'edit') {
-      // await updateDriver({ driverId: formProps?.dataSource?._id, ...v });
+      await updateIssue({
+        issueId: selectedRowKeys[0],
+        reply_subject: v?.reply_subject,
+        reply_date: v?.reply_date?.toString(),
+        reply_content: v?.reply_content,
+        receiver_name: v?.receiver_name,
+        receiver_tel: v?.receiver_tel,
+        receiver_zip: v?.receiver_zip,
+        receiver_add: v?.receiver_add,
+        CMN: v?.CMN,
+      });
       search.submit();
     }
   };
   const handleEdit = () => {
-    handleOpen({ title: '編集', type: 'edit', data: null });
+    if (selectedRows?.length === 0) {
+      message.warn('編集項目を選択してください。');
+    } else if (selectedRows?.length === 1) {
+      handleOpen({
+        title: '編集',
+        type: 'edit',
+        data: {
+          ...selectedRows[0],
+          created_user: userOptions?.find(
+            (item) => item?.value === selectedRows[0]?.created_user,
+          ),
+          updated_user: userOptions?.find(
+            (item) => item?.value === selectedRows[0]?.updated_user,
+          ),
+        },
+      });
+    } else {
+      message.warn('複数の項目を同時に編集できません。');
+    }
+  };
+  const handleClear = () => {
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+  };
+
+  const rowSelection: TableRowSelection<API.Issue> = {
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRows(rows);
+      setSelectedRowKeys(keys);
+    },
   };
 
   return (
@@ -164,12 +212,25 @@ const waybill: React.FC = () => {
       </Form>
       <Card
         extra={
-          <Button type="primary" disabled onClick={handleEdit}>
-            編集
-          </Button>
+          <Space>
+            <span>selected: {selectedRowKeys?.length || 0} items</span>
+            <Button size="small" type="link" onClick={handleClear}>
+              clear
+            </Button>
+            <Button type="primary" onClick={handleEdit}>
+              編集
+            </Button>
+            <Button disabled>一覧</Button>
+          </Space>
         }
       >
-        <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
+        <Table
+          rowKey="_id"
+          size="small"
+          {...tableProps}
+          scroll={{ x: 6000 }}
+          rowSelection={rowSelection}
+        >
           <Table.Column
             width={180}
             title="フォワーダー"
@@ -209,7 +270,7 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="返品状態" dataIndex="cargo_status" />
           <Table.Column width={180} title="問題詳細" dataIndex="issue_detail" />
           <Table.Column width={180} title="状態" dataIndex="status" />
-          <Table.Column width={180} title="通知者" dataIndex="status" />
+          <Table.Column width={180} title="通知者" />
           <Table.Column
             width={180}
             title="回答日"

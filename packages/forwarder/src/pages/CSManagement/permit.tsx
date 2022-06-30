@@ -240,11 +240,12 @@ const waybill: React.FC = () => {
       <Card
         extra={
           <ExportXlsx
+            disabled={!form.getFieldValue('MAB')}
             handleRun={() =>
               getTableData(
                 {
                   current: 1,
-                  pageSize: 100000,
+                  pageSize: 10000,
                 },
                 form.getFieldsValue(true),
               )

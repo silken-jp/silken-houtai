@@ -26,7 +26,7 @@ export async function createIssue(params: CreateIssue) {
 }
 
 // 更新フォワーダー PATCH /api/issues/:id
-interface UpdateIssue extends API.Issue {
+interface UpdateIssue extends Partial<API.Issue> {
   issueId: API.ID;
 }
 export async function updateIssue(params: UpdateIssue) {
