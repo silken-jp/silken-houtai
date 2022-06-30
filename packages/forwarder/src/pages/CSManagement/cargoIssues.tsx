@@ -16,6 +16,9 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useIntlFormat } from '@/services/useIntl';
 import CargoIssueForm from '@/components/Form/CargoIssueForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
+import { getAllIssues } from '@/services/request/issue';
+import { useUserOptions } from '@/services/useAPIOption';
+import { dayFormat } from '@/utils/helper/day';
 
 const waybill: React.FC = () => {
   // state
@@ -24,18 +27,17 @@ const waybill: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Driver>();
 
   // api
+  const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    let { search1, search2, ...search } = formData;
-    if (search1?.key && search1?.value) {
-      search[search1.key] = search1.value;
-    }
-    if (search2?.key && search2?.value) {
-      search[search2.key] = search2.value;
-    }
-    const data: any[] = [];
-    return { total: data?.length, list: data };
+    const { createDateArr } = formData;
+    const data = await getAllIssues({
+      page,
+      perPage,
+      ...formData,
+    });
+    return { total: data?.totalCount, list: data?.data };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
@@ -72,15 +74,16 @@ const waybill: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
           <Col flex="150px">
-            <Form.Item name="waybill_type">
+            <Form.Item name="status">
               <Select
                 allowClear
                 placeholder="状態"
                 options={[
-                  { label: '問題作成', value: '1' },
-                  { label: '代理店対応中', value: '2' },
-                  { label: 'SC対応中', value: '3' },
-                  { label: '対応完了', value: '4' },
+                  { label: '未処理', value: '未処理' },
+                  { label: '問題作成', value: '問題作成' },
+                  { label: '代理店対応中', value: '代理店対応中' },
+                  { label: 'SC対応中', value: 'SC対応中' },
+                  { label: '対応完了', value: '対応完了' },
                 ]}
               />
             </Form.Item>
@@ -91,58 +94,58 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item>
+            <Form.Item name="issue_category">
               <Select
                 allowClear
                 placeholder="問題該当"
                 options={[
-                  { label: '破損', value: '1' },
-                  { label: '搬入時破損', value: '2' },
-                  { label: '住所不明', value: '3' },
-                  { label: '受取辞退', value: '4' },
-                  { label: 'ラベル剥がれ', value: '5' },
-                  { label: '長期不在', value: '6' },
-                  { label: '住所変更', value: '7' },
-                  { label: '滅却', value: '8' },
-                  { label: '代替品', value: '9' },
-                  { label: '紛失', value: '0' },
+                  { label: '破損', value: '破損' },
+                  { label: '搬入時破損', value: '搬入時破損' },
+                  { label: '住所不明', value: '住所不明' },
+                  { label: '受取辞退', value: '受取辞退' },
+                  { label: 'ラベル剥がれ', value: 'ラベル剥がれ' },
+                  { label: '長期不在', value: '長期不在' },
+                  { label: '住所変更', value: '住所変更' },
+                  { label: '滅却', value: '滅却' },
+                  { label: '代替品', value: '代替品' },
+                  { label: '紛失', value: '紛失' },
                 ]}
               />
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item>
+            <Form.Item name="cargo_status">
               <Select
                 allowClear
                 placeholder="返品状態"
                 options={[
-                  { label: '返品済', value: '1' },
-                  { label: '未', value: '2' },
-                  { label: '搬入時', value: '3' },
-                  { label: '滅却', value: '4' },
+                  { label: '返品済', value: '返品済' },
+                  { label: '未', value: '未' },
+                  { label: '搬入時', value: '搬入時' },
+                  { label: '滅却', value: '滅却' },
                 ]}
               />
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item>
+            <Form.Item name="HAB">
               <Input placeholder="伝票番号" />
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item>
+            <Form.Item name="new_tracking_no">
               <Input placeholder="新伝票番号" />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={8}>
           <Col flex="auto">
-            <Form.Item>
+            <Form.Item name="HAB">
               <Input placeholder="HAWB番号" />
             </Form.Item>
           </Col>
           <Col flex="270px">
-            <Form.Item>
+            <Form.Item name="createDateArr">
               <DatePicker.RangePicker
                 disabled
                 placeholder={['登録開始日', '登録終了日']}
@@ -161,45 +164,133 @@ const waybill: React.FC = () => {
       </Form>
       <Card
         extra={
-          <Button type="primary" onClick={handleEdit}>
+          <Button type="primary" disabled onClick={handleEdit}>
             編集
           </Button>
         }
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
-          <Table.Column width={180} title="フォワーダー" />
-          <Table.Column width={180} title="HAWB番号" />
-          <Table.Column width={180} title="MAWB番号" />
-          <Table.Column width={180} title="伝票番号" />
-          <Table.Column width={180} title="新伝票番号" />
-          <Table.Column width={180} title="連絡日" />
-          <Table.Column width={180} title="問題該当" />
-          <Table.Column width={180} title="返品状態" />
-          <Table.Column width={180} title="問題詳細" />
-          <Table.Column width={180} title="状態" />
-          <Table.Column width={180} title="通知者" />
-          <Table.Column width={180} title="回答日" />
-          <Table.Column width={180} title="科目" />
-          <Table.Column width={180} title="内容" />
-          <Table.Column width={180} title="受取人住所" />
-          <Table.Column width={180} title="受取人郵便番号" />
-          <Table.Column width={180} title="受取人電話番号" />
-          <Table.Column width={180} title="受取人" />
-          <Table.Column width={180} title="品名" />
-          {/* <Table.Column width={180} title="個数" />
-          <Table.Column width={180} title="重量" /> */}
-          <Table.Column width={180} title="発送日" />
-          <Table.Column width={180} title="処理日" />
+          <Table.Column
+            width={180}
+            title="フォワーダー"
+            dataIndex={['agent', 'name']}
+          />
+          <Table.Column
+            width={180}
+            title="HAWB番号"
+            dataIndex={['waybill', 'HAB']}
+          />
+          <Table.Column
+            width={180}
+            title="MAWB番号"
+            dataIndex={['waybill', 'MAB']}
+          />
+          <Table.Column
+            width={180}
+            title="伝票番号"
+            dataIndex={['waybill', 'HAB']}
+          />
+          <Table.Column
+            width={180}
+            title="新伝票番号"
+            dataIndex="new_tracking_no"
+          />
+          <Table.Column
+            width={180}
+            title="連絡日"
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt, 'YYYY/MM/DD')}
+          />
+          <Table.Column
+            width={180}
+            title="問題該当"
+            dataIndex="issue_category"
+          />
+          <Table.Column width={180} title="返品状態" dataIndex="cargo_status" />
+          <Table.Column width={180} title="問題詳細" dataIndex="issue_detail" />
+          <Table.Column width={180} title="状態" dataIndex="status" />
+          <Table.Column width={180} title="通知者" dataIndex="status" />
+          <Table.Column
+            width={180}
+            title="回答日"
+            dataIndex="reply_date"
+            render={(reply_date) => dayFormat(reply_date, 'YYYY/MM/DD')}
+          />
+          <Table.Column width={180} title="科目" dataIndex="reply_subject" />
+          <Table.Column width={180} title="内容" dataIndex="reply_content" />
+          <Table.Column
+            width={180}
+            title="受取人住所"
+            dataIndex="receiver_add"
+          />
+          <Table.Column
+            width={180}
+            title="受取人郵便番号"
+            dataIndex="receiver_zip"
+          />
+          <Table.Column
+            width={180}
+            title="受取人電話番号"
+            dataIndex="receiver_tel"
+          />
+          <Table.Column width={180} title="受取人" dataIndex="receiver_name" />
+          <Table.Column width={180} title="品名" dataIndex="CMN" />
+          <Table.Column
+            width={180}
+            title="個数"
+            dataIndex={['waybill', 'NO']}
+          />
+          <Table.Column
+            width={180}
+            title="重量"
+            dataIndex={['waybill', 'GW']}
+          />
+          <Table.Column
+            width={180}
+            title="発送日"
+            dataIndex="send_date"
+            render={(send_date) => dayFormat(send_date, 'YYYY/MM/DD')}
+          />
+          <Table.Column
+            width={180}
+            title="処理日"
+            dataIndex="solve_date"
+            render={(solve_date) => dayFormat(solve_date, 'YYYY/MM/DD')}
+          />
           <Table.Column width={180} title="料金科目" />
           <Table.Column width={180} title="請求年月" />
-          <Table.Column width={180} title="対応方法" />
-          <Table.Column width={180} title="備考" />
-          <Table.Column width={180} title="登録者" />
-          <Table.Column width={180} title="登録構成" />
-          <Table.Column width={180} title="登録日時" />
-          <Table.Column width={180} title="最後更新者" />
-          <Table.Column width={180} title="最後更新構成" />
-          <Table.Column width={180} title="更新日時" />
+          <Table.Column width={180} title="対応方法" dataIndex="solve_method" />
+          <Table.Column width={180} title="備考" dataIndex="solve_note" />
+          <Table.Column
+            width={180}
+            title="登録者"
+            dataIndex="created_user"
+            render={(created_user) =>
+              userOptions?.find((item) => item?.value === created_user)?.label
+            }
+          />
+          {/* <Table.Column width={180} title="登録構成" /> */}
+          <Table.Column
+            width={180}
+            title="登録日時"
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt)}
+          />
+          <Table.Column
+            width={180}
+            title="最後更新者"
+            dataIndex="updated_user"
+            render={(updated_user) =>
+              userOptions?.find((item) => item?.value === updated_user)?.label
+            }
+          />
+          {/* <Table.Column width={180} title="最後更新構成" /> */}
+          <Table.Column
+            width={180}
+            title="更新日時"
+            dataIndex="updatedAt"
+            render={(updatedAt) => dayFormat(updatedAt)}
+          />
         </Table>
       </Card>
     </PageContainer>

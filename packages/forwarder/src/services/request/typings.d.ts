@@ -3,13 +3,6 @@
 
 declare namespace API {
   type ID = string;
-  type ZipCode = {
-    _id?: ID;
-    state?: String;
-    city?: String;
-    zipcode?: String;
-    address?: String;
-  };
   type Agent = {
     _id?: ID;
     name?: string;
@@ -19,6 +12,15 @@ declare namespace API {
     SHA?: string;
     STL?: string;
     AGT_CD?: string;
+  };
+  type Currency = {
+    _id?: ID;
+    country_name?: string;
+    currency_name?: string;
+    ISO?: string;
+    per_jpy?: string;
+    hundred_jpy?: string;
+    updatedAt?: string;
   };
   type Company = {
     _id?: ID;
@@ -44,26 +46,6 @@ declare namespace API {
     BW_add_en?: string;
     BW_tel?: string;
   };
-  type User = {
-    _id?: ID;
-    name?: string;
-    initialName?: string;
-    tel?: string;
-    email?: string;
-    password?: string;
-    is_cleanser?: boolean;
-    is_broker?: boolean;
-    is_creator?: boolean;
-  };
-  type Currency = {
-    _id?: ID;
-    country_name?: string;
-    currency_name?: string;
-    ISO?: string;
-    per_jpy?: string;
-    hundred_jpy?: string;
-    updatedAt?: string;
-  };
   type Driver = {
     _id?: ID;
     name?: string;
@@ -80,6 +62,160 @@ declare namespace API {
     clearance_time?: number;
     createdAt?: string;
     updatedAt?: string;
+  };
+  type Importer = {
+    _id?: ID;
+    code?: string;
+    company_name_en?: string;
+    company_name_jp?: string;
+    address_en?: string;
+    address_jp?: string;
+    zip?: string;
+    phone?: string;
+    imp_code?: string;
+    add1?: string;
+    add2?: string;
+    add3?: string;
+    add4?: string;
+    ImpCode?: string;
+    ImpName?: string;
+    Tel?: string;
+    Zip?: string;
+    IAD?: string;
+    Add1?: string;
+    Add2?: string;
+    Add3?: string;
+    Add4?: string;
+  };
+  type Issue = {
+    // -----------自社填写内容-------------
+    waybill: Waybill;
+    agent: Agent;
+    created_user: ID;
+    updated_user: ID;
+    // // 通知人
+    // receive_user: ID;
+    // 問題該当
+    issue_category: string;
+    // 問題详情
+    issue_detail: string;
+    // 状态
+    status: string;
+    // 退货状态
+    cargo_status: string;
+    // -----------代理店填写内容-------------
+    // 科目
+    reply_subject: string;
+    // 回答日
+    reply_date: Date;
+    // 内容
+    reply_content: string;
+    // 收件人
+    receiver_name: string;
+    // 收件人电话
+    receiver_tel: string;
+    // 收件人邮编
+    receiver_zip: string;
+    // 收件人地址
+    receiver_add: string;
+    // 品名
+    CMN: string;
+    // -----------自社填写内容-------------
+    // 发送日
+    send_date: Date;
+    // 新派送单号
+    new_tracking_no: string;
+    // 对应方式: E-Mail, TEL, FAX
+    solve_method: string;
+    // 处理日
+    solve_date: Date;
+    price_projects: {
+      // 滅却費用、貨物点検
+      name: string;
+      price: string;
+    }[];
+    // 備考
+    solve_note: string;
+  };
+  type MICkeys = {
+    _id?: ID;
+    words?: string;
+    price?: string;
+    waybill_type: 0 | 1; // ["IDA","MIC"]
+    LS?: 'L' | 'S';
+    waybill_status: 0 | 1 | 2 | 3; // ["other","normal","hold","sendBack"]
+  };
+  type Track = {
+    waybill?: string;
+    agent?: string;
+    // お問い合わせ送り状NO: 361190298405(27,39)
+    HAB?: string;
+    // 出荷日: 20220517(19,27)
+    delivery_day?: Date;
+    // 個数：F1,H1,L1,M1,N1(77,81)
+    no?: string;
+    // 集荷営業所：F1(52,58)
+    pickup_office?: string;
+    // 集荷電話：F1(88,100)
+    pickup_tel?: string;
+    // 集荷FAX：F1(102,114)
+    pickup_fax?: string;
+    // 配達営業所：M1(52,58)
+    delivery_office?: string;
+    // 配達電話：M1(88,100)
+    delivery_tel?: string;
+    // 配達FAX：M1(102,114)
+    delivery_fax?: string;
+    // 配達情報(M1): 0300(159, 163)
+    delivery_code?: string;
+    filename?: string;
+    history?: Array<{
+      // レコード: M1(0,2)
+      record_id?: string;
+      // 担当営業所: (52,58)
+      office?: string;
+      // 集配区分: 4(209)
+      category?: string;
+      // 集配区分: 日文解释
+      category_jp?: string;
+      // 集配状態: 0413(210, 214)
+      code?: string;
+      // 集配状態: 日文解释
+      code_jp?: string;
+      // 報告時間: 121800(76,82) 報告日: 20220522(214,222)
+      datetime?: Date;
+    }>;
+  };
+  type Tracking = {
+    waybill?: string;
+    // 輸出入区分
+    DAT_TPE?: string;
+    // MAWBNO
+    MAWB_NO?: string;
+    // Ｂ／Ｌ番号／ＡＷＢ 番号
+    BL_?: string;
+    // 識別(MIC/IDA)
+    MIC_IDA?: string;
+    trackingHistory?: Array<{
+      // 作成日時
+      INS_DT?: string;
+      // トラッキングコード
+      TKG_CD?: string;
+      // トラッキング発生日時
+      TKG_DT?: string;
+      RAW_XML?: string;
+    }>;
+  };
+  type User = {
+    _id?: ID;
+    name?: string;
+    initialName?: string;
+    tel?: string;
+    email?: string;
+    password?: string;
+    is_cleanser?: boolean;
+    is_broker?: boolean;
+    is_creator?: boolean;
   };
   type WaybillMonthStat = {
     mawbThisMonthCount: number;
@@ -167,98 +303,12 @@ declare namespace API {
     IN3?: string;
     Zip?: string;
   };
-  type Track = {
-    waybill?: string;
-    agent?: string;
-    // お問い合わせ送り状NO: 361190298405(27,39)
-    HAB?: string;
-    // 出荷日: 20220517(19,27)
-    delivery_day?: Date;
-    // 個数：F1,H1,L1,M1,N1(77,81)
-    no?: string;
-    // 集荷営業所：F1(52,58)
-    pickup_office?: string;
-    // 集荷電話：F1(88,100)
-    pickup_tel?: string;
-    // 集荷FAX：F1(102,114)
-    pickup_fax?: string;
-    // 配達営業所：M1(52,58)
-    delivery_office?: string;
-    // 配達電話：M1(88,100)
-    delivery_tel?: string;
-    // 配達FAX：M1(102,114)
-    delivery_fax?: string;
-    // 配達情報(M1): 0300(159, 163)
-    delivery_code?: string;
-    filename?: string;
-    history?: Array<{
-      // レコード: M1(0,2)
-      record_id?: string;
-      // 担当営業所: (52,58)
-      office?: string;
-      // 集配区分: 4(209)
-      category?: string;
-      // 集配区分: 日文解释
-      category_jp?: string;
-      // 集配状態: 0413(210, 214)
-      code?: string;
-      // 集配状態: 日文解释
-      code_jp?: string;
-      // 報告時間: 121800(76,82) 報告日: 20220522(214,222)
-      datetime?: Date;
-    }>;
-  };
-  type Tracking = {
-    waybill?: string;
-    // 輸出入区分
-    DAT_TPE?: string;
-    // MAWBNO
-    MAWB_NO?: string;
-    // Ｂ／Ｌ番号／ＡＷＢ 番号
-    BL_?: string;
-    // 識別(MIC/IDA)
-    MIC_IDA?: string;
-    trackingHistory?: Array<{
-      // 作成日時
-      INS_DT?: string;
-      // トラッキングコード
-      TKG_CD?: string;
-      // トラッキング発生日時
-      TKG_DT?: string;
-      RAW_XML?: string;
-    }>;
-  };
-  type Importer = {
+  type ZipCode = {
     _id?: ID;
-    code?: string;
-    company_name_en?: string;
-    company_name_jp?: string;
-    address_en?: string;
-    address_jp?: string;
-    zip?: string;
-    phone?: string;
-    imp_code?: string;
-    add1?: string;
-    add2?: string;
-    add3?: string;
-    add4?: string;
-    ImpCode?: string;
-    ImpName?: string;
-    Tel?: string;
-    Zip?: string;
-    IAD?: string;
-    Add1?: string;
-    Add2?: string;
-    Add3?: string;
-    Add4?: string;
-  };
-  type MICkeys = {
-    _id?: ID;
-    words?: string;
-    price?: string;
-    waybill_type: 0 | 1; // ["IDA","MIC"]
-    LS?: 'L' | 'S';
-    waybill_status: 0 | 1 | 2 | 3; // ["other","normal","hold","sendBack"]
+    state?: String;
+    city?: String;
+    zipcode?: String;
+    address?: String;
   };
   type Result<T = any> = {
     total: number;
