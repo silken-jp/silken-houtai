@@ -11,6 +11,7 @@ import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
+import CargoIssueForm from '@/components/Form/CargoIssueForm';
 
 const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
@@ -19,6 +20,7 @@ const ManifestWaybill: React.FC = () => {
     state,
     tableProps,
     search,
+    issueModal,
     refreshAsync,
     cardProps,
     disActions,
@@ -38,7 +40,11 @@ const ManifestWaybill: React.FC = () => {
       }}
     >
       <CTSSearch form={form} search={search} />
-
+      <CargoIssueForm
+        type={issueModal.formType}
+        {...issueModal.formProps}
+        onSubmit={issueModal.handleSubmit}
+      />
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
@@ -83,6 +89,9 @@ const ManifestWaybill: React.FC = () => {
               disabled={disActions.create}
               dataSource={state.selectedRows}
             />
+            <Button size="small" onClick={issueModal.handleAdd}>
+              新規issue
+            </Button>
             <ExportXlsx LS="M" useSource dataSource={state.selectedRows} />
           </Space>
         }

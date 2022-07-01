@@ -109,6 +109,58 @@ declare namespace API {
     Add3?: string;
     Add4?: string;
   };
+  type Issue = {
+    // -----------自社填写内容-------------
+    waybill: Waybill | ID;
+    agent: Agent | ID;
+    created_user: ID;
+    updated_user: ID;
+    createdAt?: string;
+    updatedAt?: string;
+    // // 通知人
+    // receive_user: ID;
+    // 問題該当
+    issue_category: string;
+    // 問題详情
+    issue_detail: string;
+    // 状态
+    status: string;
+    // 退货状态
+    cargo_status: string;
+    // -----------代理店填写内容-------------
+    // 科目
+    reply_subject: string;
+    // 回答日
+    reply_date: string;
+    // 内容
+    reply_content: string;
+    // 收件人
+    receiver_name: string;
+    // 收件人电话
+    receiver_tel: string;
+    // 收件人邮编
+    receiver_zip: string;
+    // 收件人地址
+    receiver_add: string;
+    // 品名
+    CMN: string;
+    // -----------自社填写内容-------------
+    // 发送日
+    send_date: string;
+    // 新派送单号
+    new_tracking_no: string;
+    // 对应方式: E-Mail, TEL, FAX
+    solve_method: string;
+    // 处理日
+    solve_date: string;
+    price_projects: {
+      // 滅却費用、貨物点検
+      name: string;
+      price: string;
+    }[];
+    // 備考
+    solve_note: string;
+  };
   type MICkeys = {
     _id?: ID;
     words?: string;

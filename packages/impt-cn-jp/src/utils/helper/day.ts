@@ -6,3 +6,7 @@ export const dayFormat = (
 ) => {
   return date && dayjs(date).format(format || 'YYYY.MM.DD HH:mm:ss');
 };
+
+export const dayLocal = (date: string) => {
+  return date && dayjs(date);
+};

@@ -102,7 +102,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
   };
 
   return (
-    <Button loading={loading} onClick={handleRun}>
+    <Button size="small" loading={loading} onClick={handleRun}>
       Export Xlsx
     </Button>
   );

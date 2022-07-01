@@ -96,6 +96,10 @@ const Index: React.FC = (props) => {
                   label: <Link to="/cts/manifest">MIC</Link>,
                 },
                 {
+                  key: '/cts/cargoIssues',
+                  label: <Link to="/cts/cargoIssues">問題リスト</Link>,
+                },
+                {
                   key: '/cts/settings',
                   icon: <SettingOutlined />,
                   label: intlMenu('cts.settings'),
