@@ -108,9 +108,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const actionLS = search.get('LS');
   const editDisabled =
     process_status === 1 && current_processor !== userInfo?.name;
-  const clsDisabled = checkType === '0' && process_status > 2;
+  // const clsDisabled = checkType === '0' && process_status > 2;
   const brkDisabled = checkType === '1' && process_status < 2;
-  const disabled = editDisabled || clsDisabled || brkDisabled;
+  const disabled = editDisabled || brkDisabled;
 
   //effect
   useEffect(() => {
@@ -493,12 +493,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 message={`${current_processor} さんがクレンジング中、次の件進めましょう。`}
               />
             )}
-            {clsDisabled && (
+            {/* {clsDisabled && (
               <Alert
                 type="warning"
                 message={`ブローカーチェック済の件は、クレンジングできません。確認してください。`}
               />
-            )}
+            )} */}
             {brkDisabled && (
               <Alert
                 type="warning"
