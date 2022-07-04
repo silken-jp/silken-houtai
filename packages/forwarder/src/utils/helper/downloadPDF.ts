@@ -23,17 +23,21 @@ export const compressAndDownload = (data: any[], fileName?: string) => {
   const zip = new JSZip();
   if (data.length === 0) return;
   if (data.length === 1) {
-    FileSaver.saveAs(
-      handleArrayBufferToBlob(data?.[0]?.PER_image?.data),
-      `${data?.[0]?._id}.pdf`,
-    );
+    if (data[0]?.PER_image?.data) {
+      FileSaver.saveAs(
+        handleArrayBufferToBlob(data?.[0].PER_image.data),
+        `${data?.[0]?.HAB}.pdf`,
+      );
+    }
   } else {
     for (let i = 0; i < data.length; i++) {
       const ele = data[i];
-      zip.file(
-        `${ele?._id}.pdf`,
-        handleArrayBufferToBlob(ele?.PER_image?.data),
-      );
+      if (ele?.PER_image?.data) {
+        zip.file(
+          `${ele?.HAB}.pdf`,
+          handleArrayBufferToBlob(ele.PER_image.data),
+        );
+      }
     }
     zip
       .generateAsync({ type: 'blob' })
