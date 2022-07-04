@@ -53,7 +53,12 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
           })}
         </Timeline>
       </Modal>
-      <Button type="primary" size="small" onClick={handleOpen}>
+      <Button
+        type="primary"
+        size="small"
+        disabled={!his?.length}
+        onClick={handleOpen}
+      >
         <HistoryOutlined />
         {his?.[his?.length - 1]?.code_jp}
       </Button>

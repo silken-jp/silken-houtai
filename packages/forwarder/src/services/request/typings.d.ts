@@ -266,6 +266,9 @@ declare namespace API {
     waybill_status?: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
     holdMemo?: string;
     sendbackMemo?: string;
+    is_PER_image?: number;
+    PER_image?: string;
+    EXA_image?: string;
 
     flightNo?: string;
     LS?: 'L' | 'S' | 'M';

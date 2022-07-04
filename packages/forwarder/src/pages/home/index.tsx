@@ -16,7 +16,9 @@ import dayjs from 'dayjs';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAgentInfo } from '@/services/useStorage';
 import { getMonthStat, getStatusInquiry } from '@/services/request/waybill';
+import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
+import { getAllIssues } from '@/services/request/issue';
 
 export interface dashboardProps {}
 
@@ -33,6 +35,24 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const agentId = agentInfo?._id;
 
   // api
+  const { userOptions } = useUserOptions();
+  const issuesApi = useAntdTable(
+    async (pageData: any, formData: any) => {
+      const page = pageData.current - 1;
+      const perPage = pageData.pageSize;
+      const data = await getAllIssues({
+        page,
+        perPage,
+        sortField: 'createdAt',
+        sortOrder: 1,
+        ...formData,
+      });
+      return { total: data?.totalCount, list: data?.data };
+    },
+    {
+      defaultPageSize: 5,
+    },
+  );
   const MAWB3daysAPI = useAntdTable(
     async (pageData: any) => {
       const data = await getStatusInquiry({
@@ -48,7 +68,6 @@ const Dashboard: React.FC<dashboardProps> = () => {
       defaultPageSize: 3,
     },
   );
-
   const mawbAPI = useAntdTable(
     async (pageData: any, formData: any) => {
       const data = await getStatusInquiry({
@@ -140,22 +159,31 @@ const Dashboard: React.FC<dashboardProps> = () => {
         title={
           <Space>
             <span>対応未完了問題（直近一週間）</span>
-            <Button size="small" type="primary">
+            <Button onClick={issuesApi.refresh} size="small" type="primary">
               更新
             </Button>
           </Space>
         }
       >
-        <Table size="small" rowKey="_id">
-          <Table.Column title="会社名" />
-          <Table.Column title="MAWBNo" />
-          <Table.Column title="HAWBNo" />
-          <Table.Column title="問題" />
-          <Table.Column title="状態" />
-          <Table.Column title="連絡日" />
-          <Table.Column title="連絡方法" />
-          <Table.Column title="通知者" />
-          <Table.Column title="登録者" />
+        <Table size="small" rowKey="_id" {...issuesApi.tableProps}>
+          <Table.Column title="MAWBNo" dataIndex={['waybill', 'MAB']} />
+          <Table.Column title="HAWBNo" dataIndex={['waybill', 'HAB']} />
+          <Table.Column title="問題該当" dataIndex="issue_category" />
+          <Table.Column title="状態" dataIndex="status" />
+          <Table.Column
+            title="連絡日"
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt)}
+          />
+          {/* <Table.Column title="連絡方法" /> */}
+          {/* <Table.Column title="通知者" /> */}
+          <Table.Column
+            title="登録者"
+            dataIndex="created_user"
+            render={(created_user) =>
+              userOptions?.find((item) => item?.value === created_user)?.label
+            }
+          />
         </Table>
       </Card>
 
@@ -165,11 +193,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
         title={
           <Space>
             <span>MAWB情報（直近3日間）</span>
-            <Button
-              type="primary"
-              size="small"
-              onClick={MAWB3daysAPI?.search.submit}
-            >
+            <Button type="primary" size="small" onClick={MAWB3daysAPI.refresh}>
               更新
             </Button>
           </Space>

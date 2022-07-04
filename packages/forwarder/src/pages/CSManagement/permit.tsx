@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -11,21 +12,27 @@ import {
   Select,
   DatePicker,
 } from 'antd';
-import { useAntdTable } from 'ahooks';
+import { TableRowSelection } from 'antd/lib/table/interface';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import ExportXlsx from '@/components/Export/ExportXlsx';
 import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllWaybills } from '@/services/request/waybill';
+import {
+  getAllPERImagesByWaybillIds,
+  getAllWaybills,
+} from '@/services/request/waybill';
 import { getAllTracks } from '@/services/request/track';
 import { dayFormat } from '@/utils/helper/day';
 import TrackModal from '@/components/Modal/TrackModal';
 import { getAllTrackings } from '@/services/request/tracking';
 import { TrackingCode } from '@/utils/constant';
+import { compressAndDownload } from '@/utils/helper/downloadPDF';
 
 const waybill: React.FC = () => {
   // state
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   const agentInfo = getAgentInfo();
@@ -47,7 +54,7 @@ const waybill: React.FC = () => {
     } else if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
-      sorter.sortField = 'createAt';
+      sorter.sortField = 'createdAt';
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;
@@ -85,6 +92,27 @@ const waybill: React.FC = () => {
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+
+  const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
+    manual: true,
+    onSuccess: (data) => {
+      compressAndDownload(data, dayFormat(Date(), 'YYYY-MM-DD-hh-mm'));
+    },
+  });
+
+  //action
+  const handleClear = () => {
+    setSelectedRowKeys([]);
+  };
+  const rowSelection: TableRowSelection<API.Issue> = {
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRowKeys(keys);
+    },
+  };
 
   return (
     <PageContainer
@@ -134,14 +162,14 @@ const waybill: React.FC = () => {
               />
             </Form.Item>
           </Col>
-          <Col flex="100px">
-            <Form.Item>
+          <Col flex="150px">
+            <Form.Item name="is_PER_image">
               <Select
                 allowClear
-                placeholder="納税"
+                placeholder="許可書有無"
                 options={[
-                  { label: '有税', value: '1', disabled: true },
-                  { label: '無税', value: '2', disabled: true },
+                  { label: '有', value: '1' },
+                  { label: '無', value: '0' },
                 ]}
               />
             </Form.Item>
@@ -151,7 +179,7 @@ const waybill: React.FC = () => {
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
-          <Col flex="150px">
+          {/* <Col flex="150px">
             <Form.Item>
               <Select
                 allowClear
@@ -167,7 +195,7 @@ const waybill: React.FC = () => {
                 ]}
               />
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col flex="270px">
             <Form.Item>
               <DatePicker.RangePicker
@@ -218,6 +246,18 @@ const waybill: React.FC = () => {
               <Input placeholder="HAWB番号/お問い合わせ番号/申告番号" />
             </Form.Item>
           </Col>
+          <Col flex="100px">
+            <Form.Item>
+              <Select
+                allowClear
+                placeholder="納税"
+                options={[
+                  { label: '有税', value: '1', disabled: true },
+                  { label: '無税', value: '2', disabled: true },
+                ]}
+              />
+            </Form.Item>
+          </Col>
           <Col flex="150px">
             <Form.Item>
               <Select
@@ -238,7 +278,7 @@ const waybill: React.FC = () => {
         </Row>
       </Form>
       <Card
-        extra={
+        title={
           <ExportXlsx
             disabled={!form.getFieldValue('MAB')}
             handleRun={() =>
@@ -252,11 +292,31 @@ const waybill: React.FC = () => {
             }
           />
         }
+        extra={
+          <Space>
+            <span>selected: {selectedRowKeys?.length || 0} items</span>
+            <Button size="small" type="link" onClick={handleClear}>
+              clear
+            </Button>
+            <Button
+              type="primary"
+              onClick={() =>
+                downloadApi.run({
+                  waybillIds: selectedRowKeys,
+                })
+              }
+            >
+              許可書
+            </Button>
+          </Space>
+        }
       >
         <Table
           rowKey="_id"
+          size="small"
           {...tableProps}
-          scroll={{ x: 6000, y: 'calc(100vh - 530px)' }}
+          rowSelection={rowSelection}
+          scroll={{ x: 6000, y: 'calc(100vh - 580px)' }}
         >
           <Table.Column
             sorter
@@ -273,7 +333,6 @@ const waybill: React.FC = () => {
           />
           {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
-            sorter
             width={150}
             title="申告STATUS"
             dataIndex={['tracking', 'EXA_DIS']}
@@ -290,11 +349,29 @@ const waybill: React.FC = () => {
               ))
             }
           />
-          <Table.Column sorter width={100} title="許可書" />
+          <Table.Column
+            width={100}
+            title="許可書"
+            render={(row) =>
+              !!row?.is_PER_image && (
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() =>
+                    downloadApi.run({
+                      waybillIds: [row._id],
+                    })
+                  }
+                >
+                  許可書
+                </Button>
+              )
+            }
+          />
           <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
-          <Table.Column sorter width={150} title="配送業者" />
-          <Table.Column sorter width={150} title="タイプ" />
+          <Table.Column width={150} title="配送業者" />
+          <Table.Column width={150} title="タイプ" />
           <Table.Column
             sorter
             width={80}
@@ -305,17 +382,16 @@ const waybill: React.FC = () => {
             sorter
             width={100}
             title="FLIGHT NO"
-            dataIndex="flightNo"
+            dataIndex="flight_no"
           />
           <Table.Column
             sorter
             width={100}
             title="FLIGHT DATE"
-            dataIndex="flightDate"
-            render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
+            dataIndex="DATE"
+            render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}
           />
           <Table.Column
-            sorter
             width={180}
             title="申告番号"
             dataIndex={['tracking', 'ID']}
@@ -327,26 +403,17 @@ const waybill: React.FC = () => {
             title="重量（ＫＧ）"
             dataIndex="GW"
           />
-          <Table.Column sorter width={150} title="審査検査区分" />
-          <Table.Column sorter width={150} title="関税" render={() => 0} />
-          <Table.Column sorter width={150} title="消費税" render={() => 0} />
-          <Table.Column
-            sorter
-            width={150}
-            title="地方消費税"
-            render={() => 0}
-          />
-          <Table.Column
-            sorter
-            width={150}
-            title="納税額合計"
-            render={() => 0}
-          />
+          <Table.Column width={150} title="審査検査区分" />
+          <Table.Column width={150} title="関税" render={() => 0} />
+          <Table.Column width={150} title="消費税" render={() => 0} />
+          <Table.Column width={150} title="地方消費税" render={() => 0} />
+          <Table.Column width={150} title="納税額合計" render={() => 0} />
           <Table.Column
             sorter
             width={150}
             title="作成日時"
-            dataIndex="createAt"
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt)}
           />
         </Table>
       </Card>

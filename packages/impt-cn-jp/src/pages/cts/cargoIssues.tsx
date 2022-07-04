@@ -271,7 +271,10 @@ const waybill: React.FC = () => {
           <Table.Column
             width={180}
             title="フォワーダー"
-            dataIndex={['agent', 'name']}
+            dataIndex="agent"
+            render={(agent) =>
+              agentOptions?.find((item) => item?.value === agent)?.label
+            }
           />
           <Table.Column
             width={180}

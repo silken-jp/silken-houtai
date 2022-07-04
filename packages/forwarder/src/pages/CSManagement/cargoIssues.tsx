@@ -37,9 +37,24 @@ const waybill: React.FC = () => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const { createDateArr } = formData;
+    let sorter: any = {};
+    if (typeof pageData?.sorter?.field === 'string') {
+      sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createdAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
     const data = await getAllIssues({
       page,
       perPage,
+      ...sorter,
       ...formData,
     });
     return { total: data?.totalCount, list: data?.data };
@@ -228,14 +243,9 @@ const waybill: React.FC = () => {
           rowKey="_id"
           size="small"
           {...tableProps}
-          scroll={{ x: 6000 }}
+          scroll={{ x: 6000, y: 'calc(100vh - 580px)' }}
           rowSelection={rowSelection}
         >
-          <Table.Column
-            width={180}
-            title="フォワーダー"
-            dataIndex={['agent', 'name']}
-          />
           <Table.Column
             width={180}
             title="HAWB番号"
@@ -253,49 +263,81 @@ const waybill: React.FC = () => {
           />
           <Table.Column
             width={180}
+            sorter
             title="新伝票番号"
             dataIndex="new_tracking_no"
           />
           <Table.Column
             width={180}
+            sorter
             title="連絡日"
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt, 'YYYY/MM/DD')}
           />
           <Table.Column
             width={180}
+            sorter
             title="問題該当"
             dataIndex="issue_category"
           />
-          <Table.Column width={180} title="返品状態" dataIndex="cargo_status" />
-          <Table.Column width={180} title="問題詳細" dataIndex="issue_detail" />
-          <Table.Column width={180} title="状態" dataIndex="status" />
-          <Table.Column width={180} title="通知者" />
           <Table.Column
             width={180}
+            sorter
+            title="返品状態"
+            dataIndex="cargo_status"
+          />
+          <Table.Column
+            width={180}
+            sorter
+            title="問題詳細"
+            dataIndex="issue_detail"
+          />
+          <Table.Column width={180} sorter title="状態" dataIndex="status" />
+          <Table.Column width={180} sorter title="通知者" />
+          <Table.Column
+            width={180}
+            sorter
             title="回答日"
             dataIndex="reply_date"
             render={(reply_date) => dayFormat(reply_date, 'YYYY/MM/DD')}
           />
-          <Table.Column width={180} title="科目" dataIndex="reply_subject" />
-          <Table.Column width={180} title="内容" dataIndex="reply_content" />
           <Table.Column
             width={180}
+            sorter
+            title="科目"
+            dataIndex="reply_subject"
+          />
+          <Table.Column
+            width={180}
+            sorter
+            title="内容"
+            dataIndex="reply_content"
+          />
+          <Table.Column
+            width={180}
+            sorter
             title="受取人住所"
             dataIndex="receiver_add"
           />
           <Table.Column
             width={180}
+            sorter
             title="受取人郵便番号"
             dataIndex="receiver_zip"
           />
           <Table.Column
             width={180}
+            sorter
             title="受取人電話番号"
             dataIndex="receiver_tel"
           />
-          <Table.Column width={180} title="受取人" dataIndex="receiver_name" />
-          <Table.Column width={180} title="品名" dataIndex="CMN" />
+          <Table.Column
+            width={180}
+            sorter
+            title="受取人"
+            dataIndex="receiver_name"
+          />
+          <Table.Column width={180} sorter title="品名" dataIndex="CMN" />
           <Table.Column
             width={180}
             title="個数"
@@ -309,21 +351,34 @@ const waybill: React.FC = () => {
           <Table.Column
             width={180}
             title="発送日"
+            sorter
             dataIndex="send_date"
             render={(send_date) => dayFormat(send_date, 'YYYY/MM/DD')}
           />
           <Table.Column
             width={180}
             title="処理日"
+            sorter
             dataIndex="solve_date"
             render={(solve_date) => dayFormat(solve_date, 'YYYY/MM/DD')}
           />
-          <Table.Column width={180} title="料金科目" />
-          <Table.Column width={180} title="請求年月" />
-          <Table.Column width={180} title="対応方法" dataIndex="solve_method" />
-          <Table.Column width={180} title="備考" dataIndex="solve_note" />
+          <Table.Column width={180} sorter title="料金科目" />
+          <Table.Column width={180} sorter title="請求年月" />
           <Table.Column
             width={180}
+            sorter
+            title="対応方法"
+            dataIndex="solve_method"
+          />
+          <Table.Column
+            width={180}
+            sorter
+            title="備考"
+            dataIndex="solve_note"
+          />
+          <Table.Column
+            width={180}
+            sorter
             title="登録者"
             dataIndex="created_user"
             render={(created_user) =>
@@ -333,12 +388,14 @@ const waybill: React.FC = () => {
           {/* <Table.Column width={180} title="登録構成" /> */}
           <Table.Column
             width={180}
+            sorter
             title="登録日時"
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />
           <Table.Column
             width={180}
+            sorter
             title="最後更新者"
             dataIndex="updated_user"
             render={(updated_user) =>
@@ -348,6 +405,7 @@ const waybill: React.FC = () => {
           {/* <Table.Column width={180} title="最後更新構成" /> */}
           <Table.Column
             width={180}
+            sorter
             title="更新日時"
             dataIndex="updatedAt"
             render={(updatedAt) => dayFormat(updatedAt)}

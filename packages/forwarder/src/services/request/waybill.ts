@@ -13,6 +13,21 @@ export async function getAllWaybills(params?: GetAllWaybills) {
   });
 }
 
+// 获取所有运单许可书 POST /waybills/per_download
+interface GetAllPERImagesByWaybillIds extends API.Waybill {
+  waybillIds: API.ID[];
+}
+export async function getAllPERImagesByWaybillIds(
+  params?: GetAllPERImagesByWaybillIds,
+) {
+  return request<any>(ApiURL + '/waybills/per_download', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 // 获取单个运单 GET /api/waybills/:id
 interface GetWaybill {
   waybillId: API.ID;
