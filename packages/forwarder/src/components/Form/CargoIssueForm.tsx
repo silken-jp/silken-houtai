@@ -156,7 +156,7 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
                     { label: '未処理', value: '未処理' },
                     { label: '問題作成', value: '問題作成' },
                     { label: '代理店対応中', value: '代理店対応中' },
-                    { label: 'SC対応中', value: 'SC対応中' },
+                    { label: 'CS対応中', value: 'CS対応中' },
                     { label: '対応完了', value: '対応完了' },
                   ]}
                 />
