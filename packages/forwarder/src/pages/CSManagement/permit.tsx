@@ -76,7 +76,7 @@ const waybill: React.FC = () => {
       list: data?.waybills?.map((item: any) => ({
         ...item,
         track: item?.tracks?.[0],
-        tracking: item?.trackings?.[0],
+        tracking: item?.trackings?.[0] || item?.trackings,
       })),
     };
   };
@@ -281,12 +281,12 @@ const waybill: React.FC = () => {
       <Card
         title={
           <ExportXlsx
-            disabled={!form.getFieldValue('MAB')}
+            count={tableProps.pagination.total}
             handleRun={() =>
               getTableData(
                 {
                   current: 1,
-                  pageSize: 10000,
+                  pageSize: 1000000,
                 },
                 form.getFieldsValue(true),
               )

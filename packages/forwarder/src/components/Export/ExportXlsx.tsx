@@ -6,7 +6,8 @@ import { dayFormat } from '@/utils/helper/day';
 import { TrackingCode } from '@/utils/constant';
 
 export interface ExportXlsxProps {
-  disabled: boolean;
+  disabled?: boolean;
+  count?: number;
   handleRun: () => Promise<{ total: any; list: any }>;
 }
 
@@ -95,7 +96,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
 
   return (
     <Button loading={loading} onClick={run} disabled={props?.disabled}>
-      Export Xlsx
+      Export Xlsx ({props?.count})
     </Button>
   );
 };
