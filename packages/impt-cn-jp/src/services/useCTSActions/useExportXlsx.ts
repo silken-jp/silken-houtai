@@ -1,29 +1,13 @@
 import XLSX from 'xlsx';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { useRequest } from 'ahooks';
-
+////
 import { dayFormat } from '@/utils/helper/day';
-import { getSearchParams } from '@/services/useStorage';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
+import { getSearchParams } from '../useStorage';
 
-export interface ExportXlsxProps {
-  LS: 'L' | 'S' | 'M';
-  useSource?: boolean;
-  dataSource?: any[];
-}
-
-const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
-  const { loading, run } = useRequest(getAllWaybillsAdvance, {
-    manual: true,
-    onSuccess: (result) => {
-      handleExport(result?.waybills);
-    },
-    onError: (err) => {
-      message.error(err?.message);
-    },
-  });
-
-  const handleExport = (data: any[]) => {
+const handleExportXlsx = (data: any[]) => {
+  if (data?.length > 0) {
     // 修正数据格式
     const fixExportData = data?.map((d: any, i: any) => ({
       NO: i + 1,
@@ -91,21 +75,36 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
     a.href = URL.createObjectURL(tmpDown); // 创建对象超链接
     a.download = `${Date.now()}.xls`;
     a.click();
-  };
-
-  const handleRun = () => {
-    if (props?.useSource) {
-      handleExport(props?.dataSource || []);
-    } else {
-      run({ ...getSearchParams(props?.LS), perPage: 100000000 });
-    }
-  };
-
-  return (
-    <Button size="small" loading={loading} onClick={handleRun}>
-      Export Xlsx
-    </Button>
-  );
+  } else {
+    message.warn('出力データが見つかりません');
+  }
 };
 
-export default ExportXlsx;
+const useExportXlsx = (LS: string, dataSource: any) => {
+  const exportApi = useRequest(
+    async () =>
+      await getAllWaybillsAdvance({
+        ...getSearchParams(LS),
+        page: 0,
+        perPage: 100000000,
+      }),
+    {
+      manual: true,
+      onSuccess: (result) => {
+        handleExportXlsx(result?.waybills);
+      },
+      onError: (err) => {
+        message.error(err?.message);
+      },
+    },
+  );
+  const handleExport = () => {
+    handleExportXlsx(dataSource);
+  };
+  return {
+    exportApi,
+    handleExport,
+  };
+};
+
+export default useExportXlsx;

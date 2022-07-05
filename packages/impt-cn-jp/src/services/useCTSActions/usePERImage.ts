@@ -1,26 +1,28 @@
+import { useRequest } from 'ahooks';
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 import { message } from 'antd';
+import dayjs from 'dayjs';
+////
+import { getAllPERImagesByWaybillIds } from '../request/waybill';
 
-export const handleBase64ToBuffer = (data: any) => {
-  const binaryString = window.atob(data);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; ++i) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  // const url = window.URL.createObjectURL(
-  //   new Blob([bytes], { type: 'application/pdf' }),
-  // );
-  return new Blob([bytes], { type: 'application/pdf' });
-};
-
-export const handleArrayBufferToBlob = (data: any) => {
+// function handleBase64ToBuffer(data: any) {
+//   const binaryString = window.atob(data);
+//   const len = binaryString.length;
+//   const bytes = new Uint8Array(len);
+//   for (let i = 0; i < len; ++i) {
+//     bytes[i] = binaryString.charCodeAt(i);
+//   }
+//   // const url = window.URL.createObjectURL(
+//   //   new Blob([bytes], { type: 'application/pdf' }),
+//   // );
+//   return new Blob([bytes], { type: 'application/pdf' });
+// };
+function handleArrayBufferToBlob(data: any) {
   const bytes = new Uint8Array(data);
   return new Blob([bytes], { type: 'application/pdf' });
-};
-
-export const compressAndDownload = (data: any[], fileName?: string) => {
+}
+function compressAndDownload(data: any[], fileName?: string) {
   if (data.length === 0) {
     message.warn('ダンロード項目を選択してください');
   } else if (data.length === 1) {
@@ -56,4 +58,24 @@ export const compressAndDownload = (data: any[], fileName?: string) => {
       message.warn('ダンロードできる項目が見つかりません。');
     }
   }
+}
+
+const usePERImage = (dataSource: any[]) => {
+  const PERImageApi = useRequest(getAllPERImagesByWaybillIds, {
+    manual: true,
+    onSuccess: (data) => {
+      compressAndDownload(data, dayjs().format('YYYY-MM-DD-hh-mm'));
+    },
+  });
+  function handlePERImage() {
+    PERImageApi.run({
+      waybillIds: dataSource,
+    });
+  }
+  return {
+    PERImageApi,
+    handlePERImage,
+  };
 };
+
+export default usePERImage;

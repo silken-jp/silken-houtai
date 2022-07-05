@@ -14,6 +14,21 @@ export async function getAllWaybills(params?: GetAllWaybills) {
   });
 }
 
+// 获取所有运单许可书 POST /waybills/per_download
+interface GetAllPERImagesByWaybillIds extends Partial<API.Waybill> {
+  waybillIds: API.ID[];
+}
+export async function getAllPERImagesByWaybillIds(
+  params?: GetAllPERImagesByWaybillIds,
+) {
+  return request<any>(ApiURL + '/waybills/per_download', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 // 计算运单数量 GET /api/waybills/meta
 interface CountWaybills extends Partial<API.Waybill> {
   page: number;

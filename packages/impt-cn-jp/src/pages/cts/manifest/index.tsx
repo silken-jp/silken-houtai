@@ -1,17 +1,19 @@
-import { Table, Card, Space, Row, Button, Tag } from 'antd';
+import { Table, Card, Space, Row, Button, Tag, Dropdown, Menu } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Create from '@/components/Common/Create';
-import Brock, { BrockBYSource } from '@/components/Common/Brock';
-import Cleansing, { CleansingBYSource } from '@/components/Common/Cleansing';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
-import ExportXlsx from '@/components/Export/ExportXlsx';
 import WaybillModal from '@/components/Modal/WaybillModal';
-import { useIntlFormat } from '@/services/useIntl';
-import { dayFormat } from '@/utils/helper/day';
-import { useCTS } from '@/services/useCTS';
 import CargoIssueForm from '@/components/Form/CargoIssueForm';
+import { dayFormat } from '@/utils/helper/day';
+import { useIntlFormat } from '@/services/useIntl';
+import { useCTS } from '@/services/useCTS';
+import useCleansing from '@/services/useCTSActions/useCleansing';
+import useBrockCheck from '@/services/useCTSActions/useBrockCheck';
+import useExportXlsx from '@/services/useCTSActions/useExportXlsx';
+import useIssueModal from '@/services/useCTSActions/useIssueModal';
+import usePERImage from '@/services/useCTSActions/usePERImage';
 
 const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
@@ -20,12 +22,29 @@ const ManifestWaybill: React.FC = () => {
     state,
     tableProps,
     search,
-    issueModal,
     refreshAsync,
     cardProps,
     disActions,
   } = useCTS('M');
-  const selected = tableProps?.rowSelection?.selectedRowKeys?.length || 0;
+  // cleansing功能
+  const { cleansingApi, handleCleansing } = useCleansing(
+    'M',
+    state.selectedRowKeys,
+  );
+  // brockCheck
+  const { brockCheckApi, handleBrockCheck } = useBrockCheck(
+    'M',
+    state.selectedRowKeys,
+  );
+  // 导出问题件功能
+  const { PERImageApi, handlePERImage } = usePERImage(state.selectedRowKeys);
+  // 新建问题件功能
+  const issueModal = useIssueModal({ selectedRows: state.selectedRows });
+  // 导出waybill表单功能
+  const { exportApi, handleExport } = useExportXlsx('M', state?.selectedRows);
+
+  // format
+  const selected = state?.selectedRowKeys?.length || 0;
 
   return (
     <PageContainer
@@ -48,15 +67,29 @@ const ManifestWaybill: React.FC = () => {
       <Row justify="end" className="sk-table-stat">
         <Space>
           <span>サーチ結果で実行する</span>
-          <Cleansing LS="M" disabled={disActions.cleansing} />
-          <Brock LS="M" disabled={disActions.brock} />
+          <Button
+            type="primary"
+            disabled={disActions.cleansing}
+            onClick={cleansingApi.run}
+          >
+            マスクレンジング
+          </Button>
+          <Button
+            type="primary"
+            disabled={disActions.brock}
+            onClick={brockCheckApi.run}
+          >
+            マスブローカーチェック
+          </Button>
           <Create
             LS="M"
             refreshAsync={refreshAsync}
             disabled={disActions.create}
             dataSource={tableProps.dataSource}
           />
-          <ExportXlsx LS="M" />
+          <Button loading={exportApi.loading} onClick={exportApi.run}>
+            Export Xlsx
+          </Button>
         </Space>
       </Row>
 
@@ -74,14 +107,22 @@ const ManifestWaybill: React.FC = () => {
             <Button size="small" type="link" onClick={state.handleClear}>
               clear
             </Button>
-            <CleansingBYSource
-              LS="M"
-              dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            />
-            <BrockBYSource
-              LS="M"
-              dataSource={tableProps?.rowSelection?.selectedRowKeys}
-            />
+            <Button
+              size="small"
+              type="dashed"
+              disabled={!selected}
+              onClick={handleCleansing}
+            >
+              シングルクレンジング
+            </Button>
+            <Button
+              size="small"
+              type="dashed"
+              disabled={!selected}
+              onClick={handleBrockCheck}
+            >
+              シングルブローカーチェック
+            </Button>
             <Create
               LS="M"
               useSource
@@ -89,10 +130,28 @@ const ManifestWaybill: React.FC = () => {
               disabled={disActions.create}
               dataSource={state.selectedRows}
             />
-            <Button size="small" onClick={issueModal.handleAdd}>
-              新規issue
-            </Button>
-            <ExportXlsx LS="M" useSource dataSource={state.selectedRows} />
+            <Dropdown.Button
+              overlay={
+                <Menu
+                  items={[
+                    {
+                      key: 0,
+                      label: '許可書',
+                      onClick: handlePERImage,
+                    },
+                    {
+                      key: 1,
+                      label: '新規issue',
+                      onClick: issueModal.handleAdd,
+                    },
+                  ]}
+                />
+              }
+              size="small"
+              onClick={handleExport}
+            >
+              Export Xlsx
+            </Dropdown.Button>
           </Space>
         }
       >
@@ -103,6 +162,25 @@ const ManifestWaybill: React.FC = () => {
             title="HAWB番号"
             dataIndex="HAB"
             render={(_, row: any) => <WaybillModal dataSource={row} />}
+          />
+          <Table.Column
+            width={100}
+            title="許可書"
+            render={(row) =>
+              !!row?.is_PER_image && (
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() =>
+                    PERImageApi.run({
+                      waybillIds: [row._id],
+                    })
+                  }
+                >
+                  許可書
+                </Button>
+              )
+            }
           />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
           {state.tabKey === '0' && (

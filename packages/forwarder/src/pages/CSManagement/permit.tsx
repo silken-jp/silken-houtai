@@ -21,12 +21,10 @@ import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
 import {
   getAllPERImagesByWaybillIds,
-  getAllWaybills,
+  getAllWaybillsForwarder,
 } from '@/services/request/waybill';
-import { getAllTracks } from '@/services/request/track';
 import { dayFormat } from '@/utils/helper/day';
 import TrackModal from '@/components/Modal/TrackModal';
-import { getAllTrackings } from '@/services/request/tracking';
 import { TrackingCode } from '@/utils/constant';
 import { compressAndDownload } from '@/utils/helper/downloadPDF';
 
@@ -41,7 +39,9 @@ const waybill: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    let { search1, search2, ...search } = formData;
+    let { search1, search2, PER_date, ...search } = formData;
+    search.PER_date_start = PER_date?.[0]?.format('YYYY/MM/DD');
+    search.PER_date_end = PER_date?.[1]?.format('YYYY/MM/DD');
     if (search1?.key && search1?.value) {
       search[search1.key] = search1.value;
     }
@@ -62,7 +62,7 @@ const waybill: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getAllWaybills({
+    const data = await getAllWaybillsForwarder({
       ...JSON.parse(JSON.stringify(search), (_, value) =>
         value === null || value === '' ? undefined : value,
       ),
@@ -71,23 +71,12 @@ const waybill: React.FC = () => {
       perPage,
       ...sorter,
     });
-    const { tracks = [] } = await getAllTracks({
-      page: 0,
-      perPage,
-      HAB: data?.waybills?.map((item: any) => item?.HAB).join(' '),
-      agent: agentInfo._id,
-    });
-    const { trackings = [] } = await getAllTrackings({
-      page: 0,
-      perPage,
-      BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
-    });
     return {
       total: data?.totalCount,
       list: data?.waybills?.map((item: any) => ({
         ...item,
-        track: tracks?.find((t: any) => t?.HAB === item?.HAB),
-        tracking: trackings?.find((t: any) => t?.BL_ === item?.HAB),
+        track: item?.tracks?.[0],
+        tracking: item?.trackings?.[0],
       })),
     };
   };
@@ -151,13 +140,13 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item>
+            <Form.Item name="is_PER">
               <Select
                 allowClear
                 placeholder="通関結果"
                 options={[
-                  { label: '許可', value: '1', disabled: true },
-                  { label: '未許可', value: '2', disabled: true },
+                  { label: '許可', value: '1' },
+                  { label: '未許可', value: '0' },
                 ]}
               />
             </Form.Item>
@@ -197,9 +186,8 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col> */}
           <Col flex="270px">
-            <Form.Item>
+            <Form.Item name="PER_date">
               <DatePicker.RangePicker
-                disabled
                 placeholder={['許可開始日', '許可終了日']}
               />
             </Form.Item>
@@ -213,7 +201,6 @@ const waybill: React.FC = () => {
                   { label: 'FLIGHT NO', value: 'flight_no' },
                   { label: '個数', value: 'NO' },
                   { label: '重量（KG）', value: 'GW' },
-                  { label: '審査検査区分', value: '2', disabled: true },
                   { label: '関税', value: '3', disabled: true },
                   { label: '消費税', value: '4', disabled: true },
                   { label: '地方消費税', value: '5', disabled: true },
@@ -230,13 +217,27 @@ const waybill: React.FC = () => {
         </Row>
         <Row gutter={8}>
           <Col flex="150px">
+            <Form.Item name="EXA_DIS">
+              <Select
+                allowClear
+                placeholder="審査検査区分"
+                options={[
+                  { label: '1', value: '1' },
+                  { label: '2', value: '2' },
+                  { label: '3', value: '3' },
+                  { label: '3K', value: '3K' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="150px">
             <Form.Item name={['search2', 'key']}>
               <Select
                 allowClear
                 placeholder="項目名"
                 options={[
                   { label: 'HAWB番号', value: 'HAB' },
-                  { label: 'お問い合わせ番号', value: '1', disabled: true },
+                  { label: '申告番号', value: 'DEC_ID' },
                 ]}
               />
             </Form.Item>
@@ -246,7 +247,7 @@ const waybill: React.FC = () => {
               <Input placeholder="HAWB番号/お問い合わせ番号/申告番号" />
             </Form.Item>
           </Col>
-          <Col flex="100px">
+          {/* <Col flex="100px">
             <Form.Item>
               <Select
                 allowClear
@@ -257,8 +258,8 @@ const waybill: React.FC = () => {
                 ]}
               />
             </Form.Item>
-          </Col>
-          <Col flex="150px">
+          </Col> */}
+          {/* <Col flex="150px">
             <Form.Item>
               <Select
                 allowClear
@@ -266,7 +267,7 @@ const waybill: React.FC = () => {
                 options={[{ label: '佐川急便', value: '1' }]}
               />
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
@@ -334,7 +335,7 @@ const waybill: React.FC = () => {
           {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
             width={150}
-            title="申告STATUS"
+            title="審査検査区分"
             dataIndex={['tracking', 'EXA_DIS']}
           />
           <Table.Column
@@ -370,8 +371,8 @@ const waybill: React.FC = () => {
           />
           <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
-          <Table.Column width={150} title="配送業者" />
-          <Table.Column width={150} title="タイプ" />
+          {/* <Table.Column width={150} title="配送業者" /> */}
+          {/* <Table.Column width={150} title="タイプ" /> */}
           <Table.Column
             sorter
             width={80}
@@ -396,14 +397,13 @@ const waybill: React.FC = () => {
             title="申告番号"
             dataIndex={['tracking', 'ID']}
           />
-          <Table.Column sorter width={80} title="個数" dataIndex="NO" />
+          <Table.Column sorter width={80} title="個数" dataIndex="PCS" />
           <Table.Column
             sorter
             width={100}
             title="重量（ＫＧ）"
             dataIndex="GW"
           />
-          <Table.Column width={150} title="審査検査区分" />
           <Table.Column width={150} title="関税" render={() => 0} />
           <Table.Column width={150} title="消費税" render={() => 0} />
           <Table.Column width={150} title="地方消費税" render={() => 0} />

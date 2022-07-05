@@ -13,6 +13,19 @@ export async function getAllWaybills(params?: GetAllWaybills) {
   });
 }
 
+// 获取所有绑定track等完整数据的运单 GET /api/waybills
+interface GetAllWaybillsForwarder extends API.Waybill {
+  agent: string;
+}
+export async function getAllWaybillsForwarder(
+  params?: GetAllWaybillsForwarder,
+) {
+  return request<any>(ApiURL + '/waybills/forwarder', {
+    method: 'GET',
+    params,
+  });
+}
+
 // 获取所有运单许可书 POST /waybills/per_download
 interface GetAllPERImagesByWaybillIds extends API.Waybill {
   waybillIds: API.ID[];

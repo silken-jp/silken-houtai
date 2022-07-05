@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import dayjs from 'dayjs';
@@ -7,13 +7,10 @@ import dayjs from 'dayjs';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 import {
   getSearchParams,
-  getUserInfo,
   setSearchParams,
   setSelectedParams,
 } from '@/services/useStorage';
 import { getAllTrackings } from './request/tracking';
-import useSKForm from '@silken-houtai/core/lib/useHooks';
-import { createIssue } from './request/issue';
 
 function getDayData(params: string) {
   return params ? dayjs(params) : undefined;
@@ -21,8 +18,6 @@ function getDayData(params: string) {
 
 export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const [form] = Form.useForm();
-  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Issue>();
-  const userInfo = getUserInfo();
   const [tabKey, setTabKey] = useState('1');
   const [selectedRows, setSelectedRows] = useState<API.Waybill[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
@@ -169,35 +164,6 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     },
   };
 
-  const handleSubmit = async (v: any) => {
-    if (formType === 'add') {
-      await createIssue({
-        waybill: selectedRows[0]?._id,
-        created_user: userInfo?._id,
-        issue_category: v?.issue_category,
-        issue_detail: v?.issue_detail,
-        status: v?.status,
-        cargo_status: v?.cargo_status,
-      });
-    }
-  };
-  const handleAdd = () => {
-    if (selectedRows?.length === 0) {
-      message.warn('問題項目を選択してください。');
-    } else if (selectedRows?.length === 1) {
-      handleOpen({
-        title: '新規issue',
-        type: 'add',
-        data: {
-          waybill: selectedRows[0],
-          created_user: userInfo,
-        },
-      });
-    } else {
-      message.warn('複数の項目を同時に新規できません。');
-    }
-  };
-
   return {
     form,
     search,
@@ -206,13 +172,8 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       tabKey,
       meta,
       selectedRows,
+      selectedRowKeys,
       handleClear,
-    },
-    issueModal: {
-      formType,
-      formProps,
-      handleAdd,
-      handleSubmit,
     },
     tableProps: {
       ...tableProps,
