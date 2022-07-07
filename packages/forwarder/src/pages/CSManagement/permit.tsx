@@ -282,15 +282,26 @@ const waybill: React.FC = () => {
         title={
           <ExportXlsx
             count={tableProps.pagination.total}
-            handleRun={() =>
-              getTableData(
-                {
-                  current: 1,
-                  pageSize: 1000000,
-                },
-                form.getFieldsValue(true),
-              )
-            }
+            handleRun={async () => {
+              let total = tableProps.pagination.total;
+              let current = 1;
+              let list: any[] = [];
+              while (total > 0) {
+                const res = await getTableData(
+                  { current, pageSize: 5000 },
+                  form.getFieldsValue(true),
+                );
+                if (res?.list?.length > 0) {
+                  list = [...list, ...res?.list];
+                } else throw 'fetch error';
+                current++;
+                total = total - 5000;
+              }
+              return {
+                total: tableProps.pagination.total,
+                list,
+              };
+            }}
           />
         }
         extra={

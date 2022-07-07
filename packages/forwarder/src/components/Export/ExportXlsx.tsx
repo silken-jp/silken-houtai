@@ -57,7 +57,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
         消費税: '0',
         地方消費税: '0',
         納税額合計: '0',
-        作成日時: d?.createAt,
+        作成日時: dayFormat(d?.createdAt),
       };
     });
 
