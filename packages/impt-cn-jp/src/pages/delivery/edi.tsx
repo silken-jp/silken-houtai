@@ -15,9 +15,8 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { dayFormat } from '@/utils/helper/day';
 import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
-import { getAllTracks } from '@/services/request/track';
-import TrackModal from '@/components/Modal/TrackModal';
-import { useAgentOptions } from '@/services/useAPIOption';
+import { getAllEDIs } from '@/services/request/edi-put';
+import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 
 interface DeliveryProps {}
 
@@ -25,22 +24,23 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const { agentOptions } = useAgentOptions();
+  // const { agentOptions } = useAgentOptions();
+  const { userOptions } = useUserOptions();
 
   // api
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const data = await getAllTracks({
+    const data = await getAllEDIs({
       page,
       perPage,
-      sortField: 'delivery_day',
+      sortField: 'createdAt',
       sortOrder: -1,
       ...formData,
     });
     return {
       total: data?.totalCount,
-      list: data?.tracks || [],
+      list: data?.ediPuts || [],
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, {
@@ -61,17 +61,17 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col span={3}>
-            <Form.Item name="HAB">
-              <Input placeholder="お問い合せ送り状NO" />
+          <Col flex="200px">
+            <Form.Item name="filename">
+              <Input placeholder="ファイル名" />
             </Form.Item>
           </Col>
-          <Col span={3}>
-            <Form.Item name="agent">
+          <Col flex="200px">
+            <Form.Item name="uploader">
               <Select
-                placeholder="フォワーダー"
+                placeholder="アップローダー"
                 allowClear
-                options={agentOptions}
+                options={userOptions}
               />
             </Form.Item>
           </Col>
@@ -88,18 +88,30 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         </Row>
       </Form>
       <Card title={intlMenu('delivery.other')} extra={<UploadDeliveryFile />}>
-        <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: 400 }}>
-          <Table.Column
+        <Table {...tableProps} rowKey="_id" scroll={{ y: 400 }}>
+          {/* <Table.Column
             title="フォワーダー"
             width={200}
             render={(row) =>
               agentOptions?.find((item) => item.value === row?.agent)?.label
             }
+          /> */}
+          <Table.Column title="ファイル名" width={200} dataIndex="filename" />
+          <Table.Column title="件数" width={200} dataIndex="hawb_count" />
+          <Table.Column
+            title="アップローダー"
+            width={200}
+            dataIndex="uploader"
+            render={(uploader) =>
+              userOptions?.find((item) => item.value === uploader)?.label
+            }
           />
-          <Table.Column title="MAB" width={200} />
-          <Table.Column title="件数" width={200} />
-          <Table.Column title="アップロード" width={200} />
-          <Table.Column title="アップロード時間" width={200} />
+          <Table.Column
+            title="アップロード時間"
+            width={200}
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt)}
+          />
         </Table>
       </Card>
     </PageContainer>

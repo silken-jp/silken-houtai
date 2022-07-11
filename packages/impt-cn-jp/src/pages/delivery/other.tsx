@@ -13,7 +13,6 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';
-import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllTracks } from '@/services/request/track';
 import TrackModal from '@/components/Modal/TrackModal';
@@ -61,12 +60,12 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col span={3}>
+          <Col flex="200px">
             <Form.Item name="HAB">
               <Input placeholder="お問い合せ送り状NO" />
             </Form.Item>
           </Col>
-          <Col span={3}>
+          <Col flex="200px">
             <Form.Item name="agent">
               <Select
                 placeholder="フォワーダー"
@@ -87,7 +86,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={intlMenu('delivery.other')} extra={<UploadDeliveryFile />}>
+      <Card title={intlMenu('delivery.other')}>
         <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: 400 }}>
           <Table.Column
             title="フォワーダー"

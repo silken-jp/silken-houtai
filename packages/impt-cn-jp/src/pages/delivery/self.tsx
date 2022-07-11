@@ -1,10 +1,21 @@
-import { Form, Table, Card, Row, Col, Input, Button, Space } from 'antd';
+import {
+  Form,
+  Table,
+  Card,
+  Row,
+  Col,
+  Input,
+  Button,
+  Space,
+  Select,
+} from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import dayjs from 'dayjs';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getDeliveries } from '@/services/request/delivery';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 const STATUS = ['', '配達中', '到着', '再配達'];
 
@@ -14,6 +25,8 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const { agentOptions } = useAgentOptions();
+
   // api
   const getTableData = async (_: any, formData: any) => {
     const data = await getDeliveries(formData);
@@ -37,15 +50,23 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       }}
     >
       <Form form={form} className="sk-table-search">
-        <Row gutter={16}>
-          <Col span={8}>
-            <Form.Item label="Track">
-              <Input />
+        <Row justify="end" gutter={16}>
+          <Col flex="200px">
+            <Form.Item name="HAB">
+              <Input placeholder="お問い合せ送り状NO" />
             </Form.Item>
           </Col>
-          <Col span={8}></Col>
-          <Col span={8}>
-            <Form.Item style={{ textAlign: 'right' }}>
+          <Col flex="200px">
+            <Form.Item name="agent">
+              <Select
+                placeholder="フォワーダー"
+                allowClear
+                options={agentOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
               <Space>
                 <Button type="primary" onClick={search.submit}>
                   検索

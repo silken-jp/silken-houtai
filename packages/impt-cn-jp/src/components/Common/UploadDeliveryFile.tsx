@@ -1,21 +1,27 @@
 import { Upload, message, Button, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-
-import { importMultiTracks } from '@/services/request/track';
 import { useRequest } from 'ahooks';
+////
+import { getUserInfo } from '@/services/useStorage';
+import { importMultiTracks } from '@/services/request/track';
 
 export interface UploadDeliveryFileProps {}
 
 const { ApiURL } = process.env;
 
 const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
+  const userInfo = getUserInfo();
   const importAPI = useRequest(importMultiTracks, {
     manual: true,
   });
   const props = {
-    action: ApiURL + '/waybills/put_delivery',
+    accept: 'text/plain',
+    action: ApiURL + '/edi-puts/put_delivery',
     headers: {
       authorization: 'authorization-text',
+    },
+    data: {
+      userId: userInfo._id,
     },
     maxCount: 1,
     showUploadList: false,
