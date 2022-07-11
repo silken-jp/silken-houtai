@@ -199,7 +199,22 @@ const StatusInquiry: React.FC = () => {
             defaultSortOrder="descend"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column sorter width={150} title="件数" dataIndex="NOCount" />
+          <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column
+            sorter
+            width={120}
+            title="未許可件数"
+            dataIndex="notPerNo"
+          />
+          <Table.Column
+            sorter
+            width={120}
+            title="検査率"
+            dataIndex="K3Count"
+            render={(_, row: any) =>
+              ((row?.K3Count * 100) / row?.NOCount).toFixed(2) + '%'
+            }
+          />
           <Table.Column
             sorter
             width={150}
@@ -215,11 +230,11 @@ const StatusInquiry: React.FC = () => {
           />
           <Table.Column sorter width={150} title="ショート" />
           <Table.Column sorter width={150} title="オーバー" />
-          <Table.Column sorter width={150} title="MIC許可" />
+          {/* <Table.Column sorter width={150} title="MIC許可" />
           <Table.Column sorter width={150} title="MIC未許可" />
           <Table.Column sorter width={150} title="IDC許可" />
           <Table.Column sorter width={150} title="IDC未許可" />
-          <Table.Column sorter width={150} title="HAWB未許可" />
+          <Table.Column sorter width={150} title="HAWB未許可" /> */}
           <Table.Column sorter width={150} title="登録時間" />
         </Table>
       </Card>

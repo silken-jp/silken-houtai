@@ -5,6 +5,10 @@ const { ApiURL } = process.env;
 // 获取所有运单 GET /api/waybills
 interface GetAllWaybills extends API.Waybill {
   agent: string;
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
 }
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
@@ -16,6 +20,10 @@ export async function getAllWaybills(params?: GetAllWaybills) {
 // 获取所有绑定track等完整数据的运单 GET /api/waybills
 interface GetAllWaybillsForwarder extends API.Waybill {
   agent: string;
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
 }
 export async function getAllWaybillsForwarder(
   params?: GetAllWaybillsForwarder,
