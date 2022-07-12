@@ -200,21 +200,24 @@ const Dashboard: React.FC<dashboardProps> = () => {
         }
       >
         <Table size="small" rowKey="_id" {...MAWB3daysAPI.tableProps}>
-          <Table.Column width={200} title="MAWBNo" dataIndex="_id" />
-          <Table.Column width={200} title="FLIGHT NO" dataIndex="flightNo" />
+          <Table.Column width={150} title="MAWBNo" dataIndex="_id" />
+          <Table.Column width={150} title="FLIGHT NO" dataIndex="flightNo" />
           <Table.Column
-            width={200}
+            width={150}
             title="FLIGHT DATE"
             render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
           />
           <Table.Column width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column width={120} title="未申告件数" dataIndex="notDecNo" />
           <Table.Column width={120} title="未許可件数" dataIndex="notPerNo" />
           <Table.Column
-            width={120}
-            title="検査率"
+            width={150}
+            title="検査率（区分３）"
             dataIndex="K3Count"
             render={(_, row: any) =>
-              ((row?.K3Count * 100) / row?.NOCount).toFixed(2) + '%'
+              `(${row?.count3 + row?.count3K}) ${(
+                ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
+              )?.toFixed(2)}%`
             }
           />
           <Table.Column title="状態" />
@@ -254,13 +257,20 @@ const Dashboard: React.FC<dashboardProps> = () => {
             render={() => form.getFieldValue('HAB')}
           />
           <Table.Column width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column
+            sorter
+            width={150}
+            title="未申告件数"
+            dataIndex="notDecNo"
+          />
           <Table.Column width={120} title="未許可件数" dataIndex="notPerNo" />
           <Table.Column
-            width={120}
-            title="検査率"
-            dataIndex="K3Count"
+            width={150}
+            title="検査率（区分３）"
             render={(_, row: any) =>
-              ((row?.K3Count * 100) / row?.NOCount).toFixed(2) + '%'
+              `(${row?.count3 + row?.count3K}) ${(
+                ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
+              )?.toFixed(2)}%`
             }
           />
           <Table.Column title="状態" />

@@ -7,6 +7,7 @@ import {
   Col,
   Card,
   Space,
+  Progress,
   DatePicker,
 } from 'antd';
 import { useAntdTable } from 'ahooks';
@@ -104,19 +105,20 @@ const StatusInquiry: React.FC = () => {
       <Card>
         <Table
           rowKey="_id"
+          size="small"
           {...tableProps}
-          scroll={{ x: 2000, y: 'calc(100vh - 470px)' }}
+          scroll={{ x: 2000, y: 'calc(100vh - 500px)' }}
         >
           <Table.Column sorter width={180} title="MAWB番号" dataIndex="_id" />
           <Table.Column
             sorter
-            width={180}
+            width={150}
             title="FlightNo"
             dataIndex="flightNo"
           />
           <Table.Column
             sorter
-            width={180}
+            width={150}
             title="FlightDate"
             dataIndex="flightDate"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
@@ -124,40 +126,90 @@ const StatusInquiry: React.FC = () => {
           <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
           <Table.Column
             sorter
-            width={120}
-            title="未許可件数"
-            dataIndex="notPerNo"
+            width={150}
+            title="未申告件数"
+            dataIndex="notDecNo"
           />
+          <Table.ColumnGroup title="許可件数">
+            <Table.Column
+              sorter
+              width={120}
+              title="MIC許可"
+              dataIndex="micPerNo"
+            />
+            <Table.Column
+              sorter
+              width={120}
+              title="IDC許可"
+              dataIndex="idaPerNo"
+            />
+            <Table.Column
+              sorter
+              width={120}
+              title="未許可"
+              dataIndex="notPerNo"
+            />
+          </Table.ColumnGroup>
+          <Table.ColumnGroup title="審査検査区分">
+            <Table.Column
+              sorter
+              width={150}
+              title="区分１"
+              dataIndex="count1"
+              render={(_, row: any) =>
+                `${((row?.count1 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
+                  row?.count1
+                })`
+              }
+            />
+            <Table.Column
+              sorter
+              width={150}
+              title="区分２"
+              dataIndex="count2"
+              render={(_, row: any) =>
+                `${((row?.count2 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
+                  row?.count2
+                })`
+              }
+            />
+            <Table.Column
+              width={150}
+              title="検査率（区分３）"
+              render={(_, row: any) =>
+                `${(
+                  ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
+                )?.toFixed(2)}% (${row?.count3 + row?.count3K})`
+              }
+            />
+          </Table.ColumnGroup>
           <Table.Column
             sorter
-            width={120}
-            title="検査率"
-            dataIndex="K3Count"
-            render={(_, row: any) =>
-              ((row?.K3Count * 100) / row?.NOCount).toFixed(2) + '%'
-            }
-          />
-          <Table.Column
-            sorter
-            width={180}
+            width={150}
             title="個数"
             dataIndex="waybillCount"
           />
           <Table.Column
             sorter
-            width={180}
+            width={150}
             title="重量（KG）"
             dataIndex="GWCount"
             render={(GWCount) => GWCount?.toFixed(2)}
           />
-          <Table.Column sorter width={180} title="ショート" />
-          <Table.Column sorter width={180} title="オーバー" />
+          {/* <Table.Column sorter width={180} title="ショート" />
+          <Table.Column sorter width={180} title="オーバー" /> */}
           {/* <Table.Column sorter width={180} title="MIC許可" />
           <Table.Column sorter width={180} title="MIC未許可" />
           <Table.Column sorter width={180} title="IDC許可" />
           <Table.Column sorter width={180} title="IDC未許可" />
           <Table.Column sorter width={180} title="HAWB未許可" /> */}
-          <Table.Column sorter width={180} title="登録時間" />Ï
+          <Table.Column
+            sorter
+            width={180}
+            title="登録時間"
+            dataIndex="createdAt"
+            render={(createdAt) => dayFormat(createdAt)}
+          />
         </Table>
       </Card>
     </PageContainer>

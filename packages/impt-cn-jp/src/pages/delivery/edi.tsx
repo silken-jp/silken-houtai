@@ -54,7 +54,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         breadcrumb: {
           routes: [
             { path: `/delivery/other`, breadcrumbName: intlMenu('delivery') },
-            { path: '', breadcrumbName: intlMenu('delivery.other') },
+            { path: '', breadcrumbName: 'EDI' },
           ],
         },
       }}
@@ -101,7 +101,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={intlMenu('delivery.other')} extra={<UploadDeliveryFile />}>
+      <Card title={'EDI'} extra={<UploadDeliveryFile />}>
         <Table {...tableProps} rowKey="_id" scroll={{ y: 400 }}>
           <Table.Column
             title="フォワーダー"
