@@ -4,27 +4,44 @@ import { useRequest } from 'ahooks';
 ////
 import { getUserInfo } from '@/services/useStorage';
 import { importMultiTracks } from '@/services/request/track';
+import { uploadEDIs } from '@/services/request/edi-put';
+import { useState } from 'react';
 
 export interface UploadDeliveryFileProps {}
 
-const { ApiURL } = process.env;
-
 const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
+  const [loading, setLoading] = useState(false);
   const userInfo = getUserInfo();
   const importAPI = useRequest(importMultiTracks, {
     manual: true,
   });
   const props = {
     accept: 'text/plain',
-    action: ApiURL + '/edi-puts/put_delivery',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    data: {
-      userId: userInfo._id,
-    },
     maxCount: 1,
     showUploadList: false,
+    loading,
+    customRequest: async (opt: any) => {
+      const { file, onSuccess, onError } = opt;
+      try {
+        setLoading(true);
+        const temp = file.name.split('.');
+        const MAB = temp[0];
+        temp[0] = 'r04' + new Date().getFullYear() + temp?.[0]?.slice(-4);
+        const newFile = new File([file], temp.join('.'), {
+          type: 'text/plain',
+        });
+        await uploadEDIs({
+          MAB,
+          userId: userInfo._id,
+          file: newFile,
+        });
+        await onSuccess(newFile, newFile);
+        setLoading(false);
+      } catch (e) {
+        await onError(e, file);
+        setLoading(false);
+      }
+    },
     onChange: (info: any) => {
       if (info.file.status === 'done') {
         message.success(`${info.file.name} file uploaded successfully`);

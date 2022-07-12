@@ -24,7 +24,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  // const { agentOptions } = useAgentOptions();
+  const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
 
   // api
@@ -62,6 +62,20 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
           <Col flex="200px">
+            <Form.Item name="agent">
+              <Select
+                placeholder="フォワーダー"
+                allowClear
+                options={agentOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="200px">
+            <Form.Item name="MAB">
+              <Input placeholder="MAB" />
+            </Form.Item>
+          </Col>
+          <Col flex="200px">
             <Form.Item name="filename">
               <Input placeholder="ファイル名" />
             </Form.Item>
@@ -89,14 +103,15 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       </Form>
       <Card title={intlMenu('delivery.other')} extra={<UploadDeliveryFile />}>
         <Table {...tableProps} rowKey="_id" scroll={{ y: 400 }}>
-          {/* <Table.Column
+          <Table.Column
             title="フォワーダー"
             width={200}
             render={(row) =>
               agentOptions?.find((item) => item.value === row?.agent)?.label
             }
-          /> */}
+          />
           <Table.Column title="ファイル名" width={200} dataIndex="filename" />
+          <Table.Column title="MAB" width={200} dataIndex="MAB" />
           <Table.Column title="件数" width={200} dataIndex="hawb_count" />
           <Table.Column
             title="アップローダー"
