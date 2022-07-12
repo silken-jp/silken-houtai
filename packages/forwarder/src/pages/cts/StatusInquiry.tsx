@@ -150,11 +150,11 @@ const StatusInquiry: React.FC = () => {
               dataIndex="notPerNo"
             />
           </Table.ColumnGroup>
-          <Table.ColumnGroup title="審査検査区分">
+          <Table.ColumnGroup title="許可・審査・検査区分">
             <Table.Column
               sorter
               width={150}
-              title="区分１"
+              title="許可率（区分１）"
               dataIndex="count1"
               render={(_, row: any) =>
                 `${((row?.count1 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
@@ -165,7 +165,7 @@ const StatusInquiry: React.FC = () => {
             <Table.Column
               sorter
               width={150}
-              title="区分２"
+              title="審査率（区分２）"
               dataIndex="count2"
               render={(_, row: any) =>
                 `${((row?.count2 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
@@ -179,7 +179,7 @@ const StatusInquiry: React.FC = () => {
               render={(_, row: any) =>
                 `${(
                   ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
-                )?.toFixed(2)}% (${row?.count3 + row?.count3K})`
+                )?.toFixed(2)} (${row?.count3 + row?.count3K})%`
               }
             />
           </Table.ColumnGroup>

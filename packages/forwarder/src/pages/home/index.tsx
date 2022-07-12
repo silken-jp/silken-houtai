@@ -268,9 +268,9 @@ const Dashboard: React.FC<dashboardProps> = () => {
             width={150}
             title="検査率（区分３）"
             render={(_, row: any) =>
-              `(${row?.count3 + row?.count3K}) ${(
+              `${(
                 ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
-              )?.toFixed(2)}%`
+              )?.toFixed(2)}% (${row?.count3 + row?.count3K})`
             }
           />
           <Table.Column title="状態" />
