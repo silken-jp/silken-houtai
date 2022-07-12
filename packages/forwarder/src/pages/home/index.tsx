@@ -208,16 +208,15 @@ const Dashboard: React.FC<dashboardProps> = () => {
             render={(row) => dayFormat(row?.flightDate, 'YYYY.MM.DD')}
           />
           <Table.Column width={120} title="件数" dataIndex="NOCount" />
-          <Table.Column width={120} title="未申告件数" dataIndex="notDecNo" />
+          <Table.Column width={150} title="未申告件数" dataIndex="notDecNo" />
           <Table.Column width={120} title="未許可件数" dataIndex="notPerNo" />
           <Table.Column
             width={150}
             title="検査率（区分３）"
-            dataIndex="K3Count"
             render={(_, row: any) =>
-              `(${row?.count3 + row?.count3K}) ${(
+              `${(
                 ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
-              )?.toFixed(2)}%`
+              )?.toFixed(2)}% (${row?.count3 + row?.count3K})`
             }
           />
           <Table.Column title="状態" />
@@ -257,12 +256,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
             render={() => form.getFieldValue('HAB')}
           />
           <Table.Column width={120} title="件数" dataIndex="NOCount" />
-          <Table.Column
-            sorter
-            width={150}
-            title="未申告件数"
-            dataIndex="notDecNo"
-          />
+          <Table.Column width={150} title="未申告件数" dataIndex="notDecNo" />
           <Table.Column width={120} title="未許可件数" dataIndex="notPerNo" />
           <Table.Column
             width={150}
