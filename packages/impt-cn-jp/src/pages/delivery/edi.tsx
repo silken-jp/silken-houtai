@@ -43,7 +43,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       list: data?.ediPuts || [],
     };
   };
-  const { tableProps, search } = useAntdTable(getTableData, {
+  const { tableProps, search, refresh } = useAntdTable(getTableData, {
     form,
     defaultPageSize: 100,
   });
@@ -101,7 +101,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={'EDI'} extra={<UploadDeliveryFile />}>
+      <Card title={'EDI'} extra={<UploadDeliveryFile refresh={refresh} />}>
         <Table {...tableProps} rowKey="_id" scroll={{ y: 400 }}>
           <Table.Column
             title="フォワーダー"

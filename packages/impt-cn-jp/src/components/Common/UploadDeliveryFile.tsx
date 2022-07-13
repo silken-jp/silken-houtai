@@ -7,15 +7,17 @@ import { importMultiTracks } from '@/services/request/track';
 import { uploadEDIs } from '@/services/request/edi-put';
 import { useState } from 'react';
 
-export interface UploadDeliveryFileProps {}
+export interface UploadDeliveryFileProps {
+  refresh: () => void;
+}
 
-const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
+const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const userInfo = getUserInfo();
   const importAPI = useRequest(importMultiTracks, {
     manual: true,
   });
-  const props = {
+  const uploadProps = {
     accept: 'text/plain',
     maxCount: 1,
     showUploadList: false,
@@ -44,6 +46,7 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
     },
     onChange: (info: any) => {
       if (info.file.status === 'done') {
+        props?.refresh?.();
         message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`);
@@ -53,7 +56,7 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = () => {
 
   return (
     <Space>
-      <Upload {...props}>
+      <Upload {...uploadProps}>
         <Button icon={<UploadOutlined />}>Upload</Button>
       </Upload>
       <Button
