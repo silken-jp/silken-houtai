@@ -60,17 +60,19 @@ const waybill: React.FC = () => {
     if (formType === 'edit') {
       await updateIssue({
         issueId: selectedRowKeys[0],
-        price_projects: v?.price_projects || [],
+        price_projects: v?.price_projects?.flatMap((p: any) =>
+          p?.name && p.price ? [p] : [],
+        ),
         updated_user: userInfo?._id,
         issue_category: v?.issue_category,
         issue_detail: v?.issue_detail,
         status: v?.status,
         cargo_status: v?.cargo_status,
-        send_date: v?.send_date?.toString(),
         new_tracking_no: v?.new_tracking_no,
         solve_method: v?.solve_method,
-        solve_date: v?.solve_date?.toString(),
         solve_note: v?.solve_note,
+        ...(v?.send_date ? { send_date: v?.send_date?.toString() } : {}),
+        ...(v?.solve_date ? { solve_date: v?.solve_date?.toString() } : {}),
       });
       search.submit();
     }
