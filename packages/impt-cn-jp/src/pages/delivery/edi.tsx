@@ -9,13 +9,15 @@ import {
   Space,
   Select,
 } from 'antd';
-import { useAntdTable } from 'ahooks';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { useState } from 'react';
 ////
 import { dayFormat } from '@/utils/helper/day';
 import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllEDIs } from '@/services/request/edi-put';
+import { importMultiTracks } from '@/services/request/track';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 
 interface DeliveryProps {}
@@ -24,7 +26,17 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const { agentOptions } = useAgentOptions();
+  const [tabKey, setTabKey] = useState('');
+  const { agentOptions } = useAgentOptions({
+    fieldNames: {
+      label: 'tab',
+      value: 'key',
+    },
+    onSuccess: (data) => {
+      setTabKey(data?.agents?.[0]?._id || '');
+      search.submit();
+    },
+  });
   const { userOptions } = useUserOptions();
 
   // api
@@ -37,6 +49,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       sortField: 'createdAt',
       sortOrder: -1,
       ...formData,
+      agent: tabKey,
     });
     return {
       total: data?.totalCount,
@@ -45,8 +58,17 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
     form,
-    defaultPageSize: 100,
+    manual: true,
   });
+  const importAPI = useRequest(importMultiTracks, {
+    manual: true,
+  });
+
+  // action
+  const handleTabChange = (key: any) => {
+    setTabKey(key);
+    search.submit();
+  };
 
   return (
     <PageContainer
@@ -61,15 +83,6 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col flex="200px">
-            <Form.Item name="agent">
-              <Select
-                placeholder="フォワーダー"
-                allowClear
-                options={agentOptions}
-              />
-            </Form.Item>
-          </Col>
           <Col flex="200px">
             <Form.Item name="MAB">
               <Input placeholder="MAB" />
@@ -101,8 +114,26 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={'EDI'} extra={<UploadDeliveryFile refresh={refresh} />}>
-        <Table {...tableProps} rowKey="_id" scroll={{ y: 400 }}>
+      <Card
+        activeTabKey={tabKey}
+        tabList={agentOptions}
+        onTabChange={handleTabChange}
+        tabBarExtraContent={
+          <Button
+            type="primary"
+            loading={importAPI.loading}
+            onClick={importAPI.run}
+          >
+            更新
+          </Button>
+        }
+      >
+        <Table
+          title={() => <UploadDeliveryFile refresh={refresh} agent={tabKey} />}
+          {...tableProps}
+          rowKey="_id"
+          scroll={{ y: 400 }}
+        >
           <Table.Column
             title="フォワーダー"
             width={200}

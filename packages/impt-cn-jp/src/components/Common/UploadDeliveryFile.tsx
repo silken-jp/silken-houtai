@@ -1,22 +1,18 @@
 import { Upload, message, Button, Space } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { useRequest } from 'ahooks';
 ////
 import { getUserInfo } from '@/services/useStorage';
-import { importMultiTracks } from '@/services/request/track';
 import { uploadEDIs } from '@/services/request/edi-put';
 import { useState } from 'react';
 
 export interface UploadDeliveryFileProps {
   refresh: () => void;
+  agent: string;
 }
 
 const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const userInfo = getUserInfo();
-  const importAPI = useRequest(importMultiTracks, {
-    manual: true,
-  });
   const uploadProps = {
     accept: 'text/plain',
     maxCount: 1,
@@ -34,6 +30,7 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
         });
         await uploadEDIs({
           MAB,
+          agent: props?.agent,
           userId: userInfo._id,
           file: newFile,
         });
@@ -59,13 +56,6 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
       <Upload {...uploadProps}>
         <Button icon={<UploadOutlined />}>Upload</Button>
       </Upload>
-      <Button
-        type="primary"
-        loading={importAPI.loading}
-        onClick={importAPI.run}
-      >
-        更新
-      </Button>
     </Space>
   );
 };

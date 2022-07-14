@@ -22,6 +22,8 @@ export const useAgentOptions = (options?: Options) => {
     allAgentsAPI?.data?.agents?.map((item: any) => ({
       [options?.fieldNames?.value || 'value']: item?._id,
       [options?.fieldNames?.label || 'label']: item?.name,
+      value: item?._id,
+      label: item?.name,
     })) || [];
 
   return { agentOptions };
