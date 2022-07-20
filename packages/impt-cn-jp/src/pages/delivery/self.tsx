@@ -83,7 +83,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           <Table.Column title="waybill" dataIndex="waybill" />
           <Table.Column title="truck" dataIndex="truck" />
           <Table.Column
-            title="createAt"
+            title="createdAt"
             render={(row) => dayjs(row.createdAt).format('YYYY/MM/DD')}
           />
         </Table>

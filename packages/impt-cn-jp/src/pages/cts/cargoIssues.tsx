@@ -45,9 +45,24 @@ const waybill: React.FC = () => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     const { createDateArr } = formData;
+    let sorter: any = {};
+    if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else if (!!pageData?.sorter?.field) {
+      sorter.sortField = pageData?.sorter?.field;
+    } else {
+      sorter.sortField = 'createdAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
     const data = await getAllIssues({
       page,
       perPage,
+      ...sorter,
       ...formData,
     });
     return { total: data?.totalCount, list: data?.data };
@@ -271,6 +286,7 @@ const waybill: React.FC = () => {
           rowSelection={rowSelection}
         >
           <Table.Column
+            sorter
             width={180}
             title="フォワーダー"
             dataIndex="agent"
@@ -294,32 +310,51 @@ const waybill: React.FC = () => {
             dataIndex={['waybill', 'HAB']}
           />
           <Table.Column
+            sorter
             width={180}
             title="新伝票番号"
             dataIndex="new_tracking_no"
           />
           <Table.Column
+            sorter
             width={180}
             title="連絡日"
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt, 'YYYY/MM/DD')}
           />
           <Table.Column
+            sorter
             width={180}
             title="問題該当"
             dataIndex="issue_category"
           />
-          <Table.Column width={180} title="返品状態" dataIndex="cargo_status" />
-          <Table.Column width={180} title="問題詳細" dataIndex="issue_detail" />
-          <Table.Column width={180} title="状態" dataIndex="status" />
+          <Table.Column
+            sorter
+            width={180}
+            title="返品状態"
+            dataIndex="cargo_status"
+          />
+          <Table.Column
+            sorter
+            width={180}
+            title="問題詳細"
+            dataIndex="issue_detail"
+          />
+          <Table.Column width={180} sorter title="状態" dataIndex="status" />
           <Table.Column width={180} title="通知者" />
           <Table.Column
+            sorter
             width={180}
             title="回答日"
             dataIndex="reply_date"
             render={(reply_date) => dayFormat(reply_date, 'YYYY/MM/DD')}
           />
-          <Table.Column width={180} title="科目" dataIndex="reply_subject" />
+          <Table.Column
+            sorter
+            width={180}
+            title="科目"
+            dataIndex="reply_subject"
+          />
           <Table.Column width={180} title="内容" dataIndex="reply_content" />
           <Table.Column
             width={180}
@@ -365,6 +400,7 @@ const waybill: React.FC = () => {
           <Table.Column width={180} title="対応方法" dataIndex="solve_method" />
           <Table.Column width={180} title="備考" dataIndex="solve_note" />
           <Table.Column
+            sorter
             width={180}
             title="登録者"
             dataIndex="created_user"
@@ -374,6 +410,7 @@ const waybill: React.FC = () => {
           />
           {/* <Table.Column width={180} title="登録構成" /> */}
           <Table.Column
+            sorter
             width={180}
             title="登録日時"
             dataIndex="createdAt"
@@ -389,6 +426,7 @@ const waybill: React.FC = () => {
           />
           {/* <Table.Column width={180} title="最後更新構成" /> */}
           <Table.Column
+            sorter
             width={180}
             title="更新日時"
             dataIndex="updatedAt"

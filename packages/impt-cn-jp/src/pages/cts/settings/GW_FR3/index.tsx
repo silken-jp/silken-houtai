@@ -42,7 +42,7 @@ const GW_FR3Setting: React.FC = () => {
     } else if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
-      sorter.sortField = 'createAt';
+      sorter.sortField = 'createdAt';
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;

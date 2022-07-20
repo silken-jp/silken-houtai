@@ -57,7 +57,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
     } else if (!!pageData?.sorter?.field) {
       sorter.sortField = pageData?.sorter?.field;
     } else {
-      sorter.sortField = 'createAt';
+      sorter.sortField = 'createdAt';
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;

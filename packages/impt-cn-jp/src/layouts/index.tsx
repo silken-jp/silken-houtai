@@ -174,6 +174,10 @@ const Index: React.FC = (props) => {
                   label: <Link to="/delivery/edi">EDI</Link>,
                 },
                 {
+                  key: '/delivery/edi-print',
+                  label: <Link to="/delivery/edi-print">EDIPrint</Link>,
+                },
+                {
                   key: '/delivery/settings',
                   icon: <SettingOutlined />,
                   label: intlMenu('cts.settings'),

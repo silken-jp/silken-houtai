@@ -465,6 +465,11 @@ declare namespace API {
     OR: string;
     createdAt?: string;
     updatedAt?: string;
+    EDI_code?: {
+      arr_code1: string;
+      arr_code2: string;
+      zipcode: string;
+    };
   };
   type User = {
     _id?: ID;
