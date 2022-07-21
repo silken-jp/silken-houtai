@@ -16,10 +16,15 @@
     "ahooks": "^3.3.12",
     "antd-dayjs-webpack-plugin": "^1.0.6",
     "file-saver": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "jsbarcode": "^3.11.5",
+    "jspdf": "^2.5.1",
     "jszip": "^3.10.0",
     "umi": "3.x"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.5",
+    "@types/jsbarcode": "^3.11.1",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "react": "17.x",

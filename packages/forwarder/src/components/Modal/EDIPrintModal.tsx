@@ -98,12 +98,12 @@ const Waybill: React.FC<WaybillProps> = (props) => {
     const doc = new jsPDF({
       orientation: 'p',
       unit: 'mm',
-      format: 'a4',
+      format: [100.2, 150.2],
     });
-    html2canvas(elem, { scale: 2 }).then(function (canvas) {
+    html2canvas(elem, { scale: 10 }).then(function (canvas) {
       const dataURI = canvas.toDataURL('image/jpeg');
       // const width = doc.internal.pageSize.width;
-      doc.addImage(dataURI, 'JPEG', 10, 10, 100, 150);
+      doc.addImage(dataURI, 'JPEG', 0.1, 0.1, 100, 150);
       doc.save(`${props?.dataSource?.HAB}.pdf`);
     });
   }
@@ -304,17 +304,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 <div style={{ padding: '21px 6px', height: 93, fontSize: 17 }}>
                   <div>
                     お問合せTEL
-                    <span style={{ color: '#d9363e', fontSize: 14 }}>
-                      {' '}
-                      0570-01-0349
-                    </span>
+                    <span style={{ fontSize: 14 }}> 0570-01-0349</span>
                   </div>
                   <div>
                     顧客コード
-                    <span style={{ color: '#d9363e', fontSize: 14 }}>
-                      {' '}
-                      151289260001
-                    </span>
+                    <span style={{ fontSize: 14 }}> 151289260001</span>
                   </div>
                 </div>
               </div>
@@ -363,7 +357,6 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   borderRight: '1px solid black',
                   fontSize: 13,
                   lineHeight: 1.5,
-                  color: '#d9363e',
                 }}
               >
                 <div>東京都新宿区市谷田町2丁目17</div>
@@ -387,7 +380,6 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   width: 210,
                   fontSize: 13,
                   lineHeight: 1.5,
-                  color: '#d9363e',
                 }}
               >
                 <div>東京都足立区南花烟4-28-18</div>
@@ -415,7 +407,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 記事欄
               </div>
-              <div style={{ width: 210 }}></div>
+              <div style={{ width: 210 }}>
+                <div>
+                  EC貨物の返品などは直接購入されたECサイトまでお問い合わせください。
+                </div>
+              </div>
             </div>
             {/* 6 */}
             <div style={{ ...flexL, width: 500, height: 214 }}>
@@ -436,9 +432,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               </div>
               <div style={{ ...flexP, width: 300, borderRight: '1px solid' }}>
                 <div style={{ height: 150, borderBottom: '1px solid' }}>
-                  <div style={{ color: '#d9363e' }}>【陸便】</div>
+                  <div>
+                    <div>【陸便】</div>
+                  </div>
                 </div>
-                <div style={{ padding: '5px 0px', height: 100, color: 'gray' }}>
+                <div style={{ padding: '5px 0px', height: 100 }}>
                   【佐川急便(株) 京都市南区上烏羽角田町 68番地】
                   <br />
                   【佐川急便(株)の損害賠價限度額は荷物1個につき30万円です】

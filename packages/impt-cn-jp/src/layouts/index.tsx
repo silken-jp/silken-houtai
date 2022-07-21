@@ -175,7 +175,7 @@ const Index: React.FC = (props) => {
                 },
                 {
                   key: '/delivery/edi-print',
-                  label: <Link to="/delivery/edi-print">EDIPrint</Link>,
+                  label: <Link to="/delivery/edi-print">送り状</Link>,
                 },
                 {
                   key: '/delivery/settings',

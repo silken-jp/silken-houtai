@@ -8,7 +8,6 @@ import {
   Card,
   Space,
   DatePicker,
-  Select,
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest } from 'ahooks';
@@ -17,7 +16,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import EDIPrintModal from '@/components/Modal/EDIPrintModal';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
-import { useAgentOptions } from '@/services/useAPIOption';
+import { getAgentInfo } from '@/services/useStorage';
 import { getAllWaybills, getStatusInquiry } from '@/services/request/waybill';
 
 interface SubTableProps {
@@ -74,9 +73,9 @@ const EDIPrint: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const agentInfo = getAgentInfo();
 
   // api
-  const { agentOptions } = useAgentOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -99,6 +98,7 @@ const EDIPrint: React.FC = () => {
       perPage,
       ...sorter,
       ...formData,
+      agent: agentInfo._id,
       flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
       flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
     });
@@ -134,15 +134,6 @@ const EDIPrint: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
-          <Col span={3}>
-            <Form.Item name="agent">
-              <Select
-                allowClear
-                placeholder="フォワーダー"
-                options={agentOptions}
-              />
-            </Form.Item>
-          </Col>
           <Col span={3}>
             <Form.Item name="MAB">
               <Input placeholder="MAWB番号" />
@@ -193,15 +184,6 @@ const EDIPrint: React.FC = () => {
                 <DownloadOutlined />
               </Button>
             )}
-          />
-          <Table.Column
-            sorter
-            width={200}
-            title="フォワーダー"
-            dataIndex="agentId"
-            render={(agentId) =>
-              agentOptions?.find((item) => item?.value === agentId)?.label
-            }
           />
           <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column

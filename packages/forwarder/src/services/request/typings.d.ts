@@ -242,71 +242,229 @@ declare namespace API {
     name: string;
   }>;
   type Waybill = {
-    _id?: ID;
     mawb_no?: string;
     hawb_no?: string;
-    jp_delivery_no?: string;
-    cn_delivery_no?: string;
-    jp_delivery_company?: string;
-    cn_delivery_company?: string;
-    flight_no?: string;
-    receiver_name?: string;
-    receiver_add?: string;
-    receiver_tel?: string;
-    receiver_zip?: string;
     track_history?: any[];
-    createdAt?: string;
-    updatedAt?: string;
-    current_processor?: string;
-    io_type?: 0 | 1; // 进出口类型{0: 进口, 1: 出口}
-    waybill_type?: 0 | 1; // IDA or MIC{0: IDA, 1: MIC}
-    IDA_type?: string; // IDA类型
-    process_status?: number; // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
-    waybill_input_time?: string;
-    waybill_status?: number; // {0: other, 1: normal, 2: hold, 3: sendBack}
-    holdMemo?: string;
-    sendbackMemo?: string;
     is_PER_image?: number;
     PER_image?: string;
     EXA_image?: string;
-
     flightNo?: string;
-    LS?: 'L' | 'S' | 'M';
-    VSN?: string;
-    ARR?: string;
-    MAB?: string;
-    HAB?: string;
-    PCS?: string;
-    GW?: string;
-    GWT?: string;
-    CMN?: string;
-    ImpName?: string;
-    IAD?: string;
-    Add1?: string;
-    Add2?: string;
-    Add3?: string;
-    Add4?: string;
-    Tel?: string;
-    EPN?: string;
-    EAD?: string;
-    EPA?: string;
-    EP2?: string;
-    EP3?: string;
-    EP4?: string;
-    EPO?: string;
-    DST?: string;
-    PSC?: string;
-    OR?: string;
-    IP1?: string;
-    IP2?: string;
-    IP3?: string;
-    IP4?: string;
-    FR2?: string;
-    FR3?: string;
-    IN1?: string;
-    IN2?: string;
-    IN3?: string;
-    Zip?: string;
+
+    _id?: ID;
+    // ---------------------------开发用------------------------------
+    // フォワーダー
+    agent?: ID;
+    // 进出口类型{0: 进口, 1: 出口}
+    io_type: number;
+    // IDA or MIC
+    waybill_type: string;
+    // IDA类型
+    IDA_type: string;
+    // {0: other, 1: normal, 2: hold, 3: sendBack}
+    waybill_status: number;
+    // {0: wait cleansing, 1: doing cleasing, 2: done cleansing, 3: doing broker check, 4: done broker check, 5: done created}
+    process_status: number;
+    current_processor: string;
+    //  process_histories?: ProcessHistory[];
+    cleanser?: ID;
+    cleanserName: string;
+    clsDate: Date;
+    broker?: ID;
+    brokerName: string;
+    brcDate: Date;
+    creator?: ID;
+    creatorName: string;
+    crtDate: Date;
+    // 航班日期flghtDate
+    DATE: Date;
+    holdMemo: string;
+    sendbackMemo: string;
+    holdFeedbackMemo: string;
+    sendbackFeedbackMemo: string;
+    // 韓進专用字段
+    REFNO: string;
+    // ---------------------------日本側------------------------------
+    // L,S,M
+    LS: string;
+    ICN: string; //申告番号(MIC)
+    ID: string; //申告等番号(IDA)
+    JYO: string; //申告条件
+    IC1: string; //申告先種別コード
+    IC2: string; //申告貨物識別(IDA)
+    ICB: string; //申告等種別コード(IDA)
+    SKB: string; //識別符号
+    CH: string; //あて先官署コード
+    CHB: string; //あて先部門コード
+    CHH: string; //特例申告あて先官署コード(IDA)
+    CHT: string; //特例申告あて先部門コード(IDA)
+    ICD: string; //申告予定年月日
+    ZJY: string; //税関事務管理人コード
+    ZJJ: string; //税関事務管理人受理番号
+    ZJN: string; //税関事務管理人名
+    ST: string; //通関予定蔵置場コード
+    IKY: string; //一括申告等識別(IDA+海のみ)
+    ICC: string; //申告等予定者コード(IDA)
+    NMC: string; //輸入取引者コード(IDA)
+    NMN: string; //輸入取引者名(IDA)
+    NOT: string; //個数単位コード(IDA+海のみ)
+    MRK: string; //記号番号(IDA+海のみ)
+    VSC: string; //積載船舶コード(IDA+海のみ)
+    BOK: string; //貿易形態別符号(IDA)
+    COC: string; //コンテナ扱い本数(IDA+海のみ)
+    RTD: string; //戻税申告識別(IDA)
+    WU: string; //輸入貿易管理令第３条等識別(IDA)
+    IL: string; //輸入承認証添付識別(IDA)
+    N4: string; //内容点検等結果(IDA)
+    CI: string; //税関調査用符号(IDA)
+    OL_: string; //他法令コード(IDA)
+    KNO: string; //共通管理番号(IDA)
+    FD: string; //食品衛生証明識別(IDA)
+    PL: string; //植物防疫証明識別(IDA)
+    AN: string; //動物検疫証明識別(IDA)
+    S_: string; //輸入承認証等識別(IDA)
+    N_: string; //輸入承認証番号等(IDA)
+    IV1: string; //インボイス識別(IDA)
+    IV2: string; //電子インボイス受付番号(IDA)
+    TTC: string; //検査立会者
+    FR1: string; //運賃区分コード
+    DPR: number; //課税価格
+    NT1: string; //記事
+    NT3: string; //記事
+    NSC: string; //荷主セクションコード
+    NRN: string; //荷主リファレンスナンバー
+    REF: string; //社内整理用番号
+    // ---------------------------配達関連------------------------------
+    track_status: number;
+    //  track_history: TrackHistory[];
+    jp_delivery_no: string;
+    cn_delivery_no: string;
+    jp_delivery_company: string;
+    cn_delivery_company: string;
+    //实际收货人
+    receiver_name: string;
+    //实际收货人电话
+    receiver_tel: string;
+    //实际收货人邮编
+    receiver_zip: string;
+    //实际收货地址
+    receiver_add: string;
+    driver?: ID;
+    //日中用
+    flight_no: string;
+    waybill_input_time: Date;
+    // ***********************************上海側***********************************
+    // -----------------------輸入者-----------------------
+    // 輸入者コード
+    ImpCode: string;
+    // 輸入者名
+    ImpName: string;
+    // 輸入者名日文
+    ImpNameJP: string;
+    // 郵便番号
+    Zip: string;
+    // 住所１（都道府県）
+    Add1: string;
+    // 住所２（市区町村行政区名）
+    Add2: string;
+    // 住所３（町域名・番地）
+    Add3: string;
+    // 住所４（ビル名ほか）
+    Add4: string;
+    // 輸入者電話番号
+    Tel: string;
+    // 輸入者住所（一括）
+    IAD: string;
+    // 輸入者住所（一括）日文
+    IADJP: string;
+    // -----------------------仕出人-----------------------
+    // 仕出人コード
+    EPC: string;
+    // 仕出人名
+    EPN: string;
+    // 住所１（Street and number/P.O.BOX）
+    EPA: string;
+    // 住所２（Street and number/P.O.BOX）
+    EP2: string;
+    // 住所３（City name）
+    EP3: string;
+    // 住所４（Countrysub-entity,name）
+    EP4: string;
+    // 郵便番号（Postcode identification）
+    EPY_Zip: string;
+    // 国名コード（Country,coded）
+    EPO: string;
+    // 仕出人住所 (一括）
+    EAD: string;
+    // -----------------------その他-----------------------
+    // ＨＡＷＢ番号（MIC用）
+    HAB: string;
+    // Ｂ／Ｌ番号／ＡＷＢ 番号（IDA用）
+    BL_: string;
+    // MＡＷＢ番号（MIC用）
+    MAB: string;
+    // 積載機名
+    VSN: string;
+    // 入港年月日
+    ARR: string;
+    // 取卸港コード
+    DST: string;
+    // 積出地コード
+    PSC: string;
+    // 積出地名
+    PSN: string;
+    // インボイス番号(IDA)
+    IV3: string;
+    // インボイス価格区分コード
+    IP1: string;
+    // インボイス価格条件コード
+    IP2: string;
+    // インボイス通貨コード
+    IP3: string;
+    // インボイス価格
+    IP4: string;
+    // originalインボイス価格
+    _NT1: number;
+    // インボイス価格_number
+    _IP4: number;
+    // 運賃通貨コード
+    FR2: string;
+    // 運賃
+    FR3: string;
+    // 運賃_number
+    _FR3: number;
+    // 保険区分コード
+    IN1: string;
+    // 保険通貨コード
+    IN2: string;
+    // 保険金額
+    IN3: string;
+    // 保険金額_number
+    _IN3: number;
+    // 品目コード
+    CMD: string;
+    // NACCS用コード
+    CM2: string;
+    // 品名
+    CMN: string;
+    // 貨物個数
+    NO: number;
+    // PCS
+    PCS: number;
+    // 貨物重量
+    GW: string;
+    // 貨物重量_number
+    _GW: number;
+    // 重量単位コード（グロス）
+    GWT: string;
+    // 原産地コード
+    OR: string;
+    createdAt?: string;
+    updatedAt?: string;
+    EDI_code?: {
+      arr_code1: string;
+      arr_code2: string;
+      zipcode: string;
+    };
   };
   type ZipCode = {
     _id?: ID;
