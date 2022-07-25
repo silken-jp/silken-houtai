@@ -66,7 +66,7 @@ function fixItemToObj(params: any[]) {
     const line = params?.[i];
     let obj: { [key: string]: any } = {};
     if (!line || line?.length === 0) continue;
-    for (let j = 0; j < line.length; j++) {
+    for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
         obj[headers?.[j]?.trim?.()] = line?.[j]?.toString?.();
       }

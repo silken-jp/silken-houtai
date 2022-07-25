@@ -1,4 +1,4 @@
-import { Modal, Button, Card, Space } from 'antd';
+import { Modal, Button, Card, Space, Form } from 'antd';
 import { useKeyPress, useDynamicList, useBoolean } from 'ahooks';
 import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 ////
@@ -46,17 +46,22 @@ const dataSource2 = [
   ],
 ];
 
-const DeepList: React.FC<{ cardKey: number }> = (props) => {
-  const deepList = useDynamicList<any>([0, 1]);
+const DeepList: React.FC<{ cardKey: number; defaultValue: any[] }> = (
+  props,
+) => {
+  const defaultValue = props?.defaultValue || [];
+  const deepList = useDynamicList<any>(
+    defaultValue?.length > 0 ? defaultValue : [0, 1],
+  );
   const DeepListItem = (index: number, item: any) => (
     <Space key={deepList.getKey(index)}>
       <div>{index + 1}</div>
       <CheckFormBasic
         dataSource={dataSource2}
         basicName={[
-          'hsCodeCroup',
+          'HSRepeat',
           props?.cardKey,
-          'taxList',
+          'TX_TR_TG',
           deepList.getKey(index),
         ]}
       />
@@ -92,8 +97,12 @@ const DeepList: React.FC<{ cardKey: number }> = (props) => {
 
 const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
   // state
+  const form = Form.useFormInstance();
   const [visible, { setFalse, setTrue }] = useBoolean(false);
-  const cardList = useDynamicList<any>([0, 1]);
+  const HSRepeat = form.getFieldValue('HSRepeat') || [];
+  const cardList = useDynamicList<any>(
+    HSRepeat?.length > 0 ? HSRepeat : [0, 1],
+  );
 
   const CardListItem = (index: number, item: any) => (
     <Card
@@ -103,7 +112,7 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
       title={`繰返部 ${index + 1}/${cardList?.list?.length}`}
       extra={
         <div>
-          {cardList.list.length > 2 && (
+          {cardList.list.length > 1 && (
             <Button
               type="text"
               onClick={() => {
@@ -128,9 +137,12 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
     >
       <CheckFormBasic
         dataSource={dataSource}
-        basicName={['hsCodeCroup', cardList.getKey(index)]}
+        basicName={['HSRepeat', cardList.getKey(index)]}
       />
-      <DeepList cardKey={cardList.getKey(index)} />
+      <DeepList
+        defaultValue={cardList?.list?.[index]?.TX_TR_TG}
+        cardKey={cardList.getKey(index)}
+      />
     </Card>
   );
   // key press
@@ -154,7 +166,7 @@ const HSCodeGroupModel: React.FC<HSCodeGroupModelProps> = (props) => {
         {cardList?.list?.map((ele, index) => CardListItem(index, ele))}
       </Modal>
       <Button type="dashed" onClick={setTrue}>
-        HSコード繰返部 (F2, 1)
+        HSコード繰返部
       </Button>
     </>
   );

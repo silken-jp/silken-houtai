@@ -345,18 +345,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         NOF: 'R',
         PF: '00010544650858',
         ...props?.dataSource,
-        hsCodeGroup: [
-          {
-            CMD: '980000000',
-            CM2: '0',
-            CMN: props?.dataSource?.CMN,
-          },
-          {
-            CMD: '980000000',
-            CM2: '0',
-            CMN: '',
-          },
-        ],
       }}
     >
       <Modal
@@ -419,6 +407,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
                 ][process_status]
               }
             </Tag>
+            {props.dataSource?.REFNO && (
+              <Tag>REFNO: {props.dataSource?.REFNO}</Tag>
+            )}
           </Space>
         }
         extra={

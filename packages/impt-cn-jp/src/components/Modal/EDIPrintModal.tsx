@@ -62,12 +62,12 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       {
         displayValue: false,
         width: 6,
-        height: 130,
+        height: 100,
       },
     );
     getCodeBar(props.dataSource._id + 'HAB', `D${props.dataSource.HAB}D`, {
       width: 3,
-      height: 100,
+      height: 130,
     });
     getCodeBar(props.dataSource._id + '2kg', 'D002B', {
       text: '2kg(サイズ 60)',
@@ -263,11 +263,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 >
                   着店バーコード
                 </div>
-                <div style={{ height: 85, padding: '10px 12px' }}>
+                <div style={{ height: 85, padding: '15px 12px' }}>
                   <img
                     id={props.dataSource._id + 'shopCode'}
                     width={160}
-                    height={65}
+                    height={50}
                   />
                 </div>
               </div>
@@ -323,11 +323,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 問合番号
               </div>
-              <div style={{ width: 250, padding: '25px 15px' }}>
+              <div style={{ width: 250, padding: '20px 15px' }}>
                 <img
                   id={props.dataSource._id + 'HAB'}
                   width={220}
-                  height={70}
+                  height={90}
                 />
               </div>
             </div>

@@ -48,7 +48,7 @@ const DeepList: React.FC<{ cardKey: number }> = (props) => {
           <MinusCircleOutlined />
         </Button>
       )}
-      {deepList.list.length < 6 && (
+      {deepList.list.length < 10 && (
         <Button
           type="text"
           onClick={() => {
@@ -94,7 +94,7 @@ const InvoiceGroupModel: React.FC<InvoiceGroupModelProps> = (props) => {
         <DeepList cardKey={0} />
       </Modal>
       <Button type="dashed" onClick={setTrue}>
-        インボイス＆他法令 (F2, 2)
+        インボイス＆他法令
       </Button>
     </>
   );

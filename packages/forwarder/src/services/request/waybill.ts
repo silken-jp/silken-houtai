@@ -35,7 +35,7 @@ export async function getAllWaybillsForwarder(
 }
 
 // 获取所有运单许可书 POST /waybills/per_download
-interface GetAllPERImagesByWaybillIds extends API.Waybill {
+interface GetAllPERImagesByWaybillIds {
   waybillIds: API.ID[];
 }
 export async function getAllPERImagesByWaybillIds(

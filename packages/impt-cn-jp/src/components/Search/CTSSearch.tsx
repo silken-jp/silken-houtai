@@ -139,6 +139,20 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item label="審査検査区分" name="EXA_DIS">
+              <Select
+                allowClear
+                placeholder="審査検査区分"
+                options={[
+                  { label: '1', value: '1' },
+                  { label: '2', value: '2' },
+                  { label: '3', value: '3' },
+                  { label: '3K', value: '3K' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
         </Row>
 
         <Row>
@@ -170,7 +184,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
     <div className="sk-table-search">
       <Form form={form}>
         <Row justify="end" gutter={12}>
-          <Col span={3}>
+          <Col flex="150px">
             <Form.Item name="agent">
               <Select
                 allowClear
@@ -180,7 +194,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={3}>
+          <Col flex="150px">
             <Form.Item name="status">
               <Select
                 allowClear
@@ -197,14 +211,31 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col flex="200px">
             <Form.Item name="mawbs">
               <Input.Search placeholder="MAWB番号" onSearch={search.submit} />
             </Form.Item>
           </Col>
-          <Button type="link" onClick={search.changeType}>
-            Advanced Search
-          </Button>
+          <Col flex="150px">
+            <Form.Item name="EXA_DIS">
+              <Select
+                allowClear
+                placeholder="審査検査区分"
+                onChange={search.submit}
+                options={[
+                  { label: '1', value: '1' },
+                  { label: '2', value: '2' },
+                  { label: '3', value: '3' },
+                  { label: '3K', value: '3K' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Button type="link" onClick={search.changeType}>
+              Advanced Search
+            </Button>
+          </Col>
         </Row>
       </Form>
     </div>

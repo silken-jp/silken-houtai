@@ -22,6 +22,7 @@ import { getAllWaybills, getStatusInquiry } from '@/services/request/waybill';
 
 interface SubTableProps {
   MAB: string;
+  HAB: string;
 }
 const SubTable: React.FC<SubTableProps> = (props) => {
   // api
@@ -44,14 +45,17 @@ const SubTable: React.FC<SubTableProps> = (props) => {
     }
     const data = await getAllWaybills({
       page,
-      perPage: 5,
+      perPage,
       MAB: props?.MAB,
+      HAB: props?.HAB,
       ...sorter,
       ...formData,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
   };
-  const { tableProps } = useAntdTable(getTableData);
+  const { tableProps } = useAntdTable(getTableData, {
+    defaultPageSize: 5,
+  });
 
   return (
     <Table
@@ -149,6 +153,11 @@ const EDIPrint: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={3}>
+            <Form.Item name="HAB">
+              <Input placeholder="HAWB番号" />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
             <Form.Item name="flightNo">
               <Input placeholder="FlightNo" />
             </Form.Item>
@@ -177,7 +186,9 @@ const EDIPrint: React.FC = () => {
         <Table
           size="small"
           expandable={{
-            expandedRowRender: (row) => <SubTable MAB={row?._id} />,
+            expandedRowRender: (row) => (
+              <SubTable MAB={row?._id} HAB={form.getFieldValue('HAB')} />
+            ),
           }}
           rowKey="_id"
           {...tableProps}

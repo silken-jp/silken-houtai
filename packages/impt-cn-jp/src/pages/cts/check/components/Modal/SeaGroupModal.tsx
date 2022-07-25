@@ -40,7 +40,7 @@ const InvoiceGroupModel: React.FC<InvoiceGroupModelProps> = (props) => {
         <CheckFormBasic dataSource={dataSource} />
       </Modal>
       <Button type="dashed" onClick={setTrue}>
-        海上部 (F2, 4)
+        海上部
       </Button>
     </>
   );

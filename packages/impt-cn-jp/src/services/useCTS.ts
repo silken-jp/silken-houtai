@@ -123,17 +123,17 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       crtStartDate: getDayData(params?.crtStartDate),
       crtEndDate: getDayData(params?.crtEndDate),
     });
-    run(
-      {
-        current: page + 1,
-        pageSize: perPage,
-        sorter: {
-          field: sortField,
-          order: sortOrder,
-        },
-      },
-      params,
-    );
+    // run(
+    //   {
+    //     current: page + 1,
+    //     pageSize: perPage,
+    //     sorter: {
+    //       field: sortField,
+    //       order: sortOrder,
+    //     },
+    //   },
+    //   params,
+    // );
   }, []);
 
   const { tableProps, search, refreshAsync, run } = useAntdTable(getTableData, {

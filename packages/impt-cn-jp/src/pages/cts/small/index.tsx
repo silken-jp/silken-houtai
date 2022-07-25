@@ -150,8 +150,14 @@ const SmallWaybill: React.FC = () => {
             }
           />
           <Table.Column sorter title="MAWB番号" dataIndex="MAB" />
-          {state.tabKey === 'Other' && (
+          {state.tabKey === '0' && (
             <Table.Column title="コントローラー" dataIndex="" />
+          )}
+          {state.tabKey === '2' && (
+            <Table.Column width={300} title="メモ" dataIndex="holdMemo" />
+          )}
+          {state.tabKey === '3' && (
+            <Table.Column width={300} title="メモ" dataIndex="sendbackMemo" />
           )}
           <Table.Column sorter title="書類作成者" dataIndex="" />
           <Table.Column sorter title="クレンザー" dataIndex="cleanserName" />
