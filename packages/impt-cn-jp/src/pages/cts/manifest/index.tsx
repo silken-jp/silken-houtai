@@ -14,6 +14,8 @@ import useBrockCheck from '@/services/useCTSActions/useBrockCheck';
 import useExportXlsx from '@/services/useCTSActions/useExportXlsx';
 import useIssueModal from '@/services/useCTSActions/useIssueModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
+import useDownloadINVBL from '@/services/useCTSActions/useDownloadINVBL';
+// import PrintINVBLModal from '@/components/Modal/PrintINVBLModal';
 
 const ManifestWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
@@ -42,7 +44,7 @@ const ManifestWaybill: React.FC = () => {
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
   const { exportApi, handleExport } = useExportXlsx('M', state?.selectedRows);
-
+  const { downloadINVBLApi, handleDownload } = useDownloadINVBL('M');
   // format
   const selected = state?.selectedRowKeys?.length || 0;
 
@@ -90,6 +92,12 @@ const ManifestWaybill: React.FC = () => {
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
           </Button>
+          {/* <PrintINVBLModal
+            loading={downloadINVBLApi.loading}
+            onClick={downloadINVBLApi.runAsync}
+            dataSource={downloadINVBLApi.data?.waybills}
+          /> */}
+          <Button onClick={handleDownload}>Print INV&BL</Button>
         </Space>
       </Row>
 
@@ -98,7 +106,6 @@ const ManifestWaybill: React.FC = () => {
         loading={tableProps?.loading}
         type="MIC"
       />
-
       <Card
         {...cardProps}
         tabBarExtraContent={

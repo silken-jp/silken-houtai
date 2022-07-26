@@ -41,18 +41,17 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   function handleClose() {
     setVisible(false);
   }
-  function pdfPrint() {
+  async function pdfPrint() {
     const elem = printRef.current as HTMLElement;
     const doc = new jsPDF({
       orientation: 'p',
       format: 'a4',
     });
-    html2canvas(elem, { scale: 2 }).then(function (canvas) {
-      const dataURI = canvas.toDataURL('image/jpeg');
-      const width = doc.internal.pageSize.width;
-      doc.addImage(dataURI, 'JPEG', 0, 0, width, 0);
-      doc.save(`${props?.dataSource?.HAB}_${viewType}.pdf`);
-    });
+    const canvas = await html2canvas(elem, { scale: 2 });
+    const dataURI = canvas.toDataURL('image/jpeg');
+    const width = doc.internal.pageSize.width;
+    doc.addImage(dataURI, 'JPEG', 0, 0, width, 0);
+    doc.save(`${props?.dataSource?.HAB}_${viewType}.pdf`);
   }
 
   return (
@@ -68,7 +67,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
         }
       >
         <div style={{ padding: 48 }} ref={printRef}>
-          {viewType === 'BL' && (
+          {viewType === 'BL2' && (
             <>
               <Title level={2} style={{ textAlign: 'center' }}>
                 {props?.dataSource?.HAB}
