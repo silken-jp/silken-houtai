@@ -34,7 +34,12 @@ const useDownloadINVBL = (LS: string, dataSource?: any) => {
       }
       params.append(key, searchParams[key]);
     }
-    window.open(window.location.origin + '#/print/INVBL?' + params.toString());
+    window.open(
+      window.location.origin +
+        window.location.pathname +
+        '#/print/INVBL?' +
+        params.toString(),
+    );
   };
   return {
     downloadINVBLApi,
