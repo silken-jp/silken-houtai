@@ -61,13 +61,12 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       `C${EDI_code?.arr_code1}${EDI_code?.arr_code2}D`,
       {
         displayValue: false,
-        width: 6,
-        height: 100,
+        height: 50,
       },
     );
     getCodeBar(props.dataSource._id + 'HAB', `D${props.dataSource.HAB}D`, {
-      width: 3,
-      height: 130,
+      displayValue: false,
+      height: 115,
     });
     getCodeBar(props.dataSource._id + '2kg', 'D002B', {
       text: '2kg(サイズ 60)',
@@ -263,10 +262,10 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 >
                   着店バーコード
                 </div>
-                <div style={{ height: 85, padding: '15px 12px' }}>
+                <div style={{ height: 85, padding: '18px 36px' }}>
                   <img
                     id={props.dataSource._id + 'shopCode'}
-                    width={160}
+                    width={112.5}
                     height={50}
                   />
                 </div>
@@ -323,12 +322,19 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 問合番号
               </div>
-              <div style={{ width: 250, padding: '20px 15px' }}>
+              <div
+                style={{
+                  width: 250,
+                  padding: '30px 15px',
+                  textAlign: 'center',
+                }}
+              >
                 <img
                   id={props.dataSource._id + 'HAB'}
-                  width={220}
-                  height={90}
+                  width={175}
+                  height={57.5}
                 />
+                {props.dataSource.HAB}
               </div>
             </div>
             {/* 4 */}
@@ -407,7 +413,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 記事欄
               </div>
-              <div style={{ width: 210 }}>
+              <div style={{ width: 210, paddingLeft: 4 }}>
                 <div>
                   EC貨物の返品などは直接購入されたECサイトまでお問い合わせください。
                 </div>
