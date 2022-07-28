@@ -29,7 +29,9 @@ function compressAndDownload(data: any[], fileName?: string) {
     if (data[0]?.PER_image?.data) {
       FileSaver.saveAs(
         handleArrayBufferToBlob(data?.[0].PER_image.data),
-        `${data?.[0]?.HAB}.pdf`,
+        `${data?.[0]?.ID}_${data?.[0]?.HAB}_${dayjs(data?.[0]?.PER_date).format(
+          'YYYYMMDDHHmmss',
+        )}.pdf`,
       );
     }
   } else {

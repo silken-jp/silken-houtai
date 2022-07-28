@@ -3,7 +3,7 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有フォワーダー GET /api/issues
-interface GetAllIssues extends API.Issue {
+interface GetAllIssues extends Partial<API.Issue> {
   page: number;
   perPage: number;
 }

@@ -217,7 +217,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item name="EXA_DIS">
+            <Form.Item name="EXA_DIS_in">
               <Select
                 allowClear
                 placeholder="審査検査区分"
@@ -227,6 +227,7 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   { label: '2', value: '2' },
                   { label: '3', value: '3' },
                   { label: '3K', value: '3K' },
+                  { label: '3&3K', value: '3,3K' },
                 ]}
               />
             </Form.Item>

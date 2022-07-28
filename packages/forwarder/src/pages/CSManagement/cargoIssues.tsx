@@ -16,23 +16,30 @@ import { TableRowSelection } from 'antd/lib/table/interface';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import useExportIssueXlsx from '@/services/useExportIssueXlsx';
 import { useIntlFormat } from '@/services/useIntl';
 import CargoIssueForm from '@/components/Form/CargoIssueForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { getAllIssues, updateIssue } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
+import { removeEmpty } from '@/utils/helper/helper';
 
 const waybill: React.FC = () => {
   // state
-  const [selectedRows, setSelectedRows] = useState<any[]>([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Issue>();
+  const { userOptions } = useUserOptions();
+
+  const { exportIssuesApi, handleExportIssues } = useExportIssueXlsx(
+    selectedRows,
+    userOptions,
+  );
 
   // api
-  const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -102,6 +109,9 @@ const waybill: React.FC = () => {
   const handleClear = () => {
     setSelectedRows([]);
     setSelectedRowKeys([]);
+  };
+  const handleExportALL = () => {
+    exportIssuesApi.run(removeEmpty(form.getFieldsValue()));
   };
 
   const rowSelection: TableRowSelection<API.Issue> = {
@@ -221,6 +231,12 @@ const waybill: React.FC = () => {
                 検索
               </Button>
               <Button onClick={search.reset}>リセット</Button>
+              <Button
+                onClick={handleExportALL}
+                loading={exportIssuesApi.loading}
+              >
+                Export(一括)
+              </Button>
             </Space>
           </Col>
         </Row>
@@ -235,7 +251,8 @@ const waybill: React.FC = () => {
             <Button type="primary" onClick={handleEdit}>
               編集
             </Button>
-            <Button disabled>一覧</Button>
+            <Button onClick={handleExportIssues}>Export</Button>
+            {/* <Button disabled>一覧</Button> */}
           </Space>
         }
       >
