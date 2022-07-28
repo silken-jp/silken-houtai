@@ -44,7 +44,9 @@ const ManifestWaybill: React.FC = () => {
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
   const { exportApi, handleExport } = useExportXlsx('M', state?.selectedRows);
-  const { downloadINVBLApi, handleDownload } = useDownloadINVBL('M');
+  // 批量打印 INV BL
+  const { handleDownload } = useDownloadINVBL('M');
+
   // format
   const selected = state?.selectedRowKeys?.length || 0;
 

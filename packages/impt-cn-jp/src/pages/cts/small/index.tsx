@@ -12,6 +12,7 @@ import useExportXlsx from '@/services/useCTSActions/useExportXlsx';
 import useIssueModal from '@/services/useCTSActions/useIssueModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
 import useCleansing from '@/services/useCTSActions/useCleansing';
+import useDownloadINVBL from '@/services/useCTSActions/useDownloadINVBL';
 
 const SmallWaybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
@@ -35,6 +36,8 @@ const SmallWaybill: React.FC = () => {
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
   const { exportApi, handleExport } = useExportXlsx('S', state?.selectedRows);
+  // 批量打印 INV BL
+  const { handleDownload } = useDownloadINVBL('L');
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;
@@ -70,6 +73,7 @@ const SmallWaybill: React.FC = () => {
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
           </Button>
+          <Button onClick={handleDownload}>Print INV&BL</Button>
         </Space>
       </Row>
 

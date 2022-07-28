@@ -34,8 +34,12 @@ const INV_BL: React.FC<INV_BLProps> = (props) => {
         perPage: 100000000,
       }),
     {
-      onSuccess: () => {
-        window.print();
+      onSuccess: (res) => {
+        if (res?.waybills?.length > 0) {
+          window.print();
+        } else {
+          message.error('条件を満たすHABを見つかりません。');
+        }
       },
       onError: (err) => {
         message.error(err?.message);

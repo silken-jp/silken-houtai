@@ -173,10 +173,10 @@ const Index: React.FC = (props) => {
                   key: '/delivery/edi',
                   label: <Link to="/delivery/edi">EDI</Link>,
                 },
-                {
-                  key: '/delivery/edi-print',
-                  label: <Link to="/delivery/edi-print">送り状</Link>,
-                },
+                // {
+                //   key: '/delivery/edi-print',
+                //   label: <Link to="/delivery/edi-print">送り状</Link>,
+                // },
                 {
                   key: '/delivery/settings',
                   icon: <SettingOutlined />,
