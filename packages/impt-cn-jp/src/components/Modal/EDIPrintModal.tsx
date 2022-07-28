@@ -331,8 +331,8 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 <img
                   id={props.dataSource._id + 'HAB'}
-                  width={175}
-                  height={57.5}
+                  width={153}
+                  height={51}
                 />
                 {props.dataSource.HAB}
               </div>

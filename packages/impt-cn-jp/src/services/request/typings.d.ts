@@ -470,6 +470,26 @@ declare namespace API {
       arr_code2: string;
       zipcode: string;
     };
+    HSRepeat?: {
+      CMD?: string;
+      CM2?: string;
+      CMN?: string;
+      OR?: string;
+      ORS?: string;
+      QN1?: string;
+      QT1?: string;
+      QN2?: string;
+      QT2?: string;
+      IT?: string;
+      RG?: string;
+      BPR?: string;
+      FRS?: string;
+      DPR?: string;
+      JKB?: string;
+      JKO?: string;
+      RE?: string;
+      REG?: string;
+    }[];
   };
   type User = {
     _id?: ID;

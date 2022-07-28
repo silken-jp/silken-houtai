@@ -1,6 +1,19 @@
-import { Table, Card, Space, Row, Tag, Button, Dropdown, Menu } from 'antd';
+import {
+  Table,
+  Card,
+  Space,
+  Row,
+  Tag,
+  Button,
+  Dropdown,
+  Menu,
+  Typography,
+} from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+import { FormOutlined } from '@ant-design/icons';
 ////
+import { updateWaybill } from '@/services/request/waybill';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import Create from '@/components/Common/Create';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
@@ -13,8 +26,11 @@ import useIssueModal from '@/services/useCTSActions/useIssueModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
 import useCleansing from '@/services/useCTSActions/useCleansing';
 import useDownloadINVBL from '@/services/useCTSActions/useDownloadINVBL';
+import WaybillINVBLForm from '@/components/Form/WaybillINVBLForm';
 
 const LargeWaybill: React.FC = () => {
+  // state
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
   const [intlMenu] = useIntlFormat('menu');
   const {
     form,
@@ -42,6 +58,19 @@ const LargeWaybill: React.FC = () => {
   // format
   const selected = state?.selectedRowKeys?.length || 0;
 
+  // action
+  const handleSubmit = async (v: any) => {
+    try {
+      await updateWaybill({
+        waybillId: formProps.dataSource._id,
+        ...v,
+      });
+      await refreshAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <PageContainer
       header={{
@@ -53,6 +82,11 @@ const LargeWaybill: React.FC = () => {
         },
       }}
     >
+      <WaybillINVBLForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <CTSSearch form={form} search={search} />
 
       <Row justify="end" className="sk-table-stat">
@@ -134,6 +168,32 @@ const LargeWaybill: React.FC = () => {
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
           />
+          {/* <Table.Column
+            width={180}
+            title="品名"
+            render={(row) => {
+              const handleEdit = () => {
+                handleOpen({
+                  title: 'INV BL 品名修正',
+                  type: 'IDA',
+                  data: row,
+                });
+              };
+              return (
+                <>
+                  <Typography.Text
+                    style={{ width: 120 }}
+                    ellipsis={{ tooltip: row?.CMN }}
+                  >
+                    {row?.CMN}
+                  </Typography.Text>
+                  <Button size="small" onClick={handleEdit}>
+                    <FormOutlined />
+                  </Button>
+                </>
+              );
+            }}
+          /> */}
           <Table.Column
             width={100}
             title="許可書"

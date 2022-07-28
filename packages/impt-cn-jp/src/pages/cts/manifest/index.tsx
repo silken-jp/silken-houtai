@@ -1,6 +1,19 @@
-import { Table, Card, Space, Row, Button, Tag, Dropdown, Menu } from 'antd';
+import {
+  Table,
+  Card,
+  Space,
+  Row,
+  Button,
+  Tag,
+  Dropdown,
+  Menu,
+  Typography,
+} from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
+import { FormOutlined } from '@ant-design/icons';
 ////
+import { updateWaybill } from '@/services/request/waybill';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import Create from '@/components/Common/Create';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
@@ -15,9 +28,11 @@ import useExportXlsx from '@/services/useCTSActions/useExportXlsx';
 import useIssueModal from '@/services/useCTSActions/useIssueModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
 import useDownloadINVBL from '@/services/useCTSActions/useDownloadINVBL';
-// import PrintINVBLModal from '@/components/Modal/PrintINVBLModal';
+import WaybillINVBLForm from '@/components/Form/WaybillINVBLForm';
 
 const ManifestWaybill: React.FC = () => {
+  // state
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
   const [intlMenu] = useIntlFormat('menu');
   const {
     form,
@@ -50,6 +65,19 @@ const ManifestWaybill: React.FC = () => {
   // format
   const selected = state?.selectedRowKeys?.length || 0;
 
+  // action
+  const handleSubmit = async (v: any) => {
+    try {
+      await updateWaybill({
+        waybillId: formProps.dataSource._id,
+        ...v,
+      });
+      await refreshAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <PageContainer
       header={{
@@ -62,6 +90,11 @@ const ManifestWaybill: React.FC = () => {
         },
       }}
     >
+      <WaybillINVBLForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <CTSSearch form={form} search={search} />
       <CargoIssueForm
         type={issueModal.formType}
@@ -94,11 +127,6 @@ const ManifestWaybill: React.FC = () => {
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
           </Button>
-          {/* <PrintINVBLModal
-            loading={downloadINVBLApi.loading}
-            onClick={downloadINVBLApi.runAsync}
-            dataSource={downloadINVBLApi.data?.waybills}
-          /> */}
           <Button onClick={handleDownload}>Print INV&BL</Button>
         </Space>
       </Row>
@@ -171,6 +199,32 @@ const ManifestWaybill: React.FC = () => {
             title="HAWB番号"
             dataIndex="HAB"
             render={(_, row: any) => <WaybillModal dataSource={row} />}
+          />
+          <Table.Column
+            width={180}
+            title="品名"
+            render={(row) => {
+              const handleEdit = () => {
+                handleOpen({
+                  title: 'INV BL 品名修正',
+                  type: 'MIC',
+                  data: row,
+                });
+              };
+              return (
+                <>
+                  <Typography.Text
+                    style={{ width: 120 }}
+                    ellipsis={{ tooltip: row?.CMN }}
+                  >
+                    {row?.CMN}
+                  </Typography.Text>
+                  <Button size="small" onClick={handleEdit}>
+                    <FormOutlined />
+                  </Button>
+                </>
+              );
+            }}
           />
           <Table.Column
             width={100}
