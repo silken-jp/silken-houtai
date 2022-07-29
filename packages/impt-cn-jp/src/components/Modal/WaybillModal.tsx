@@ -67,7 +67,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
         }
       >
         <div style={{ padding: 48 }} ref={printRef}>
-          {viewType === 'BL2' && (
+          {viewType === 'BL' && (
             <>
               <Title level={2} style={{ textAlign: 'center' }}>
                 {props?.dataSource?.HAB}
