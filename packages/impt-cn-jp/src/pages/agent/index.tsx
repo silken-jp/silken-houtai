@@ -4,6 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
 import UploadWaybill from '@/components/Common/UploadWaybill';
+import TransformWaybill from '@/components/Common/WashAddress';
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import AgentForm from '@/components/Form/AgentForm';
 import {
@@ -54,6 +55,7 @@ const StatusInquiry: React.FC = () => {
           routes: [{ path: '/agent', breadcrumbName: 'フォワーダー管理' }],
         },
       }}
+      extra={<TransformWaybill />}
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>

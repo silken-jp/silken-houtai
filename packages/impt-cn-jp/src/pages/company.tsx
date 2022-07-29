@@ -1,20 +1,8 @@
-import {
-  Form,
-  Menu,
-  Layout,
-  Input,
-  Button,
-  Card,
-  message,
-  Row,
-  Col,
-} from 'antd';
+import { Form, Input, Button, Card, message, Row, Col } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useRequest } from 'ahooks';
 ////
 import { getCompany, updateCompany } from '@/services/request/company';
-
-// const { Header, Content, Footer, Sider } = Layout;
 
 export interface companyProps {}
 
@@ -62,21 +50,6 @@ const company: React.FC<companyProps> = () => {
 
   return (
     <PageContainer loading={loading}>
-      {/* <Layout style={{ padding: '24px 0', backgroundColor: '#FFF' }}>
-        <Sider width={200}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={['0']}
-            style={{ height: '100%' }}
-            items={[
-              {
-                key: '0',
-                label: '基本設定',
-              },
-            ]}
-          />
-        </Sider>
-        <Content style={{ padding: '0 24px', minHeight: 280 }}> */}
       <Card
         title="基本設定"
         extra={
@@ -109,8 +82,6 @@ const company: React.FC<companyProps> = () => {
           </Row>
         </Form>
       </Card>
-      {/* </Content>
-      </Layout> */}
     </PageContainer>
   );
 };

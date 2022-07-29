@@ -139,6 +139,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const { tableProps, search, refreshAsync, run } = useAntdTable(getTableData, {
     form,
     manual: true,
+    defaultPageSize: 100,
   });
 
   const handleTabChange = (key: any) => {

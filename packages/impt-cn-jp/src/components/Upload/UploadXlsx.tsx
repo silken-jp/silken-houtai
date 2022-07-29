@@ -3,9 +3,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import XLSX from 'xlsx';
 
 interface UploadXlsxProps {
-  onUpload: (
-    jsonArr: any[],
-  ) => Promise<{
+  onUpload: (jsonArr: any[]) => Promise<{
     success?: { message?: string; description?: string } | null;
     failed?: { message?: string; description?: string } | null;
   }>;
@@ -97,7 +95,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   return (
     <Upload
       name="file"
-      accept="text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      accept="text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       headers={{ authorization: 'authorization-text' }}
       showUploadList={false}
       customRequest={customRequest}

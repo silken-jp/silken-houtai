@@ -14,3 +14,16 @@ export async function getZipcodesByState(params: GetStateZipcodes) {
     },
   });
 }
+
+// 转换地址 POST /api/zipcodes/wash-address
+interface WashAddress {
+  originalAdds: { address: string; zip: string }[];
+}
+export async function washAddress(params: WashAddress) {
+  return request<any>(ApiURL + '/zipcodes/wash-address', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
