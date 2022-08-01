@@ -44,7 +44,7 @@ const waybill: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const { createDateArr } = formData;
+    const { createdDateArr } = formData;
     let sorter: any = {};
     if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
@@ -90,6 +90,7 @@ const waybill: React.FC = () => {
         ...(v?.solve_date ? { solve_date: v?.solve_date?.toString() } : {}),
       });
       search.submit();
+      handleClear();
     }
   };
   const handleDelete = async () => {
@@ -245,7 +246,7 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="270px">
-            <Form.Item name="createDateArr">
+            <Form.Item name="createdDateArr">
               <DatePicker.RangePicker
                 disabled
                 placeholder={['登録開始日', '登録終了日']}

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Link } from 'umi';
 import {
   Form,
   Table,
@@ -7,83 +9,32 @@ import {
   Col,
   Card,
   Space,
+  Popconfirm,
   DatePicker,
   Select,
 } from 'antd';
-import { DownloadOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import EDIPrintModal from '@/components/Modal/EDIPrintModal';
+import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
-import { useAgentOptions } from '@/services/useAPIOption';
+import { removeSearchParams, setSearchParams } from '@/services/useStorage';
+import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
-  getAllWaybills,
+  deleteALLWaybillsByMAWB,
   getSimpleStatusInquiry,
 } from '@/services/request/waybill';
 
-interface SubTableProps {
-  MAB: string;
-  HAB: string;
-}
-const SubTable: React.FC<SubTableProps> = (props) => {
-  // api
-  const getTableData = async (pageData: any, formData: any) => {
-    const page = pageData.current - 1;
-    const perPage = pageData.pageSize;
-    let sorter: any = {};
-    if (typeof pageData?.sorter?.field === 'string') {
-      sorter.sortField = pageData?.sorter?.field;
-    } else if (Array.isArray(pageData?.sorter?.field)) {
-      sorter.sortField = pageData?.sorter?.field?.join('.');
-    } else {
-      sorter.sortField = 'flightDate';
-    }
-    if (pageData?.sorter?.order === 'ascend') {
-      sorter.sortOrder = 1;
-    }
-    if (pageData?.sorter?.order === 'descend') {
-      sorter.sortOrder = -1;
-    }
-    const data = await getAllWaybills({
-      page,
-      perPage,
-      MAB: props?.MAB,
-      HAB: props?.HAB,
-      ...sorter,
-      ...formData,
-    });
-    return { total: data?.totalCount, list: data?.waybills || [] };
-  };
-  const { tableProps } = useAntdTable(getTableData, {
-    defaultPageSize: 5,
-  });
-
-  return (
-    <Table
-      size="small"
-      rowKey="_id"
-      {...tableProps}
-      pagination={{ ...tableProps.pagination, position: ['bottomLeft'] }}
-    >
-      <Table.Column sorter width={200} title="MAWB番号" dataIndex="MAB" />
-      <Table.Column sorter width={200} title="HAWB番号" dataIndex="HAB" />
-      <Table.Column
-        title="Download"
-        render={(row) => <EDIPrintModal dataSource={row} />}
-      />
-    </Table>
-  );
-};
-
-const EDIPrint: React.FC = () => {
+const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [selectedRow, setSelectedRow] = useState<any>();
 
   // api
   const { agentOptions } = useAgentOptions();
+  const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -111,32 +62,46 @@ const EDIPrint: React.FC = () => {
     });
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
+  const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
+    manual: true,
+  });
 
-  const getAllWaybillsApi = useRequest(
-    (params) => {
-      console.log(params);
-      return getAllWaybills({
-        page: 0,
-        perPage: 100000,
-        ...params,
-      });
+  const rowSelection: any = {
+    type: 'radio',
+    onChange: (_: any[], [selectedRow]: any[]) => {
+      setSelectedRow(selectedRow);
     },
-    {
-      manual: true,
-    },
-  );
+    getCheckboxProps: (record: any) => ({
+      disabled: !record._id,
+      name: record._id,
+    }),
+  };
 
+  // action
+  function handleLinkTo(LS: string, mawbs: string) {
+    removeSearchParams(LS);
+    setSearchParams(LS, {
+      LS,
+      mawbs,
+      page: 0,
+      perPage: 100,
+      waybill_status: 1,
+    });
+  }
   return (
     <PageContainer
       header={{
         breadcrumb: {
           routes: [
-            { path: `/delivery/self`, breadcrumbName: intlMenu('delivery') },
-            { path: '', breadcrumbName: '送り状' },
+            {
+              path: '/cts/StatusInquiry/Simple',
+              breadcrumbName: intlMenu('cts'),
+            },
+            { path: '', breadcrumbName: 'Simple Status Inquiry' },
           ],
         },
-        title: '送り状',
+        title: 'Simple Status Inquiry',
       }}
     >
       <Form form={form} className="sk-table-search">
@@ -151,13 +116,13 @@ const EDIPrint: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={3}>
-            <Form.Item name="MAB">
-              <Input placeholder="MAWB番号" />
+            <Form.Item name="uploader">
+              <Select allowClear placeholder="Uploader" options={userOptions} />
             </Form.Item>
           </Col>
           <Col span={3}>
-            <Form.Item name="HAB">
-              <Input placeholder="HAWB番号" />
+            <Form.Item name="MAB">
+              <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
           <Col span={3}>
@@ -185,37 +150,80 @@ const EDIPrint: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card>
+      <Card
+        extra={
+          <Popconfirm
+            title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
+            onConfirm={async () => {
+              await deleteALLWaybills.runAsync({
+                mawb: selectedRow?._id,
+              });
+              setSelectedRow(null);
+              refresh();
+            }}
+            okButtonProps={{
+              loading: deleteALLWaybills.loading,
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button disabled={!selectedRow} type="primary">
+              削除
+            </Button>
+          </Popconfirm>
+        }
+      >
         <Table
           size="small"
-          expandable={{
-            expandedRowRender: (row) => (
-              <SubTable MAB={row?._id} HAB={form.getFieldValue('HAB')} />
-            ),
-          }}
+          rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 1100 }}
+          scroll={{ x: 2500 }}
         >
-          <Table.Column sorter width={200} title="MAWB番号" dataIndex="_id" />
           <Table.Column
             sorter
             width={150}
-            title="Download"
-            render={() => (
-              <Button size="small" disabled>
-                <DownloadOutlined />
-              </Button>
-            )}
-          />
-          <Table.Column
-            sorter
-            width={200}
             title="フォワーダー"
             dataIndex="agentId"
             render={(agentId) =>
               agentOptions?.find((item) => item?.value === agentId)?.label
             }
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="Uploader"
+            dataIndex="uploaderId"
+            render={(uploaderId) =>
+              userOptions?.find((item) => item?.value === uploaderId)?.label
+            }
+          />
+          <Table.Column sorter width={150} title="MAWB番号" dataIndex="_id" />
+          <Table.Column
+            width={150}
+            title="Quick Link"
+            render={(row) => (
+              <Space>
+                <Link
+                  to="/cts/large"
+                  onClick={() => handleLinkTo('L', row?._id)}
+                >
+                  L({row?.lCount})
+                </Link>
+                <Link
+                  to="/cts/small"
+                  onClick={() => handleLinkTo('S', row?._id)}
+                >
+                  S({row?.sCount})
+                </Link>
+                <Link
+                  to="/cts/manifest"
+                  onClick={() => handleLinkTo('M', row?._id)}
+                >
+                  M({row?.mCount})
+                </Link>
+              </Space>
+            )}
           />
           <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column
@@ -234,6 +242,19 @@ const EDIPrint: React.FC = () => {
           <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
           <Table.Column
             sorter
+            width={150}
+            title="個数"
+            dataIndex="waybillCount"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="重量（KG）"
+            dataIndex="GWCount"
+            render={(GWCount) => GWCount?.toFixed(2)}
+          />
+          <Table.Column
+            sorter
             width={180}
             title="登録時間"
             dataIndex="createdAt"
@@ -245,4 +266,4 @@ const EDIPrint: React.FC = () => {
   );
 };
 
-export default EDIPrint;
+export default SimpleStatusInquiry;

@@ -43,7 +43,7 @@ const waybill: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const { createDateArr } = formData;
+    const { createdDateArr } = formData;
     let sorter: any = {};
     if (typeof pageData?.sorter?.field === 'string') {
       sorter.sortField = pageData?.sorter?.field;
@@ -83,6 +83,7 @@ const waybill: React.FC = () => {
         CMN: v?.CMN,
       });
       search.submit();
+      handleClear();
     }
   };
   const handleEdit = () => {
@@ -218,7 +219,7 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="270px">
-            <Form.Item name="createDateArr">
+            <Form.Item name="createdDateArr">
               <DatePicker.RangePicker
                 disabled
                 placeholder={['登録開始日', '登録終了日']}
@@ -252,7 +253,6 @@ const waybill: React.FC = () => {
               編集
             </Button>
             <Button onClick={handleExportIssues}>Export</Button>
-            {/* <Button disabled>一覧</Button> */}
           </Space>
         }
       >

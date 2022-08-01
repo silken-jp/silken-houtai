@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -13,9 +14,7 @@ import {
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
-import { DeleteOutlined } from '@ant-design/icons';
 ////
-import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
@@ -23,7 +22,6 @@ import {
   deleteALLWaybillsByMAWB,
   getStatusInquiry,
 } from '@/services/request/waybill';
-import { useState } from 'react';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -82,11 +80,14 @@ const StatusInquiry: React.FC = () => {
       header={{
         breadcrumb: {
           routes: [
-            { path: '/cts/StatusInquiry', breadcrumbName: intlMenu('cts') },
-            { path: '', breadcrumbName: 'Status Inquiry' },
+            {
+              path: '/cts/StatusInquiry/StatusInquiry',
+              breadcrumbName: intlMenu('cts'),
+            },
+            { path: '', breadcrumbName: 'Full Status Inquiry' },
           ],
         },
-        title: 'Status Inquiry',
+        title: 'Full Status Inquiry',
         // extra: <UploadImages />,
       }}
     >

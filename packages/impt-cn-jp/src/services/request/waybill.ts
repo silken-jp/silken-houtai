@@ -145,6 +145,18 @@ export async function getStatusInquiry(params?: GetStatusInquiry) {
   });
 }
 
+// 获取所有MAB运单 GET /api/waybills/mawbs
+interface GetStatusInquiry extends Partial<API.Waybill> {
+  page: number;
+  perPage: number;
+}
+export async function getSimpleStatusInquiry(params?: GetStatusInquiry) {
+  return request<any>(ApiURL + '/waybills/mawbs-simple', {
+    method: 'GET',
+    params,
+  });
+}
+
 // 获取运单的自定义搜索 GET /api/waybills/advance
 interface GetAllWaybillsAdvance extends Partial<API.Waybill> {
   page: number;

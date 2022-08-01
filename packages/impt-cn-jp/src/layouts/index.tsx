@@ -81,8 +81,19 @@ const Index: React.FC = (props) => {
                 },
                 {
                   key: '/cts/StatusInquiry',
-                  label: <Link to="/cts/StatusInquiry">Status Inquiry</Link>,
+                  label: 'Status Inquiry',
+                  children: [
+                    {
+                      key: '/cts/StatusInquiry/Simple',
+                      label: <Link to="/cts/StatusInquiry/Simple">Simple</Link>,
+                    },
+                    {
+                      key: '/cts/StatusInquiry/Full',
+                      label: <Link to="/cts/StatusInquiry/Full">Full</Link>,
+                    },
+                  ],
                 },
+
                 {
                   key: '/cts/large',
                   label: <Link to="/cts/large">IDA-Large</Link>,
