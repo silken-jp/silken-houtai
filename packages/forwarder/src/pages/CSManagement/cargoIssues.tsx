@@ -43,7 +43,7 @@ const waybill: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const { createdDateArr } = formData;
+    const { createdDateArr, ...params } = formData;
     let sorter: any = {};
     if (typeof pageData?.sorter?.field === 'string') {
       sorter.sortField = pageData?.sorter?.field;
@@ -58,11 +58,15 @@ const waybill: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
+    if (createdDateArr?.[0] && createdDateArr?.[1]) {
+      params.createdStartDate = createdDateArr?.[0]?.startOf('day').toString();
+      params.createdEndDate = createdDateArr?.[1]?.endOf('day').toString();
+    }
     const data = await getAllIssues({
       page,
       perPage,
       ...sorter,
-      ...formData,
+      ...params,
     });
     return { total: data?.totalCount, list: data?.data };
   };
@@ -221,7 +225,6 @@ const waybill: React.FC = () => {
           <Col flex="270px">
             <Form.Item name="createdDateArr">
               <DatePicker.RangePicker
-                disabled
                 placeholder={['登録開始日', '登録終了日']}
               />
             </Form.Item>

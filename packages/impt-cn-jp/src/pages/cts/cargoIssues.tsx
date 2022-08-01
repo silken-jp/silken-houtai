@@ -26,7 +26,7 @@ import {
   updateIssue,
 } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
-import { dayFormat } from '@/utils/helper/day';
+import { dayFormat, dayUTC } from '@/utils/helper/day';
 import { getUserInfo } from '@/services/useStorage';
 
 const waybill: React.FC = () => {
@@ -44,7 +44,7 @@ const waybill: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    const { createdDateArr } = formData;
+    let { createdDateArr, ...params } = formData;
     let sorter: any = {};
     if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
@@ -59,11 +59,15 @@ const waybill: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
+    if (createdDateArr?.[0] && createdDateArr?.[1]) {
+      params.createdStartDate = createdDateArr?.[0]?.startOf('day').toString();
+      params.createdEndDate = createdDateArr?.[1]?.endOf('day').toString();
+    }
     const data = await getAllIssues({
       page,
       perPage,
       ...sorter,
-      ...formData,
+      ...params,
     });
     return { total: data?.totalCount, list: data?.data };
   };
@@ -248,7 +252,6 @@ const waybill: React.FC = () => {
           <Col flex="270px">
             <Form.Item name="createdDateArr">
               <DatePicker.RangePicker
-                disabled
                 placeholder={['登録開始日', '登録終了日']}
               />
             </Form.Item>
