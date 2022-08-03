@@ -10,6 +10,7 @@
     "build:prod": "UMI_ENV=prod umi build"
   },
   "dependencies": {
+    "@ant-design/pro-components": "^1.1.14",
     "@ant-design/pro-layout": "6.x",
     "@silken-houtai/core": "^1.0.0",
     "@umijs/preset-react": "1.x",

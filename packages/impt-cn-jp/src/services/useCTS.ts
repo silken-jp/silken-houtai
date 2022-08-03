@@ -16,7 +16,7 @@ function getDayData(params: string) {
   return params ? dayjs(params) : undefined;
 }
 
-export const useCTS = (LS: 'L' | 'S' | 'M') => {
+export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState('1');
   const [selectedRows, setSelectedRows] = useState<API.Waybill[]>([]);
@@ -139,7 +139,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
   const { tableProps, search, refreshAsync, run } = useAntdTable(getTableData, {
     form,
     manual: true,
-    defaultPageSize: 100,
+    defaultPageSize: options?.defaultPageSize || 100,
   });
 
   const handleTabChange = (key: any) => {
@@ -180,6 +180,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M') => {
       ...tableProps,
       pagination: {
         ...tableProps.pagination,
+        ...options?.pagination,
         pageSizeOptions: ['10', '20', '50', '100', '500'],
       },
       rowSelection,

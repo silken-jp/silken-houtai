@@ -93,7 +93,6 @@ const Index: React.FC = (props) => {
                     },
                   ],
                 },
-
                 {
                   key: '/cts/large',
                   label: <Link to="/cts/large">IDA-Large</Link>,
@@ -105,6 +104,20 @@ const Index: React.FC = (props) => {
                 {
                   key: '/cts/manifest',
                   label: <Link to="/cts/manifest">MIC</Link>,
+                },
+                {
+                  key: '/cts/mutiEdit',
+                  label: 'Muti Broker Check',
+                  children: [
+                    {
+                      key: '/cts/mutiEdit/Brok',
+                      label: <Link to="/cts/mutiEdit/Brok">Demo1</Link>,
+                    },
+                    {
+                      key: '/cts/mutiEdit/Brok2',
+                      label: <Link to="/cts/mutiEdit/Brok2">Demo2</Link>,
+                    },
+                  ],
                 },
                 {
                   key: '/cts/cargoIssues',

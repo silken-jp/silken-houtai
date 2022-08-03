@@ -81,6 +81,7 @@ export async function importMultiWaybill(params: ImportMultiWaybill) {
 interface UpdateWaybill extends Partial<API.Waybill> {
   waybillId: API.ID;
   // [ , clean , brock , create]
+  user?: string;
   process_type?: 0 | 1 | 2 | 3;
 }
 export async function updateWaybill(params: UpdateWaybill) {
