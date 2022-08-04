@@ -1,4 +1,5 @@
-import { Space } from 'antd';
+import { useState } from 'react';
+import { Modal, Button, Form, Radio } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiWaybill } from '@/services/request/waybill';
@@ -77,7 +78,10 @@ function fixItemToObj(params: any[]) {
 }
 
 const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
+  // state
+  const [form] = Form.useForm();
   const { _id } = getUserInfo();
+  const [visible, setVisible] = useState(false);
 
   async function onUpload(jsonArr: any[], values: any) {
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
@@ -94,24 +98,60 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     return { success, failed };
   }
 
-  const handleUpload = (jsonArr: any[]) => onUpload(jsonArr, { uploader: _id });
-  const handleUploadAuto = (jsonArr: any[]) =>
-    onUpload(jsonArr, { user: _id, uploader: _id });
+  function handleOpen() {
+    setVisible(true);
+  }
+  function handleClose() {
+    setVisible(false);
+  }
+  function handleUpload(jsonArr: any[]) {
+    let { user, ...values } = form.getFieldsValue();
+    if (user === '1') {
+      values.user = _id;
+    }
+    handleClose();
+    return onUpload(jsonArr, { ...values, uploader: _id });
+  }
 
   return (
     <>
-      <Space>
-        <UploadXlsx
-          onUpload={handleUpload}
-          text="手動"
-          rightHeader={rightHeader}
-        />
-        <UploadXlsx
-          onUpload={handleUploadAuto}
-          text="自動"
-          rightHeader={rightHeader}
-        />
-      </Space>
+      <Modal
+        title="Upload Waybills"
+        visible={visible}
+        onCancel={handleClose}
+        footer={
+          <UploadXlsx
+            onUpload={handleUpload}
+            text="Upload"
+            rightHeader={rightHeader}
+          />
+        }
+      >
+        <Form
+          form={form}
+          initialValues={{ user: '1', isIp4X6: '1', isImpNameReverse: '0' }}
+        >
+          <Form.Item label="Ip4" name="isIp4X6">
+            <Radio.Group>
+              <Radio value="1"> x 0.6 </Radio>
+              <Radio value="0"> ÷ 0.6</Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="ImpName" name="isImpNameReverse">
+            <Radio.Group>
+              <Radio value="0"> 正転 </Radio>
+              <Radio value="1"> 逆転 </Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="クレンジング" name="user">
+            <Radio.Group>
+              <Radio value="1"> 自動 </Radio>
+              <Radio value="0"> 手動 </Radio>
+            </Radio.Group>
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Button onClick={handleOpen}>Upload</Button>
     </>
   );
 };
