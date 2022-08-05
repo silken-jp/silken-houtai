@@ -12,7 +12,7 @@ import {
   message,
   DatePicker,
 } from 'antd';
-import { TableRowSelection } from 'antd/lib/table/interface';
+import type { TableRowSelection } from 'antd/lib/table/interface';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////

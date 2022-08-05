@@ -262,11 +262,17 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 >
                   着店バーコード
                 </div>
-                <div style={{ height: 85, padding: '18px 36px' }}>
+                <div
+                  style={{
+                    height: 85,
+                    padding: '9px 0px',
+                    textAlign: 'center',
+                  }}
+                >
                   <img
                     id={props.dataSource._id + 'shopCode'}
-                    width={112.5}
-                    height={50}
+                    width={117}
+                    height={68}
                   />
                 </div>
               </div>
@@ -325,14 +331,14 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               <div
                 style={{
                   width: 250,
-                  padding: '30px 15px',
+                  padding: '20px 0px',
                   textAlign: 'center',
                 }}
               >
                 <img
                   id={props.dataSource._id + 'HAB'}
-                  width={153}
-                  height={51}
+                  width={179}
+                  height={67.5}
                 />
                 {props.dataSource.HAB}
               </div>

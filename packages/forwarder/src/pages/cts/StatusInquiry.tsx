@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -7,9 +8,9 @@ import {
   Col,
   Card,
   Space,
-  Progress,
   DatePicker,
 } from 'antd';
+import type { TableRowSelection } from 'antd/lib/table/interface';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -17,11 +18,17 @@ import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAgentInfo } from '@/services/useStorage';
 import { getStatusInquiry } from '@/services/request/waybill';
+import { removeEmpty } from '@/utils/helper/helper';
+import useExportMABXlsx from '@/services/useExportMABXlsx';
 
 const StatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+
+  const { exportMABApi, handleExportMAB } = useExportMABXlsx(selectedRows);
 
   // store
   const agentInfo = getAgentInfo();
@@ -57,6 +64,36 @@ const StatusInquiry: React.FC = () => {
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+
+  // actions
+  const handleClear = () => {
+    setSelectedRows([]);
+    setSelectedRowKeys([]);
+  };
+  const handleExportALL = () => {
+    exportMABApi.run(
+      removeEmpty({
+        ...form.getFieldsValue(),
+        flightStartDate: form
+          .getFieldValue('flightStartDate')
+          ?.format('YYYY.MM.DD'),
+        flightEndDate: form
+          .getFieldValue('flightEndDate')
+          ?.format('YYYY.MM.DD'),
+      }),
+    );
+  };
+
+  const rowSelection: TableRowSelection<API.Waybill> = {
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRows(rows);
+      setSelectedRowKeys(keys);
+    },
+  };
 
   return (
     <PageContainer
@@ -98,15 +135,29 @@ const StatusInquiry: React.FC = () => {
                 検索
               </Button>
               <Button onClick={search.reset}>リセット</Button>
+              <Button onClick={handleExportALL} loading={exportMABApi.loading}>
+                Export(一括)
+              </Button>
             </Space>
           </Col>
         </Row>
       </Form>
-      <Card>
+      <Card
+        extra={
+          <Space>
+            <span>selected: {selectedRowKeys?.length || 0} items</span>
+            <Button size="small" type="link" onClick={handleClear}>
+              clear
+            </Button>
+            <Button onClick={handleExportMAB}>Export</Button>
+          </Space>
+        }
+      >
         <Table
           rowKey="_id"
           size="small"
           {...tableProps}
+          rowSelection={rowSelection}
           scroll={{ x: 2000, y: 'calc(100vh - 500px)' }}
         >
           <Table.Column sorter width={180} title="MAWB番号" dataIndex="_id" />
