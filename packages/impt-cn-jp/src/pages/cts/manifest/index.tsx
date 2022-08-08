@@ -11,6 +11,7 @@ import {
 } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { FormOutlined } from '@ant-design/icons';
+import { Link } from 'umi';
 ////
 import { updateWaybill } from '@/services/request/waybill';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -109,17 +110,23 @@ const ManifestWaybill: React.FC = () => {
             disabled={disActions.cleansing}
             onClick={cleansingApi.run}
           >
-            マスクレンジング
+            Mas CLS
           </Button>
+          <Link to="/cts/check/Brok">
+            <Button type="primary" disabled={disActions.brock}>
+              Muti BCR
+            </Button>
+          </Link>
           <Button
             type="primary"
             disabled={disActions.brock}
             onClick={brockCheckApi.run}
           >
-            マスブローカーチェック
+            Mas BCR
           </Button>
           <Create
             LS="M"
+            text="Mas CRT"
             refreshAsync={refreshAsync}
             disabled={disActions.create}
             dataSource={tableProps.dataSource}
@@ -150,7 +157,7 @@ const ManifestWaybill: React.FC = () => {
               disabled={!selected}
               onClick={handleCleansing}
             >
-              シングルクレンジング
+              Single CLS
             </Button>
             <Button
               size="small"
@@ -158,10 +165,11 @@ const ManifestWaybill: React.FC = () => {
               disabled={!selected}
               onClick={handleBrockCheck}
             >
-              シングルブローカーチェック
+              Single BCR
             </Button>
             <Create
               LS="M"
+              text="Single CRT"
               useSource
               refreshAsync={refreshAsync}
               disabled={disActions.create}

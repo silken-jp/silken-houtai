@@ -1,4 +1,4 @@
-import { Link } from 'umi';
+import { Link, useHistory } from 'umi';
 import { useKeyPress, useRequest } from 'ahooks';
 import { List, Button, Space, Card, Descriptions } from 'antd';
 ////
@@ -7,6 +7,7 @@ import { updateWaybill } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
 export default () => {
+  const history = useHistory();
   const { tableProps, refreshAsync } = useMutiBrokerCheck('M', {
     defaultPageSize: 3,
     pagination: {
@@ -43,13 +44,21 @@ export default () => {
     debounceWait: 100,
     manual: true,
   });
+  const onExit = () => {
+    history.goBack();
+  };
 
   useKeyPress('F9', handleMutiAccept.run, { exactMatch: true });
-
+  useKeyPress('ctrl.q', onExit);
   return (
     <>
       <Card
-        title="Muti Broker Check"
+        title={
+          <Space>
+            <Button onClick={onExit}>Exit（Ctrl + q）</Button>
+            <span>Muti Broker Check</span>
+          </Space>
+        }
         extra={
           <Space>
             <Button onClick={handleMutiAccept.run} type="primary">

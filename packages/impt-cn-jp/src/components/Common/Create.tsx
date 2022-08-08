@@ -21,6 +21,7 @@ export function findValuesByKey(LS: 'L' | 'S' | 'M', data?: any[]) {
 }
 
 export interface CreateProps {
+  text?: string;
   disabled?: boolean;
   refreshAsync: any;
   LS: 'L' | 'S' | 'M';
@@ -99,7 +100,7 @@ const Create: React.FC<CreateProps> = (props) => {
   return (
     <>
       <Modal
-        title={useSource ? 'シングルクリエート' : 'クリエート'}
+        title={props?.text || useSource ? 'シングルクリエート' : 'クリエート'}
         visible={visible}
         width={800}
         forceRender
@@ -199,11 +200,11 @@ const Create: React.FC<CreateProps> = (props) => {
           disabled={disabled || !dataSource?.length}
           onClick={handleOpen}
         >
-          シングルクリエート
+          {props?.text || 'シングルクリエート'}
         </Button>
       ) : (
         <Button type="primary" disabled={disabled} onClick={handleOpen}>
-          マスクリエート
+          {props?.text || 'マスクリエート'}
         </Button>
       )}
     </>
