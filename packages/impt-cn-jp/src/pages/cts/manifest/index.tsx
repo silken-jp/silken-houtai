@@ -114,7 +114,7 @@ const ManifestWaybill: React.FC = () => {
           </Button>
           <Link to="/cts/check/Brok">
             <Button type="primary" disabled={disActions.brock}>
-              Muti BCR
+              Muti BRC
             </Button>
           </Link>
           <Button
@@ -122,7 +122,7 @@ const ManifestWaybill: React.FC = () => {
             disabled={disActions.brock}
             onClick={brockCheckApi.run}
           >
-            Mas BCR
+            Mas BRC
           </Button>
           <Create
             LS="M"
@@ -165,7 +165,7 @@ const ManifestWaybill: React.FC = () => {
               disabled={!selected}
               onClick={handleBrockCheck}
             >
-              Single BCR
+              Single BRC
             </Button>
             <Create
               LS="M"
