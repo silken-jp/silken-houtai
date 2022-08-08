@@ -8,15 +8,33 @@ interface UploadXlsxProps {
     failed?: { message?: string; description?: string } | null;
   }>;
   text?: string;
+  rightHeader?: string[];
 }
 
 const key = 'uploadXlsx';
 
+function checkHeader(params: any[], rightHeader: any[]) {
+  for (const header of rightHeader) {
+    if (!params.includes(header)) {
+      return {
+        success: false,
+        message: `Did't find column 【${header}】, please check the table header.`,
+      };
+    }
+  }
+  return { success: true };
+}
+
 const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   const text = props?.text || 'upload';
+  const rightHeader = props?.rightHeader || [];
   const handleUpload = async (jsonArr: any[]) => {
     const sum = jsonArr?.length - 1;
+    const checkRes = checkHeader(jsonArr?.[0], rightHeader);
     try {
+      if (!checkRes.success) {
+        throw checkRes;
+      }
       notification.open({
         key,
         message: `uploading`,
@@ -63,7 +81,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       // 假设我们的数据在第一个标签
       var first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
       // XLSX自带了一个工具把导入的数据转成json
-      var jsonArr = XLSX.utils.sheet_to_json(first_worksheet, {
+      var jsonArr: any[] = XLSX.utils.sheet_to_json(first_worksheet, {
         header: 1,
         raw: true,
         blankrows: false,
@@ -77,7 +95,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
   return (
     <Upload
       name="file"
-      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      accept="text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       headers={{ authorization: 'authorization-text' }}
       showUploadList={false}
       customRequest={customRequest}

@@ -13,6 +13,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useAntdTable, useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 ////
+import TransformWaybill from '@/components/Common/WashAddress';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAgentInfo } from '@/services/useStorage';
 import { getMonthStat, getStatusInquiry } from '@/services/request/waybill';
@@ -93,6 +94,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
           ],
         },
       }}
+      extra={<TransformWaybill />}
     >
       <Row gutter={8}>
         <Col span={8}>
