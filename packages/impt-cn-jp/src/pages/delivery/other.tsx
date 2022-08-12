@@ -18,6 +18,18 @@ import { getAllTracks } from '@/services/request/track';
 import TrackModal from '@/components/Modal/TrackModal';
 import { useAgentOptions } from '@/services/useAPIOption';
 
+export const sagawaCategory = [
+  // { value: '0', label: '出荷データ受付' },
+  // { value: '1', label: '出荷データ確定' },
+  { value: '2', label: '集荷受付' },
+  { value: '3', label: '貨物輸送' },
+  { value: '4', label: '配達持出' },
+  { value: '5', label: '配達完了・消し込み' },
+  // { value: '6', label: '貨物追跡' },
+  // { value: '7', label: '請求・代引・保険・着払処理' },
+  // { value: '9', label: 'その他' },
+];
+
 interface DeliveryProps {}
 
 const Delivery: React.FC<DeliveryProps> = (props) => {
@@ -63,6 +75,20 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           <Col flex="200px">
             <Form.Item name="HAB">
               <Input placeholder="お問い合せ送り状NO" />
+            </Form.Item>
+          </Col>
+          <Col flex="200px">
+            <Form.Item name="MAB">
+              <Input placeholder="MAB" />
+            </Form.Item>
+          </Col>
+          <Col flex="200px">
+            <Form.Item name="category">
+              <Select
+                placeholder="配送状態"
+                allowClear
+                options={sagawaCategory}
+              />
             </Form.Item>
           </Col>
           <Col flex="200px">
