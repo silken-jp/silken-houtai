@@ -24,7 +24,11 @@ const SmallWaybill: React.FC = () => {
     refreshAsync,
     cardProps,
     disActions,
-  } = useCTS('S');
+  } = useCTS('S', {
+    pagination: {
+      position: ['topLeft', 'bottomRight'],
+    },
+  });
   // cleansing功能
   const { cleansingApi, handleCleansing } = useCleansing(
     'S',

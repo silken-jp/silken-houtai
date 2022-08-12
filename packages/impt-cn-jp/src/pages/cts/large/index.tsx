@@ -40,7 +40,11 @@ const LargeWaybill: React.FC = () => {
     refreshAsync,
     cardProps,
     disActions,
-  } = useCTS('L');
+  } = useCTS('L', {
+    pagination: {
+      position: ['topLeft', 'bottomRight'],
+    },
+  });
   // cleansing功能
   const { cleansingApi, handleCleansing } = useCleansing(
     'L',

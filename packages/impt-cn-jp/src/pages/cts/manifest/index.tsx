@@ -43,7 +43,11 @@ const ManifestWaybill: React.FC = () => {
     refreshAsync,
     cardProps,
     disActions,
-  } = useCTS('M');
+  } = useCTS('M', {
+    pagination: {
+      position: ['topLeft', 'bottomRight'],
+    },
+  });
   // cleansing功能
   const { cleansingApi, handleCleansing } = useCleansing(
     'M',

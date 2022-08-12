@@ -211,11 +211,6 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col flex="200px">
-            <Form.Item name="mawbs">
-              <Input.Search placeholder="MAWB番号" onSearch={search.submit} />
-            </Form.Item>
-          </Col>
           <Col flex="150px">
             <Form.Item name="EXA_DIS_in">
               <Select
@@ -229,6 +224,15 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
                   { label: '3K', value: '3K' },
                   { label: '3&3K', value: '3,3K' },
                 ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="250px">
+            <Form.Item name="mawbs">
+              <Input.Search
+                placeholder="MAWB番号"
+                onSearch={search.submit}
+                enterButton="Search"
               />
             </Form.Item>
           </Col>
