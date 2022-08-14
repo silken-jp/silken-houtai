@@ -9,6 +9,7 @@ import {
   Space,
   Select,
 } from 'antd';
+import { useHistory } from 'umi';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -19,21 +20,18 @@ import TrackModal from '@/components/Modal/TrackModal';
 import { useAgentOptions } from '@/services/useAPIOption';
 
 export const sagawaCategory = [
-  // { value: '0', label: '出荷データ受付' },
-  // { value: '1', label: '出荷データ確定' },
   { value: '2', label: '集荷受付' },
-  { value: '3', label: '貨物輸送' },
-  { value: '4', label: '配達持出' },
-  { value: '5', label: '配達完了・消し込み' },
-  // { value: '6', label: '貨物追跡' },
-  // { value: '7', label: '請求・代引・保険・着払処理' },
-  // { value: '9', label: 'その他' },
+  { value: '5', label: '配達完了' },
+  { value: '-2', label: '未集荷受付' },
+  { value: '-5', label: '未配達完了' },
 ];
 
 interface DeliveryProps {}
 
 const Delivery: React.FC<DeliveryProps> = (props) => {
   // state
+  const history = useHistory();
+  const params = new URLSearchParams(history.location.search);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   const { agentOptions } = useAgentOptions();
@@ -65,13 +63,29 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         breadcrumb: {
           routes: [
             { path: `/delivery/other`, breadcrumbName: intlMenu('delivery') },
-            { path: '', breadcrumbName: intlMenu('delivery.other') },
+            { path: '', breadcrumbName: '佐川' },
           ],
         },
       }}
     >
-      <Form form={form} className="sk-table-search">
+      <Form
+        form={form}
+        className="sk-table-search"
+        initialValues={{
+          MAB: params.get('MAB'),
+          category: params.get('category'),
+        }}
+      >
         <Row justify="end" gutter={16}>
+          <Col flex="200px">
+            <Form.Item name="agent">
+              <Select
+                placeholder="フォワーダー"
+                allowClear
+                options={agentOptions}
+              />
+            </Form.Item>
+          </Col>
           <Col flex="200px">
             <Form.Item name="HAB">
               <Input placeholder="お問い合せ送り状NO" />
@@ -91,15 +105,6 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
               />
             </Form.Item>
           </Col>
-          <Col flex="200px">
-            <Form.Item name="agent">
-              <Select
-                placeholder="フォワーダー"
-                allowClear
-                options={agentOptions}
-              />
-            </Form.Item>
-          </Col>
           <Col>
             <Form.Item>
               <Space>
@@ -112,7 +117,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           </Col>
         </Row>
       </Form>
-      <Card title={intlMenu('delivery.other')}>
+      <Card title={'佐川'}>
         <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: 400 }}>
           <Table.Column
             title="フォワーダー"

@@ -185,13 +185,29 @@ const Index: React.FC = (props) => {
                     <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
                   ),
                 },
+                // {
+                //   key: '/delivery/other',
+                //   label: (
+                //     <Link to="/delivery/other">
+                //       {intlMenu('delivery.other')}
+                //     </Link>
+                //   ),
+                // },
                 {
                   key: '/delivery/other',
-                  label: (
-                    <Link to="/delivery/other">
-                      {intlMenu('delivery.other')}
-                    </Link>
-                  ),
+                  label: intlMenu('delivery.other'),
+                  children: [
+                    {
+                      key: '/delivery/other/dashboard',
+                      label: (
+                        <Link to="/delivery/other/dashboard">Dashboard</Link>
+                      ),
+                    },
+                    {
+                      key: '/delivery/other/sagawa',
+                      label: <Link to="/delivery/other/sagawa">佐川</Link>,
+                    },
+                  ],
                 },
                 {
                   key: '/delivery/edi',

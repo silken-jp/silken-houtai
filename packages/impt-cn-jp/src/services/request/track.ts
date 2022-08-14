@@ -21,3 +21,15 @@ export async function importMultiTracks() {
     method: 'POST',
   });
 }
+
+// 获取所有追踪数据 GET /api/tracks
+interface GetAllMABTracks extends API.Track {
+  page: number;
+  perPage: number;
+}
+export async function getAllMABTracks(params?: GetAllMABTracks) {
+  return request<any>(ApiURL + '/tracks/mab', {
+    method: 'GET',
+    params,
+  });
+}
