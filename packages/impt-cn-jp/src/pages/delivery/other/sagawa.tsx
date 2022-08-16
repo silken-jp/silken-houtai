@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -12,12 +13,15 @@ import {
 import { useHistory } from 'umi';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import type { TableRowSelection } from 'antd/lib/table/interface';
 ////
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllTracks } from '@/services/request/track';
 import TrackModal from '@/components/Modal/TrackModal';
 import { useAgentOptions } from '@/services/useAPIOption';
+import useExportHABDeliveryXlsx from '@/services/useExportHABDeliveryXlsx';
+import { removeEmpty } from '@/utils/helper/helper';
 
 export const sagawaCategory = [
   { value: '2', label: '集荷受付' },
@@ -35,6 +39,11 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   const { agentOptions } = useAgentOptions();
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+
+  const { exportHABDeliveryApi, handleExportHABDelivery } =
+    useExportHABDeliveryXlsx(selectedRows, agentOptions);
 
   // api
   const getTableData = async (pageData: any, formData: any) => {
@@ -56,6 +65,24 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     form,
     defaultPageSize: 100,
   });
+
+  //action
+  const handleExportALL = () => {
+    exportHABDeliveryApi.run(removeEmpty(form.getFieldsValue()));
+  };
+  const handleClear = () => {
+    setSelectedRowKeys([]);
+  };
+  const rowSelection: TableRowSelection<API.Issue> = {
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRows(rows);
+      setSelectedRowKeys(keys);
+    },
+  };
 
   return (
     <PageContainer
@@ -112,13 +139,35 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
                   検索
                 </Button>
                 <Button onClick={search.reset}>リセット</Button>
+                <Button
+                  onClick={handleExportALL}
+                  loading={exportHABDeliveryApi.loading}
+                >
+                  Export(一括)
+                </Button>
               </Space>
             </Form.Item>
           </Col>
         </Row>
       </Form>
-      <Card title={'佐川'}>
-        <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: 400 }}>
+      <Card
+        title={'佐川'}
+        extra={
+          <Space>
+            <span>selected: {selectedRowKeys?.length || 0} items</span>
+            <Button size="small" type="link" onClick={handleClear}>
+              clear
+            </Button>
+            <Button onClick={handleExportHABDelivery}>Export</Button>
+          </Space>
+        }
+      >
+        <Table
+          {...tableProps}
+          rowKey="_id"
+          rowSelection={rowSelection}
+          scroll={{ x: 2500, y: 400 }}
+        >
           <Table.Column
             title="フォワーダー"
             width={200}

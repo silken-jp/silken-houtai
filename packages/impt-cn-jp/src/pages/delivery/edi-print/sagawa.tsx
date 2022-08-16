@@ -14,7 +14,6 @@ import { DownloadOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import EDIPrintModal from '@/components/Modal/EDIPrintModal';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
@@ -22,6 +21,8 @@ import {
   getAllWaybills,
   getSimpleStatusInquiry,
 } from '@/services/request/waybill';
+import EDIPrintModal from './components/EDIPrintModal';
+import { Link } from 'umi';
 
 interface SubTableProps {
   MAB: string;
@@ -202,10 +203,10 @@ const EDIPrint: React.FC = () => {
             sorter
             width={150}
             title="Download"
-            render={() => (
-              <Button size="small" disabled>
+            render={(row) => (
+              <Link target="_blank" to={`/print/SagawaEDI?MAB=${row?._id}`}>
                 <DownloadOutlined />
-              </Button>
+              </Link>
             )}
           />
           <Table.Column

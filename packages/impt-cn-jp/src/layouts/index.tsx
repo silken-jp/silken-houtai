@@ -53,7 +53,6 @@ const Index: React.FC = (props) => {
           theme="dark"
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
-          defaultOpenKeys={['/cts']}
           items={[
             {
               key: '/agent',
@@ -78,6 +77,10 @@ const Index: React.FC = (props) => {
                 {
                   key: '/cts/dashboard',
                   label: <Link to="/cts/dashboard">Dashboard</Link>,
+                },
+                {
+                  key: '/cts/todo',
+                  label: <Link to="/cts/todo">Todo</Link>,
                 },
                 {
                   key: '/cts/StatusInquiry',
@@ -185,14 +188,6 @@ const Index: React.FC = (props) => {
                     <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
                   ),
                 },
-                // {
-                //   key: '/delivery/other',
-                //   label: (
-                //     <Link to="/delivery/other">
-                //       {intlMenu('delivery.other')}
-                //     </Link>
-                //   ),
-                // },
                 {
                   key: '/delivery/other',
                   label: intlMenu('delivery.other'),
@@ -211,12 +206,24 @@ const Index: React.FC = (props) => {
                 },
                 {
                   key: '/delivery/edi',
-                  label: <Link to="/delivery/edi">EDI</Link>,
+                  label: 'EDI',
+                  children: [
+                    {
+                      key: '/delivery/edi/sagawa',
+                      label: <Link to="/delivery/edi/sagawa">佐川</Link>,
+                    },
+                  ],
                 },
-                {
-                  key: '/delivery/edi-print',
-                  label: <Link to="/delivery/edi-print">送り状</Link>,
-                },
+                // {
+                //   key: '/delivery/edi-print',
+                //   label: '送り状',
+                //   children: [
+                //     {
+                //       key: '/delivery/edi-print/sagawa',
+                //       label: <Link to="/delivery/edi-print/sagawa">佐川</Link>,
+                //     },
+                //   ],
+                // },
                 {
                   key: '/delivery/settings',
                   icon: <SettingOutlined />,

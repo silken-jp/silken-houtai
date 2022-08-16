@@ -16,7 +16,6 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import UploadImages from '@/components/Upload/UploadImages';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { removeSearchParams, setSearchParams } from '@/services/useStorage';

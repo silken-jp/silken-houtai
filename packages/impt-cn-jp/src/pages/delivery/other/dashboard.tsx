@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -12,11 +13,14 @@ import {
 import { Link } from 'umi';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import type { TableRowSelection } from 'antd/lib/table/interface';
 ////
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllMABTracks } from '@/services/request/track';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
+import useExportMABDeliveryXlsx from '@/services/useExportMABDeliveryXlsx';
+import { removeEmpty } from '@/utils/helper/helper';
 
 export const sagawaCategory = [
   { value: '2', label: '集荷受付' },
@@ -33,6 +37,11 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   const [intlMenu] = useIntlFormat('menu');
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
+  const [selectedRows, setSelectedRows] = useState<any[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
+
+  const { exportMABDeliveryApi, handleExportMABDelivery } =
+    useExportMABDeliveryXlsx(selectedRows, agentOptions);
 
   // api
   const getTableData = async (pageData: any, formData: any) => {
@@ -51,6 +60,24 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
   const { tableProps, search } = useAntdTable(getTableData, {
     form,
   });
+
+  //action
+  const handleExportALL = () => {
+    exportMABDeliveryApi.run(removeEmpty(form.getFieldsValue()));
+  };
+  const handleClear = () => {
+    setSelectedRowKeys([]);
+  };
+  const rowSelection: TableRowSelection<API.Issue> = {
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys,
+    preserveSelectedRowKeys: true,
+    onChange: (keys: any[], rows: any[]) => {
+      setSelectedRows(rows);
+      setSelectedRowKeys(keys);
+    },
+  };
 
   return (
     <PageContainer
@@ -95,13 +122,35 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
                   検索
                 </Button>
                 <Button onClick={search.reset}>リセット</Button>
+                <Button
+                  onClick={handleExportALL}
+                  loading={exportMABDeliveryApi.loading}
+                >
+                  Export(一括)
+                </Button>
               </Space>
             </Form.Item>
           </Col>
         </Row>
       </Form>
-      <Card title={intlMenu('delivery.other')}>
-        <Table {...tableProps} rowKey="_id" scroll={{ x: 2500, y: 400 }}>
+      <Card
+        title={intlMenu('delivery.other')}
+        extra={
+          <Space>
+            <span>selected: {selectedRowKeys?.length || 0} items</span>
+            <Button size="small" type="link" onClick={handleClear}>
+              clear
+            </Button>
+            <Button onClick={handleExportMABDelivery}>Export</Button>
+          </Space>
+        }
+      >
+        <Table
+          {...tableProps}
+          rowKey="_id"
+          rowSelection={rowSelection}
+          scroll={{ x: 2500, y: 400 }}
+        >
           <Table.Column
             title="フォワーダー"
             width={200}

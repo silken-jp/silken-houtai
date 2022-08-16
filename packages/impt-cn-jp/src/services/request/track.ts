@@ -22,13 +22,25 @@ export async function importMultiTracks() {
   });
 }
 
-// 获取所有追踪数据 GET /api/tracks
+// 按MAB分类tracks GET /api/tracks
 interface GetAllMABTracks extends API.Track {
   page: number;
   perPage: number;
 }
 export async function getAllMABTracks(params?: GetAllMABTracks) {
   return request<any>(ApiURL + '/tracks/mab', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 按MAB分类TODO GET /api/tracks
+interface GetAllTodoTracks extends API.Track {
+  page: number;
+  perPage: number;
+}
+export async function getAllTodoTracks(params?: GetAllTodoTracks) {
+  return request<any>(ApiURL + '/tracks/todo', {
     method: 'GET',
     params,
   });

@@ -4,8 +4,8 @@ const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
 interface GetAllWaybills extends Partial<API.Waybill> {
-  page: number;
-  perPage: number;
+  page?: number;
+  perPage?: number;
 }
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
