@@ -41,6 +41,8 @@ const TodoList: React.FC = () => {
     const data = await getAllTodoTracks({
       page,
       perPage,
+      isToday: '1',
+      category: '3',
       ...formData,
     });
     return { total: data?.totalCount, list: data?.data || [] };
@@ -53,13 +55,13 @@ const TodoList: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/cts/todo',
-              breadcrumbName: intlMenu('cts'),
+              path: '/delivery/todo/today',
+              breadcrumbName: intlMenu('delivery'),
             },
-            { path: '', breadcrumbName: 'TodoList' },
+            { path: '', breadcrumbName: 'Today Todo' },
           ],
         },
-        title: 'TodoList',
+        title: 'Today Todo',
       }}
     >
       <Form form={form} className="sk-table-search">
@@ -74,7 +76,7 @@ const TodoList: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={3}>
-            <Form.Item name="_id">
+            <Form.Item name="MAB">
               <Input placeholder="MAWB番号" />
             </Form.Item>
           </Col>
@@ -100,9 +102,9 @@ const TodoList: React.FC = () => {
           <Table.Column
             width={150}
             title="フォワーダー"
-            dataIndex="agentId"
-            render={(agentId) =>
-              agentOptions?.find((item) => item?.value === agentId)?.label
+            dataIndex="agent"
+            render={(agent) =>
+              agentOptions?.find((item) => item?.value === agent)?.label
             }
           />
           <Table.Column width={150} title="MAWB番号" dataIndex="_id" />

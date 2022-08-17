@@ -26,7 +26,7 @@ import {
   updateIssue,
 } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
-import { dayFormat, dayUTC } from '@/utils/helper/day';
+import { dayFormat } from '@/utils/helper/day';
 import { getUserInfo } from '@/services/useStorage';
 
 const waybill: React.FC = () => {

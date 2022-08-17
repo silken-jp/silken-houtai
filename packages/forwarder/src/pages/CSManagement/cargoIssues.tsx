@@ -23,11 +23,13 @@ import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { getAllIssues, updateIssue } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
+import { getAgentInfo } from '@/services/useStorage';
 import { removeEmpty } from '@/utils/helper/helper';
 
 const waybill: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const agentInfo = getAgentInfo();
   const [intlMenu] = useIntlFormat('menu');
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
@@ -65,6 +67,7 @@ const waybill: React.FC = () => {
     const data = await getAllIssues({
       page,
       perPage,
+      agent: agentInfo?._id,
       ...sorter,
       ...params,
     });

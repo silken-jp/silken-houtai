@@ -80,7 +80,17 @@ const Index: React.FC = (props) => {
                 },
                 {
                   key: '/cts/todo',
-                  label: <Link to="/cts/todo">Todo</Link>,
+                  label: 'Todo',
+                  children: [
+                    {
+                      key: '/cts/todo/today',
+                      label: <Link to="/cts/todo/today">Today</Link>,
+                    },
+                    {
+                      key: '/cts/todo/other',
+                      label: <Link to="/cts/todo/other">Other</Link>,
+                    },
+                  ],
                 },
                 {
                   key: '/cts/StatusInquiry',
@@ -182,6 +192,20 @@ const Index: React.FC = (props) => {
               icon: <CarOutlined />,
               label: intlMenu('delivery'),
               children: [
+                {
+                  key: '/delivery/todo',
+                  label: 'Todo',
+                  children: [
+                    {
+                      key: '/delivery/todo/today',
+                      label: <Link to="/delivery/todo/today">Today</Link>,
+                    },
+                    {
+                      key: '/delivery/todo/other',
+                      label: <Link to="/delivery/todo/other">Other</Link>,
+                    },
+                  ],
+                },
                 {
                   key: '/delivery/self',
                   label: (

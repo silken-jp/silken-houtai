@@ -283,6 +283,7 @@ declare namespace API {
     // 航班日期flghtDate
     DATE: Date;
     holdMemo: string;
+    todo_memo: string;
     sendbackMemo: string;
     holdFeedbackMemo: string;
     sendbackFeedbackMemo: string;

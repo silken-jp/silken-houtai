@@ -44,6 +44,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
       const data = await getAllIssues({
         page,
         perPage,
+        agentId,
         sortField: 'createdAt',
         sortOrder: 1,
         ...formData,
