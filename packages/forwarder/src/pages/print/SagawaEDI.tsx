@@ -7,6 +7,7 @@ import FileSaver from 'file-saver';
 import jsPDF from 'jspdf';
 import { DownloadOutlined } from '@ant-design/icons';
 ////
+import { getAgentInfo } from '@/services/useStorage';
 import { getAllWaybills } from '@/services/request/waybill';
 import EDIPrint from './components/EDIPrint';
 
@@ -35,6 +36,7 @@ async function handleZip(data: any[], filename: string = '压缩包') {
 
 const SagawaEDI: React.FC<SagawaEDIProps> = () => {
   // state
+  const agentInfo = getAgentInfo();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const urlParams = Object.fromEntries(new URLSearchParams(location.search));
@@ -44,6 +46,7 @@ const SagawaEDI: React.FC<SagawaEDIProps> = () => {
     async () =>
       await getAllWaybills({
         ...urlParams,
+        agent: agentInfo?._id,
         page: 0,
         perPage: 100000,
       }),

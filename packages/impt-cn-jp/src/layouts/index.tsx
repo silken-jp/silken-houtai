@@ -238,16 +238,16 @@ const Index: React.FC = (props) => {
                     },
                   ],
                 },
-                // {
-                //   key: '/delivery/edi-print',
-                //   label: '送り状',
-                //   children: [
-                //     {
-                //       key: '/delivery/edi-print/sagawa',
-                //       label: <Link to="/delivery/edi-print/sagawa">佐川</Link>,
-                //     },
-                //   ],
-                // },
+                {
+                  key: '/delivery/edi-print',
+                  label: '送り状',
+                  children: [
+                    {
+                      key: '/delivery/edi-print/sagawa',
+                      label: <Link to="/delivery/edi-print/sagawa">佐川</Link>,
+                    },
+                  ],
+                },
                 {
                   key: '/delivery/settings',
                   icon: <SettingOutlined />,

@@ -11,7 +11,7 @@ import {
   Select,
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { useAntdTable, useRequest } from 'ahooks';
+import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';
@@ -21,7 +21,7 @@ import {
   getAllWaybills,
   getSimpleStatusInquiry,
 } from '@/services/request/waybill';
-import EDIPrintModal from './components/EDIPrintModal';
+import EDIPrintModal from './components/EDIPrint';
 import { Link } from 'umi';
 
 interface SubTableProps {
@@ -114,20 +114,6 @@ const EDIPrint: React.FC = () => {
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
-  const getAllWaybillsApi = useRequest(
-    (params) => {
-      console.log(params);
-      return getAllWaybills({
-        page: 0,
-        perPage: 100000,
-        ...params,
-      });
-    },
-    {
-      manual: true,
-    },
-  );
-
   return (
     <PageContainer
       header={{
@@ -143,7 +129,7 @@ const EDIPrint: React.FC = () => {
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
           <Col span={3}>
-            <Form.Item name="agent">
+            <Form.Item name="agentId">
               <Select
                 allowClear
                 placeholder="フォワーダー"

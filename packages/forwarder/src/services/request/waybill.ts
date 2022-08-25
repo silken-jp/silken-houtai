@@ -3,8 +3,8 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills extends API.Waybill {
-  agent: string;
+interface GetAllWaybills extends Partial<API.Waybill> {
+  agent?: string;
   page?: number;
   perPage?: number;
   sortField?: string;
@@ -155,12 +155,24 @@ export async function getStatusInquiry(params?: GetStatusInquiry) {
   });
 }
 
-// 获取运单的自定义搜索 GET /api/waybills/advance
-interface GetAllWaybillsAdvance extends API.Waybill {
+// 获取所有MAB运单 GET /api/waybills/mawbs
+interface GetStatusInquiry extends Partial<API.Waybill> {
   page: number;
   perPage: number;
-  sortField: string;
-  sortOrder: number;
+}
+export async function getSimpleStatusInquiry(params?: GetStatusInquiry) {
+  return request<any>(ApiURL + '/waybills/mawbs-simple', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取运单的自定义搜索 GET /api/waybills/advance
+interface GetAllWaybillsAdvance extends Partial<API.Waybill> {
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
   cleaners?: string[];
   ctsStartDate?: Date;
   ctsEndDate?: Date;

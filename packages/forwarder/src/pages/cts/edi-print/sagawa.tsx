@@ -8,21 +8,29 @@ import {
   Card,
   Space,
   DatePicker,
+  Select,
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import EDIPrintModal from '@/components/Modal/EDIPrintModal';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
+import { useAgentOptions } from '@/services/useAPIOption';
+import {
+  getAllWaybills,
+  getSimpleStatusInquiry,
+} from '@/services/request/waybill';
+import EDIPrintModal from './components/EDIPrint';
+import { Link } from 'umi';
 import { getAgentInfo } from '@/services/useStorage';
-import { getAllWaybills, getStatusInquiry } from '@/services/request/waybill';
 
 interface SubTableProps {
   MAB: string;
+  HAB: string;
 }
 const SubTable: React.FC<SubTableProps> = (props) => {
+  const agentInfo = getAgentInfo();
   // api
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -43,14 +51,18 @@ const SubTable: React.FC<SubTableProps> = (props) => {
     }
     const data = await getAllWaybills({
       page,
-      perPage: 5,
+      perPage,
       MAB: props?.MAB,
+      HAB: props?.HAB,
       ...sorter,
       ...formData,
+      agent: agentInfo?._id,
     });
     return { total: data?.totalCount, list: data?.waybills || [] };
   };
-  const { tableProps } = useAntdTable(getTableData);
+  const { tableProps } = useAntdTable(getTableData, {
+    defaultPageSize: 5,
+  });
 
   return (
     <Table
@@ -76,6 +88,7 @@ const EDIPrint: React.FC = () => {
   const agentInfo = getAgentInfo();
 
   // api
+  const { agentOptions } = useAgentOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -93,32 +106,18 @@ const EDIPrint: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getStatusInquiry({
+    const data = await getSimpleStatusInquiry({
       page,
       perPage,
+      agentId: agentInfo?._id,
       ...sorter,
       ...formData,
-      agent: agentInfo._id,
       flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
       flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
     });
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
-
-  const getAllWaybillsApi = useRequest(
-    (params) => {
-      console.log(params);
-      return getAllWaybills({
-        page: 0,
-        perPage: 100000,
-        ...params,
-      });
-    },
-    {
-      manual: true,
-    },
-  );
 
   return (
     <PageContainer
@@ -137,6 +136,11 @@ const EDIPrint: React.FC = () => {
           <Col span={3}>
             <Form.Item name="MAB">
               <Input placeholder="MAWB番号" />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
+            <Form.Item name="HAB">
+              <Input placeholder="HAWB番号" />
             </Form.Item>
           </Col>
           <Col span={3}>
@@ -168,7 +172,9 @@ const EDIPrint: React.FC = () => {
         <Table
           size="small"
           expandable={{
-            expandedRowRender: (row) => <SubTable MAB={row?._id} />,
+            expandedRowRender: (row) => (
+              <SubTable MAB={row?._id} HAB={form.getFieldValue('HAB')} />
+            ),
           }}
           rowKey="_id"
           {...tableProps}
@@ -179,11 +185,20 @@ const EDIPrint: React.FC = () => {
             sorter
             width={150}
             title="Download"
-            render={() => (
-              <Button size="small" disabled>
+            render={(row) => (
+              <Link target="_blank" to={`/print/SagawaEDI?MAB=${row?._id}`}>
                 <DownloadOutlined />
-              </Button>
+              </Link>
             )}
+          />
+          <Table.Column
+            sorter
+            width={200}
+            title="フォワーダー"
+            dataIndex="agentId"
+            render={(agentId) =>
+              agentOptions?.find((item) => item?.value === agentId)?.label
+            }
           />
           <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
           <Table.Column
@@ -200,12 +215,6 @@ const EDIPrint: React.FC = () => {
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
           <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
-          <Table.Column
-            sorter
-            width={150}
-            title="未申告件数"
-            dataIndex="notDecNo"
-          />
           <Table.Column
             sorter
             width={180}
