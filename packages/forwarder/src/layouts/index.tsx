@@ -60,11 +60,11 @@ const Index: React.FC = (props) => {
             <Menu.Item key="/cts/StatusInquiry">
               <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
-            <Menu.SubMenu key="/cts/edi-print" title="送り状">
+            {/* <Menu.SubMenu key="/cts/edi-print" title="送り状">
               <Menu.Item key="/cts/edi-print/sagawa">
                 <Link to="/cts/edi-print/sagawa">佐川</Link>
               </Menu.Item>
-            </Menu.SubMenu>
+            </Menu.SubMenu> */}
           </Menu.SubMenu>
           <Menu.SubMenu
             key="/CSManagement"

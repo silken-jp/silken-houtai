@@ -5,7 +5,7 @@ import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
 import { useIntlFormat } from '@/services/useIntl';
 import { useCTS } from '@/services/useCTS';
-import { manifestItems } from '../check/components/Form/MICForm';
+import { ManifestItems } from '../check/components/Form/MICForm';
 import { useEffect } from 'react';
 
 const ManifestWaybill: React.FC = () => {
@@ -29,7 +29,7 @@ const ManifestWaybill: React.FC = () => {
     ),
   });
 
-  const columns = manifestItems?.flatMap?.((items) =>
+  const columns = ManifestItems?.flatMap?.((items) =>
     items?.length > 0 ? items?.map((item) => InputColumn(item)) : [],
   );
 

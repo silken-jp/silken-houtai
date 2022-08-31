@@ -54,10 +54,12 @@ const ManifestWaybill: React.FC = () => {
     state.selectedRowKeys,
   );
   // brockCheck
-  const { brockCheckApi, handleBrockCheck } = useBrockCheck(
-    'M',
-    state.selectedRowKeys,
-  );
+  const {
+    brockCheckApi,
+    simpleBrockCheckApi,
+    handleBrockCheck,
+    handleBrockCheckSimple,
+  } = useBrockCheck('M', state.selectedRowKeys);
   // 导出问题件功能
   const { PERImageApi, handlePERImage } = usePERImage(state.selectedRowKeys);
   // 新建问题件功能
@@ -116,17 +118,24 @@ const ManifestWaybill: React.FC = () => {
           >
             Mas CLS
           </Button>
-          <Link to="/cts/check/Brok">
+          {/* <Link to="/cts/check/Brok">
             <Button type="primary" disabled={disActions.brock}>
               Muti BRC
             </Button>
-          </Link>
+          </Link> */}
           <Button
             type="primary"
             disabled={disActions.brock}
             onClick={brockCheckApi.run}
           >
-            Mas BRC
+            Mas BRC (ST)
+          </Button>
+          <Button
+            disabled={disActions.brock}
+            style={{ background: '#ffcf77' }}
+            onClick={simpleBrockCheckApi.run}
+          >
+            Mas BRC (EX)
           </Button>
           <Create
             LS="M"
@@ -165,11 +174,19 @@ const ManifestWaybill: React.FC = () => {
             </Button>
             <Button
               size="small"
-              type="dashed"
+              type="primary"
               disabled={!selected}
               onClick={handleBrockCheck}
             >
-              Single BRC
+              Single BRC (ST)
+            </Button>
+            <Button
+              size="small"
+              disabled={!selected}
+              style={{ background: '#ffcf77' }}
+              onClick={handleBrockCheckSimple}
+            >
+              Single BRC (EX)
             </Button>
             <Create
               LS="M"

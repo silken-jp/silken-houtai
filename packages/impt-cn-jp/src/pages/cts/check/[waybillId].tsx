@@ -111,6 +111,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   // const clsDisabled = checkType === '0' && process_status > 2;
   const brkDisabled = checkType === '1' && process_status < 2;
   const disabled = editDisabled || brkDisabled;
+  const [isSimple, setIsSimple] = useState(search.get('isSimple') === '1');
 
   //effect
   useEffect(() => {
@@ -410,6 +411,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             {props.dataSource?.REFNO && (
               <Tag>REFNO: {props.dataSource?.REFNO}</Tag>
             )}
+            {isSimple ? (
+              <Button onClick={() => setIsSimple(false)}>展開</Button>
+            ) : (
+              <Button onClick={() => setIsSimple(true)}>隠す</Button>
+            )}
           </Space>
         }
         extra={
@@ -506,6 +512,7 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         >
           {({ getFieldValue }) => (
             <AllCheckForm
+              isSimple={isSimple}
               waybill_type={getFieldValue('waybill_type')}
               IDA_type={getFieldValue('IDA_type')}
               disabled={disabled}

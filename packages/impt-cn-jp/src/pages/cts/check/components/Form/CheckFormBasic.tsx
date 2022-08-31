@@ -62,6 +62,11 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
   if (props?.name === 'BP') dropdownMatchSelectWidth = 400;
   if (props?.name === 'IT') dropdownMatchSelectWidth = 400;
 
+  let limit = props?.limit;
+  if (props?.name === 'CMN') {
+    limit = 250;
+  }
+
   return (
     <Tooltip trigger={['focus']} title={props?.holder} placement="bottomLeft">
       <AutoComplete
@@ -73,16 +78,16 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
         placeholder={props?.holder}
         dropdownMatchSelectWidth={dropdownMatchSelectWidth}
       >
-        {props?.limit > 106 ? (
+        {limit > 106 ? (
           <Input.TextArea
             ref={ref}
             data-no={props?.no}
             style={{
-              width: props?.limit * 5 + 50,
+              width: limit * 5 + 50,
               fontFamily: 'monospace',
             }}
             disabled={props?.disabled}
-            autoSize={{ minRows: 2, maxRows: 2 }}
+            autoSize={{ minRows: 2, maxRows: 5 }}
           />
         ) : (
           <Input
@@ -90,7 +95,7 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
             data-no={props?.no}
             disabled={props?.disabled}
             style={{
-              width: props?.limit * 10 + (props?.limit > 20 ? 50 : 20),
+              width: limit * 10 + (limit > 20 ? 50 : 20),
               fontFamily: 'monospace',
             }}
           />
