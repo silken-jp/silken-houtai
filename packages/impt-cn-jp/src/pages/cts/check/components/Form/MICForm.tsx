@@ -148,7 +148,6 @@ export const SimpleManifestItems = [
     { no: 48, limit: 3, name: 'IN2', holder: '保険通貨コード' },
     { no: 49, limit: 9, name: 'IN3', holder: '保険金額', ruleType: 'number' },
   ],
-  [],
   [{ type: 'text', no: 10, limit: 70, name: 'ImpNameJP', holder: '輸入者名' }],
   [{ no: 10, limit: 70, name: 'ImpName', holder: '輸入者名' }],
   [
@@ -169,7 +168,6 @@ export const SimpleManifestItems = [
     { no: 14, limit: 35, name: 'Add3', holder: '住所３（町域名・番地）' },
     { no: 15, limit: 70, name: 'Add4', holder: '住所４（ビル名ほか）' },
   ],
-  [],
   [{ no: 24, limit: 70, name: 'EPN', holder: '仕出人名' }],
   [
     { no: 31, limit: 105, name: 'EAD', holder: '仕出人住所' },

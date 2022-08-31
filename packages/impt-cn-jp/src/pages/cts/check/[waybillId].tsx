@@ -112,7 +112,11 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
   const brkDisabled = checkType === '1' && process_status < 2;
   const disabled = editDisabled || brkDisabled;
   const [isSimple, setIsSimple] = useState(search.get('isSimple') === '1');
-
+  // 页码和页数
+  const selectedKeys = getSelectedParams(actionLS);
+  const index = selectedKeys?.findIndex?.(
+    (i: any) => i === props?.dataSource?._id,
+  );
   //effect
   useEffect(() => {
     const handleExit = () => onMoveWaybill(99);
@@ -142,10 +146,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
         ...params,
       });
     } else {
-      const selectedKeys = getSelectedParams(actionLS);
-      const index = selectedKeys?.findIndex?.(
-        (i: any) => i === props?.dataSource?._id,
-      );
       if (move === -1) {
         if (index === 0) return null;
         return selectedKeys?.[index - 1];
@@ -415,6 +415,12 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
               <Button onClick={() => setIsSimple(false)}>展開</Button>
             ) : (
               <Button onClick={() => setIsSimple(true)}>隠す</Button>
+            )}
+            {actionType === '0' && (
+              <RenderLabel
+                value={`${index + 1} / ${selectedKeys?.length}`}
+                label="Page"
+              />
             )}
           </Space>
         }
