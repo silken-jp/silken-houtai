@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal, Button, Form, Radio } from 'antd';
+import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiWaybill } from '@/services/request/waybill';
@@ -69,7 +70,14 @@ function fixItemToObj(params: any[]) {
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
-        obj[headers?.[j]?.trim?.()] = line?.[j]?.toString?.();
+        obj[headers?.[j]?.trim?.()] = line?.[j]
+          ?.toString?.()
+          ?.split('')
+          ?.map((t: string) => {
+            const from = Encoding.detect(t) as any;
+            return Encoding.convert(t, { from, to: 'SJIS', type: 'string' });
+          })
+          ?.join('');
       }
     }
     waybills.push(obj);
@@ -84,9 +92,11 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   const [visible, setVisible] = useState(false);
 
   async function onUpload(jsonArr: any[], values: any) {
+    console.log(jsonArr);
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
+    console.log(waybills);
     const { successCount: count, failedNo } = await importMultiWaybill({
-      waybills,
+      waybills: [],
       ...values,
       ...props?.payload,
     });

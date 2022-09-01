@@ -416,12 +416,6 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
             ) : (
               <Button onClick={() => setIsSimple(true)}>隠す</Button>
             )}
-            {actionType === '0' && (
-              <RenderLabel
-                value={`${index + 1} / ${selectedKeys?.length}`}
-                label="Page"
-              />
-            )}
           </Space>
         }
         extra={
@@ -473,6 +467,16 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           </Button>,
         ]}
       >
+        {actionType === '0' && (
+          <>
+            <RenderLabel
+              value={`${index + 1} / ${selectedKeys?.length}`}
+              label="Page"
+            />
+            <br />
+            <br />
+          </>
+        )}
         {props?.dataSource?.waybill_status === 2 &&
           !!props?.dataSource?.holdMemo && (
             <>
