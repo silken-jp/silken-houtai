@@ -75,7 +75,7 @@ function fixItemToObj(params: any[]) {
           ?.split('')
           ?.map((t: string) => {
             const from = Encoding.detect(t) as any;
-            return Encoding.convert(t, { from, to: 'SJIS', type: 'string' });
+            return Encoding.convert(t, { from, to: 'ASCII', type: 'string' });
           })
           ?.join('');
       }
@@ -96,7 +96,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     console.log(waybills);
     const { successCount: count, failedNo } = await importMultiWaybill({
-      waybills: [],
+      waybills,
       ...values,
       ...props?.payload,
     });
