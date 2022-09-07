@@ -61,7 +61,10 @@ const SimpleStatusInquiry: React.FC = () => {
     });
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
-  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, {
+    form,
+    defaultPageSize: 30,
+  });
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });

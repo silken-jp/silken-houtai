@@ -166,7 +166,12 @@ const LargeWaybill: React.FC = () => {
           </Space>
         }
       >
-        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 6000 }}>
+        <Table
+          size="small"
+          rowKey="_id"
+          {...tableProps}
+          scroll={{ x: 6000, y: 600 }}
+        >
           <Table.Column
             sorter
             title="HAWB番号"

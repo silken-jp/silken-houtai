@@ -128,7 +128,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
   const { tableProps, search, refreshAsync } = useAntdTable(getTableData, {
     form,
     manual: true,
-    defaultPageSize: options?.defaultPageSize || 100,
+    defaultPageSize: options?.defaultPageSize || 500,
   });
 
   const handleTabChange = (key: any) => {
@@ -170,7 +170,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
       pagination: {
         ...tableProps.pagination,
         ...options?.pagination,
-        pageSizeOptions: ['10', '20', '50', '100', '500'],
+        pageSizeOptions: ['100', '500', '1000', '1500', '2000'],
       },
       rowSelection,
     },
