@@ -98,7 +98,7 @@ const LargeWaybill: React.FC = () => {
           <span>サーチ結果で実行する</span>
           <Button
             type="primary"
-            disabled={true || disActions.cleansing}
+            disabled={disActions.cleansing}
             onClick={cleansingApi.run}
           >
             マスクレンジング
@@ -106,7 +106,7 @@ const LargeWaybill: React.FC = () => {
           <Create
             LS="L"
             refreshAsync={refreshAsync}
-            disabled={true || disActions.create}
+            disabled={disActions.create}
           />
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
@@ -138,8 +138,8 @@ const LargeWaybill: React.FC = () => {
               LS="L"
               useSource
               refreshAsync={refreshAsync}
-              disabled={true || disActions.create}
-              dataSource={tableProps?.rowSelection?.selectedRowKeys}
+              disabled={disActions.create}
+              dataSource={state?.selectedRows}
             />
             <Dropdown.Button
               overlay={

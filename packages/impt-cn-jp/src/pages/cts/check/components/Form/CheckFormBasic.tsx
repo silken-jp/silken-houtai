@@ -83,11 +83,11 @@ export const ToolTipInput: React.FC<ToolTipInputProps> = (props) => {
             ref={ref}
             data-no={props?.no}
             style={{
-              width: limit * 5 + 50,
+              width: limit * 4,
               fontFamily: 'monospace',
             }}
             disabled={props?.disabled}
-            autoSize={{ minRows: 2, maxRows: 5 }}
+            autoSize={{ minRows: 3, maxRows: 5 }}
           />
         ) : (
           <Input

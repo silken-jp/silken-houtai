@@ -3,6 +3,18 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有EDI GET /api/edi-puts/
+interface GetAllEDIs {
+  mawbs: string;
+  EXA_DIS_in: string;
+}
+export async function genEDITexts(params?: GetAllEDIs) {
+  return request<any>(ApiURL + '/edi-puts/gen_txt', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取所有EDI GET /api/edi-puts/
 interface GetAllEDIs {}
 export async function getAllEDIs(params?: GetAllEDIs) {
   return request<any>(ApiURL + '/edi-puts', {
@@ -15,6 +27,7 @@ export async function getAllEDIs(params?: GetAllEDIs) {
 interface UploadEDIs {
   MAB?: string;
   agent?: string;
+  EXA_DIS_in?: string;
   userId?: string;
   file: File;
 }
@@ -22,6 +35,7 @@ export async function uploadEDIs(params: UploadEDIs) {
   const formData = new FormData();
   formData.append('file', params.file);
   formData.append('agent', params.agent || '');
+  formData.append('EXA_DIS_in', params.EXA_DIS_in || '');
   formData.append('MAB', params.MAB || '');
   formData.append('userId', params.userId || '');
   return request<any>(ApiURL + '/edi-puts/put_delivery', {

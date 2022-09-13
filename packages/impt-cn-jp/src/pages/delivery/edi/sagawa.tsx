@@ -13,6 +13,7 @@ import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useState } from 'react';
 ////
+import GenEDIText from '../components/GenEDIText';
 import { dayFormat } from '@/utils/helper/day';
 import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
@@ -80,6 +81,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           ],
         },
       }}
+      extra={<GenEDIText />}
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
@@ -143,7 +145,12 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           />
           <Table.Column title="ファイル名" width={200} dataIndex="filename" />
           <Table.Column title="MAB" width={200} dataIndex="MAB" />
-          <Table.Column title="件数" width={200} dataIndex="hawb_count" />
+          <Table.Column title="STATUS" width={200} dataIndex="EXA_DIS_in" />
+          <Table.Column
+            title="件数"
+            width={200}
+            render={(row) => `${row?.hawb_count} / ${row?.mawb_count}`}
+          />
           <Table.Column
             title="アップローダー"
             width={200}

@@ -23,13 +23,16 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
       try {
         setLoading(true);
         const temp = file.name.split('.');
-        const MAB = temp[0];
-        temp[0] = 'r04' + new Date().getFullYear() + temp?.[0]?.slice(-4);
+        const filenameArr = temp[0].split('_');
+        const MAB = filenameArr?.shift();
+        const EXA_DIS_in = filenameArr.join(',');
+        temp[0] = 'r04' + new Date().getFullYear() + MAB?.slice(-4);
         const newFile = new File([file], temp.join('.'), {
           type: 'text/plain',
         });
         await uploadEDIs({
           MAB,
+          EXA_DIS_in,
           agent: props?.agent,
           userId: userInfo._id,
           file: newFile,

@@ -72,16 +72,10 @@ const Create: React.FC<CreateProps> = (props) => {
       );
       if (useSource) {
         filter = {
-          hawbs: props?.dataSource?.reduce((a, b) => {
-            let hawbs = a;
-            if (b?.HAB) {
-              !!a && (hawbs += ' ');
-              hawbs += b.HAB;
-            }
-            return hawbs;
-          }, ''),
+          hawbs: props?.dataSource?.map((d) => d?.HAB)?.join(' '),
         };
       }
+      filter.waybill_status = 1;
       await creating({
         filter,
         creatorId: userInfo?._id,
