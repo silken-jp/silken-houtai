@@ -1,7 +1,6 @@
 import { Button, Modal, Form, Input, Checkbox, Row, Col, message } from 'antd';
 import { useState } from 'react';
-import * as Encoding from 'encoding-japanese';
-
+////
 import { genEDITexts } from '@/services/request/edi-put';
 
 export interface genEDITextProps {}
@@ -23,12 +22,8 @@ const genEDIText: React.FC<genEDITextProps> = () => {
       const data = await genEDITexts({ ...values, EXA_DIS_in });
       if (data?.length > 0) {
         // データ作成
-        // const uInt8List = data.join('\r\n')
         const str = data.join('\r\n');
-        const codes = Encoding.stringToCode(str);
-        const shiftJisCodeList = Encoding.convert(codes, 'SJIS');
-        const uInt8List = new Uint8Array(shiftJisCodeList);
-        const blob = new Blob([uInt8List], { type: 'text/plain' });
+        const blob = new Blob([str], { type: 'text/plain' });
         // 保存
         let a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
