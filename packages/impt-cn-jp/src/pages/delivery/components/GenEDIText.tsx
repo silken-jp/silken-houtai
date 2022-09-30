@@ -1,5 +1,6 @@
-import { Button, Modal, Form, Input, Checkbox, Row, Col, message } from 'antd';
+import * as Encoding from 'encoding-japanese';
 import { useState } from 'react';
+import { Button, Modal, Form, Input, Checkbox, Row, Col, message } from 'antd';
 ////
 import { genEDITexts } from '@/services/request/edi-put';
 
@@ -23,7 +24,10 @@ const genEDIText: React.FC<genEDITextProps> = () => {
       if (data?.length > 0) {
         // データ作成
         const str = data.join('\r\n');
-        const blob = new Blob([str], { type: 'text/plain' });
+        const codes = Encoding.stringToCode(str);
+        const shiftJisCodeList = Encoding.convert(codes, 'SJIS');
+        const uInt8List = new Uint8Array(shiftJisCodeList);
+        const blob = new Blob([uInt8List], { type: 'text/plain' });
         // 保存
         let a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -33,11 +37,11 @@ const genEDIText: React.FC<genEDITextProps> = () => {
         handleVisible();
         setLoading(false);
       } else {
-        throw '';
+        throw 'この条件を満たすものが見つかりませんでした。';
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
-      message.error('ファイルの生成が失敗しました。');
+      message.error(error || 'ファイルの生成が失敗しました。');
     }
   }
 

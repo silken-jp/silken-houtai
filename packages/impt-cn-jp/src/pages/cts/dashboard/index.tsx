@@ -15,11 +15,16 @@ import { useRequest } from 'ahooks';
 import { useState } from 'react';
 import dayjs from 'dayjs';
 ////
+import ExtraCount from './components/ExtraCount';
 import SumChart from './components/SumChart';
-import PieChart from './components/PieChart';
+// import PieChart from './components/PieChart';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
-import { getMonthStat, getDateStat } from '@/services/request/waybill';
+import {
+  getMonthStat,
+  getDateStat,
+  getWeekByDate,
+} from '@/services/request/waybill';
 
 export interface dashboardProps {}
 
@@ -31,10 +36,17 @@ const Dashboard: React.FC<dashboardProps> = () => {
     displayType: '1',
     waybillType: undefined,
   });
+  const [flightState, setFlightState] = useState({
+    startDate: dayjs()?.startOf('month') as any,
+    endDate: dayjs() as any,
+  });
   const [agentId, setAgentId] = useState();
-  const today = dayjs()?.format('YYYY年MM月DD日');
-  const thisMonth = dayjs()?.format('YYYY年MM月累計');
-  const lastMonth = dayjs()?.subtract(1, 'month')?.format('YYYY年MM月実績');
+  const today = dayjs()?.format('YYYY年MM月DD日（本日）');
+  const nextDay = dayjs()?.add(1, 'day')?.format('YYYY年MM月DD日（明日）');
+  const thisMonth = dayjs()?.format('YYYY年MM月累計（今月）');
+  const lastMonth = dayjs()
+    ?.subtract(1, 'month')
+    ?.format('YYYY年MM月実績（先月）');
 
   // store
   const [intlMenu] = useIntlFormat('menu');
@@ -45,18 +57,28 @@ const Dashboard: React.FC<dashboardProps> = () => {
     return await getDateStat({
       agentId,
       displayType: sumChartState?.displayType,
-      startDate: sumChartState?.startDate?.format(),
-      endDate: sumChartState?.endDate?.format(),
+      waybill_type: sumChartState?.waybillType,
+      startDate: sumChartState?.startDate?.toDate(),
+      endDate: sumChartState?.endDate?.toDate(),
+    });
+  };
+  const getWeekByDatAsync = async (agentId: any) => {
+    return await getWeekByDate({
+      agentId,
+      startDate: flightState?.startDate?.toDate(),
+      endDate: flightState?.endDate?.toDate(),
     });
   };
   const mouthStatAPI = useRequest(getMonthStat);
   const dateStatAPI = useRequest(getDateStatAsync);
+  const weekStatAPI = useRequest(getWeekByDatAsync);
 
   // action
   const handleChangeAgent = (agentId: any) => {
     setAgentId(agentId);
     mouthStatAPI?.run({ agentId });
     dateStatAPI?.run(agentId);
+    weekStatAPI?.run(agentId);
   };
   const handleChangeWaybillType = (waybillType: any) => {
     setSumChartState({ ...sumChartState, waybillType });
@@ -69,6 +91,12 @@ const Dashboard: React.FC<dashboardProps> = () => {
   };
   const handleDateStat = () => {
     dateStatAPI?.run(agentId);
+  };
+  const handleChangeFlightDateRange = ([startDate, endDate]: any) => {
+    setFlightState({ ...flightState, startDate, endDate });
+  };
+  const handleWeekStat = () => {
+    weekStatAPI?.run(agentId);
   };
 
   return (
@@ -93,61 +121,100 @@ const Dashboard: React.FC<dashboardProps> = () => {
       }}
     >
       <Row gutter={8}>
-        <Col span={8}>
-          <Card size="small" loading={mouthStatAPI?.loading}>
-            <Descriptions size="small" title={today} column={2}>
-              <Descriptions.Item label="件数">
-                {mouthStatAPI?.data?.waybillTodayCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="重量">
-                {mouthStatAPI?.data?.GWTodayCount?.toFixed(2)}
-              </Descriptions.Item>
-              <Descriptions.Item label="個数">
-                {mouthStatAPI?.data?.NOTodayCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="MAWB">
-                {mouthStatAPI?.data?.mawbTodayCount}
-              </Descriptions.Item>
-              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
-            </Descriptions>
-          </Card>
+        <Col span={12} xl={6}>
+          <ExtraCount
+            agentId={agentId}
+            title={lastMonth}
+            loading={mouthStatAPI?.loading}
+            counts={[
+              mouthStatAPI?.data?.waybillLastMonthCount,
+              mouthStatAPI?.data?.GWLastMonthCount?.toFixed(2),
+              mouthStatAPI?.data?.NOLastMonthCount,
+              mouthStatAPI?.data?.mawbLastMonthCount,
+            ]}
+            startDate={dayjs().subtract(1, 'month').startOf('month').toDate()}
+            endDate={dayjs().subtract(1, 'month').endOf('month').toDate()}
+          />
         </Col>
-        <Col span={8}>
-          <Card size="small" loading={mouthStatAPI?.loading}>
-            <Descriptions size="small" title={thisMonth} column={2}>
-              <Descriptions.Item label="件数">
-                {mouthStatAPI?.data?.waybillThisMonthCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="重量">
-                {mouthStatAPI?.data?.GWThisMonthCount?.toFixed(2)}
-              </Descriptions.Item>
-              <Descriptions.Item label="個数">
-                {mouthStatAPI?.data?.NOThisMonthCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="MAWB">
-                {mouthStatAPI?.data?.mawbThisMonthCount}
-              </Descriptions.Item>
-              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
-            </Descriptions>
-          </Card>
+        <Col span={12} xl={6}>
+          <ExtraCount
+            agentId={agentId}
+            title={thisMonth}
+            loading={mouthStatAPI?.loading}
+            counts={[
+              mouthStatAPI?.data?.waybillThisMonthCount,
+              mouthStatAPI?.data?.GWThisMonthCount?.toFixed(2),
+              mouthStatAPI?.data?.NOThisMonthCount,
+              mouthStatAPI?.data?.mawbThisMonthCount,
+            ]}
+            startDate={dayjs().startOf('month').toDate()}
+            endDate={dayjs().endOf('month').toDate()}
+          />
         </Col>
-        <Col span={8}>
-          <Card size="small" loading={mouthStatAPI?.loading}>
-            <Descriptions size="small" title={lastMonth} column={2}>
-              <Descriptions.Item label="件数">
-                {mouthStatAPI?.data?.waybillLastMonthCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="重量">
-                {mouthStatAPI?.data?.GWLastMonthCount?.toFixed(2)}
-              </Descriptions.Item>
-              <Descriptions.Item label="個数">
-                {mouthStatAPI?.data?.NOLastMonthCount}
-              </Descriptions.Item>
-              <Descriptions.Item label="MAWB">
-                {mouthStatAPI?.data?.mawbLastMonthCount}
-              </Descriptions.Item>
-              {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
-            </Descriptions>
+        <Col span={12} xl={6}>
+          <ExtraCount
+            agentId={agentId}
+            title={today}
+            loading={mouthStatAPI?.loading}
+            counts={[
+              mouthStatAPI?.data?.waybillTodayCount,
+              mouthStatAPI?.data?.GWTodayCount?.toFixed(2),
+              mouthStatAPI?.data?.NOTodayCount,
+              mouthStatAPI?.data?.mawbTodayCount,
+            ]}
+            startDate={dayjs().startOf('day').toDate()}
+            endDate={dayjs().endOf('day').toDate()}
+          />
+        </Col>
+        <Col span={12} xl={6}>
+          <ExtraCount
+            agentId={agentId}
+            title={nextDay}
+            loading={mouthStatAPI?.loading}
+            counts={[
+              mouthStatAPI?.data?.waybillNextDayCount,
+              mouthStatAPI?.data?.GWNextDayCount?.toFixed(2),
+              mouthStatAPI?.data?.NONextDayCount,
+              mouthStatAPI?.data?.mawbNextDayCount,
+            ]}
+            startDate={dayjs().add(1, 'day').startOf('day').toDate()}
+            endDate={dayjs().add(1, 'day').endOf('day').toDate()}
+          />
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col span={24}>
+          <Card
+            title="空港別"
+            extra={
+              <Space>
+                <DatePicker.RangePicker
+                  value={[flightState.startDate, flightState.endDate]}
+                  onChange={handleChangeFlightDateRange}
+                  allowClear={false}
+                />
+                <Button type="primary" onClick={handleWeekStat}>
+                  更新
+                </Button>
+              </Space>
+            }
+          >
+            <Table
+              size="small"
+              style={{ minHeight: 320 }}
+              pagination={false}
+              rowKey="id"
+              loading={weekStatAPI.loading}
+              dataSource={weekStatAPI.data}
+            >
+              <Table.Column title="曜日" dataIndex="id" />
+              <Table.Column title="総件数" dataIndex="total" />
+              <Table.Column title="成田" dataIndex="NRT" />
+              <Table.Column title="関西" dataIndex="KIX" />
+              <Table.Column title="羽田" dataIndex="HND" />
+              <Table.Column title="その他" dataIndex="other" />
+            </Table>
           </Card>
         </Col>
       </Row>
@@ -156,18 +223,22 @@ const Dashboard: React.FC<dashboardProps> = () => {
         <Col span={24}>
           <Card
             title={
-              <Select
-                value={sumChartState.waybillType}
-                onChange={handleChangeWaybillType}
-                allowClear
-                placeholder="MIC/IDA"
-                style={{ width: 100 }}
-                options={[
-                  { value: 'MIC', label: 'MIC' },
-                  { value: 'IDA', label: 'IDA' },
-                ]}
-              />
+              <Space>
+                <span>申告STATUS別</span>
+                <Select
+                  value={sumChartState.waybillType}
+                  onChange={handleChangeWaybillType}
+                  allowClear
+                  placeholder="MIC/IDA"
+                  style={{ width: 100 }}
+                  options={[
+                    { value: 'MIC', label: 'MIC' },
+                    { value: 'IDA', label: 'IDA' },
+                  ]}
+                />
+              </Space>
             }
+            loading={dateStatAPI?.loading}
             extra={
               <Space>
                 <Radio.Group
@@ -194,16 +265,29 @@ const Dashboard: React.FC<dashboardProps> = () => {
         </Col>
       </Row>
       <br />
-      <Row gutter={24}>
+      {/* <Row gutter={24}>
         <Col span={12}>
-          <Card title="申告リスト">
+          <Card
+            title="申告リスト"
+            extra={
+              <>
+                <DatePicker.RangePicker
+                  value={[sumChartState.startDate, sumChartState.endDate]}
+                  onChange={handleChangeDateRange}
+                  allowClear={false}
+                />
+                <Button type="primary" onClick={handleDateStat}>
+                  更新
+                </Button>
+              </>
+            }
+          >
             <Table style={{ minHeight: 400 }}>
-              <Table.Column title="HAWB" dataIndex="HAB" />
-              <Table.Column title="MAWB" dataIndex="MAB" />
-              <Table.Column title="申告STATUS" dataIndex="" />
-              <Table.Column title="申告番号" dataIndex="" />
-              <Table.Column title="クレンザー" dataIndex="" />
-              <Table.Column title="クリエーター" dataIndex="" />
+              <Table.Column title="曜日" dataIndex="HAB" />
+              <Table.Column title="総件数" dataIndex="" />
+              <Table.Column title="成田" dataIndex="" />
+              <Table.Column title="関空" dataIndex="" />
+              <Table.Column title="羽田" dataIndex="" />
             </Table>
           </Card>
         </Col>
@@ -229,7 +313,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
             />
           </Card>
         </Col>
-      </Row>
+      </Row> */}
     </PageContainer>
   );
 };

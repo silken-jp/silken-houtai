@@ -201,6 +201,7 @@ interface GetDateStat {
   startDate: Date;
   endDate: Date;
   displayType: string;
+  waybill_type?: string;
 }
 export async function getDateStat(
   params?: GetDateStat,
@@ -222,5 +223,31 @@ export async function creating(params?: Creating): Promise<any> {
     data: {
       ...params,
     },
+  });
+}
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {
+  agentId?: API.ID;
+  startDate?: Date;
+  endDate?: Date;
+}
+export async function getDstByDate(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/dst_by_date', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {
+  agentId?: API.ID;
+  startDate?: Date;
+  endDate?: Date;
+}
+export async function getWeekByDate(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/dst_week_by_date', {
+    method: 'GET',
+    params,
   });
 }

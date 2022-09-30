@@ -118,6 +118,11 @@ const SimpleStatusInquiry: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={3}>
+            <Form.Item name="PSC">
+              <Input allowClear placeholder="仕出地" />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
             <Form.Item name="uploader">
               <Select allowClear placeholder="Uploader" options={userOptions} />
             </Form.Item>

@@ -20,8 +20,8 @@ const Importer: React.FC = () => {
       ...formData,
     });
     return {
-      total: data?.totalCount,
-      list: data?.importers,
+      total: data?.importers?.totalCount,
+      list: data?.importers?.data,
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });

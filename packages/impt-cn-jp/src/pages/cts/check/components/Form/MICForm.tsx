@@ -16,7 +16,7 @@ export const ManifestItems = [
     // { no: 33, limit: 20, name: 'MAB', holder: 'ＭＡＷＢ番号' },
     // { no: 36, limit: 12, name: 'VSN', holder: '積載機名' },
     // { no: 37, limit: 8, name: 'ARR', holder: '入港年月日' },
-    { no: 32, limit: 20, name: 'HAB', holder: 'ＨＡＷＢ番号' },
+    { type: 'text', no: 32, limit: 20, name: 'HAB', holder: 'ＨＡＷＢ番号' },
     { no: 34, limit: 6, name: 'NO', holder: '貨物個数', ruleType: 'number' },
     { no: 35, limit: 8, name: 'GW', holder: '貨物重量', ruleType: 'number' },
     { no: 39, limit: 5, name: 'PSC', holder: '積出地コード' },
@@ -119,7 +119,7 @@ export const ManifestItems = [
 export const SimpleManifestItems = [
   [
     { no: 56, limit: 20, name: 'REF', holder: '社内整理用番号' },
-    { no: 32, limit: 20, name: 'HAB', holder: 'ＨＡＷＢ番号' },
+    { type: 'text', no: 32, limit: 20, name: 'HAB', holder: 'ＨＡＷＢ番号' },
     { no: 34, limit: 6, name: 'NO', holder: '貨物個数', ruleType: 'number' },
     { no: 35, limit: 8, name: 'GW', holder: '貨物重量', ruleType: 'number' },
     { no: 39, limit: 5, name: 'PSC', holder: '積出地コード' },

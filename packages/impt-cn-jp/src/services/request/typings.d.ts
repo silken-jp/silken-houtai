@@ -236,15 +236,19 @@ declare namespace API {
     mawbThisMonthCount: number;
     mawbLastMonthCount: number;
     mawbTodayCount: number;
+    mawbNextDayCount: number;
     waybillThisMonthCount: number;
     waybillLastMonthCount: number;
     waybillTodayCount: number;
+    waybillNextDayCount: number;
     NOThisMonthCount: number;
     NOLastMonthCount: number;
     NOTodayCount: number;
+    NONextDayCount: number;
     GWThisMonthCount: number;
     GWLastMonthCount: number;
     GWTodayCount: number;
+    GWNextDayCount: number;
   };
   type WaybillDateStat = Array<{
     sum: number;
