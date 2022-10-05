@@ -11,7 +11,6 @@ import {
 } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { FormOutlined } from '@ant-design/icons';
-import { Link } from 'umi';
 ////
 import { updateWaybill } from '@/services/request/waybill';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -240,7 +239,7 @@ const ManifestWaybill: React.FC = () => {
             render={(row) => {
               const handleEdit = () => {
                 handleOpen({
-                  title: 'INV BL 品名修正',
+                  title: 'INV/BL 修正',
                   type: 'MIC',
                   data: row,
                 });

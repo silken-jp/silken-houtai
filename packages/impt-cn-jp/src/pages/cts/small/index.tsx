@@ -67,12 +67,14 @@ const SmallWaybill: React.FC = () => {
             disabled={disActions.cleansing}
             onClick={cleansingApi.run}
           >
-            マスクレンジング
+            Mas CLS
           </Button>
           <Create
             LS="S"
+            text="Mas CRT"
             refreshAsync={refreshAsync}
             disabled={disActions.create}
+            dataSource={tableProps.dataSource}
           />
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
@@ -98,14 +100,15 @@ const SmallWaybill: React.FC = () => {
               disabled={!selected}
               onClick={handleCleansing}
             >
-              シングルクレンジング
+              Single CLS
             </Button>
             <Create
               LS="S"
+              text="Single CRT"
               useSource
               refreshAsync={refreshAsync}
               disabled={disActions.create}
-              dataSource={state?.selectedRows}
+              dataSource={state.selectedRows}
             />
             <Dropdown.Button
               overlay={

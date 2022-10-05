@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, Space, Button } from 'antd';
+import { Modal, Form, Input, InputNumber } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -21,6 +21,7 @@ const WaybillINVBLForm: React.FC<WaybillINVBLFormProps> = (props) => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         CMN: props?.dataSource?.CMN || '',
+        _NT1: props?.dataSource?._NT1 || '',
         HSRepeat: props?.dataSource?.HSRepeat || [],
       });
     }
@@ -36,6 +37,9 @@ const WaybillINVBLForm: React.FC<WaybillINVBLFormProps> = (props) => {
             rules={[{ required: true }, { max: 40 }]}
           >
             <Input placeholder="品名" autoComplete="off" />
+          </Form.Item>
+          <Form.Item label="値段" name="_NT1" rules={[{ required: true }]}>
+            <InputNumber placeholder="値段" autoComplete="off" step={0.01} />
           </Form.Item>
         </Form>
       </Modal>

@@ -1,16 +1,5 @@
-import {
-  Table,
-  Card,
-  Space,
-  Row,
-  Tag,
-  Button,
-  Dropdown,
-  Menu,
-  Typography,
-} from 'antd';
+import { Table, Card, Space, Row, Tag, Button, Dropdown, Menu } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-import { FormOutlined } from '@ant-design/icons';
 ////
 import { updateWaybill } from '@/services/request/waybill';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -101,12 +90,14 @@ const LargeWaybill: React.FC = () => {
             disabled={disActions.cleansing}
             onClick={cleansingApi.run}
           >
-            マスクレンジング
+            Mas CLS
           </Button>
           <Create
             LS="L"
+            text="Mas CRT"
             refreshAsync={refreshAsync}
             disabled={disActions.create}
+            dataSource={tableProps.dataSource}
           />
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
@@ -132,14 +123,15 @@ const LargeWaybill: React.FC = () => {
               disabled={!selected}
               onClick={handleCleansing}
             >
-              シングルクレンジング
+              Single CLS
             </Button>
             <Create
               LS="L"
+              text="Single CRT"
               useSource
               refreshAsync={refreshAsync}
               disabled={disActions.create}
-              dataSource={state?.selectedRows}
+              dataSource={state.selectedRows}
             />
             <Dropdown.Button
               overlay={
