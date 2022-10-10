@@ -1,4 +1,4 @@
-import { useState, createElement } from 'react';
+import React, { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
 import {
   FormOutlined,
@@ -16,7 +16,7 @@ import { useIntlFormat } from '../services/useIntl';
 import { removeUserInfo } from '@/services/useStorage';
 import styles from './index.less';
 
-const Index: React.FC = (props) => {
+const Index: React.FC<{ children: React.ReactNode }> = (props) => {
   const history = useHistory();
   const isFull = ['/login', '/print', '/cts/check/'].some((item: any) =>
     history?.location?.pathname?.startsWith(item),
@@ -197,12 +197,16 @@ const Index: React.FC = (props) => {
                   label: 'Todo',
                   children: [
                     {
-                      key: '/delivery/todo/today',
-                      label: <Link to="/delivery/todo/today">Today</Link>,
+                      key: '/delivery/todo/check',
+                      label: <Link to="/delivery/todo/check">Check</Link>,
                     },
                     {
-                      key: '/delivery/todo/other',
-                      label: <Link to="/delivery/todo/other">Other</Link>,
+                      key: '/delivery/todo/timeoutList',
+                      label: (
+                        <Link to="/delivery/todo/timeoutList">
+                          Timeout List
+                        </Link>
+                      ),
                     },
                   ],
                 },

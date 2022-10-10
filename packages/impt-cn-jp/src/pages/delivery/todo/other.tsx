@@ -17,16 +17,16 @@ import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { getAllTodoTracks } from '@/services/request/track';
 
-interface SubTableProps {
-  dataSource: any[];
-}
-const SubTable: React.FC<SubTableProps> = (props) => {
-  return (
-    <Table size="small" rowKey="_id" dataSource={props.dataSource}>
-      <Table.Column sorter width={200} title="HAWB番号" dataIndex="HAB" />
-    </Table>
-  );
-};
+// interface SubTableProps {
+//   dataSource: any[];
+// }
+// const SubTable: React.FC<SubTableProps> = (props) => {
+//   return (
+//     <Table size="small" rowKey="_id" dataSource={props.dataSource}>
+//       <Table.Column sorter width={200} title="HAWB番号" dataIndex="HAB" />
+//     </Table>
+//   );
+// };
 
 const TodoList: React.FC = () => {
   // state
@@ -91,14 +91,7 @@ const TodoList: React.FC = () => {
         </Row>
       </Form>
       <Card>
-        <Table
-          size="small"
-          rowKey="_id"
-          expandable={{
-            expandedRowRender: (row) => <SubTable dataSource={row?.waybills} />,
-          }}
-          {...tableProps}
-        >
+        <Table size="small" rowKey="_id" {...tableProps}>
           <Table.Column
             width={150}
             title="フォワーダー"

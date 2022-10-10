@@ -45,3 +45,12 @@ export async function getAllTodoTracks(params?: GetAllTodoTracks) {
     params,
   });
 }
+
+// 按MAB分类TODO GET /api/tracks
+interface Get24HTodoTracks {}
+export async function get24HTodoTracks(params?: Get24HTodoTracks) {
+  return request<any>(ApiURL + '/tracks/todo24h', {
+    method: 'GET',
+    params,
+  });
+}
