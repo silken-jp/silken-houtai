@@ -19,6 +19,7 @@ const TodoList: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const MAB = Form.useWatch('MAB', form);
 
   // api
   const getTableData = async (pageData: any, formData: any) => {
@@ -62,18 +63,14 @@ const TodoList: React.FC = () => {
           </Col>
           <Col>
             <Space>
-              <Button
-                disabled={!form.getFieldValue('MAB')}
-                type="primary"
-                onClick={search.submit}
-              >
+              <Button disabled={!MAB} type="primary" onClick={search.submit}>
                 検索
               </Button>
             </Space>
           </Col>
         </Row>
       </Form>
-      <Card title={form.getFieldValue('MAB')} loading={tableProps.loading}>
+      <Card title={MAB} loading={tableProps.loading}>
         <Descriptions bordered column={3}>
           <Descriptions.Item label="件数">
             {tableProps.dataSource?.[0]?.waybills?.length}
