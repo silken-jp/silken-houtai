@@ -234,9 +234,11 @@ const ManifestWaybill: React.FC = () => {
             render={(_, row: any) => <WaybillModal dataSource={row} />}
           />
           <Table.Column
+            sorter
             width={180}
             title="品名"
-            render={(row) => {
+            dataIndex="CMN"
+            render={(_, row: any) => {
               const handleEdit = () => {
                 handleOpen({
                   title: 'INV/BL 修正',

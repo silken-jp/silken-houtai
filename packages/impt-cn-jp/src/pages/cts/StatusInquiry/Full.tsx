@@ -208,7 +208,12 @@ const StatusInquiry: React.FC = () => {
             dataIndex="flightDate"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column
+            sorter
+            width={120}
+            title="件数"
+            dataIndex="waybillCount"
+          />
           <Table.Column
             sorter
             width={150}
@@ -268,12 +273,7 @@ const StatusInquiry: React.FC = () => {
               }
             />
           </Table.ColumnGroup>
-          <Table.Column
-            sorter
-            width={150}
-            title="個数"
-            dataIndex="waybillCount"
-          />
+          <Table.Column sorter width={150} title="個数" dataIndex="NOCount" />
           <Table.Column
             sorter
             width={150}
