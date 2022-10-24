@@ -14,10 +14,18 @@ export async function getAllTracks(params?: GetAllTracks) {
   });
 }
 
-// 创建追踪数据 POST /api/tracks
+// 从佐川同步tracks POST /api/tracks
 // interface ImportMultiTracks extends API.Track {}
 export async function importMultiTracks() {
   return request<any>(ApiURL + '/tracks', {
+    method: 'POST',
+  });
+}
+
+// 从西濃同步tracks POST /api/tracks
+// interface ImportMultiTracks extends API.Track {}
+export async function importSeinoTracks() {
+  return request<any>(ApiURL + '/tracks/import-seino', {
     method: 'POST',
   });
 }

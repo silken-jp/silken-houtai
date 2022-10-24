@@ -2,13 +2,25 @@ import { request } from 'umi';
 
 const { ApiURL } = process.env;
 
-// 获取所有EDI GET /api/edi-puts/
+// 生成西濃運輸edi txt文件 GET /api/edi-puts/gen_txt
 interface GetAllEDIs {
   mawbs: string;
   EXA_DIS_in: string;
 }
 export async function genEDITexts(params?: GetAllEDIs) {
   return request<any>(ApiURL + '/edi-puts/gen_txt', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 生成西濃運輸edi txt文件 GET /api/edi-puts/gen_seino_txt
+interface GetAllEDIs {
+  mawbs: string;
+  EXA_DIS_in: string;
+}
+export async function genSeinoEDITexts(params?: GetAllEDIs) {
+  return request<any>(ApiURL + '/edi-puts/gen_seino_txt', {
     method: 'GET',
     params,
   });
@@ -29,6 +41,7 @@ interface UploadEDIs {
   agent?: string;
   EXA_DIS_in?: string;
   userId?: string;
+  putTo: 'sagawa' | 'seino';
   file: File;
 }
 export async function uploadEDIs(params: UploadEDIs) {
@@ -38,6 +51,7 @@ export async function uploadEDIs(params: UploadEDIs) {
   formData.append('EXA_DIS_in', params.EXA_DIS_in || '');
   formData.append('MAB', params.MAB || '');
   formData.append('userId', params.userId || '');
+  formData.append('put_to', params.putTo || '');
   return request<any>(ApiURL + '/edi-puts/put_delivery', {
     method: 'POST',
     body: formData,

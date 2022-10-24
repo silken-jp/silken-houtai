@@ -18,7 +18,7 @@ import { dayFormat } from '@/utils/helper/day';
 import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllEDIs } from '@/services/request/edi-put';
-import { importMultiTracks } from '@/services/request/track';
+import { importSeinoTracks } from '@/services/request/track';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 
 interface DeliveryProps {}
@@ -50,7 +50,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
       sortField: 'createdAt',
       sortOrder: -1,
       ...formData,
-      put_to: 'sagawa',
+      put_to: 'seino',
       agent: tabKey,
     });
     return {
@@ -62,7 +62,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     form,
     manual: true,
   });
-  const importAPI = useRequest(importMultiTracks, {
+  const importAPI = useRequest(importSeinoTracks, {
     manual: true,
   });
 
@@ -82,7 +82,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
           ],
         },
       }}
-      extra={<GenEDIText type="sagawa" />}
+      extra={<GenEDIText type="seino" />}
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
@@ -134,7 +134,7 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         <Table
           title={() => (
             <UploadDeliveryFile
-              putTo="sagawa"
+              putTo="seino"
               refresh={refresh}
               agent={tabKey}
             />

@@ -6,6 +6,7 @@ import { getUserInfo } from '@/services/useStorage';
 import { uploadEDIs } from '@/services/request/edi-put';
 
 export interface UploadDeliveryFileProps {
+  putTo: 'sagawa' | 'seino';
   refresh: () => void;
   agent: string;
 }
@@ -22,12 +23,20 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
       const { file, onSuccess, onError } = opt;
       try {
         setLoading(true);
+        let newFileName = file.name;
         const temp = file.name.split('.');
         const filenameArr = temp[0].split('_');
         const MAB = filenameArr?.shift();
         const EXA_DIS_in = filenameArr.join(',');
-        temp[0] = 'r04' + new Date().getFullYear() + MAB?.slice(-4);
-        const newFile = new File([file], temp.join('.'), {
+
+        if (props.putTo === 'sagawa') {
+          temp[0] = 'r04' + new Date().getFullYear() + MAB?.slice(-4);
+          newFileName = temp.join('.');
+        }
+        if (props.putTo === 'seino') {
+          newFileName = 'sclput.txt';
+        }
+        const newFile = new File([file], newFileName, {
           type: 'text/plain',
         });
         await uploadEDIs({
@@ -35,6 +44,7 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
           EXA_DIS_in,
           agent: props?.agent,
           userId: userInfo._id,
+          putTo: props?.putTo,
           file: newFile,
         });
         await onSuccess(newFile, newFile);
@@ -57,7 +67,7 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
   return (
     <Space>
       <Upload {...uploadProps}>
-        <Button icon={<UploadOutlined />}>Upload</Button>
+        <Button icon={<UploadOutlined />}>Upload TO {props.putTo}</Button>
       </Upload>
     </Space>
   );

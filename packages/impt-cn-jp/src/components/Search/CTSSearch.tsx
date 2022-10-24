@@ -30,7 +30,14 @@ const CTSSearch: React.FC<CTSSearchProps> = (props) => {
 
   const advanceSearchForm = (
     <div className="sk-table-search">
-      <Form form={form}>
+      <Form
+        form={form}
+        onValuesChange={(v) => {
+          if (v?.hawbs?.includes('\n')) {
+            form.setFieldsValue({ hawbs: v.hawbs.replace(/\n/g, ' ') });
+          }
+        }}
+      >
         <Row gutter={24}>
           <Col span={8}>
             <Form.Item label="CLS" name="cleansers[]">

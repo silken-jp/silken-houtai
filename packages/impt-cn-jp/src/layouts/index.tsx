@@ -240,6 +240,10 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
                       key: '/delivery/edi/sagawa',
                       label: <Link to="/delivery/edi/sagawa">佐川</Link>,
                     },
+                    // {
+                    //   key: '/delivery/edi/seino',
+                    //   label: <Link to="/delivery/edi/seino">西濃</Link>,
+                    // },
                   ],
                 },
                 {

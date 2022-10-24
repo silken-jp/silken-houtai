@@ -2,11 +2,24 @@ import * as Encoding from 'encoding-japanese';
 import { useState } from 'react';
 import { Button, Modal, Form, Input, Checkbox, Row, Col, message } from 'antd';
 ////
-import { genEDITexts } from '@/services/request/edi-put';
+import { genEDITexts, genSeinoEDITexts } from '@/services/request/edi-put';
 
-export interface genEDITextProps {}
+export interface genEDITextProps {
+  type: 'seino' | 'sagawa';
+}
 
-const genEDIText: React.FC<genEDITextProps> = () => {
+function switchApi(type: string) {
+  switch (type) {
+    case 'seino':
+      return genSeinoEDITexts;
+    case 'sagawa':
+      return genEDITexts;
+    default:
+      return genEDITexts;
+  }
+}
+
+const genEDIText: React.FC<genEDITextProps> = (props) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,7 +33,7 @@ const genEDIText: React.FC<genEDITextProps> = () => {
       setLoading(true);
       const values = await form.validateFields();
       const EXA_DIS_in = values.EXA_DIS_in.join(',');
-      const data = await genEDITexts({ ...values, EXA_DIS_in });
+      const data = await switchApi(props.type)({ ...values, EXA_DIS_in });
       if (data?.length > 0) {
         // データ作成
         const str = data.join('\r\n');
