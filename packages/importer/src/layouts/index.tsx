@@ -1,4 +1,4 @@
-import { useState, createElement } from 'react';
+import React, { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
@@ -8,7 +8,7 @@ import { useIntlFormat } from '../services/useIntl';
 import { removeUserInfo } from '@/services/useStorage';
 import styles from './index.less';
 
-const Index: React.FC = (props) => {
+const Index: React.FC<{ children: React.ReactNode }> = (props) => {
   const history = useHistory();
   const isFull = ['/login', '/print'].some((item: any) =>
     history?.location?.pathname?.startsWith(item),
@@ -46,11 +46,17 @@ const Index: React.FC = (props) => {
           mode="inline"
           selectedKeys={[history?.location?.pathname]}
           defaultOpenKeys={['/cts']}
-        >
-          <Menu.Item key="/importer">
-            <Link to="/importer">法人輸入者管理</Link>
-          </Menu.Item>
-        </Menu>
+          items={[
+            {
+              key: '/tools',
+              label: <Link to="/tools">TOOLS</Link>,
+            },
+            {
+              key: '/importer',
+              label: <Link to="/importer">法人輸入者管理</Link>,
+            },
+          ]}
+        />
       </Layout.Sider>
       <Layout className={styles['site-layout']}>
         <Layout.Header className={styles['site-layout-background']}>
