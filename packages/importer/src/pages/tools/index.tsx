@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Card, Descriptions, Checkbox } from 'antd';
 ////
-import WashName from './components/WashName';
-import WashAddress from './components/WashAddress';
-import Zenkaku2Hankaku from './components/Zenkaku2Hankaku';
 import Wash from './components/Wash';
 
 export interface ToolsProps {}
