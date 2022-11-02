@@ -75,7 +75,6 @@ const Create: React.FC<CreateProps> = (props) => {
           hawbs: props?.dataSource?.map((d) => d?.HAB)?.join(' '),
         };
       }
-      filter.waybill_status = 1;
       await creating({
         filter,
         creatorId: userInfo?._id,
