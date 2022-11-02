@@ -27,3 +27,19 @@ export async function washName(params: WashName) {
     },
   });
 }
+
+// 转换名字 POST /api/wash-name
+interface WashAll {
+  originalData: any[];
+  isWashName: boolean;
+  isNameReverse: boolean;
+  isWashIAD: boolean;
+}
+export async function washAll(params: WashAll) {
+  return request<any>(ApiURL + '/wash-all', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

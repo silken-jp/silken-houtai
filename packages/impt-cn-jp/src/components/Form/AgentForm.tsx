@@ -42,7 +42,7 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
         <Form.Item
           label="アカウント"
           name="account"
-          rules={[{ required: true }]}
+          rules={[{ required: true }, { max: 5 }]}
         >
           <Input placeholder="アカウント" autoComplete="off" />
         </Form.Item>
