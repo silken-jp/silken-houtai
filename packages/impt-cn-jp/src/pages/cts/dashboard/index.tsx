@@ -6,7 +6,7 @@ import {
   DatePicker,
   Radio,
   Button,
-  Descriptions,
+  Divider,
   Select,
   Table,
 } from 'antd';
@@ -24,6 +24,7 @@ import {
   getMonthStat,
   getDateStat,
   getWeekByDate,
+  getAgentStat,
 } from '@/services/request/waybill';
 
 export interface dashboardProps {}
@@ -69,6 +70,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
       endDate: flightState?.endDate?.toDate(),
     });
   };
+  const agentStatAPI = useRequest(getAgentStat);
   const mouthStatAPI = useRequest(getMonthStat);
   const dateStatAPI = useRequest(getDateStatAsync);
   const weekStatAPI = useRequest(getWeekByDatAsync);
@@ -101,16 +103,6 @@ const Dashboard: React.FC<dashboardProps> = () => {
 
   return (
     <PageContainer
-      title={
-        <Select
-          value={agentId}
-          onChange={handleChangeAgent}
-          allowClear
-          placeholder="フォワーダー"
-          style={{ width: 200 }}
-          options={agentOptions}
-        />
-      }
       header={{
         breadcrumb: {
           routes: [
@@ -120,6 +112,38 @@ const Dashboard: React.FC<dashboardProps> = () => {
         },
       }}
     >
+      <Card title="フォワーダー別">
+        <Table
+          size="small"
+          scroll={{ y: 320 }}
+          pagination={false}
+          rowKey="id"
+          loading={agentStatAPI.loading}
+          dataSource={agentStatAPI.data}
+        >
+          <Table.Column
+            title="フォワーダー"
+            dataIndex="_id"
+            render={(_id) =>
+              agentOptions?.find((item) => item?.value === _id)?.label
+            }
+          />
+          <Table.Column title="本日件数" dataIndex="todayCount" />
+          <Table.Column title="明日件数" dataIndex="nextDayCount" />
+        </Table>
+      </Card>
+      <br />
+      <Divider>
+        <Select
+          value={agentId}
+          onChange={handleChangeAgent}
+          allowClear
+          placeholder="フォワーダー"
+          style={{ width: 200 }}
+          options={agentOptions}
+        />
+      </Divider>
+      <br />
       <Row gutter={8}>
         <Col span={12} xl={6}>
           <ExtraCount

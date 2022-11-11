@@ -251,3 +251,12 @@ export async function getWeekByDate(params?: GetDstByDate) {
     params,
   });
 }
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {}
+export async function getAgentStat(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/forwarder_by_date', {
+    method: 'GET',
+    params,
+  });
+}

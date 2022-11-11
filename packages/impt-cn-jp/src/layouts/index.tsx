@@ -104,6 +104,10 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
                       key: '/cts/StatusInquiry/Full',
                       label: <Link to="/cts/StatusInquiry/Full">Full</Link>,
                     },
+                    {
+                      key: '/cts/StatusInquiry/HAWB',
+                      label: <Link to="/cts/StatusInquiry/HAWB">HAWB</Link>,
+                    },
                   ],
                 },
                 {

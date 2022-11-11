@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import dayjs from 'dayjs';
 import {
   Form,
   Table,
@@ -94,7 +95,14 @@ const StatusInquiry: React.FC = () => {
         // extra: <UploadImages />,
       }}
     >
-      <Form form={form} className="sk-table-search">
+      <Form
+        form={form}
+        className="sk-table-search"
+        initialValues={{
+          flightStartDate: dayjs().add(-10, 'day').startOf('day'),
+          flightEndDate: dayjs(),
+        }}
+      >
         <Row justify="end" gutter={16}>
           <Col span={3}>
             <Form.Item name="agent">

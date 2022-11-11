@@ -1,16 +1,11 @@
 import { Space, message } from 'antd';
 import XLSX from 'xlsx';
+import * as encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { washAll } from '@/services/request/root';
 
 const rightHeader = ['ImpNameJP', 'ImpName', 'IAD', 'IADJP', 'Zip'];
-
-const zenkaku2Hankaku = (str: string) => {
-  return str.replace(/[Ａ-Ｚａ-ｚ０-９ー]/g, function (s) {
-    return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
-  });
-};
 
 function fixItemToObj(params: any[], zen: boolean) {
   let waybills = [];
@@ -22,7 +17,7 @@ function fixItemToObj(params: any[], zen: boolean) {
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
         if (zen) {
-          obj[headers?.[j]?.trim?.()] = zenkaku2Hankaku(
+          obj[headers?.[j]?.trim?.()] = encoding.toHankakuCase(
             line?.[j]?.toString?.() || '',
           );
         } else {
