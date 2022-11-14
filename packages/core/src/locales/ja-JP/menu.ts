@@ -1,4 +1,5 @@
 export default {
+  'menu.home': 'ダッシュボード',
   'menu.title': '物流系统',
   'menu.waybill': '運送管理',
   'menu.waybill.cn-to-jp': '输入運送状',

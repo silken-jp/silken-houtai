@@ -33,6 +33,8 @@ const waybill: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [intlWaybill] = useIntlFormat('waybill');
+  const [intlPages] = useIntlFormat('pages');
   const agentInfo = getAgentInfo();
 
   // api
@@ -80,7 +82,10 @@ const waybill: React.FC = () => {
       })),
     };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search } = useAntdTable(getTableData, {
+    form,
+    manual: true,
+  });
 
   const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
     manual: true,
@@ -131,7 +136,7 @@ const waybill: React.FC = () => {
             <Form.Item name="waybill_type">
               <Select
                 allowClear
-                placeholder="識別"
+                placeholder={intlWaybill('waybill_type')}
                 options={[
                   { label: 'MIC', value: 'MIC' },
                   { label: 'IDA', value: 'IDA' },
@@ -143,7 +148,7 @@ const waybill: React.FC = () => {
             <Form.Item name="is_PER">
               <Select
                 allowClear
-                placeholder="通関結果"
+                placeholder={intlWaybill('is_PER')}
                 options={[
                   { label: '許可', value: '1' },
                   { label: '未許可', value: '0' },
@@ -155,7 +160,7 @@ const waybill: React.FC = () => {
             <Form.Item name="is_PER_image">
               <Select
                 allowClear
-                placeholder="許可書有無"
+                placeholder={intlWaybill('is_PER_image')}
                 options={[
                   { label: '有', value: '1' },
                   { label: '無', value: '0' },
@@ -165,7 +170,7 @@ const waybill: React.FC = () => {
           </Col>
           <Col flex="auto">
             <Form.Item name="MAB">
-              <Input placeholder="MAWB番号" />
+              <Input placeholder={intlWaybill('MAB')} />
             </Form.Item>
           </Col>
           {/* <Col flex="150px">
@@ -188,7 +193,10 @@ const waybill: React.FC = () => {
           <Col flex="270px">
             <Form.Item name="PER_date">
               <DatePicker.RangePicker
-                placeholder={['許可開始日', '許可終了日']}
+                placeholder={[
+                  intlWaybill('PER_date_start'),
+                  intlWaybill('PER_date_end'),
+                ]}
               />
             </Form.Item>
           </Col>
@@ -196,7 +204,7 @@ const waybill: React.FC = () => {
             <Form.Item name={['search1', 'key']}>
               <Select
                 allowClear
-                placeholder="項目名"
+                placeholder={intlWaybill('searchKey')}
                 options={[
                   { label: 'FLIGHT NO', value: 'flight_no' },
                   { label: '個数', value: 'NO' },
@@ -211,7 +219,7 @@ const waybill: React.FC = () => {
           </Col>
           <Col flex="100px">
             <Form.Item name={['search1', 'value']}>
-              <Input placeholder="検査内容" />
+              <Input placeholder={intlWaybill('searchValue')} />
             </Form.Item>
           </Col>
         </Row>
@@ -220,7 +228,7 @@ const waybill: React.FC = () => {
             <Form.Item name="EXA_DIS">
               <Select
                 allowClear
-                placeholder="審査検査区分"
+                placeholder={intlWaybill('EXA_DIS')}
                 options={[
                   { label: '1', value: '1' },
                   { label: '2', value: '2' },
@@ -234,17 +242,17 @@ const waybill: React.FC = () => {
             <Form.Item name={['search2', 'key']}>
               <Select
                 allowClear
-                placeholder="項目名"
+                placeholder={intlWaybill('searchKey')}
                 options={[
-                  { label: 'HAWB番号', value: 'HAB' },
-                  { label: '申告番号', value: 'DEC_ID' },
+                  { label: intlWaybill('hawbNo'), value: 'HAB' },
+                  { label: intlWaybill('declaredNo'), value: 'DEC_ID' },
                 ]}
               />
             </Form.Item>
           </Col>
           <Col flex="auto">
             <Form.Item name={['search2', 'value']}>
-              <Input placeholder="HAWB番号/お問い合わせ番号/申告番号" />
+              <Input placeholder={intlWaybill('searchValue2')} />
             </Form.Item>
           </Col>
           {/* <Col flex="100px">
@@ -271,9 +279,11 @@ const waybill: React.FC = () => {
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
-                検索
+                {intlPages('search.submit')}
               </Button>
-              <Button onClick={search.reset}>リセット</Button>
+              <Button onClick={search.reset}>
+                {intlPages('search.reset')}
+              </Button>
             </Space>
           </Col>
         </Row>
@@ -308,7 +318,7 @@ const waybill: React.FC = () => {
           <Space>
             <span>selected: {selectedRowKeys?.length || 0} items</span>
             <Button size="small" type="link" onClick={handleClear}>
-              clear
+              {intlPages('form.clear')}
             </Button>
             <Button
               type="primary"
@@ -318,7 +328,7 @@ const waybill: React.FC = () => {
                 })
               }
             >
-              許可書
+              {intlPages('action.permit')}
             </Button>
           </Space>
         }
@@ -333,12 +343,12 @@ const waybill: React.FC = () => {
           <Table.Column
             sorter
             width={120}
-            title="お問い合わせ番号"
+            title={intlWaybill('inquiryNo')}
             dataIndex="HAB"
           />
           <Table.Column
             width={200}
-            title="追跡"
+            title={intlWaybill('track')}
             render={(row) => {
               return <TrackModal dataSource={row?.track} />;
             }}
@@ -346,12 +356,12 @@ const waybill: React.FC = () => {
           {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
             width={150}
-            title="審査検査区分"
+            title={intlWaybill('EXA_DIS')}
             dataIndex={['tracking', 'EXA_DIS']}
           />
           <Table.Column
             width={200}
-            title="状態"
+            title={intlWaybill('status')}
             render={(row) =>
               row?.tracking?.trackingHistory?.map((item: any, key: any) => (
                 <Tag key={key} color="blue">
@@ -363,7 +373,7 @@ const waybill: React.FC = () => {
           />
           <Table.Column
             width={100}
-            title="許可書"
+            title={intlWaybill('permit')}
             render={(row) =>
               !!row?.is_PER_image && (
                 <Button
@@ -375,19 +385,29 @@ const waybill: React.FC = () => {
                     })
                   }
                 >
-                  許可書
+                  {intlWaybill('permit')}
                 </Button>
               )
             }
           />
-          <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
-          <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
+          <Table.Column
+            sorter
+            width={150}
+            title={intlWaybill('hawbNo')}
+            dataIndex="HAB"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title={intlWaybill('mawbNo')}
+            dataIndex="MAB"
+          />
           {/* <Table.Column width={150} title="配送業者" /> */}
           {/* <Table.Column width={150} title="タイプ" /> */}
           <Table.Column
             sorter
             width={80}
-            title="識別"
+            title={intlWaybill('waybill_type')}
             dataIndex="waybill_type"
           />
           <Table.Column
@@ -405,24 +425,45 @@ const waybill: React.FC = () => {
           />
           <Table.Column
             width={180}
-            title="申告番号"
+            title={intlWaybill('declaredNo')}
             dataIndex={['tracking', 'ID']}
           />
-          <Table.Column sorter width={80} title="個数" dataIndex="PCS" />
+          <Table.Column
+            sorter
+            width={80}
+            title={intlWaybill('PCS')}
+            dataIndex="PCS"
+          />
           <Table.Column
             sorter
             width={100}
-            title="重量（ＫＧ）"
+            title={intlWaybill('GW')}
             dataIndex="GW"
           />
-          <Table.Column width={150} title="関税" render={() => 0} />
-          <Table.Column width={150} title="消費税" render={() => 0} />
-          <Table.Column width={150} title="地方消費税" render={() => 0} />
-          <Table.Column width={150} title="納税額合計" render={() => 0} />
+          <Table.Column
+            width={150}
+            title={intlWaybill('tax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('consumptionTax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('localConsumptionTax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('totalTax')}
+            render={() => 0}
+          />
           <Table.Column
             sorter
             width={150}
-            title="作成日時"
+            title={intlWaybill('createdAt')}
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />

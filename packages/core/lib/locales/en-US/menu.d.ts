@@ -1,6 +1,5 @@
 declare const _default: {
   'menu.home': string;
-  'menu.title': string;
   'menu.waybill': string;
   'menu.waybill.cn-to-jp': string;
   'menu.waybill.jp-to-cn': string;

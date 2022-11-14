@@ -6,10 +6,12 @@ var __importDefault =
   };
 exports.__esModule = true;
 exports.locales = void 0;
+var en_US_1 = __importDefault(require('./en-US'));
 var ja_JP_1 = __importDefault(require('./ja-JP'));
 var zh_CN_1 = __importDefault(require('./zh-CN'));
 exports.locales = {
   'ja-JP': ja_JP_1['default'],
   'zh-CN': zh_CN_1['default'],
+  'en-US': en_US_1['default'],
 };
 exports['default'] = exports.locales;

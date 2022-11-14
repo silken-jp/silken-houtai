@@ -31,6 +31,8 @@ const waybill: React.FC = () => {
   const [form] = Form.useForm();
   const agentInfo = getAgentInfo();
   const [intlMenu] = useIntlFormat('menu');
+  const [intlPages] = useIntlFormat('pages');
+  const [intlWaybill] = useIntlFormat('waybill');
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Issue>();
@@ -98,7 +100,7 @@ const waybill: React.FC = () => {
       message.warn('編集項目を選択してください。');
     } else if (selectedRows?.length === 1) {
       handleOpen({
-        title: '編集',
+        title: intlPages('form.edit'),
         type: 'edit',
         data: {
           ...selectedRows[0],
@@ -158,7 +160,7 @@ const waybill: React.FC = () => {
             <Form.Item name="status">
               <Select
                 allowClear
-                placeholder="状態"
+                placeholder={intlWaybill('status')}
                 options={[
                   { label: '未処理', value: '未処理' },
                   { label: '問題作成', value: '問題作成' },
@@ -171,14 +173,14 @@ const waybill: React.FC = () => {
           </Col>
           <Col flex="auto">
             <Form.Item name="MAB">
-              <Input placeholder="MAWB番号" />
+              <Input placeholder={intlWaybill('MAB')} />
             </Form.Item>
           </Col>
           <Col flex="150px">
             <Form.Item name="issue_category">
               <Select
                 allowClear
-                placeholder="問題該当"
+                placeholder={intlWaybill('issue_category')}
                 options={[
                   { label: '破損', value: '破損' },
                   { label: '搬入時破損', value: '搬入時破損' },
@@ -198,7 +200,7 @@ const waybill: React.FC = () => {
             <Form.Item name="cargo_status">
               <Select
                 allowClear
-                placeholder="返品状態"
+                placeholder={intlWaybill('cargo_status')}
                 options={[
                   { label: '返品済', value: '返品済' },
                   { label: '未', value: '未' },
@@ -210,39 +212,44 @@ const waybill: React.FC = () => {
           </Col>
           <Col flex="150px">
             <Form.Item name="HAB">
-              <Input placeholder="伝票番号" />
+              <Input placeholder={intlWaybill('HAB')} />
             </Form.Item>
           </Col>
           <Col flex="150px">
             <Form.Item name="new_tracking_no">
-              <Input placeholder="新伝票番号" />
+              <Input placeholder={intlWaybill('new_tracking_no')} />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={8}>
           <Col flex="auto">
             <Form.Item name="HAB">
-              <Input placeholder="HAWB番号" />
+              <Input placeholder={intlWaybill('HAB')} />
             </Form.Item>
           </Col>
           <Col flex="270px">
             <Form.Item name="createdDateArr">
               <DatePicker.RangePicker
-                placeholder={['登録開始日', '登録終了日']}
+                placeholder={[
+                  intlWaybill('createdDateStart'),
+                  intlWaybill('createdDateEnd'),
+                ]}
               />
             </Form.Item>
           </Col>
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
-                検索
+                {intlPages('search.submit')}
               </Button>
-              <Button onClick={search.reset}>リセット</Button>
+              <Button onClick={search.reset}>
+                {intlPages('search.reset')}
+              </Button>
               <Button
                 onClick={handleExportALL}
                 loading={exportIssuesApi.loading}
               >
-                Export(一括)
+                {intlPages('action.exportAll')}
               </Button>
             </Space>
           </Col>
@@ -253,12 +260,14 @@ const waybill: React.FC = () => {
           <Space>
             <span>selected: {selectedRowKeys?.length || 0} items</span>
             <Button size="small" type="link" onClick={handleClear}>
-              clear
+              {intlPages('form.clear')}
             </Button>
             <Button type="primary" onClick={handleEdit}>
-              編集
+              {intlPages('form.edit')}
             </Button>
-            <Button onClick={handleExportIssues}>Export</Button>
+            <Button onClick={handleExportIssues}>
+              {intlPages('action.export')}
+            </Button>
           </Space>
         }
       >
@@ -271,116 +280,126 @@ const waybill: React.FC = () => {
         >
           <Table.Column
             width={180}
-            title="HAWB番号"
+            title={intlWaybill('hawbNo')}
             dataIndex={['waybill', 'HAB']}
           />
           <Table.Column
             width={180}
-            title="MAWB番号"
+            title={intlWaybill('mawbNo')}
             dataIndex={['waybill', 'MAB']}
           />
           <Table.Column
             width={180}
-            title="伝票番号"
+            title={intlWaybill('HAB')}
             dataIndex={['waybill', 'HAB']}
           />
           <Table.Column
             width={180}
             sorter
-            title="新伝票番号"
+            title={intlWaybill('new_tracking_no')}
             dataIndex="new_tracking_no"
           />
           <Table.Column
             width={180}
             sorter
-            title="連絡日"
+            title={intlWaybill('createdAt')}
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt, 'YYYY/MM/DD')}
           />
           <Table.Column
             width={180}
             sorter
-            title="問題該当"
+            title={intlWaybill('issue_category')}
             dataIndex="issue_category"
           />
           <Table.Column
             width={180}
             sorter
-            title="返品状態"
+            title={intlWaybill('cargo_status')}
             dataIndex="cargo_status"
           />
           <Table.Column
             width={180}
             sorter
-            title="問題詳細"
+            title={intlWaybill('issue_detail')}
             dataIndex="issue_detail"
           />
-          <Table.Column width={180} sorter title="状態" dataIndex="status" />
-          <Table.Column width={180} sorter title="通知者" />
           <Table.Column
             width={180}
             sorter
-            title="回答日"
+            title={intlWaybill('status')}
+            dataIndex="status"
+          />
+          {/* <Table.Column width={180} sorter title="通知者" /> */}
+          <Table.Column
+            width={180}
+            sorter
+            title={intlWaybill('reply_date')}
             dataIndex="reply_date"
             render={(reply_date) => dayFormat(reply_date, 'YYYY/MM/DD')}
           />
           <Table.Column
             width={180}
             sorter
-            title="科目"
+            title={intlWaybill('reply_subject')}
             dataIndex="reply_subject"
           />
           <Table.Column
             width={180}
             sorter
-            title="内容"
+            title={intlWaybill('reply_content')}
             dataIndex="reply_content"
           />
           <Table.Column
             width={180}
             sorter
-            title="受取人住所"
+            title={intlWaybill('receiver_add')}
             dataIndex="receiver_add"
           />
           <Table.Column
             width={180}
             sorter
-            title="受取人郵便番号"
+            title={intlWaybill('receiver_zip')}
             dataIndex="receiver_zip"
           />
           <Table.Column
             width={180}
             sorter
-            title="受取人電話番号"
+            title={intlWaybill('receiver_tel')}
             dataIndex="receiver_tel"
           />
           <Table.Column
             width={180}
             sorter
-            title="受取人"
+            title={intlWaybill('receiver_name')}
             dataIndex="receiver_name"
           />
-          <Table.Column width={180} sorter title="品名" dataIndex="CMN" />
           <Table.Column
             width={180}
-            title="個数"
+            sorter
+            title={intlWaybill('CMN')}
+            dataIndex="CMN"
+          />
+          <Table.Column
+            width={180}
+            title={intlWaybill('NO')}
             dataIndex={['waybill', 'NO']}
           />
           <Table.Column
             width={180}
-            title="重量"
+            title={intlWaybill('GW')}
             dataIndex={['waybill', 'GW']}
           />
           <Table.Column
             width={180}
-            title="発送日"
+            title={intlWaybill('send_date')}
             sorter
             dataIndex="send_date"
             render={(send_date) => dayFormat(send_date, 'YYYY/MM/DD')}
           />
           <Table.Column
             width={180}
-            title="処理日"
+            title={intlWaybill('solve_date')}
             sorter
             dataIndex="solve_date"
             render={(solve_date) => dayFormat(solve_date, 'YYYY/MM/DD')}
@@ -390,19 +409,19 @@ const waybill: React.FC = () => {
           <Table.Column
             width={180}
             sorter
-            title="対応方法"
+            title={intlWaybill('solve_method')}
             dataIndex="solve_method"
           />
           <Table.Column
             width={180}
             sorter
-            title="備考"
+            title={intlWaybill('solve_note')}
             dataIndex="solve_note"
           />
           <Table.Column
             width={180}
             sorter
-            title="登録者"
+            title={intlWaybill('created_user')}
             dataIndex="created_user"
             render={(created_user) =>
               userOptions?.find((item) => item?.value === created_user)?.label
@@ -412,14 +431,14 @@ const waybill: React.FC = () => {
           <Table.Column
             width={180}
             sorter
-            title="登録日時"
+            title={intlWaybill('createdAt')}
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />
           <Table.Column
             width={180}
             sorter
-            title="最後更新者"
+            title={intlWaybill('updated_user')}
             dataIndex="updated_user"
             render={(updated_user) =>
               userOptions?.find((item) => item?.value === updated_user)?.label
@@ -429,7 +448,7 @@ const waybill: React.FC = () => {
           <Table.Column
             width={180}
             sorter
-            title="更新日時"
+            title={intlWaybill('updatedAt')}
             dataIndex="updatedAt"
             render={(updatedAt) => dayFormat(updatedAt)}
           />

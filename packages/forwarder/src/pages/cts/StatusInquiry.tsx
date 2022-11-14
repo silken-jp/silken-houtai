@@ -25,6 +25,8 @@ const StatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [intlWaybill] = useIntlFormat('waybill');
+  const [intlPages] = useIntlFormat('pages');
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
 
@@ -111,32 +113,34 @@ const StatusInquiry: React.FC = () => {
         <Row justify="end" gutter={16}>
           <Col span={3}>
             <Form.Item name="MAB">
-              <Input placeholder="MAWB番号" />
+              <Input placeholder={intlWaybill('MAB')} />
             </Form.Item>
           </Col>
           <Col span={3}>
             <Form.Item name="flightNo">
-              <Input placeholder="FlightNo" />
+              <Input placeholder="Flight No" />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name="flightStartDate">
-              <DatePicker placeholder="flight start date" />
+              <DatePicker placeholder="Start Date Of Flight" />
             </Form.Item>
           </Col>
           <Col>
             <Form.Item name="flightEndDate">
-              <DatePicker placeholder="flight end date" />
+              <DatePicker placeholder="End Date Of Flight" />
             </Form.Item>
           </Col>
           <Col>
             <Space>
               <Button type="primary" onClick={search.submit}>
-                検索
+                {intlPages('search.submit')}
               </Button>
-              <Button onClick={search.reset}>リセット</Button>
+              <Button onClick={search.reset}>
+                {intlPages('search.reset')}
+              </Button>
               <Button onClick={handleExportALL} loading={exportMABApi.loading}>
-                Export(一括)
+                {intlPages('action.exportAll')}
               </Button>
             </Space>
           </Col>
@@ -147,9 +151,11 @@ const StatusInquiry: React.FC = () => {
           <Space>
             <span>selected: {selectedRowKeys?.length || 0} items</span>
             <Button size="small" type="link" onClick={handleClear}>
-              clear
+              {intlPages('form.clear')}
             </Button>
-            <Button onClick={handleExportMAB}>Export</Button>
+            <Button onClick={handleExportMAB}>
+              {intlPages('action.export')}
+            </Button>
           </Space>
         }
       >
@@ -160,7 +166,12 @@ const StatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           scroll={{ x: 2000, y: 'calc(100vh - 500px)' }}
         >
-          <Table.Column sorter width={180} title="MAWB番号" dataIndex="_id" />
+          <Table.Column
+            sorter
+            width={180}
+            title={intlWaybill('MAB')}
+            dataIndex="_id"
+          />
           <Table.Column
             sorter
             width={150}
@@ -174,38 +185,43 @@ const StatusInquiry: React.FC = () => {
             dataIndex="flightDate"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column
+            sorter
+            width={120}
+            title={intlWaybill('NOCount')}
+            dataIndex="NOCount"
+          />
           <Table.Column
             sorter
             width={150}
-            title="未申告件数"
+            title={intlWaybill('notDecNo')}
             dataIndex="notDecNo"
           />
-          <Table.ColumnGroup title="許可件数">
+          <Table.ColumnGroup title={intlWaybill('perNo')}>
             <Table.Column
               sorter
               width={120}
-              title="MIC許可"
+              title={intlWaybill('micPerNo')}
               dataIndex="micPerNo"
             />
             <Table.Column
               sorter
               width={120}
-              title="IDC許可"
+              title={intlWaybill('idaPerNo')}
               dataIndex="idaPerNo"
             />
             <Table.Column
               sorter
               width={120}
-              title="未許可"
+              title={intlWaybill('notPerNo')}
               dataIndex="notPerNo"
             />
           </Table.ColumnGroup>
-          <Table.ColumnGroup title="許可・審査・検査区分">
+          <Table.ColumnGroup title={intlWaybill('counts')}>
             <Table.Column
               sorter
               width={150}
-              title="許可率（区分１）"
+              title={intlWaybill('count1')}
               dataIndex="count1"
               render={(_, row: any) =>
                 `${((row?.count1 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
@@ -216,7 +232,7 @@ const StatusInquiry: React.FC = () => {
             <Table.Column
               sorter
               width={150}
-              title="審査率（区分２）"
+              title={intlWaybill('count2')}
               dataIndex="count2"
               render={(_, row: any) =>
                 `${((row?.count2 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
@@ -226,7 +242,7 @@ const StatusInquiry: React.FC = () => {
             />
             <Table.Column
               width={150}
-              title="検査率（区分３）"
+              title={intlWaybill('count3')}
               render={(_, row: any) =>
                 `${(
                   ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
@@ -237,13 +253,13 @@ const StatusInquiry: React.FC = () => {
           <Table.Column
             sorter
             width={150}
-            title="個数"
+            title={intlWaybill('waybillCount')}
             dataIndex="waybillCount"
           />
           <Table.Column
             sorter
             width={150}
-            title="重量（KG）"
+            title={intlWaybill('GWCount')}
             dataIndex="GWCount"
             render={(GWCount) => GWCount?.toFixed(2)}
           />
@@ -257,7 +273,7 @@ const StatusInquiry: React.FC = () => {
           <Table.Column
             sorter
             width={180}
-            title="登録時間"
+            title={intlWaybill('createdAt')}
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />

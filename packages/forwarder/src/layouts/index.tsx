@@ -2,7 +2,6 @@ import { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
 import {
   CloudFilled,
-  FormOutlined,
   SendOutlined,
   ProfileOutlined,
   DashboardOutlined,
@@ -12,7 +11,7 @@ import {
 import { useHistory, Link, setLocale } from 'umi';
 ////
 import { removeAgentInfo } from '@/services/useStorage';
-// import { useIntlFormat } from '../services/useIntl';
+import { useIntlFormat } from '../services/useIntl';
 import styles from './index.less';
 
 const Index: React.FC = (props) => {
@@ -26,7 +25,7 @@ const Index: React.FC = (props) => {
     setCollapsed(!collapsed);
   };
 
-  // const [intlMenu] = useIntlFormat('menu');
+  const [intlMenu] = useIntlFormat('menu');
 
   const handleLogOut = () => {
     removeAgentInfo();
@@ -54,9 +53,13 @@ const Index: React.FC = (props) => {
           selectedKeys={[history?.location?.pathname]}
         >
           <Menu.Item key="/home" icon={<DashboardOutlined />}>
-            <Link to="/home">ダッシュボード</Link>
+            <Link to="/home">{intlMenu('home')}</Link>
           </Menu.Item>
-          <Menu.SubMenu key="/cts" icon={<ProfileOutlined />} title="通関管理">
+          <Menu.SubMenu
+            key="/cts"
+            icon={<ProfileOutlined />}
+            title={intlMenu('cts')}
+          >
             <Menu.Item key="/cts/StatusInquiry">
               <Link to="/cts/StatusInquiry">Status Inquiry</Link>
             </Menu.Item>
@@ -69,13 +72,17 @@ const Index: React.FC = (props) => {
           <Menu.SubMenu
             key="/CSManagement"
             icon={<SendOutlined />}
-            title="CS管理"
+            title={intlMenu('CSManagement')}
           >
             <Menu.Item key="/CSManagement/permit">
-              <Link to="/CSManagement/permit">貨物状況確認</Link>
+              <Link to="/CSManagement/permit">
+                {intlMenu('CSManagement.permit')}
+              </Link>
             </Menu.Item>
             <Menu.Item key="/CSManagement/cargoIssues">
-              <Link to="/CSManagement/cargoIssues">貨物問題リスト</Link>
+              <Link to="/CSManagement/cargoIssues">
+                {intlMenu('CSManagement.cargoIssues')}
+              </Link>
             </Menu.Item>
           </Menu.SubMenu>
         </Menu>
@@ -93,14 +100,17 @@ const Index: React.FC = (props) => {
               )}
             </Col>
             <Col>
-              <Button type="link" onClick={() => setLocale('zh-CN', false)}>
+              {/* <Button type="link" onClick={() => setLocale('zh-CN', false)}>
                 中
-              </Button>
+              </Button> */}
               <Button type="link" onClick={() => setLocale('ja-JP', false)}>
                 日
               </Button>
+              <Button type="link" onClick={() => setLocale('en-US', false)}>
+                EN
+              </Button>
               <Button style={{ margin: '0 24px' }} onClick={handleLogOut}>
-                ログアウト
+                LogOut
               </Button>
             </Col>
           </Row>

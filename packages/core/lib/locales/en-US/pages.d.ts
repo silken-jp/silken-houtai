@@ -5,10 +5,10 @@ declare const _default: {
   'pages.action.exportAll': string;
   'pages.action.permit': string;
   'pages.action.update': string;
-  'pages.form.clear': string;
   'pages.form.add': string;
   'pages.form.edit': string;
   'pages.form.delete': string;
+  'pages.form.clear': string;
   'pages.import.temple': string;
   'pages.import.create': string;
   'pages.import.update': string;
