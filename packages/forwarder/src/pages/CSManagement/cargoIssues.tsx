@@ -33,6 +33,7 @@ const waybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
   const [intlPages] = useIntlFormat('pages');
   const [intlWaybill] = useIntlFormat('waybill');
+  const [intlCargoOpt] = useIntlFormat('options.cargoIssues');
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Issue>();
@@ -162,11 +163,14 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('status')}
                 options={[
-                  { label: '未処理', value: '未処理' },
-                  { label: '問題作成', value: '問題作成' },
-                  { label: '代理店対応中', value: '代理店対応中' },
-                  { label: 'CS対応中', value: 'CS対応中' },
-                  { label: '対応完了', value: '対応完了' },
+                  { label: intlCargoOpt('status.未処理'), value: '未処理' },
+                  { label: intlCargoOpt('status.問題作成'), value: '問題作成' },
+                  {
+                    label: intlCargoOpt('status.代理店対応中'),
+                    value: '代理店対応中',
+                  },
+                  { label: intlCargoOpt('status.CS対応中'), value: 'CS対応中' },
+                  { label: intlCargoOpt('status.対応完了'), value: '対応完了' },
                 ]}
               />
             </Form.Item>
@@ -182,16 +186,37 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('issue_category')}
                 options={[
-                  { label: '破損', value: '破損' },
-                  { label: '搬入時破損', value: '搬入時破損' },
-                  { label: '住所不明', value: '住所不明' },
-                  { label: '受取辞退', value: '受取辞退' },
-                  { label: 'ラベル剥がれ', value: 'ラベル剥がれ' },
-                  { label: '長期不在', value: '長期不在' },
-                  { label: '住所変更', value: '住所変更' },
-                  { label: '滅却', value: '滅却' },
-                  { label: '代替品', value: '代替品' },
-                  { label: '紛失', value: '紛失' },
+                  { label: intlCargoOpt('issue_category.破損'), value: '破損' },
+                  {
+                    label: intlCargoOpt('issue_category.搬入時破損'),
+                    value: '搬入時破損',
+                  },
+                  {
+                    label: intlCargoOpt('issue_category.住所不明'),
+                    value: '住所不明',
+                  },
+                  {
+                    label: intlCargoOpt('issue_category.受取辞退'),
+                    value: '受取辞退',
+                  },
+                  {
+                    label: intlCargoOpt('issue_category.ラベル剥がれ'),
+                    value: 'ラベル剥がれ',
+                  },
+                  {
+                    label: intlCargoOpt('issue_category.長期不在'),
+                    value: '長期不在',
+                  },
+                  {
+                    label: intlCargoOpt('issue_category.住所変更'),
+                    value: '住所変更',
+                  },
+                  { label: intlCargoOpt('issue_category.滅却'), value: '滅却' },
+                  {
+                    label: intlCargoOpt('issue_category.代替品'),
+                    value: '代替品',
+                  },
+                  { label: intlCargoOpt('issue_category.紛失'), value: '紛失' },
                 ]}
               />
             </Form.Item>
@@ -202,10 +227,16 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('cargo_status')}
                 options={[
-                  { label: '返品済', value: '返品済' },
-                  { label: '未', value: '未' },
-                  { label: '搬入時', value: '搬入時' },
-                  { label: '滅却', value: '滅却' },
+                  {
+                    label: intlCargoOpt('cargo_status.返品済'),
+                    value: '返品済',
+                  },
+                  { label: intlCargoOpt('cargo_status.未'), value: '未' },
+                  {
+                    label: intlCargoOpt('cargo_status.搬入時'),
+                    value: '搬入時',
+                  },
+                  { label: intlCargoOpt('cargo_status.滅却'), value: '滅却' },
                 ]}
               />
             </Form.Item>

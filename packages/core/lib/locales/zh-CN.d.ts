@@ -34,6 +34,17 @@ declare const _default: {
   'menu.exception.403': string;
   'menu.exception.404': string;
   'menu.exception.500': string;
+  'options.permit.is_PER.1': string;
+  'options.permit.is_PER.0': string;
+  'options.permit.is_PER_image.1': string;
+  'options.permit.is_PER_image.0': string;
+  'options.permit.searchKey.flight_no': string;
+  'options.permit.searchKey.NO': string;
+  'options.permit.searchKey.GW': string;
+  'options.permit.searchKey.tax': string;
+  'options.permit.searchKey.consumptionTax': string;
+  'options.permit.searchKey.localConsumptionTax': string;
+  'options.permit.searchKey.totalTax': string;
   'component.globalHeader.search': string;
   'component.globalHeader.search.example1': string;
   'component.globalHeader.search.example2': string;

@@ -1,6 +1,7 @@
 import component from './ja-JP/component';
 import globalHeader from './ja-JP/globalHeader';
 import menu from './ja-JP/menu';
+import options from './ja-JP/options';
 import pages from './ja-JP/pages';
 import waybill from './ja-JP/waybill';
 
@@ -11,6 +12,7 @@ export default {
   'layout.user.link.terms': '条款',
   ...pages,
   ...globalHeader,
+  ...options,
   ...menu,
   ...component,
   ...waybill,

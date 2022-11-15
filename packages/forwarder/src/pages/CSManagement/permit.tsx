@@ -35,6 +35,7 @@ const waybill: React.FC = () => {
   const [intlMenu] = useIntlFormat('menu');
   const [intlWaybill] = useIntlFormat('waybill');
   const [intlPages] = useIntlFormat('pages');
+  const [intlPerOpt] = useIntlFormat('options.permit');
   const agentInfo = getAgentInfo();
 
   // api
@@ -150,8 +151,8 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('is_PER')}
                 options={[
-                  { label: '許可', value: '1' },
-                  { label: '未許可', value: '0' },
+                  { label: intlPerOpt('is_PER.1'), value: '1' },
+                  { label: intlPerOpt('is_PER.0'), value: '0' },
                 ]}
               />
             </Form.Item>
@@ -162,8 +163,8 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('is_PER_image')}
                 options={[
-                  { label: '有', value: '1' },
-                  { label: '無', value: '0' },
+                  { label: intlPerOpt('is_PER_image.1'), value: '1' },
+                  { label: intlPerOpt('is_PER_image.0'), value: '0' },
                 ]}
               />
             </Form.Item>
@@ -206,13 +207,32 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder={intlWaybill('searchKey')}
                 options={[
-                  { label: 'FLIGHT NO', value: 'flight_no' },
-                  { label: '個数', value: 'NO' },
-                  { label: '重量（KG）', value: 'GW' },
-                  { label: '関税', value: '3', disabled: true },
-                  { label: '消費税', value: '4', disabled: true },
-                  { label: '地方消費税', value: '5', disabled: true },
-                  { label: '納税額合計', value: '6', disabled: true },
+                  {
+                    label: intlPerOpt('searchKey.flight_no'),
+                    value: 'flight_no',
+                  },
+                  { label: intlPerOpt('searchKey.NO'), value: 'NO' },
+                  { label: intlPerOpt('searchKey.GW'), value: 'GW' },
+                  {
+                    label: intlPerOpt('searchKey.tax'),
+                    value: '3',
+                    disabled: true,
+                  },
+                  {
+                    label: intlPerOpt('searchKey.consumptionTax'),
+                    value: '4',
+                    disabled: true,
+                  },
+                  {
+                    label: intlPerOpt('searchKey.localConsumptionTax'),
+                    value: '5',
+                    disabled: true,
+                  },
+                  {
+                    label: intlPerOpt('searchKey.totalTax'),
+                    value: '6',
+                    disabled: true,
+                  },
                 ]}
               />
             </Form.Item>

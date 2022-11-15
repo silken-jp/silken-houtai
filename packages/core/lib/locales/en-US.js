@@ -23,6 +23,7 @@ exports.__esModule = true;
 var component_1 = __importDefault(require('./en-US/component'));
 var globalHeader_1 = __importDefault(require('./en-US/globalHeader'));
 var menu_1 = __importDefault(require('./en-US/menu'));
+var options_1 = __importDefault(require('./en-US/options'));
 var pages_1 = __importDefault(require('./en-US/pages'));
 var waybill_1 = __importDefault(require('./en-US/waybill'));
 exports['default'] = __assign(
@@ -30,15 +31,18 @@ exports['default'] = __assign(
     __assign(
       __assign(
         __assign(
-          {
-            'navBar.lang': '语言',
-            'layout.user.link.help': '帮助',
-            'layout.user.link.privacy': '隐私',
-            'layout.user.link.terms': '条款',
-          },
-          pages_1['default'],
+          __assign(
+            {
+              'navBar.lang': '语言',
+              'layout.user.link.help': '帮助',
+              'layout.user.link.privacy': '隐私',
+              'layout.user.link.terms': '条款',
+            },
+            pages_1['default'],
+          ),
+          globalHeader_1['default'],
         ),
-        globalHeader_1['default'],
+        options_1['default'],
       ),
       menu_1['default'],
     ),
