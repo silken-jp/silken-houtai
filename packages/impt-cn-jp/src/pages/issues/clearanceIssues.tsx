@@ -18,18 +18,20 @@ import { PageContainer } from '@ant-design/pro-layout';
 ////
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { useIntlFormat } from '@/services/useIntl';
-import CargoIssueForm from '@/components/Form/CargoIssueForm';
+import ClearanceIssuesForm from '@/components/Form/ClearanceIssuesForm';
 import { useAgentOptions } from '@/services/useAPIOption';
 import {
   deleteIssueById,
+  genIssueType1,
   getAllIssues,
   updateIssue,
 } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
 import { getUserInfo } from '@/services/useStorage';
+import ExportIssuesXlsx from './components/ExportIssuesXlsx';
 
-const waybill: React.FC = () => {
+const ClearanceIssues: React.FC = () => {
   // state
   const [selectedRows, setSelectedRows] = useState<any[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any[]>([]);
@@ -66,12 +68,27 @@ const waybill: React.FC = () => {
     const data = await getAllIssues({
       page,
       perPage,
+      issue_type: 1,
       ...sorter,
       ...params,
     });
     return { total: data?.totalCount, list: data?.data };
   };
-  const { tableProps, search } = useAntdTable(getTableData, { form });
+  const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
+  const genIssue1 = useRequest(() => genIssueType1({ status: 'status1' }), {
+    manual: true,
+    onSuccess: (data) => {
+      message.success(data + '件更新しました。');
+      refresh();
+    },
+  });
+  const genIssue2 = useRequest(() => genIssueType1({ status: 'status2' }), {
+    manual: true,
+    onSuccess: (data) => {
+      message.success(data + '件更新しました。');
+      refresh();
+    },
+  });
   const deleteIssue = useRequest(deleteIssueById, { manual: true });
 
   // action
@@ -79,19 +96,9 @@ const waybill: React.FC = () => {
     if (formType === 'edit') {
       await updateIssue({
         issueId: selectedRowKeys[0],
-        price_projects: v?.price_projects?.flatMap((p: any) =>
-          p?.name && p.price ? [p] : [],
-        ),
         updated_user: userInfo?._id,
-        issue_category: v?.issue_category,
-        issue_detail: v?.issue_detail,
+        issue_reason: v?.issue_reason ? [v?.issue_reason] : [],
         status: v?.status,
-        cargo_status: v?.cargo_status,
-        new_tracking_no: v?.new_tracking_no,
-        solve_method: v?.solve_method,
-        solve_note: v?.solve_note,
-        ...(v?.send_date ? { send_date: v?.send_date?.toString() } : {}),
-        ...(v?.solve_date ? { solve_date: v?.solve_date?.toString() } : {}),
       });
       search.submit();
       handleClear();
@@ -151,22 +158,26 @@ const waybill: React.FC = () => {
   return (
     <PageContainer
       header={{
-        title: intlMenu('CSManagement.cargoIssues'),
+        title: intlMenu('issues.clearanceIssues'),
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/CSManagement/cargoIssues',
-              breadcrumbName: intlMenu('CSManagement'),
+              path: '/issues/clearanceIssues',
+              breadcrumbName: intlMenu('issues'),
             },
             {
               path: '',
-              breadcrumbName: intlMenu('CSManagement.cargoIssues'),
+              breadcrumbName: intlMenu('issues.clearanceIssues'),
             },
           ],
         },
       }}
     >
-      <CargoIssueForm type={formType} {...formProps} onSubmit={handleSubmit} />
+      <ClearanceIssuesForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
           <Col flex="150px">
@@ -175,6 +186,18 @@ const waybill: React.FC = () => {
                 allowClear
                 placeholder="フォワーダー"
                 options={agentOptions}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="150px">
+            <Form.Item name="clearance_status">
+              <Select
+                allowClear
+                placeholder="通関状態"
+                options={[
+                  { label: '未申告', value: '1' },
+                  { label: '未许可', value: '2' },
+                ]}
               />
             </Form.Item>
           </Col>
@@ -196,50 +219,6 @@ const waybill: React.FC = () => {
           <Col flex="auto">
             <Form.Item name="MAB">
               <Input placeholder="MAWB番号" />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item name="issue_category">
-              <Select
-                allowClear
-                placeholder="問題該当"
-                options={[
-                  { label: '破損', value: '破損' },
-                  { label: '搬入時破損', value: '搬入時破損' },
-                  { label: '住所不明', value: '住所不明' },
-                  { label: '受取辞退', value: '受取辞退' },
-                  { label: 'ラベル剥がれ', value: 'ラベル剥がれ' },
-                  { label: '長期不在', value: '長期不在' },
-                  { label: '住所変更', value: '住所変更' },
-                  { label: '滅却', value: '滅却' },
-                  { label: '代替品', value: '代替品' },
-                  { label: '紛失', value: '紛失' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item name="cargo_status">
-              <Select
-                allowClear
-                placeholder="返品状態"
-                options={[
-                  { label: '返品済', value: '返品済' },
-                  { label: '未', value: '未' },
-                  { label: '搬入時', value: '搬入時' },
-                  { label: '滅却', value: '滅却' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item name="HAB">
-              <Input placeholder="伝票番号" />
-            </Form.Item>
-          </Col>
-          <Col flex="150px">
-            <Form.Item name="new_tracking_no">
-              <Input placeholder="新伝票番号" />
             </Form.Item>
           </Col>
         </Row>
@@ -267,6 +246,25 @@ const waybill: React.FC = () => {
         </Row>
       </Form>
       <Card
+        title={
+          <Space>
+            更新：
+            <Button
+              type="primary"
+              onClick={genIssue1.run}
+              loading={genIssue1.loading}
+            >
+              未申告
+            </Button>
+            <Button
+              type="primary"
+              onClick={genIssue2.run}
+              loading={genIssue2.loading}
+            >
+              未許可
+            </Button>
+          </Space>
+        }
         extra={
           <Space>
             <span>selected: {selectedRowKeys?.length || 0} items</span>
@@ -279,6 +277,10 @@ const waybill: React.FC = () => {
             <Button loading={deleteIssue.loading} danger onClick={handleDelete}>
               削除
             </Button>
+            <ExportIssuesXlsx
+              count={tableProps.pagination.total}
+              issue_type={1}
+            />
           </Space>
         }
       >
@@ -289,9 +291,24 @@ const waybill: React.FC = () => {
           scroll={{ x: 6000 }}
           rowSelection={rowSelection}
         >
+          <Table.Column width={120} sorter title="状態" dataIndex="status" />
+          <Table.Column
+            width={120}
+            sorter
+            title="通関状態"
+            dataIndex="clearance_status"
+            render={(s) => <>{['', '未申告', '未许可'][s]}</>}
+          />
+          <Table.Column
+            width={120}
+            sorter
+            title="問題詳細"
+            dataIndex="issue_reason"
+            render={(s) => <>{s?.join(';')}</>}
+          />
           <Table.Column
             sorter
-            width={180}
+            width={120}
             title="フォワーダー"
             dataIndex="agent"
             render={(agent) =>
@@ -309,43 +326,12 @@ const waybill: React.FC = () => {
             dataIndex={['waybill', 'MAB']}
           />
           <Table.Column
-            width={180}
-            title="伝票番号"
-            dataIndex={['waybill', 'HAB']}
-          />
-          <Table.Column
-            sorter
-            width={180}
-            title="新伝票番号"
-            dataIndex="new_tracking_no"
-          />
-          <Table.Column
             sorter
             width={180}
             title="連絡日"
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt, 'YYYY/MM/DD')}
           />
-          <Table.Column
-            sorter
-            width={180}
-            title="問題該当"
-            dataIndex="issue_category"
-          />
-          <Table.Column
-            sorter
-            width={180}
-            title="返品状態"
-            dataIndex="cargo_status"
-          />
-          <Table.Column
-            sorter
-            width={180}
-            title="問題詳細"
-            dataIndex="issue_detail"
-          />
-          <Table.Column width={180} sorter title="状態" dataIndex="status" />
-          <Table.Column width={180} title="通知者" />
           <Table.Column
             sorter
             width={180}
@@ -399,8 +385,6 @@ const waybill: React.FC = () => {
             dataIndex="solve_date"
             render={(solve_date) => dayFormat(solve_date, 'YYYY/MM/DD')}
           />
-          <Table.Column width={180} title="料金科目" />
-          <Table.Column width={180} title="請求年月" />
           <Table.Column width={180} title="対応方法" dataIndex="solve_method" />
           <Table.Column width={180} title="備考" dataIndex="solve_note" />
           <Table.Column
@@ -412,7 +396,6 @@ const waybill: React.FC = () => {
               userOptions?.find((item) => item?.value === created_user)?.label
             }
           />
-          {/* <Table.Column width={180} title="登録構成" /> */}
           <Table.Column
             sorter
             width={180}
@@ -428,7 +411,6 @@ const waybill: React.FC = () => {
               userOptions?.find((item) => item?.value === updated_user)?.label
             }
           />
-          {/* <Table.Column width={180} title="最後更新構成" /> */}
           <Table.Column
             sorter
             width={180}
@@ -442,4 +424,4 @@ const waybill: React.FC = () => {
   );
 };
 
-export default waybill;
+export default ClearanceIssues;

@@ -19,4 +19,12 @@ export default {
   'menu.setting.flight': 'フライト管理',
   'menu.setting.zipArea': '配達エリア管理',
   'menu.setting.MICkey': 'フォルダ変更管理',
+
+  'menu.issues': '問題リスト',
+  'menu.issues.clearanceIssues': '通関',
+  'menu.issues.warehouseIssues': '倉庫',
+  'menu.issues.inspectionIssues': '税関検査',
+  'menu.issues.cargoIssues': '商品配達',
+
+  'menu.logout': 'logout',
 };

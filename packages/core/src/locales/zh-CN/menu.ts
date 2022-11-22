@@ -19,7 +19,12 @@ export default {
   'menu.setting.flight': '航班管理',
   'menu.setting.zipArea': '配送区域管理',
   'menu.setting.MICkey': '文件夹变更管理',
-  'menu.exception.403': '403',
-  'menu.exception.404': '404',
-  'menu.exception.500': '500',
+
+  'menu.issues': '问题列表',
+  'menu.issues.clearanceIssues': '通关',
+  'menu.issues.warehouseIssues': '仓库',
+  'menu.issues.inspectionIssues': '海关检查',
+  'menu.issues.cargoIssues': '货物发送',
+
+  'menu.logout': '登出',
 };

@@ -14,7 +14,7 @@ import { removeAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '../services/useIntl';
 import styles from './index.less';
 
-const Index: React.FC = (props) => {
+const Index: React.FC<{ children: any }> = (props) => {
   const history = useHistory();
   const isFull = ['/login', '/cts/check/', '/print'].some((item: any) =>
     history?.location?.pathname?.startsWith(item),
@@ -110,7 +110,7 @@ const Index: React.FC = (props) => {
                 EN
               </Button>
               <Button style={{ margin: '0 24px' }} onClick={handleLogOut}>
-                LogOut
+                {intlMenu('logout')}
               </Button>
             </Col>
           </Row>

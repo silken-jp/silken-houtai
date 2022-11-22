@@ -3,7 +3,7 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有フォワーダー GET /api/issues
-interface GetAllIssues extends API.Issue {
+interface GetAllIssues extends Partial<API.Issue> {
   page: number;
   perPage: number;
 }
@@ -54,6 +54,37 @@ interface GetIssue {
 }
 export async function getIssue(params: GetIssue) {
   return request<API.Issue>(ApiURL + '/issues/' + params.issueId, {
-    method: 'GET',
+    method: 'POST',
+  });
+}
+
+// 生成通关问题
+interface GenIssueType {
+  status: 'status1' | 'status2';
+}
+export async function genIssueType1(params: GenIssueType) {
+  return request<API.Issue>(ApiURL + '/issues/gen_type1_' + params.status, {
+    method: 'POST',
+  });
+}
+
+// 生成仓库问题
+export async function genIssueType2() {
+  return request<API.Issue>(ApiURL + '/issues/gen_type2', {
+    method: 'POST',
+  });
+}
+
+// 生成海关检查问题
+export async function genIssueType3() {
+  return request<API.Issue>(ApiURL + '/issues/gen_type3', {
+    method: 'POST',
+  });
+}
+
+// 生成货物发送问题
+export async function genIssueType4(params: GenIssueType) {
+  return request<API.Issue>(ApiURL + '/issues/gen_type4_' + params.status, {
+    method: 'POST',
   });
 }

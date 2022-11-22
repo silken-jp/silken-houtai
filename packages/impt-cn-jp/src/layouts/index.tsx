@@ -8,6 +8,7 @@ import {
   GlobalOutlined,
   UserOutlined,
   CarOutlined,
+  IssuesCloseOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link, setLocale } from 'umi';
 ////
@@ -16,7 +17,7 @@ import { useIntlFormat } from '../services/useIntl';
 import { removeUserInfo } from '@/services/useStorage';
 import styles from './index.less';
 
-const Index: React.FC<{ children: React.ReactNode }> = (props) => {
+const Index: React.FC<{ children: any }> = (props) => {
   const history = useHistory();
   const isFull = ['/login', '/print', '/cts/check/'].some((item: any) =>
     history?.location?.pathname?.startsWith(item),
@@ -136,10 +137,6 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
                 //     },
                 //   ],
                 // },
-                {
-                  key: '/cts/cargoIssues',
-                  label: <Link to="/cts/cargoIssues">問題リスト</Link>,
-                },
                 {
                   key: '/cts/settings',
                   icon: <SettingOutlined />,
@@ -285,6 +282,45 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
                 },
               ],
             },
+            {
+              key: '/issues',
+              icon: <IssuesCloseOutlined />,
+              label: intlMenu('issues'),
+              children: [
+                {
+                  key: '/issues/clearanceIssues',
+                  label: (
+                    <Link to="/issues/clearanceIssues">
+                      {intlMenu('issues.clearanceIssues')}
+                    </Link>
+                  ),
+                },
+                {
+                  key: '/issues/warehouseIssues',
+                  label: (
+                    <Link to="/issues/warehouseIssues">
+                      {intlMenu('issues.warehouseIssues')}
+                    </Link>
+                  ),
+                },
+                {
+                  key: '/issues/inspectionIssues',
+                  label: (
+                    <Link to="/issues/inspectionIssues">
+                      {intlMenu('issues.inspectionIssues')}
+                    </Link>
+                  ),
+                },
+                {
+                  key: '/issues/cargoIssues',
+                  label: (
+                    <Link to="/issues/cargoIssues">
+                      {intlMenu('issues.cargoIssues')}
+                    </Link>
+                  ),
+                },
+              ],
+            },
           ]}
         />
       </Layout.Sider>
@@ -308,7 +344,7 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
                 日
               </Button>
               <Button style={{ margin: '0 24px' }} onClick={handleLogOut}>
-                ログアウト
+                {intlMenu('logout')}
               </Button>
             </Col>
           </Row>

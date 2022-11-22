@@ -120,6 +120,8 @@ declare namespace API {
     // // 通知人
     // receive_user: ID;
     // 問題該当
+    issue_type: number;
+    issue_reason: string[];
     issue_category: string;
     // 問題详情
     issue_detail: string;

@@ -91,6 +91,12 @@ declare const _default: {
   'menu.setting.flight': string;
   'menu.setting.zipArea': string;
   'menu.setting.MICkey': string;
+  'menu.issues': string;
+  'menu.issues.clearanceIssues': string;
+  'menu.issues.warehouseIssues': string;
+  'menu.issues.inspectionIssues': string;
+  'menu.issues.cargoIssues': string;
+  'menu.logout': string;
   'options.permit.is_PER.1': string;
   'options.permit.is_PER.0': string;
   'options.permit.is_PER_image.1': string;

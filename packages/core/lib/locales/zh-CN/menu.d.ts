@@ -19,8 +19,11 @@ declare const _default: {
   'menu.setting.flight': string;
   'menu.setting.zipArea': string;
   'menu.setting.MICkey': string;
-  'menu.exception.403': string;
-  'menu.exception.404': string;
-  'menu.exception.500': string;
+  'menu.issues': string;
+  'menu.issues.clearanceIssues': string;
+  'menu.issues.warehouseIssues': string;
+  'menu.issues.inspectionIssues': string;
+  'menu.issues.cargoIssues': string;
+  'menu.logout': string;
 };
 export default _default;

@@ -13,6 +13,7 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import EDIPrintModal from '../../delivery/edi-print/components/EDIPrint';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
@@ -185,6 +186,10 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
+          <Table.Column
+            title="Download"
+            render={(row) => <EDIPrintModal dataSource={row} />}
+          />
           <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
           <Table.Column
             sorter

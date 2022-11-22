@@ -20,6 +20,7 @@ const useIssueModel = (props: useIssueModelProps) => {
         issue_detail: v?.issue_detail,
         status: v?.status,
         cargo_status: v?.cargo_status,
+        issue_type: 2,
       });
     }
   };

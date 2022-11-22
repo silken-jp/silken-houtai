@@ -62,7 +62,7 @@ const StatusInquiry: React.FC = () => {
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
     form,
-    defaultPageSize: 30,
+    defaultPageSize: 100,
   });
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
