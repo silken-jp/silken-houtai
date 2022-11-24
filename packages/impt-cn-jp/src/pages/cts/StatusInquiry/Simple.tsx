@@ -170,6 +170,7 @@ const SimpleStatusInquiry: React.FC = () => {
         </Row>
       </Form>
       <Card
+        title={<>合計: {tableProps.pagination.total} 件</>}
         extra={
           <Space>
             <ExportWaybillXlsx

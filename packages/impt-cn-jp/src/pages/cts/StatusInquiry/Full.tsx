@@ -154,6 +154,7 @@ const StatusInquiry: React.FC = () => {
         </Row>
       </Form>
       <Card
+        title={<>合計: {tableProps.pagination.total} 件</>}
         extra={
           <Popconfirm
             title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}

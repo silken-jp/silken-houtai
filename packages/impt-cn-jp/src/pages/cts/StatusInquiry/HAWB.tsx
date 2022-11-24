@@ -13,7 +13,6 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import EDIPrintModal from '../../delivery/edi-print/components/EDIPrint';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
@@ -29,8 +28,10 @@ const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
-  const [selectedRow, setSelectedRow] = useState<any>();
+  const [selectedRows, setSelectedRows] = useState<any>();
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
+
+  const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -70,9 +71,12 @@ const SimpleStatusInquiry: React.FC = () => {
   });
 
   const rowSelection: any = {
-    type: 'radio',
-    onChange: (_: any[], [selectedRow]: any[]) => {
-      setSelectedRow(selectedRow);
+    type: 'checkbox',
+    fixed: true,
+    selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
+    preserveSelectedRowKeys: true,
+    onChange: (_: any[], selectedRows: any[]) => {
+      setSelectedRows(selectedRows);
     },
     getCheckboxProps: (record: any) => ({
       disabled: !record._id,
@@ -132,18 +136,29 @@ const SimpleStatusInquiry: React.FC = () => {
       </Form>
       <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
+        title={<>合計: {tableProps.pagination.total} 件</>}
         extra={
           <Space>
+            <span>selected: {selectedRows?.length || 0} items</span>
+            <Button
+              size="small"
+              type="link"
+              onClick={() => setSelectedRows(null)}
+            >
+              clear
+            </Button>
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
               編集
             </Button>
             <Popconfirm
-              title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
+              title={`【選択したHAWBをすべて削除しますか?`}
               onConfirm={async () => {
-                await deleteWaybill.runAsync({
-                  waybillId: selectedRow?._id,
-                });
-                setSelectedRow(null);
+                for await (const iterator of selectedRows) {
+                  await deleteWaybill.runAsync({
+                    waybillId: iterator?._id,
+                  });
+                }
+                setSelectedRows(null);
                 refresh();
               }}
               okButtonProps={{
@@ -152,7 +167,7 @@ const SimpleStatusInquiry: React.FC = () => {
               okText="Yes"
               cancelText="No"
             >
-              <Button disabled={!selectedRow} danger>
+              <Button disabled={!selectedRows?.length} danger>
                 削除
               </Button>
             </Popconfirm>
@@ -186,10 +201,6 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
-          <Table.Column
-            title="Download"
-            render={(row) => <EDIPrintModal dataSource={row} />}
-          />
           <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
           <Table.Column
             sorter
