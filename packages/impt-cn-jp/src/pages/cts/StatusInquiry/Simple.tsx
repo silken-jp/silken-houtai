@@ -25,6 +25,7 @@ import {
   deleteALLWaybillsByMAWB,
   getSimpleStatusInquiry,
 } from '@/services/request/waybill';
+import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -35,6 +36,9 @@ const SimpleStatusInquiry: React.FC = () => {
   // api
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
+  const apiUploader = userOptions?.find(
+    (item) => item?.label === 'forwarder共通ユーザー',
+  )?.value;
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -167,25 +171,31 @@ const SimpleStatusInquiry: React.FC = () => {
       </Form>
       <Card
         extra={
-          <Popconfirm
-            title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
-            onConfirm={async () => {
-              await deleteALLWaybills.runAsync({
-                mawb: selectedRow?._id,
-              });
-              setSelectedRow(null);
-              refresh();
-            }}
-            okButtonProps={{
-              loading: deleteALLWaybills.loading,
-            }}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button disabled={!selectedRow} type="primary">
-              削除
-            </Button>
-          </Popconfirm>
+          <Space>
+            <ExportWaybillXlsx
+              disabled={!selectedRow || selectedRow?.uploaderId !== apiUploader}
+              MAB={selectedRow?._id}
+            />
+            <Popconfirm
+              title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
+              onConfirm={async () => {
+                await deleteALLWaybills.runAsync({
+                  mawb: selectedRow?._id,
+                });
+                setSelectedRow(null);
+                refresh();
+              }}
+              okButtonProps={{
+                loading: deleteALLWaybills.loading,
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button disabled={!selectedRow} type="primary">
+                削除
+              </Button>
+            </Popconfirm>
+          </Space>
         }
       >
         <Table
