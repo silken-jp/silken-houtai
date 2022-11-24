@@ -175,6 +175,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <ExportWaybillXlsx
               disabled={!selectedRow || selectedRow?.uploaderId !== apiUploader}
               MAB={selectedRow?._id}
+              refresh={refresh}
             />
             <Popconfirm
               title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}

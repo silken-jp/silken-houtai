@@ -10,6 +10,7 @@ import {
 export interface ExportWaybillXlsxProps {
   disabled?: boolean;
   MAB?: string;
+  refresh?: () => void;
 }
 
 const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
@@ -28,6 +29,7 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
         handleExport(result?.list);
         if (props?.MAB) {
           await deleteALLWaybillsByMAWB({ mawb: props.MAB });
+          props?.refresh?.();
         }
       },
       onError: (err) => {
