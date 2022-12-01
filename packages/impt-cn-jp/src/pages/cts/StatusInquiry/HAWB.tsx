@@ -62,6 +62,7 @@ const SimpleStatusInquiry: React.FC = () => {
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
     form,
     manual: true,
+    defaultPageSize: 500,
   });
   const editWaybill = useRequest(updateWaybill, {
     manual: true,

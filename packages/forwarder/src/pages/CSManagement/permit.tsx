@@ -318,14 +318,14 @@ const waybill: React.FC = () => {
               let list: any[] = [];
               while (total > 0) {
                 const res = await getTableData(
-                  { current, pageSize: 5000 },
+                  { current, pageSize: 1000 },
                   form.getFieldsValue(true),
                 );
                 if (res?.list?.length > 0) {
                   list = [...list, ...res?.list];
                 } else throw 'fetch error';
                 current++;
-                total = total - 5000;
+                total = total - 1000;
               }
               return {
                 total: tableProps.pagination.total,
