@@ -40,7 +40,12 @@ function ctxEDICode(
 }
 
 function receiverFill(ctx: CanvasRenderingContext2D, data: API.Waybill) {
-  const { receiver_zip, receiver_add, receiver_tel, ImpNameJP } = data || {};
+  const {
+    receiver_zip = '',
+    receiver_add = '',
+    receiver_tel = '',
+    ImpNameJP = '',
+  } = data || {};
   const zip = receiver_zip.slice(0, 3) + '-' + receiver_zip.slice(3);
   ctx.font = '30px msgothic';
   ctx.fillText(`〒 ${zip}`, 75, 230);

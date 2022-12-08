@@ -22,9 +22,10 @@ import CargoIssueForm from '@/components/Form/CargoIssueForm';
 import { useAgentOptions } from '@/services/useAPIOption';
 import {
   deleteIssueById,
-  genIssueType2,
+  // genIssueType2,
   getAllIssues,
   updateIssue,
+  createIssue,
 } from '@/services/request/issue';
 import { useUserOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
@@ -75,17 +76,36 @@ const WarehouseIssues: React.FC = () => {
     return { total: data?.totalCount, list: data?.data };
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, { form });
-  const genIssue = useRequest(genIssueType2, {
-    manual: true,
-    onSuccess: (data) => {
-      message.success(data + '件更新しました。');
-      refresh();
-    },
-  });
+  // const genIssue = useRequest(genIssueType2, {
+  //   manual: true,
+  //   onSuccess: (data) => {
+  //     message.success(data + '件更新しました。');
+  //     refresh();
+  //   },
+  // });
   const deleteIssue = useRequest(deleteIssueById, { manual: true });
 
   // action
   const handleSubmit = async (v: any) => {
+    if (formType === 'add') {
+      await createIssue({
+        price_projects: v?.price_projects?.flatMap((p: any) =>
+          p?.name && p.price ? [p] : [],
+        ),
+        updated_user: userInfo?._id,
+        issue_category: v?.issue_category,
+        issue_detail: v?.issue_detail,
+        status: v?.status,
+        cargo_status: v?.cargo_status,
+        new_tracking_no: v?.new_tracking_no,
+        solve_method: v?.solve_method,
+        solve_note: v?.solve_note,
+        ...(v?.send_date ? { send_date: v?.send_date?.toString() } : {}),
+        ...(v?.solve_date ? { solve_date: v?.solve_date?.toString() } : {}),
+      });
+      search.submit();
+      handleClear();
+    }
     if (formType === 'edit') {
       await updateIssue({
         issueId: selectedRowKeys[0],
@@ -120,6 +140,21 @@ const WarehouseIssues: React.FC = () => {
     } catch (error: any) {
       message.warn(error?.message || error);
     }
+  };
+  const handleAdd = () => {
+    handleOpen({
+      title: '新規',
+      type: 'add',
+      data: {
+        ...selectedRows[0],
+        created_user: userOptions?.find(
+          (item) => item?.value === selectedRows[0]?.created_user,
+        ),
+        updated_user: userOptions?.find(
+          (item) => item?.value === selectedRows[0]?.updated_user,
+        ),
+      },
+    });
   };
   const handleEdit = () => {
     if (selectedRows?.length === 0) {
@@ -278,12 +313,8 @@ const WarehouseIssues: React.FC = () => {
       </Form>
       <Card
         title={
-          <Button
-            type="primary"
-            onClick={genIssue.run}
-            loading={genIssue.loading}
-          >
-            更新
+          <Button type="primary" onClick={handleAdd}>
+            新規
           </Button>
         }
         extra={
