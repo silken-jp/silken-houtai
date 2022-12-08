@@ -75,29 +75,35 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
           <Row>
             <Col span={8}>
               <Form.Item label="MASTER番号" name={['waybill', 'MAB']}>
-                <Input disabled />
+                <Input disabled={props.type === 'edit'} />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="HOUSE番号" name={['waybill', 'HAB']}>
-                <Input disabled />
+                <Input disabled={props.type === 'edit'} />
               </Form.Item>
             </Col>
-            <Col span={8}>
-              <Form.Item label="登録者" name={['created_user', 'name']}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
-                <Input disabled />
-              </Form.Item>
-            </Col>
-            <Col span={8}>
-              <Form.Item label="代理店" name={['waybill', 'agent']}>
-                <Select allowClear disabled options={agentOptions} />
-              </Form.Item>
-            </Col>
+            {props.type === 'edit' && (
+              <Col span={8}>
+                <Form.Item label="登録者" name={['created_user', 'name']}>
+                  <Input disabled />
+                </Form.Item>
+              </Col>
+            )}
+            {props.type === 'edit' && (
+              <Col span={8}>
+                <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
+                  <Input disabled />
+                </Form.Item>
+              </Col>
+            )}
+            {props.type === 'edit' && (
+              <Col span={8}>
+                <Form.Item label="代理店" name={['waybill', 'agent']}>
+                  <Select allowClear disabled options={agentOptions} />
+                </Form.Item>
+              </Col>
+            )}
             <Col span={8}>
               <Form.Item label="連絡日" name="createdAt">
                 <DatePicker />

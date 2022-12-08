@@ -45,6 +45,7 @@ const ExportXlsx: React.FC<ExportXlsxProps> = (props) => {
         状態: tracking,
         HAWB番号: d?.HAB,
         MAWB番号: d?.MAB,
+        送り状番号: d?.forwarder_order_no,
         // 配送業者: '',
         // タイプ: '',
         識別: d?.waybill_type,

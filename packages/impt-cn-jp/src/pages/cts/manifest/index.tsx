@@ -204,11 +204,11 @@ const ManifestWaybill: React.FC = () => {
                       label: '許可書',
                       onClick: handlePERImage,
                     },
-                    {
-                      key: 1,
-                      label: '新規issue',
-                      onClick: issueModal.handleAdd,
-                    },
+                    // {
+                    //   key: 1,
+                    //   label: '新規issue',
+                    //   onClick: issueModal.handleAdd,
+                    // },
                   ]}
                 />
               }

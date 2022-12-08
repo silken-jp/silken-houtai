@@ -145,15 +145,7 @@ const WarehouseIssues: React.FC = () => {
     handleOpen({
       title: '新規',
       type: 'add',
-      data: {
-        ...selectedRows[0],
-        created_user: userOptions?.find(
-          (item) => item?.value === selectedRows[0]?.created_user,
-        ),
-        updated_user: userOptions?.find(
-          (item) => item?.value === selectedRows[0]?.updated_user,
-        ),
-      },
+      data: null,
     });
   };
   const handleEdit = () => {
