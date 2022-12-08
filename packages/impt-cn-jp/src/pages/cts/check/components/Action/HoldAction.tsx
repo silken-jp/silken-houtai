@@ -23,7 +23,7 @@ const HoldAction: React.FC<HoldActionProps> = (props) => {
 
   // action
   async function handleOK() {
-    await props.handleHold.run();
+    await props.handleHold();
     setFalse();
   }
   function handleMemo(v: string) {
