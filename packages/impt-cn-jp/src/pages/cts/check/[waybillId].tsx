@@ -460,9 +460,9 @@ const WaybillCheck: React.FC<WaybillCheckProps> = (props) => {
           <Button disabled={disabled} type="text" onClick={handleAccept.run}>
             Accept（F9）
           </Button>,
-          <HoldAction disabled={disabled} handleHold={handleHold} />,
+          <HoldAction disabled={disabled} handleHold={handleHold.run} />,
           <SendBackAction
-            handleSendBack={handleSendBack}
+            handleSendBack={handleSendBack.run}
             disabled={disabled || checkType !== '1'}
           />,
         ]}
