@@ -23,7 +23,7 @@ const SendBackAction: React.FC<SendBackActionProps> = (props) => {
 
   // action
   async function handleOK() {
-    await props.handleSendBack.run();
+    await props.handleSendBack();
     setFalse();
   }
   function handleMemo(v: string) {
