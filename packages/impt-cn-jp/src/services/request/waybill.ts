@@ -260,3 +260,20 @@ export async function getAgentStat(params?: GetDstByDate) {
     params,
   });
 }
+
+// 获取所有绑定track等完整数据的运单 GET /api/waybills
+interface GetAllWaybillsForwarder extends API.Waybill {
+  agent: string;
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
+}
+export async function getAllWaybillsForwarder(
+  params?: GetAllWaybillsForwarder,
+) {
+  return request<any>(ApiURL + '/waybills/forwarder', {
+    method: 'GET',
+    params,
+  });
+}

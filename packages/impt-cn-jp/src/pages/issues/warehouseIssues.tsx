@@ -92,8 +92,10 @@ const WarehouseIssues: React.FC = () => {
         price_projects: v?.price_projects?.flatMap((p: any) =>
           p?.name && p.price ? [p] : [],
         ),
+        created_user: userInfo?._id,
         updated_user: userInfo?._id,
         issue_category: v?.issue_category,
+        issue_type: 2,
         issue_detail: v?.issue_detail,
         status: v?.status,
         cargo_status: v?.cargo_status,

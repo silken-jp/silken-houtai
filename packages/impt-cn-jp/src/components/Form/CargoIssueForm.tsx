@@ -74,12 +74,20 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
         <Card title="S.C.LOGISTICS" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item label="MASTER番号" name={['waybill', 'MAB']}>
+              <Form.Item
+                label="MASTER番号"
+                name={['waybill', 'MAB']}
+                rules={[{ required: true }]}
+              >
                 <Input disabled={props.type === 'edit'} />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="HOUSE番号" name={['waybill', 'HAB']}>
+              <Form.Item
+                label="HOUSE番号"
+                name={['waybill', 'HAB']}
+                rules={[{ required: true }]}
+              >
                 <Input disabled={props.type === 'edit'} />
               </Form.Item>
             </Col>
