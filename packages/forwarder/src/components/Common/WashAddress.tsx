@@ -2,20 +2,10 @@ import { Space, message } from 'antd';
 import XLSX from 'xlsx';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { washAddress } from '@/services/request/zipcode';
+import { washAddressEN2JP } from '@/services/request/root';
 
 // const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
-const rightHeader = [
-  '交易号',
-  '收件人地址',
-  '收件人城市',
-  '收件人姓名',
-  '收件人省份',
-  '收件人邮编',
-  '翻译后收件人地址',
-  '翻译后收件人城市',
-  '翻译后收件人省份',
-];
+const rightHeader = ['IAD', 'Zip'];
 
 function fixItemToObj(params: any[]) {
   let waybills = [];
@@ -39,12 +29,8 @@ const handleExportXlsx = (data: any[], res: any[]) => {
     // 修正数据格式
     const fixExportData = data?.map((item, index) => ({
       ...item,
-      收件人地址: res[index]['address'],
-      翻译后收件人地址: res[index]['add3'],
-      翻译后收件人城市: res[index]['add2'],
-      翻译后收件人省份: res[index]['add1'],
+      IADJP: res?.[index]?.IADJP,
     }));
-
     let wb = XLSX.utils.book_new();
     let ws = XLSX.utils.json_to_sheet(fixExportData, { skipHeader: false });
     XLSX.utils.book_append_sheet(wb, ws, 'MIC');
@@ -90,10 +76,10 @@ const WashAddress: React.FC<WashAddressProps> = (props) => {
   async function onUpload(jsonArr: any[]) {
     try {
       let data = fixItemToObj(jsonArr) as any[];
-      const res = await washAddress({
-        originalAdds: data?.map((item) => ({
-          address: item['收件人地址'],
-          zip: item['收件人邮编'],
+      const res = await washAddressEN2JP({
+        originalData: data?.map((item) => ({
+          IAD: item?.IAD,
+          Zip: item?.Zip,
         })),
       });
       handleExportXlsx(data, res);
@@ -117,7 +103,7 @@ const WashAddress: React.FC<WashAddressProps> = (props) => {
     <Space>
       <UploadXlsx
         onUpload={onUpload}
-        text="Wash Address"
+        text="Wash Address EN To JP"
         rightHeader={rightHeader}
       />
     </Space>
