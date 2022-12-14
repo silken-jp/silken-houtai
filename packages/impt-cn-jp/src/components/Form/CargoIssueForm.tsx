@@ -79,7 +79,7 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
                 name={['waybill', 'MAB']}
                 rules={[{ required: true }]}
               >
-                <Input disabled={props.type === 'edit'} />
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -88,30 +88,24 @@ const CargoIssueForm: React.FC<CargoIssueFormProps> = (props) => {
                 name={['waybill', 'HAB']}
                 rules={[{ required: true }]}
               >
-                <Input disabled={props.type === 'edit'} />
+                <Input disabled />
               </Form.Item>
             </Col>
-            {props.type === 'edit' && (
-              <Col span={8}>
-                <Form.Item label="登録者" name={['created_user', 'name']}>
-                  <Input disabled />
-                </Form.Item>
-              </Col>
-            )}
-            {props.type === 'edit' && (
-              <Col span={8}>
-                <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
-                  <Input disabled />
-                </Form.Item>
-              </Col>
-            )}
-            {props.type === 'edit' && (
-              <Col span={8}>
-                <Form.Item label="代理店" name={['waybill', 'agent']}>
-                  <Select allowClear disabled options={agentOptions} />
-                </Form.Item>
-              </Col>
-            )}
+            <Col span={8}>
+              <Form.Item label="登録者" name={['created_user', 'name']}>
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="代理店" name={['waybill', 'agent']}>
+                <Select allowClear disabled options={agentOptions} />
+              </Form.Item>
+            </Col>
             <Col span={8}>
               <Form.Item label="連絡日" name="createdAt">
                 <DatePicker />

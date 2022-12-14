@@ -15,7 +15,10 @@ export async function getAllIssues(params?: GetAllIssues) {
 }
 
 // 创建フォワーダー POST /api/issues
-interface CreateIssue extends Partial<API.Issue> {}
+interface CreateIssue extends Partial<API.Issue> {
+  HAB: string;
+  MAB: string;
+}
 export async function createIssue(params: CreateIssue) {
   return request<any>(ApiURL + '/issues', {
     method: 'POST',

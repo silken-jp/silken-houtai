@@ -18,7 +18,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 ////
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { useIntlFormat } from '@/services/useIntl';
-import CargoIssueForm from '@/components/Form/CargoIssueForm';
+import WarehouseIssuesForm from '@/components/Form/WarehouseIssuesForm';
 import { useAgentOptions } from '@/services/useAPIOption';
 import {
   deleteIssueById,
@@ -48,7 +48,9 @@ const WarehouseIssues: React.FC = () => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
     let { createdDateArr, ...params } = formData;
-    let sorter: any = {};
+    let sorter: any = {
+      sortOrder: -1,
+    };
     if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else if (!!pageData?.sorter?.field) {
@@ -92,6 +94,8 @@ const WarehouseIssues: React.FC = () => {
         price_projects: v?.price_projects?.flatMap((p: any) =>
           p?.name && p.price ? [p] : [],
         ),
+        HAB: v?.waybill?.HAB,
+        MAB: v?.waybill?.MAB,
         created_user: userInfo?._id,
         updated_user: userInfo?._id,
         issue_category: v?.issue_category,
@@ -205,7 +209,11 @@ const WarehouseIssues: React.FC = () => {
         },
       }}
     >
-      <CargoIssueForm type={formType} {...formProps} onSubmit={handleSubmit} />
+      <WarehouseIssuesForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
           <Col flex="150px">
