@@ -139,6 +139,11 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
               agent={tabKey}
             />
           )}
+          expandable={{
+            expandedRowRender: (row) => (
+              <p>未送信のHAWB：{row?.unsent_hawbs?.join(' ')}</p>
+            ),
+          }}
           {...tableProps}
           rowKey="_id"
           scroll={{ y: 400 }}
