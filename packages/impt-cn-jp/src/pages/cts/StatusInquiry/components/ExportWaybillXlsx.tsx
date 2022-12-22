@@ -4,7 +4,7 @@ import { useRequest } from 'ahooks';
 ////
 import {
   getAllWaybills,
-  deleteALLWaybillsByMAWB,
+  // deleteALLWaybillsByMAWB,
 } from '@/services/request/waybill';
 
 export interface ExportWaybillXlsxProps {
@@ -27,10 +27,10 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
       manual: true,
       onSuccess: async (result) => {
         handleExport(result?.list);
-        if (props?.MAB) {
-          await deleteALLWaybillsByMAWB({ mawb: props.MAB });
-          props?.refresh?.();
-        }
+        // if (props?.MAB) {
+        //   await deleteALLWaybillsByMAWB({ mawb: props.MAB });
+        //   props?.refresh?.();
+        // }
       },
       onError: (err) => {
         message.error(err?.message);
@@ -122,7 +122,7 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
       onClick={run}
       disabled={props?.disabled}
     >
-      エクスポートして削除
+      エクスポート
     </Button>
   );
 };
