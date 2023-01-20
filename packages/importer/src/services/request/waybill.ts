@@ -3,9 +3,9 @@ import { request } from 'umi';
 const { ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
-interface GetAllWaybills extends API.Waybill {
-  page: number;
-  perPage: number;
+interface GetAllWaybills extends Partial<API.Waybill> {
+  page?: number;
+  perPage?: number;
 }
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {
@@ -14,8 +14,23 @@ export async function getAllWaybills(params?: GetAllWaybills) {
   });
 }
 
+// 获取所有运单许可书 POST /waybills/per_download
+interface GetAllPERImagesByWaybillIds extends Partial<API.Waybill> {
+  waybillIds: API.ID[];
+}
+export async function getAllPERImagesByWaybillIds(
+  params?: GetAllPERImagesByWaybillIds,
+) {
+  return request<any>(ApiURL + '/waybills/per_download', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 // 计算运单数量 GET /api/waybills/meta
-interface CountWaybills extends API.Waybill {
+interface CountWaybills extends Partial<API.Waybill> {
   page: number;
   perPage: number;
 }
@@ -37,19 +52,12 @@ export async function getWaybill(params: GetWaybill) {
 }
 
 // 创建运单 POST /api/waybills
-interface CreateWaybill extends API.Waybill {}
+interface CreateWaybill extends Partial<API.Waybill> {}
 export async function createWaybill(params: CreateWaybill) {
   return request<any>(ApiURL + '/waybills', {
     method: 'POST',
     data: {
-      mawb_no: params?.mawb_no,
-      hawb_no: params?.hawb_no,
-      jp_delivery_no: params?.jp_delivery_no,
-      cn_delivery_no: params?.cn_delivery_no,
-      jp_delivery_company: params?.jp_delivery_company,
-      cn_delivery_company: params?.cn_delivery_company,
-      flight_no: params?.flight_no,
-      waybill_input_time: params?.waybill_input_time,
+      ...params,
     },
   });
 }
@@ -57,6 +65,8 @@ export async function createWaybill(params: CreateWaybill) {
 // 批量创建导入 POST /api/waybills/import-multi
 interface ImportMultiWaybill {
   waybills: API.Waybill[];
+  user?: API.ID;
+  uploader: API.ID;
 }
 export async function importMultiWaybill(params: ImportMultiWaybill) {
   return request<any>(ApiURL + '/waybills/import-multi', {
@@ -68,9 +78,10 @@ export async function importMultiWaybill(params: ImportMultiWaybill) {
 }
 
 // 更新运单 PATCH /api/waybills/:id
-interface UpdateWaybill extends API.Waybill {
+interface UpdateWaybill extends Partial<API.Waybill> {
   waybillId: API.ID;
   // [ , clean , brock , create]
+  user?: string;
   process_type?: 0 | 1 | 2 | 3;
 }
 export async function updateWaybill(params: UpdateWaybill) {
@@ -79,6 +90,10 @@ export async function updateWaybill(params: UpdateWaybill) {
     method: 'PATCH',
     data: {
       ...data,
+      _GW: +(data?.GW || 0),
+      _IP4: +(data?.IP4 || 0),
+      _FR3: +(data?.FR3 || 0),
+      _IN3: +(data?.IN3 || 0),
     },
   });
 }
@@ -93,10 +108,21 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
   });
 }
 
+// 按MAWB删除运单 DELETE /api/waybills/mawb
+interface DeleteALLWaybillsByMAWB {
+  mawb: string;
+}
+export async function deleteALLWaybillsByMAWB(params: DeleteALLWaybillsByMAWB) {
+  return request<any>(ApiURL + '/waybills/mawb/' + params.mawb, {
+    method: 'DELETE',
+  });
+}
+
 // 批量创建导入 POST /api/waybills/move
 interface MoveWaybill {
   move: number;
   current_processor: string;
+  check_type: string;
   waybill?: string;
 }
 export async function moveWaybill(params: MoveWaybill) {
@@ -109,7 +135,7 @@ export async function moveWaybill(params: MoveWaybill) {
 }
 
 // 获取所有MAB运单 GET /api/waybills/mawbs
-interface GetStatusInquiry extends API.Waybill {
+interface GetStatusInquiry extends Partial<API.Waybill> {
   page: number;
   perPage: number;
 }
@@ -120,8 +146,20 @@ export async function getStatusInquiry(params?: GetStatusInquiry) {
   });
 }
 
+// 获取所有MAB运单 GET /api/waybills/mawbs
+interface GetStatusInquiry extends Partial<API.Waybill> {
+  page: number;
+  perPage: number;
+}
+export async function getSimpleStatusInquiry(params?: GetStatusInquiry) {
+  return request<any>(ApiURL + '/waybills/mawbs-simple', {
+    method: 'GET',
+    params,
+  });
+}
+
 // 获取运单的自定义搜索 GET /api/waybills/advance
-interface GetAllWaybillsAdvance extends API.Waybill {
+interface GetAllWaybillsAdvance extends Partial<API.Waybill> {
   page: number;
   perPage: number;
   cleaners?: string[];
@@ -139,6 +177,72 @@ interface GetAllWaybillsAdvance extends API.Waybill {
 }
 export async function getAllWaybillsAdvance(params?: GetAllWaybillsAdvance) {
   return request<any>(ApiURL + '/waybills/advance', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取waybills统计 GET /api/waybills/creating
+interface Creating extends Partial<API.Waybill> {
+  filter: any;
+  creatorId: API.ID;
+}
+export async function creating(params?: Creating): Promise<any> {
+  return request<any>(ApiURL + '/waybills/creating', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {
+  agentId?: API.ID;
+  startDate?: Date;
+  endDate?: Date;
+}
+export async function getDstByDate(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/dst_by_date', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {
+  agentId?: API.ID;
+  startDate?: Date;
+  endDate?: Date;
+}
+export async function getWeekByDate(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/dst_week_by_date', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取机场分类count GET /api/dst_by_date
+interface GetDstByDate {}
+export async function getAgentStat(params?: GetDstByDate) {
+  return request<any>(ApiURL + '/waybills/forwarder_by_date', {
+    method: 'GET',
+    params,
+  });
+}
+
+// 获取所有绑定track等完整数据的运单 GET /api/waybills
+interface GetAllWaybillsForwarder extends API.Waybill {
+  agent: string;
+  page?: number;
+  perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
+}
+export async function getAllWaybillsForwarder(
+  params?: GetAllWaybillsForwarder,
+) {
+  return request<any>(ApiURL + '/waybills/forwarder', {
     method: 'GET',
     params,
   });

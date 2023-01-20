@@ -143,7 +143,11 @@ const ManifestWaybill: React.FC = () => {
             disabled={disActions.create}
             dataSource={tableProps.dataSource}
           />
-          <Button loading={exportApi.loading} onClick={exportApi.run}>
+          <Button
+            disabled={disActions.export}
+            loading={exportApi.loading}
+            onClick={exportApi.run}
+          >
             Export Xlsx
           </Button>
           <Button onClick={handleDownload}>Print INV&BL</Button>

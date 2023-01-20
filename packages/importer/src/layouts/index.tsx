@@ -55,6 +55,16 @@ const Index: React.FC<{ children: React.ReactNode }> = (props) => {
               key: '/importer',
               label: <Link to="/importer">法人輸入者管理</Link>,
             },
+            {
+              key: '/edi-print',
+              label: '送り状',
+              children: [
+                {
+                  key: '/edi-print/sagawa',
+                  label: <Link to="/edi-print/sagawa">佐川</Link>,
+                },
+              ],
+            },
           ]}
         />
       </Layout.Sider>

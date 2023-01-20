@@ -179,6 +179,10 @@ export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
       brock: form.getFieldValue('status') !== '2' || tabKey !== '1',
       create:
         !form.getFieldValue('mawbs') || !(tableProps?.dataSource?.length > 0),
+      export:
+        form.getFieldValue('status') < '3' ||
+        !form.getFieldValue('mawbs') ||
+        !(tableProps?.dataSource?.length > 0),
     },
     cardProps: {
       tabList: tabArr,
