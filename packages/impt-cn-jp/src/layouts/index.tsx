@@ -59,6 +59,16 @@ const Index: React.FC<{ children: any }> = (props) => {
               key: '/agent',
               icon: <GlobalOutlined />,
               label: <Link to="/agent">フォワーダー管理</Link>,
+              children: [
+                {
+                  key: '/agent/setting',
+                  label: <Link to="/agent/setting">フォワーダーリスト</Link>,
+                },
+                {
+                  key: '/agent/hawb',
+                  label: <Link to="/agent/hawb">HAWB管理</Link>,
+                },
+              ],
             },
             {
               key: '/user',
@@ -260,7 +270,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/delivery/settings',
                   icon: <SettingOutlined />,
-                  label: intlMenu('cts.settings'),
+                  label: intlMenu('delivery.settings'),
                   children: [
                     {
                       key: '/delivery/settings/driver',

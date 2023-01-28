@@ -21,8 +21,9 @@ const ZipArea: React.FC<ZipAreaProps> = () => {
   // state
   const [areaData, setAreaData] = useState<any>();
   const [intlMenu] = useIntlFormat('menu');
-  const { formType, formProps, handleOpen } =
-    useSKForm.useForm<{ name: string }>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<{
+    name: string;
+  }>();
 
   // api
   const zipAreasApi = useRequest(getZipAreas);

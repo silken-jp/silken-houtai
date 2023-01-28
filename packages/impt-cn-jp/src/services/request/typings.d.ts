@@ -13,6 +13,14 @@ declare namespace API {
     STL?: string;
     AGT_CD?: string;
   };
+  type AgentHAWB = {
+    _id?: ID;
+    agent: string;
+    tracking_type: number;
+    cargo_type: number;
+    start_hab: string;
+    count: number;
+  };
   type CMN = {
     _id?: ID;
     origin_CMN?: string;

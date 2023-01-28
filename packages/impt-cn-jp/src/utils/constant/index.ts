@@ -35,3 +35,13 @@ export const CODE_SOURCE: { [key: string]: any[] } = {
 };
 
 export const STORAGE_KEY: string = 'SILKEN.';
+export const AGENT_HAWB = {
+  CARGO_TYPE: [
+    { value: 1, label: '小包' },
+    { value: 2, label: 'u-packet' },
+  ],
+  TRACKING_TYPE: [
+    { value: 1, label: '自社' },
+    { value: 2, label: '他社' },
+  ],
+};
