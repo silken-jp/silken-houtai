@@ -7,6 +7,7 @@ interface ActionsProps {
   onDelete?: (v: any) => void;
   iconType?: 'button' | 'text';
   menus?: {
+    key: string;
     label: string;
     onClick: (v: any) => void;
   }[];
@@ -28,26 +29,16 @@ const Actions: React.FC<ActionsProps> = (props) => {
     ) : (
       <MoreOutlined onClick={handleIcon} />
     );
-  const menu = (
-    <Menu onClick={handleMenu}>
-      {props?.onEdit && (
-        <Menu.Item key="edit" onClick={props.onEdit}>
-          編集
-        </Menu.Item>
-      )}
-      {props?.onDelete && (
-        <Menu.Item key="delete" onClick={props.onDelete}>
-          削除
-        </Menu.Item>
-      )}
-      {props?.menus?.map((item) => (
-        <Menu.Item key={item?.label} onClick={item.onClick}>
-          {item.label}
-        </Menu.Item>
-      ))}
-    </Menu>
+  let items = props?.menus || [];
+  if (props?.onDelete)
+    items.unshift({ key: 'delete', onClick: props.onDelete, label: '削除' });
+  if (props?.onEdit)
+    items.unshift({ key: 'edit', onClick: props.onEdit, label: '編集' });
+  return (
+    <Dropdown overlay={<Menu onClick={handleMenu} items={items} />}>
+      {icon}
+    </Dropdown>
   );
-  return <Dropdown overlay={menu}>{icon}</Dropdown>;
 };
 
 interface DeleteConfirmProps extends ModalFuncProps {
@@ -59,13 +50,15 @@ export function deleteConfirm(props: DeleteConfirmProps) {
   const handleDelete = (value: any) => {
     Modal.confirm({
       icon: <ExclamationCircleOutlined />,
-      title: `删除【${props?.name}】`,
-      content: `本操作无法撤回，确认删除?`,
+      title: `DELETE【${props?.name}】`,
+      content: `This operation cannot be withdrawn, confirm deletion?`,
+      cancelText: 'cancel',
+      okText: 'OK',
       onOk: async () => {
         try {
           await props?.submit?.(value);
         } catch (error: any) {
-          message.error('删除失败，请稍后再试');
+          message.error('Failed to delete, please try again later');
         }
       },
       ...props,
