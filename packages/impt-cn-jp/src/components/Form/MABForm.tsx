@@ -12,6 +12,7 @@ const formItemLayout = {
 interface DataSource extends API.Waybill {
   flightNo: string;
   flightDate: string;
+  VRR: string;
 }
 
 export interface HAWBFormProps extends useSKForm.SKFormProps<DataSource> {}
@@ -22,18 +23,20 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        _id: props?.dataSource?._id || '',
+        MAB: props?.dataSource?._id || '',
         PSC: props?.dataSource?.PSC || '',
-        flightNo: props?.dataSource?.flightNo || '',
-        flightDate: dayFormat(props?.dataSource?.flightDate, 'YYYY.MM.DD'),
+        flight_no: props?.dataSource?.flightNo || '',
+        VSN: props?.dataSource?.VSN || '',
+        ARR: props?.dataSource?.ARR || '',
+        DATE: dayFormat(props?.dataSource?.flightDate, 'YYYY.MM.DD'),
       });
     }
-  }, [props]);
+  }, [props.visible]);
 
   return (
     <Modal {...modalProps} width={700}>
       <Form name="HAWBForm" {...formItemLayout} {...formProps}>
-        <Form.Item label="MAWB番号" name="_id" rules={[{ required: true }]}>
+        <Form.Item label="MAWB番号" name="MAB" rules={[{ required: true }]}>
           <Input placeholder="MAWB番号" autoComplete="off" />
         </Form.Item>
         <Form.Item label="仕出地" name="PSC" rules={[{ required: true }]}>
@@ -41,17 +44,19 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
         </Form.Item>
         <Form.Item
           label="FlightNo"
-          name="flightNo"
+          name="flight_no"
           rules={[{ required: true }]}
         >
           <Input placeholder="FlightNo" autoComplete="off" />
         </Form.Item>
-        <Form.Item
-          label="FlightDate"
-          name="flightDate"
-          rules={[{ required: true }]}
-        >
+        <Form.Item label="FlightDate" name="DATE" rules={[{ required: true }]}>
           <Input placeholder="2023.02.01" autoComplete="off" />
+        </Form.Item>
+        <Form.Item label="VSN" name="VSN" rules={[{ required: true }]}>
+          <Input placeholder="VSN" autoComplete="off" />
+        </Form.Item>
+        <Form.Item label="ARR" name="ARR" rules={[{ required: true }]}>
+          <Input placeholder="ARR" autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>

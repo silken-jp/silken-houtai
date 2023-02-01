@@ -10,6 +10,7 @@ import {
   Col,
   Card,
   Space,
+  message,
   Popconfirm,
   DatePicker,
   Select,
@@ -24,6 +25,7 @@ import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
   deleteALLWaybillsByMAWB,
   getSimpleStatusInquiry,
+  updateMAB,
 } from '@/services/request/waybill';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 import MABForm from '@/components/Form/MABForm';
@@ -33,6 +35,7 @@ const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>();
   const [selectedRow, setSelectedRow] = useState<any>();
   const { formType, formProps, handleOpen } = useSKForm.useForm<any>();
 
@@ -79,8 +82,10 @@ const SimpleStatusInquiry: React.FC = () => {
 
   const rowSelection: any = {
     type: 'radio',
-    onChange: (_: any[], [selectedRow]: any[]) => {
+    selectedRowKeys,
+    onChange: (keys: any[], [selectedRow]: any[]) => {
       setSelectedRow(selectedRow);
+      setSelectedRowKeys(keys);
     },
     getCheckboxProps: (record: any) => ({
       disabled: !record._id,
@@ -97,13 +102,19 @@ const SimpleStatusInquiry: React.FC = () => {
     });
   }
   async function handleSubmit(v: any) {
-    if (formType === 'edit') {
-      // await editWaybill.runAsync({
-      //   waybillId: selectedRow._id,
-      //   ...v,
-      // });
-      console.log(v);
-      refresh();
+    try {
+      if (formType === 'edit') {
+        await updateMAB({
+          oldMab: selectedRow._id,
+          ...v,
+        });
+        setSelectedRow(null);
+        setSelectedRowKeys([]);
+        refresh();
+      }
+    } catch (error: any) {
+      message.destroy();
+      message.error(error?.message);
     }
   }
 
