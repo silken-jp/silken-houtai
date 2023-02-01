@@ -26,12 +26,15 @@ import {
   getSimpleStatusInquiry,
 } from '@/services/request/waybill';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
+import MABForm from '@/components/Form/MABForm';
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
   const [selectedRow, setSelectedRow] = useState<any>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<any>();
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -86,6 +89,24 @@ const SimpleStatusInquiry: React.FC = () => {
   };
 
   // action
+  function handleEdit() {
+    handleOpen({
+      title: '編集する',
+      type: 'edit',
+      data: selectedRow,
+    });
+  }
+  async function handleSubmit(v: any) {
+    if (formType === 'edit') {
+      // await editWaybill.runAsync({
+      //   waybillId: selectedRow._id,
+      //   ...v,
+      // });
+      console.log(v);
+      refresh();
+    }
+  }
+
   function handleLinkTo(LS: string, mawbs: string) {
     removeSearchParams(LS);
     setSearchParams(LS, {
@@ -169,6 +190,7 @@ const SimpleStatusInquiry: React.FC = () => {
           </Col>
         </Row>
       </Form>
+      <MABForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
         title={<>合計: {tableProps.pagination.total} 件</>}
         extra={
@@ -178,6 +200,9 @@ const SimpleStatusInquiry: React.FC = () => {
               MAB={selectedRow?._id}
               refresh={refresh}
             />
+            <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
+              編集
+            </Button>
             <Popconfirm
               title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
               onConfirm={async () => {

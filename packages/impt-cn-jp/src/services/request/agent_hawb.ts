@@ -16,12 +16,15 @@ export async function getAllAgentHAWBs(params?: GetAllAgentHAWBs) {
 
 // 获取单个フォワーダー GET /api/hab-settings/:id
 interface GetAgentHAWB {
-  agentId: API.ID;
+  agentHAWBId: API.ID;
 }
 export async function getAgentHAWB(params: GetAgentHAWB) {
-  return request<API.AgentHAWB>(ApiURL + '/hab-settings/' + params.agentId, {
-    method: 'GET',
-  });
+  return request<API.AgentHAWB>(
+    ApiURL + '/hab-settings/' + params.agentHAWBId,
+    {
+      method: 'GET',
+    },
+  );
 }
 
 // 创建フォワーダー POST /api/hab-settings

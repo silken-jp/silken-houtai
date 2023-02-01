@@ -7,20 +7,20 @@ import {
   Col,
   Card,
   Space,
-  message,
+  // message,
   Select,
 } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
-import { useSKForm } from '@silken-houtai/core/lib/useHooks';
+// import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 ////
-import Actions, { deleteConfirm } from '@/components/Common/Actions';
-import AgentHAWBForm from '@/components/Form/AgentHAWBForm';
+// import Actions, { deleteConfirm } from '@/components/Common/Actions';
+// import AgentHAWBForm from '@/components/Form/AutoHAWBForm';
 import {
   getAllAgentHAWBs,
-  createAgentHAWB,
-  updateAgentHAWB,
-  deleteAgentHAWBById,
+  // createAgentHAWB,
+  // updateAgentHAWB,
+  // deleteAgentHAWBById,
 } from '@/services/request/agent_hawb';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { getLabel, AGENT_HAWB } from '@/utils/constant';
@@ -28,8 +28,8 @@ import { getLabel, AGENT_HAWB } from '@/utils/constant';
 const AgentHAWB: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const { formType, formProps, handleOpen } =
-    useSKForm.useForm<API.AgentHAWB>();
+  // const { formType, formProps, handleOpen } =
+  //   useSKForm.useForm<API.AgentHAWB>();
   const { agentOptions } = useAgentOptions();
 
   // api
@@ -46,40 +46,38 @@ const AgentHAWB: React.FC = () => {
   const { tableProps, search } = useAntdTable(getTableData, { form });
 
   // action
-  const handleSubmit = async (v: any) => {
-    try {
-      if (formType === 'add') {
-        await createAgentHAWB(v);
-        search.submit();
-      }
-      if (formType === 'edit') {
-        await updateAgentHAWB({
-          agentHAWBId: formProps?.dataSource?._id,
-          ...v,
-        });
-        search.submit();
-      }
-    } catch (error: any) {
-      message.destroy();
-      message.warning(error?.data?.message, 5);
-    }
-  };
-  const handleAdd = () => {
-    handleOpen({
-      title: '新規フォワーダー',
-      type: 'add',
-      data: { agentOptions },
-    });
-  };
+  // const handleSubmit = async (v: any) => {
+  //   try {
+  //     if (formType === 'add') {
+  //       await createAgentHAWB(v);
+  //       search.submit();
+  //     }
+  //     if (formType === 'edit') {
+  //       await updateAgentHAWB({
+  //         agentHAWBId: formProps?.dataSource?._id,
+  //         ...v,
+  //       });
+  //       search.submit();
+  //     }
+  //   } catch (error: any) {
+  //     message.destroy();
+  //     message.warning(error?.data?.message, 5);
+  //   }
+  // };
+  // const handleAdd = () => {
+  //   handleOpen({
+  //     title: '新規フォワーダー',
+  //     type: 'add',
+  //     data: { agentOptions },
+  //   });
+  // };
 
   return (
     <PageContainer
-      title="フォワーダーHAWB配布"
+      title="HAWB配布"
       header={{
         breadcrumb: {
-          routes: [
-            { path: '/agent/hawb', breadcrumbName: 'フォワーダーHAWB配布' },
-          ],
+          routes: [{ path: '/agent/hawb', breadcrumbName: 'HAWB配布' }],
         },
       }}
     >
@@ -127,20 +125,18 @@ const AgentHAWB: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <AgentHAWBForm type={formType} {...formProps} onSubmit={handleSubmit} />
+      {/* <AgentHAWBForm type={formType} {...formProps} onSubmit={handleSubmit} /> */}
       <Card
         title="HAWBリスト"
-        extra={
-          <Button type="primary" onClick={handleAdd}>
-            + 新規
-          </Button>
-        }
+        // extra={
+        //   <Button type="primary" onClick={handleAdd}>
+        //     + 新規
+        //   </Button>
+        // }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.ColumnGroup title="HAWB">
-            <Table.Column width={100} title="START" dataIndex="start_hab" />
-            <Table.Column width={100} title="END" dataIndex="end_hab" />
-          </Table.ColumnGroup>
+          <Table.Column width={100} title="START_HAB" dataIndex="start_hab" />
+          <Table.Column width={100} title="END_HAB" dataIndex="end_hab" />
           <Table.Column width={150} title="件数" dataIndex="count" />
           <Table.Column
             width={150}
@@ -160,7 +156,7 @@ const AgentHAWB: React.FC = () => {
             dataIndex="tracking_type"
             render={(v) => getLabel(AGENT_HAWB.TRACKING_TYPE, v)}
           />
-          <Table.Column
+          {/* <Table.Column
             width={60}
             fixed="right"
             title="操作"
@@ -179,9 +175,9 @@ const AgentHAWB: React.FC = () => {
                   search.submit();
                 },
               });
-              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
+              return <Actions onDelete={handleDelete} />;
             }}
-          />
+          /> */}
         </Table>
       </Card>
     </PageContainer>

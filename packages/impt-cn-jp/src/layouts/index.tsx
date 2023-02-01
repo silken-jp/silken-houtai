@@ -58,15 +58,19 @@ const Index: React.FC<{ children: any }> = (props) => {
             {
               key: '/agent',
               icon: <GlobalOutlined />,
-              label: <Link to="/agent">フォワーダー管理</Link>,
+              label: 'フォワーダー管理',
               children: [
                 {
                   key: '/agent/setting',
                   label: <Link to="/agent/setting">フォワーダーリスト</Link>,
                 },
                 {
+                  key: '/agent/hawb-group',
+                  label: <Link to="/agent/hawb-group">HAWB区間管理</Link>,
+                },
+                {
                   key: '/agent/hawb',
-                  label: <Link to="/agent/hawb">HAWB管理</Link>,
+                  label: <Link to="/agent/hawb">HAWB配布</Link>,
                 },
               ],
             },

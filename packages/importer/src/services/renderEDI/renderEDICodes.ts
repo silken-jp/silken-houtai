@@ -1,6 +1,10 @@
 import { codeBar } from './codeBar';
 
-function renderEDIPrint(ctx: CanvasRenderingContext2D, data: API.Waybill[]) {
+function renderEDIPrint(
+  ctx: CanvasRenderingContext2D,
+  data: API.Waybill[],
+  page: string,
+) {
   ctx.lineWidth = 2;
   ctx.strokeStyle = 'black';
   ctx.font = '32px msgothic';
@@ -26,6 +30,7 @@ function renderEDIPrint(ctx: CanvasRenderingContext2D, data: API.Waybill[]) {
     });
     ctx.fillText(`D${element.HAB}D`, 580, h + 160);
   }
+  ctx.fillText(page, 490, 1480);
 }
 
 export default renderEDIPrint;

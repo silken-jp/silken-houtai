@@ -103,7 +103,13 @@ const SagawaEDI: React.FC<SagawaEDIProps> = () => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div>
         {dataSource?.map((item: API.Waybill[], key) => {
-          return <EDIPrint key={key} dataSource={item} />;
+          return (
+            <EDIPrint
+              key={key}
+              dataSource={item}
+              page={`${key + 1}/${dataSource.length}`}
+            />
+          );
         })}
       </div>
       <div style={{ position: 'fixed', bottom: 20, right: 50 }}>

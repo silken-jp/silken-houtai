@@ -13,6 +13,14 @@ declare namespace API {
     STL?: string;
     AGT_CD?: string;
   };
+  type HAWBGroup = {
+    _id?: ID;
+    end_hab: string;
+    group_name: string;
+    start_hab: string;
+    count: number;
+    used_count: number;
+  };
   type AgentHAWB = {
     _id?: ID;
     agent: string;

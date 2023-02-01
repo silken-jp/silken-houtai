@@ -423,6 +423,7 @@ const SimpleStatusInquiry: React.FC = () => {
             title={intlWaybill('waybill_type')}
             dataIndex="waybill_type"
           />
+          <Table.Column sorter width={100} title="仕出地" dataIndex="PSC" />
           <Table.Column
             sorter
             width={100}

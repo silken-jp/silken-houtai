@@ -4,6 +4,7 @@ import renderEDIPrint from '@/services/renderEDI/renderEDICodes';
 
 export interface EdiPrintProps {
   dataSource: API.Waybill[];
+  page: string;
 }
 
 const EDIPrint: React.FC<EdiPrintProps> = (props) => {
@@ -13,7 +14,7 @@ const EDIPrint: React.FC<EdiPrintProps> = (props) => {
         props?.dataSource?.[0]?._id,
       ) as HTMLCanvasElement;
       const ctx = canvas.getContext('2d');
-      ctx && renderEDIPrint(ctx, props.dataSource);
+      ctx && renderEDIPrint(ctx, props.dataSource, props.page);
     }
   }, [props?.dataSource?.[0]?._id]);
 
