@@ -3,7 +3,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   define: {
     'process.env': {
-      ApiURL: 'https://api.sclogi.jp',
+      ApiURL: 'https://api2.sclogi.jp',
     },
   },
   publicPath: '/houtai-export-jp-cn/',
