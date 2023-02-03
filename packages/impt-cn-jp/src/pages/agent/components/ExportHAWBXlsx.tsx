@@ -23,47 +23,11 @@ const ExportHAWBXlsx: React.FC<ExportHAWBXlsxProps> = (props) => {
   const handleExport = () => {
     // 修正数据格式
     const fixExportData = Array.from({ length: props?.count || 0 }, (_, i) => ({
-      VSN: '',
-      DATE: '',
-      ARR: '',
-      MAB: '',
       HAB: genHabEnd(props.start, i),
-      PCS: '',
-      GW: '',
-      GWT: '',
-      CMN: '',
-      SKB: '',
-      ImpName: '',
-      ImpNameJP: '',
-      IAD: '',
-      IADJP: '',
-      Zip: '',
-      Tel: '',
-      EPN: '',
-      EAD: '',
-      EPY_Zip: '',
-      EPO: '',
-      DST: '',
-      PSC: '',
-      OR: '',
-      IP1: '',
-      IP2: '',
-      IP3: '',
-      IP4: '',
-      FR1: '',
-      FR2: '',
-      FR3: '',
-      IN1: '',
-      IN2: '',
-      IN3: '',
-      receiver_name: '',
-      receiver_add: '',
-      receiver_tel: '',
-      receiver_zip: '',
     }));
 
     let wb = XLSX.utils.book_new();
-    let ws = XLSX.utils.json_to_sheet(fixExportData, { skipHeader: false });
+    let ws = XLSX.utils.json_to_sheet(fixExportData, { skipHeader: true });
     XLSX.utils.book_append_sheet(wb, ws, 'MIC');
 
     ws['!cols'] = Array.from(Object.keys(fixExportData[0]), () => ({
