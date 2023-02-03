@@ -47,6 +47,10 @@ const handleExportXlsx = (data: any[], userOptions: any[]) => {
     let ws = XLSX.utils.json_to_sheet(fixExportData, { skipHeader: false });
     XLSX.utils.book_append_sheet(wb, ws, 'MIC');
 
+    ws['!cols'] = Array.from(Object.keys(fixExportData[0]), () => ({
+      wch: 20,
+    }));
+
     const s2ab = (s: any) => {
       // 字符串转字符流
       let buf = new ArrayBuffer(s.length);
