@@ -13,6 +13,7 @@ interface DataSource extends API.Waybill {
   flightNo: string;
   flightDate: string;
   VRR: string;
+  mab: string;
 }
 
 export interface HAWBFormProps extends useSKForm.SKFormProps<DataSource> {}
@@ -23,11 +24,12 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        MAB: props?.dataSource?._id || '',
+        MAB: props?.dataSource?.mab || '',
         PSC: props?.dataSource?.PSC || '',
         flight_no: props?.dataSource?.flightNo || '',
         VSN: props?.dataSource?.VSN || '',
         ARR: props?.dataSource?.ARR || '',
+        DST: props?.dataSource?.DST || '',
         DATE: dayFormat(props?.dataSource?.flightDate, 'YYYY.MM.DD'),
       });
     }
@@ -57,6 +59,9 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
         </Form.Item>
         <Form.Item label="ARR" name="ARR" rules={[{ required: true }]}>
           <Input placeholder="ARR" autoComplete="off" />
+        </Form.Item>
+        <Form.Item label="DST" name="DST" rules={[{ required: true }]}>
+          <Input placeholder="DST" autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>

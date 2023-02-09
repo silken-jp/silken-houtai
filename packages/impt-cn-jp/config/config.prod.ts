@@ -4,6 +4,7 @@ export default defineConfig({
   define: {
     'process.env': {
       ApiURL: 'https://api2.sclogi.jp',
+      ApiURL2: 'https://api-waybill.sclogi.jp',
     },
   },
   publicPath: '/houtai-import-cn-jp/',

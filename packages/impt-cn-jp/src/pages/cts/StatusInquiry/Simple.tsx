@@ -22,11 +22,8 @@ import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { removeSearchParams, setSearchParams } from '@/services/useStorage';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
-import {
-  deleteALLWaybillsByMAWB,
-  getSimpleStatusInquiry,
-  updateMAB,
-} from '@/services/request/waybill';
+import { deleteALLWaybillsByMAWB, updateMAB } from '@/services/request/waybill';
+import { genMabs, getMabs } from '@/services/request/mabs';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 import MABForm from '@/components/Form/MABForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
@@ -62,7 +59,7 @@ const SimpleStatusInquiry: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getSimpleStatusInquiry({
+    const data = await getMabs({
       page,
       perPage,
       ...sorter,
@@ -79,6 +76,19 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });
+  const genMabsAPI = useRequest(genMabs, {
+    manual: true,
+  });
+
+  const handleUpdate = async () => {
+    const formData = form.getFieldsValue();
+    await genMabsAPI.runAsync({
+      ...formData,
+      flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
+      flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
+    });
+    refresh();
+  };
 
   const rowSelection: any = {
     type: 'radio',
@@ -88,8 +98,8 @@ const SimpleStatusInquiry: React.FC = () => {
       setSelectedRowKeys(keys);
     },
     getCheckboxProps: (record: any) => ({
-      disabled: !record._id,
-      name: record._id,
+      disabled: !record.mab,
+      name: record.mab,
     }),
   };
 
@@ -105,7 +115,7 @@ const SimpleStatusInquiry: React.FC = () => {
     try {
       if (formType === 'edit') {
         await updateMAB({
-          oldMab: selectedRow._id,
+          oldMab: selectedRow.mab,
           ...v,
         });
         setSelectedRow(null);
@@ -153,7 +163,7 @@ const SimpleStatusInquiry: React.FC = () => {
       >
         <Row justify="end" gutter={16}>
           <Col span={3}>
-            <Form.Item name="agent">
+            <Form.Item name="agentId">
               <Select
                 allowClear
                 placeholder="フォワーダー"
@@ -203,22 +213,33 @@ const SimpleStatusInquiry: React.FC = () => {
       </Form>
       <MABForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title={<>合計: {tableProps.pagination.total} 件</>}
+        title={
+          <Space>
+            <span>合計: {tableProps.pagination.total} 件</span>
+            <Button
+              loading={genMabsAPI.loading}
+              type="primary"
+              onClick={handleUpdate}
+            >
+              更新
+            </Button>
+          </Space>
+        }
         extra={
           <Space>
             <ExportWaybillXlsx
               disabled={!selectedRow || selectedRow?.uploaderId !== apiUploader}
-              MAB={selectedRow?._id}
+              MAB={selectedRow?.mab}
               refresh={refresh}
             />
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
               編集
             </Button>
             <Popconfirm
-              title={`【MAWB番号 ${selectedRow?._id} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
+              title={`【MAWB番号 ${selectedRow?.mab} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
               onConfirm={async () => {
                 await deleteALLWaybills.runAsync({
-                  mawb: selectedRow?._id,
+                  mawb: selectedRow?.mab,
                 });
                 setSelectedRow(null);
                 refresh();
@@ -261,7 +282,7 @@ const SimpleStatusInquiry: React.FC = () => {
               userOptions?.find((item) => item?.value === uploaderId)?.label
             }
           />
-          <Table.Column sorter width={150} title="MAWB番号" dataIndex="_id" />
+          <Table.Column sorter width={150} title="MAWB番号" dataIndex="mab" />
           <Table.Column
             width={150}
             title="Quick Link"
@@ -269,19 +290,19 @@ const SimpleStatusInquiry: React.FC = () => {
               <Space>
                 <Link
                   to="/cts/large"
-                  onClick={() => handleLinkTo('L', row?._id)}
+                  onClick={() => handleLinkTo('L', row?.mab)}
                 >
                   L({row?.lCount})
                 </Link>
                 <Link
                   to="/cts/small"
-                  onClick={() => handleLinkTo('S', row?._id)}
+                  onClick={() => handleLinkTo('S', row?.mab)}
                 >
                   S({row?.sCount})
                 </Link>
                 <Link
                   to="/cts/manifest"
-                  onClick={() => handleLinkTo('M', row?._id)}
+                  onClick={() => handleLinkTo('M', row?.mab)}
                 >
                   M({row?.mCount})
                 </Link>

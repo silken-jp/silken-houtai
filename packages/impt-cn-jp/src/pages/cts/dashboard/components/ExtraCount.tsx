@@ -1,64 +1,81 @@
-import { Card, Spin, Descriptions, Divider } from 'antd';
+import { Card, Button, Descriptions, Divider } from 'antd';
 import { useRequest } from 'ahooks';
 ////
 import { getDstByDate } from '@/services/request/waybill';
+import { genMabs, getMonthStat } from '@/services/request/mabs';
 
 export interface ExtraCountProps {
   agentId?: API.ID;
   title: string;
-  counts: any[];
-  loading: boolean;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }
 
 const ExtraCount: React.FC<ExtraCountProps> = (props) => {
-  const countInfoAPI = useRequest(
-    async () =>
-      await getDstByDate({
-        agentId: props?.agentId,
-        startDate: props.startDate,
-        endDate: props?.endDate,
-      }),
-    {
-      ready: !props.loading,
-    },
-  );
+  const countInfoAPI = useRequest(async () => {
+    const mabs = await getMonthStat({
+      agentId: props?.agentId,
+      flightStartDate: props.startDate,
+      flightEndDate: props?.endDate,
+    });
+    return mabs?.[0] || {};
+  });
+  const genMabsAPI = useRequest(genMabs, {
+    manual: true,
+  });
+
+  const handleUpdate = async () => {
+    await genMabsAPI.runAsync({
+      agentId: props?.agentId,
+      flightStartDate: props.startDate,
+      flightEndDate: props?.endDate,
+    });
+    countInfoAPI.refresh();
+  };
 
   return (
-    <Card size="small" loading={props?.loading}>
-      <Descriptions size="small" title={props.title} column={2}>
-        <Descriptions.Item label="件数">{props?.counts?.[0]}</Descriptions.Item>
-        <Descriptions.Item label="重量">{props?.counts?.[1]}</Descriptions.Item>
-        <Descriptions.Item label="個数">{props?.counts?.[2]}</Descriptions.Item>
-        <Descriptions.Item label="MAWB">{props?.counts?.[3]}</Descriptions.Item>
+    <Card size="small" loading={countInfoAPI?.loading}>
+      <Descriptions
+        size="small"
+        title={props.title}
+        column={2}
+        extra={
+          <Button
+            loading={genMabsAPI.loading}
+            type="primary"
+            size="small"
+            onClick={handleUpdate}
+          >
+            更新
+          </Button>
+        }
+      >
+        <Descriptions.Item label="件数">
+          {countInfoAPI?.data?.waybillTotalCount || 0}
+        </Descriptions.Item>
+        <Descriptions.Item label="重量">
+          {countInfoAPI?.data?.GWTotalCount || 0}
+        </Descriptions.Item>
+        <Descriptions.Item label="個数">
+          {countInfoAPI?.data?.NOTotalCount || 0}
+        </Descriptions.Item>
+        <Descriptions.Item label="MAWB">
+          {countInfoAPI?.data?.mawbTotalCount || 0}
+        </Descriptions.Item>
         {/* <Descriptions.Item label="未許可件数">0</Descriptions.Item> */}
       </Descriptions>
       <Divider style={{ margin: '12px 0' }} />
-      {countInfoAPI.loading ? (
-        <Spin>
-          <Descriptions size="small" column={3}>
-            <Descriptions.Item label="成田">0</Descriptions.Item>
-            <Descriptions.Item label="関西">0</Descriptions.Item>
-            <Descriptions.Item label="羽田">0</Descriptions.Item>
-          </Descriptions>
-        </Spin>
-      ) : (
-        <Descriptions size="small" column={3}>
-          <Descriptions.Item label="成田">
-            {countInfoAPI?.data?.find((item: any) => item?._id === 'NRT')
-              ?.count || 0}
-          </Descriptions.Item>
-          <Descriptions.Item label="関西">
-            {countInfoAPI?.data?.find((item: any) => item?._id === 'KIX')
-              ?.count || 0}
-          </Descriptions.Item>
-          <Descriptions.Item label="羽田">
-            {countInfoAPI?.data?.find((item: any) => item?._id === 'HND')
-              ?.count || 0}
-          </Descriptions.Item>
-        </Descriptions>
-      )}
+      <Descriptions size="small" column={3}>
+        <Descriptions.Item label="成田">
+          {countInfoAPI?.data?.NRTTotalCount || 0}
+        </Descriptions.Item>
+        <Descriptions.Item label="関西">
+          {countInfoAPI?.data?.KIXTotalCount || 0}
+        </Descriptions.Item>
+        <Descriptions.Item label="羽田">
+          {countInfoAPI?.data?.HNDTotalCount || 0}
+        </Descriptions.Item>
+      </Descriptions>
     </Card>
   );
 };

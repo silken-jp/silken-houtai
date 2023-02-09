@@ -20,12 +20,8 @@ import SumChart from './components/SumChart';
 // import PieChart from './components/PieChart';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions } from '@/services/useAPIOption';
-import {
-  getMonthStat,
-  getDateStat,
-  getWeekByDate,
-  getAgentStat,
-} from '@/services/request/waybill';
+import { getDateStat, getAgentStat } from '@/services/request/waybill';
+import { getWeekByDate } from '@/services/request/mabs';
 
 export interface dashboardProps {}
 
@@ -66,19 +62,17 @@ const Dashboard: React.FC<dashboardProps> = () => {
   const getWeekByDatAsync = async (agentId: any) => {
     return await getWeekByDate({
       agentId,
-      startDate: flightState?.startDate?.toDate(),
-      endDate: flightState?.endDate?.toDate(),
+      flightStartDate: flightState?.startDate?.format('YYYY-MM-DD'),
+      flightEndDate: flightState?.endDate?.format('YYYY-MM-DD'),
     });
   };
   const agentStatAPI = useRequest(getAgentStat);
-  const mouthStatAPI = useRequest(getMonthStat);
   const dateStatAPI = useRequest(getDateStatAsync);
   const weekStatAPI = useRequest(getWeekByDatAsync);
 
   // action
   const handleChangeAgent = (agentId: any) => {
     setAgentId(agentId);
-    mouthStatAPI?.run({ agentId });
     dateStatAPI?.run(agentId);
     weekStatAPI?.run(agentId);
   };
@@ -149,60 +143,41 @@ const Dashboard: React.FC<dashboardProps> = () => {
           <ExtraCount
             agentId={agentId}
             title={lastMonth}
-            loading={mouthStatAPI?.loading}
-            counts={[
-              mouthStatAPI?.data?.waybillLastMonthCount,
-              mouthStatAPI?.data?.GWLastMonthCount?.toFixed(2),
-              mouthStatAPI?.data?.NOLastMonthCount,
-              mouthStatAPI?.data?.mawbLastMonthCount,
-            ]}
-            startDate={dayjs().subtract(1, 'month').startOf('month').toDate()}
-            endDate={dayjs().subtract(1, 'month').endOf('month').toDate()}
+            startDate={dayjs()
+              .subtract(1, 'month')
+              .startOf('month')
+              .format('YYYY-MM-DD')}
+            endDate={dayjs()
+              .subtract(1, 'month')
+              .endOf('month')
+              .format('YYYY-MM-DD')}
           />
         </Col>
         <Col span={12} xl={6}>
           <ExtraCount
             agentId={agentId}
             title={thisMonth}
-            loading={mouthStatAPI?.loading}
-            counts={[
-              mouthStatAPI?.data?.waybillThisMonthCount,
-              mouthStatAPI?.data?.GWThisMonthCount?.toFixed(2),
-              mouthStatAPI?.data?.NOThisMonthCount,
-              mouthStatAPI?.data?.mawbThisMonthCount,
-            ]}
-            startDate={dayjs().startOf('month').toDate()}
-            endDate={dayjs().endOf('month').toDate()}
+            startDate={dayjs().startOf('month').format('YYYY-MM-DD')}
+            endDate={dayjs().endOf('month').format('YYYY-MM-DD')}
           />
         </Col>
         <Col span={12} xl={6}>
           <ExtraCount
             agentId={agentId}
             title={today}
-            loading={mouthStatAPI?.loading}
-            counts={[
-              mouthStatAPI?.data?.waybillTodayCount,
-              mouthStatAPI?.data?.GWTodayCount?.toFixed(2),
-              mouthStatAPI?.data?.NOTodayCount,
-              mouthStatAPI?.data?.mawbTodayCount,
-            ]}
-            startDate={dayjs().startOf('day').toDate()}
-            endDate={dayjs().endOf('day').toDate()}
+            startDate={dayjs().startOf('day').format('YYYY-MM-DD')}
+            endDate={dayjs().endOf('day').format('YYYY-MM-DD')}
           />
         </Col>
         <Col span={12} xl={6}>
           <ExtraCount
             agentId={agentId}
             title={nextDay}
-            loading={mouthStatAPI?.loading}
-            counts={[
-              mouthStatAPI?.data?.waybillNextDayCount,
-              mouthStatAPI?.data?.GWNextDayCount?.toFixed(2),
-              mouthStatAPI?.data?.NONextDayCount,
-              mouthStatAPI?.data?.mawbNextDayCount,
-            ]}
-            startDate={dayjs().add(1, 'day').startOf('day').toDate()}
-            endDate={dayjs().add(1, 'day').endOf('day').toDate()}
+            startDate={dayjs()
+              .add(1, 'day')
+              .startOf('day')
+              .format('YYYY-MM-DD')}
+            endDate={dayjs().add(1, 'day').endOf('day').format('YYYY-MM-DD')}
           />
         </Col>
       </Row>

@@ -1,6 +1,6 @@
 import { request } from 'umi';
 
-const { ApiURL } = process.env;
+const { ApiURL2: ApiURL } = process.env;
 
 // 获取所有运单 GET /api/waybills
 interface GetAllWaybills extends Partial<API.Waybill> {
@@ -248,8 +248,8 @@ export async function creating(params?: Creating): Promise<any> {
 // 获取机场分类count GET /api/dst_by_date
 interface GetDstByDate {
   agentId?: API.ID;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
 }
 export async function getDstByDate(params?: GetDstByDate) {
   return request<any>(ApiURL + '/waybills/dst_by_date', {
@@ -259,12 +259,12 @@ export async function getDstByDate(params?: GetDstByDate) {
 }
 
 // 获取机场分类count GET /api/dst_by_date
-interface GetDstByDate {
+interface GetWeekByDate {
   agentId?: API.ID;
   startDate?: Date;
   endDate?: Date;
 }
-export async function getWeekByDate(params?: GetDstByDate) {
+export async function getWeekByDate(params?: GetWeekByDate) {
   return request<any>(ApiURL + '/waybills/dst_week_by_date', {
     method: 'GET',
     params,
