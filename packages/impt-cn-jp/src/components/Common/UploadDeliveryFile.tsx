@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Upload, message, Button, Space } from 'antd';
+import { Upload, message, Button, Space, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 ////
 import { getUserInfo } from '@/services/useStorage';
@@ -19,40 +19,47 @@ const UploadDeliveryFile: React.FC<UploadDeliveryFileProps> = (props) => {
     maxCount: 1,
     showUploadList: false,
     loading,
+
     customRequest: async (opt: any) => {
       const { file, onSuccess, onError } = opt;
-      try {
-        setLoading(true);
-        let newFileName = file.name;
-        const temp = file.name.split('.');
-        const filenameArr = temp[0].split('_');
-        const MAB = filenameArr?.shift();
-        const EXA_DIS_in = filenameArr.join(',');
+      Modal.confirm({
+        title: `Upload TO ${props.putTo}`,
+        content: `【${file.name}】をアップロードしますか？`,
+        onOk: async () => {
+          try {
+            setLoading(true);
+            let newFileName = file.name;
+            const temp = file.name.split('.');
+            const filenameArr = temp[0].split('_');
+            const MAB = filenameArr?.shift();
+            const EXA_DIS_in = filenameArr.join(',');
 
-        if (props.putTo === 'sagawa') {
-          temp[0] = 'r04' + new Date().getFullYear() + MAB?.slice(-4);
-          newFileName = temp.join('.');
-        }
-        if (props.putTo === 'seino') {
-          newFileName = 'sclput.txt';
-        }
-        const newFile = new File([file], newFileName, {
-          type: 'text/plain',
-        });
-        await uploadEDIs({
-          MAB,
-          EXA_DIS_in,
-          agent: props?.agent,
-          userId: userInfo._id,
-          putTo: props?.putTo,
-          file: newFile,
-        });
-        await onSuccess(newFile, newFile);
-        setLoading(false);
-      } catch (e) {
-        await onError(e, file);
-        setLoading(false);
-      }
+            if (props.putTo === 'sagawa') {
+              temp[0] = 'r04' + new Date().getFullYear() + MAB?.slice(-4);
+              newFileName = temp.join('.');
+            }
+            if (props.putTo === 'seino') {
+              newFileName = 'sclput.txt';
+            }
+            const newFile = new File([file], newFileName, {
+              type: 'text/plain',
+            });
+            await uploadEDIs({
+              MAB,
+              EXA_DIS_in,
+              agent: props?.agent,
+              userId: userInfo._id,
+              putTo: props?.putTo,
+              file: newFile,
+            });
+            await onSuccess(newFile, newFile);
+            setLoading(false);
+          } catch (e) {
+            await onError(e, file);
+            setLoading(false);
+          }
+        },
+      });
     },
     onChange: (info: any) => {
       if (info.file.status === 'done') {

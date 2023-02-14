@@ -8,7 +8,7 @@ import jsPDF from 'jspdf';
 import { DownloadOutlined } from '@ant-design/icons';
 ////
 import { getAllWaybills } from '@/services/request/waybill';
-import EDIPrint from './components/EDIPrint';
+import EDIPrint from './components/EDIPrint2';
 
 export interface SagawaEDIProps {}
 
@@ -62,8 +62,8 @@ const SagawaEDI: React.FC<SagawaEDIProps> = () => {
 
   const d: API.Waybill[] = printApi?.data?.waybills || [];
   let dataSource: API.Waybill[][] = [];
-  for (let index = 0; index < d.length; index += 6) {
-    dataSource.push(d.slice(index, index + 6));
+  for (let index = 0; index < d.length; index += 12) {
+    dataSource.push(d.slice(index, index + 12));
   }
 
   // action

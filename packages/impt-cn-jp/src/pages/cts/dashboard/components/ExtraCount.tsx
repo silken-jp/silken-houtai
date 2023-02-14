@@ -59,7 +59,7 @@ const ExtraCount: React.FC<ExtraCountProps> = (props) => {
             {countInfoAPI?.data?.waybillTotalCount || 0}
           </Descriptions.Item>
           <Descriptions.Item label="重量">
-            {countInfoAPI?.data?.GWTotalCount || 0}
+            {countInfoAPI?.data?.GWTotalCount?.toFixed(2) || 0}
           </Descriptions.Item>
           <Descriptions.Item label="個数">
             {countInfoAPI?.data?.NOTotalCount || 0}

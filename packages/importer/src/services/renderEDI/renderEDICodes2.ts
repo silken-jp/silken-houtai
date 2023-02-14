@@ -16,9 +16,19 @@ function renderEDIPrint(
     const h = 50 + index * 230;
     codeBar(ctx, {
       code: `D${element.HAB}D`,
-      d: [350, h, 350, 115],
+      d: [100, h, 350, 115],
     });
-    ctx.fillText(`D${element.HAB}D`, 380, h + 160);
+    ctx.fillText(`D${element.HAB}D`, 130, h + 160);
+  }
+  for (let index = 6; index < 12; index++) {
+    const element = data[index];
+    if (!element) break;
+    const h = 50 + (index - 6) * 230;
+    codeBar(ctx, {
+      code: `D${element.HAB}D`,
+      d: [550, h, 350, 115],
+    });
+    ctx.fillText(`D${element.HAB}D`, 580, h + 160);
   }
   ctx.font = '26px msgothic';
   ctx.fillText(page, 490, 1480);

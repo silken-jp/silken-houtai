@@ -3,15 +3,9 @@ import { Table, Card, Button, Form, Input, Row, Col, Space } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PrinterOutlined } from '@ant-design/icons';
 import { useAntdTable } from 'ahooks';
-import { Link } from 'umi';
 ////
 import { useIntlFormat } from '@/services/useIntl';
 import { getImporters } from '@/services/request/importer';
-
-function postImporter({ selectedRows }: any) {
-  const channel = new BroadcastChannel('sk_importer_print');
-  channel.postMessage({ selectedRows });
-}
 
 const Importer: React.FC = () => {
   // state

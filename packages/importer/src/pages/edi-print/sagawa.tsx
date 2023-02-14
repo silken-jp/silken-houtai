@@ -120,16 +120,28 @@ const EDIPrint: React.FC = () => {
       <Card>
         <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 1100 }}>
           <Table.Column sorter width={200} title="MAWB番号" dataIndex="_id" />
-          <Table.Column
-            sorter
-            width={150}
-            title="Download"
-            render={(row) => (
-              <Link target="_blank" to={`/print/SagawaEDI?MAB=${row?._id}`}>
-                <DownloadOutlined />
-              </Link>
-            )}
-          />
+          <Table.ColumnGroup title="Download">
+            <Table.Column
+              sorter
+              width={80}
+              title="一列"
+              render={(row) => (
+                <Link target="_blank" to={`/print/SagawaEDI?MAB=${row?._id}`}>
+                  <DownloadOutlined />
+                </Link>
+              )}
+            />
+            <Table.Column
+              sorter
+              width={80}
+              title="二列"
+              render={(row) => (
+                <Link target="_blank" to={`/print/SagawaEDI2?MAB=${row?._id}`}>
+                  <DownloadOutlined />
+                </Link>
+              )}
+            />
+          </Table.ColumnGroup>
           <Table.Column
             sorter
             width={200}
