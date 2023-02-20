@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Descriptions, Space, Modal, Button, Typography } from 'antd';
+import { Descriptions, Space, Modal, Button, Typography, Table } from 'antd';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import dayjs from 'dayjs';
@@ -32,6 +32,10 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   // action
   function handleOpenINV() {
     setViewType('INV');
+    setVisible(true);
+  }
+  function handleOpenHS() {
+    setViewType('HS');
     setVisible(true);
   }
   function handleOpenBL() {
@@ -201,7 +205,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                     width: 180,
                   }}
                   contentStyle={{
-                    lineHeight: '150px',
+                    lineHeight: '100px',
                   }}
                 >
                   {props?.dataSource?.CMN}
@@ -280,6 +284,49 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               </Descriptions>
             </>
           )}
+          {viewType === 'HS' && (
+            <>
+              <Paragraph style={{ textAlign: 'center' }}>
+                {props?.dataSource?.HAB}
+              </Paragraph>
+              <Title level={2} style={{ textAlign: 'center' }}>
+                INVOICE
+              </Title>
+              <Paragraph style={{ textAlign: 'right' }}>
+                {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
+                  .add(-1, 'day')
+                  .format('MM/DD/YYYY')}`}
+              </Paragraph>
+              <Table
+                rowKey="CMD"
+                size="small"
+                pagination={false}
+                bordered
+                dataSource={props?.dataSource?.HSRepeat}
+                summary={() => (
+                  <Table.Summary fixed>
+                    <Table.Summary.Row>
+                      <Table.Summary.Cell index={0}>
+                        <div>TOTAL</div>
+                      </Table.Summary.Cell>
+                      <Table.Summary.Cell index={1} colSpan={4}>
+                        <div style={{ textAlign: 'right' }}>
+                          {props?.dataSource?.IP3}
+                          {Sum}
+                        </div>
+                      </Table.Summary.Cell>
+                    </Table.Summary.Row>
+                  </Table.Summary>
+                )}
+              >
+                <Table.Column title="DESCRIPTION" dataIndex="CMN" />
+                <Table.Column title="OR" dataIndex="OR" />
+                <Table.Column title="HS CODE" dataIndex="CMD" />
+                <Table.Column title="QUANTITY" dataIndex="QN1" />
+                <Table.Column title="PRICE" dataIndex="DPR" />
+              </Table>
+            </>
+          )}
         </div>
       </Modal>
       <Space>
@@ -287,6 +334,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
         <Button size="small" type="link" onClick={handleOpenINV}>
           INV
         </Button>
+        {props?.dataSource?.waybill_type === 'IDA' && (
+          <Button size="small" type="link" onClick={handleOpenHS}>
+            HS
+          </Button>
+        )}
         <Button size="small" type="link" onClick={handleOpenBL}>
           BL
         </Button>

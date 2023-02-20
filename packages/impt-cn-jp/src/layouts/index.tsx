@@ -62,47 +62,27 @@ const Index: React.FC<{ children: any }> = (props) => {
               children: [
                 {
                   key: '/agent/setting',
-                  label: (
-                    <Link target="_blank" to="/agent/setting">
-                      フォワーダーリスト
-                    </Link>
-                  ),
+                  label: <Link to="/agent/setting">フォワーダーリスト</Link>,
                 },
                 {
                   key: '/agent/hawb-group',
-                  label: (
-                    <Link target="_blank" to="/agent/hawb-group">
-                      HAWB区間管理
-                    </Link>
-                  ),
+                  label: <Link to="/agent/hawb-group">HAWB区間管理</Link>,
                 },
                 {
                   key: '/agent/hawb',
-                  label: (
-                    <Link target="_blank" to="/agent/hawb">
-                      HAWB配布
-                    </Link>
-                  ),
+                  label: <Link to="/agent/hawb">HAWB配布</Link>,
                 },
               ],
             },
             {
               key: '/user',
               icon: <UserOutlined />,
-              label: (
-                <Link target="_blank" to="/user">
-                  ユーザー管理
-                </Link>
-              ),
+              label: <Link to="/user">ユーザー管理</Link>,
             },
             {
               key: '/company',
               icon: <SettingOutlined />,
-              label: (
-                <Link target="_blank" to="/company">
-                  会社設定
-                </Link>
-              ),
+              label: <Link to="/company">会社設定</Link>,
             },
             {
               key: '/cts',
@@ -111,11 +91,7 @@ const Index: React.FC<{ children: any }> = (props) => {
               children: [
                 {
                   key: '/cts/dashboard',
-                  label: (
-                    <Link target="_blank" to="/cts/dashboard">
-                      Dashboard
-                    </Link>
-                  ),
+                  label: <Link to="/cts/dashboard">Dashboard</Link>,
                 },
                 {
                   key: '/cts/todo',
@@ -123,19 +99,11 @@ const Index: React.FC<{ children: any }> = (props) => {
                   children: [
                     {
                       key: '/cts/todo/today',
-                      label: (
-                        <Link target="_blank" to="/cts/todo/today">
-                          Today
-                        </Link>
-                      ),
+                      label: <Link to="/cts/todo/today">Today</Link>,
                     },
                     {
                       key: '/cts/todo/other',
-                      label: (
-                        <Link target="_blank" to="/cts/todo/other">
-                          Other
-                        </Link>
-                      ),
+                      label: <Link to="/cts/todo/other">Other</Link>,
                     },
                   ],
                 },
@@ -171,27 +139,15 @@ const Index: React.FC<{ children: any }> = (props) => {
                 },
                 {
                   key: '/cts/large',
-                  label: (
-                    <Link target="_blank" to="/cts/large">
-                      IDA-Large
-                    </Link>
-                  ),
+                  label: <Link to="/cts/large">IDA-Large</Link>,
                 },
                 {
                   key: '/cts/small',
-                  label: (
-                    <Link target="_blank" to="/cts/small">
-                      IDA-Small
-                    </Link>
-                  ),
+                  label: <Link to="/cts/small">IDA-Small</Link>,
                 },
                 {
                   key: '/cts/manifest',
-                  label: (
-                    <Link target="_blank" to="/cts/manifest">
-                      MIC
-                    </Link>
-                  ),
+                  label: <Link to="/cts/manifest">MIC</Link>,
                 },
                 // {
                 //   key: '/cts/mutiEdit',
@@ -214,24 +170,16 @@ const Index: React.FC<{ children: any }> = (props) => {
                   children: [
                     {
                       key: '/cts/settings/CMN',
-                      label: (
-                        <Link target="_blank" to="/cts/settings/CMN">
-                          品名管理
-                        </Link>
-                      ),
+                      label: <Link to="/cts/settings/CMN">品名管理</Link>,
                     },
                     {
                       key: '/cts/settings/GW_FR3',
-                      label: (
-                        <Link target="_blank" to="/cts/settings/GW_FR3">
-                          運賃管理
-                        </Link>
-                      ),
+                      label: <Link to="/cts/settings/GW_FR3">運賃管理</Link>,
                     },
                     {
                       key: '/cts/settings/GW_IP4',
                       label: (
-                        <Link target="_blank" to="/cts/settings/GW_IP4">
+                        <Link to="/cts/settings/GW_IP4">
                           インボイス価格管理
                         </Link>
                       ),
@@ -239,31 +187,25 @@ const Index: React.FC<{ children: any }> = (props) => {
                     {
                       key: '/cts/settings/Currency',
                       label: (
-                        <Link target="_blank" to="/cts/settings/Currency">
-                          為替レート管理
-                        </Link>
+                        <Link to="/cts/settings/Currency">為替レート管理</Link>
                       ),
                     },
                     {
                       key: '/cts/settings/Importer',
                       label: (
-                        <Link target="_blank" to="/cts/settings/Importer">
-                          法人輸入者管理
-                        </Link>
+                        <Link to="/cts/settings/Importer">法人輸入者管理</Link>
                       ),
                     },
                     {
                       key: '/cts/settings/MICkey',
                       label: (
-                        <Link target="_blank" to="/cts/settings/MICkey">
-                          フォルダ変更管理
-                        </Link>
+                        <Link to="/cts/settings/MICkey">フォルダ変更管理</Link>
                       ),
                     },
                     {
                       key: '/cts/settings/BlackList',
                       label: (
-                        <Link target="_blank" to="/cts/settings/BlackList">
+                        <Link to="/cts/settings/BlackList">
                           ブラックリスト管理
                         </Link>
                       ),
@@ -283,16 +225,12 @@ const Index: React.FC<{ children: any }> = (props) => {
                   children: [
                     {
                       key: '/delivery/todo/check',
-                      label: (
-                        <Link target="_blank" to="/delivery/todo/check">
-                          Check
-                        </Link>
-                      ),
+                      label: <Link to="/delivery/todo/check">Check</Link>,
                     },
                     {
                       key: '/delivery/todo/timeoutList',
                       label: (
-                        <Link target="_blank" to="/delivery/todo/timeoutList">
+                        <Link to="/delivery/todo/timeoutList">
                           Timeout List
                         </Link>
                       ),
@@ -302,9 +240,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/delivery/self',
                   label: (
-                    <Link target="_blank" to="/delivery/self">
-                      {intlMenu('delivery.self')}
-                    </Link>
+                    <Link to="/delivery/self">{intlMenu('delivery.self')}</Link>
                   ),
                 },
                 {
@@ -314,18 +250,12 @@ const Index: React.FC<{ children: any }> = (props) => {
                     {
                       key: '/delivery/other/dashboard',
                       label: (
-                        <Link target="_blank" to="/delivery/other/dashboard">
-                          Dashboard
-                        </Link>
+                        <Link to="/delivery/other/dashboard">Dashboard</Link>
                       ),
                     },
                     {
                       key: '/delivery/other/sagawa',
-                      label: (
-                        <Link target="_blank" to="/delivery/other/sagawa">
-                          佐川
-                        </Link>
-                      ),
+                      label: <Link to="/delivery/other/sagawa">佐川</Link>,
                     },
                   ],
                 },
@@ -335,15 +265,11 @@ const Index: React.FC<{ children: any }> = (props) => {
                   children: [
                     {
                       key: '/delivery/edi/sagawa',
-                      label: (
-                        <Link target="_blank" to="/delivery/edi/sagawa">
-                          佐川
-                        </Link>
-                      ),
+                      label: <Link to="/delivery/edi/sagawa">佐川</Link>,
                     },
                     // {
                     //   key: '/delivery/edi/seino',
-                    //   label: <Link target="_blank" to="/delivery/edi/seino">西濃</Link>,
+                    //   label: <Link to="/delivery/edi/seino">西濃</Link>,
                     // },
                   ],
                 },
@@ -353,11 +279,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                   children: [
                     {
                       key: '/delivery/edi-print/sagawa',
-                      label: (
-                        <Link target="_blank" to="/delivery/edi-print/sagawa">
-                          佐川
-                        </Link>
-                      ),
+                      label: <Link to="/delivery/edi-print/sagawa">佐川</Link>,
                     },
                   ],
                 },
@@ -369,7 +291,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                     {
                       key: '/delivery/settings/driver',
                       label: (
-                        <Link target="_blank" to="/delivery/settings/driver">
+                        <Link to="/delivery/settings/driver">
                           {intlMenu('setting.driver')}
                         </Link>
                       ),
@@ -377,7 +299,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                     {
                       key: '/delivery/settings/zip-area',
                       label: (
-                        <Link target="_blank" to="/delivery/settings/zip-area">
+                        <Link to="/delivery/settings/zip-area">
                           {intlMenu('setting.zipArea')}
                         </Link>
                       ),
@@ -394,7 +316,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/issues/clearanceIssues',
                   label: (
-                    <Link target="_blank" to="/issues/clearanceIssues">
+                    <Link to="/issues/clearanceIssues">
                       {intlMenu('issues.clearanceIssues')}
                     </Link>
                   ),
@@ -402,7 +324,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/issues/warehouseIssues',
                   label: (
-                    <Link target="_blank" to="/issues/warehouseIssues">
+                    <Link to="/issues/warehouseIssues">
                       {intlMenu('issues.warehouseIssues')}
                     </Link>
                   ),
@@ -410,7 +332,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/issues/inspectionIssues',
                   label: (
-                    <Link target="_blank" to="/issues/inspectionIssues">
+                    <Link to="/issues/inspectionIssues">
                       {intlMenu('issues.inspectionIssues')}
                     </Link>
                   ),
@@ -418,7 +340,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                 {
                   key: '/issues/cargoIssues',
                   label: (
-                    <Link target="_blank" to="/issues/cargoIssues">
+                    <Link to="/issues/cargoIssues">
                       {intlMenu('issues.cargoIssues')}
                     </Link>
                   ),

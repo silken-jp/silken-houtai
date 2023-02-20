@@ -15,7 +15,7 @@
     "build:all:prod": "lerna run build:prod --parallel",
     "build:prod": "lerna run build:prod --parallel --scope",
     "tsc": "yarn workspace @silken-houtai/core tsc",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
+    "format": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'"
   },
   "gitHooks": {
     "pre-commit": "lint-staged"

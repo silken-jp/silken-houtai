@@ -1,9 +1,15 @@
 import { useState } from 'react';
-import { Descriptions, Space, Modal, Button, Typography, message } from 'antd';
+import {
+  Descriptions,
+  Space,
+  Modal,
+  Button,
+  Typography,
+  message,
+  Table,
+} from 'antd';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
 import dayjs from 'dayjs';
 
 const { Title, Paragraph } = Typography;
@@ -36,7 +42,6 @@ const Waybills: React.FC<WaybillsProps> = (props) => {
   }
   async function pdfPrint() {
     setLoading(true);
-    // const zip = new JSZip();
     const doc = new jsPDF({
       orientation: 'p',
       format: 'a4',
@@ -54,32 +59,10 @@ const Waybills: React.FC<WaybillsProps> = (props) => {
           count++;
         }
       }
-      // for await (const item of props.dataSource) {
-      //   message.loading({
-      //     content: `Generating PDF: ${count}/${props.dataSource.length}`,
-      //     key: 'INV_BL',
-      //   });
-      //   if (item?.HAB) {
-      //     const blob = await handleAddPDF(item?.HAB);
-      //     zip.file(`${item.HAB}.pdf`, blob);
-      //     count++;
-      //   }
-      // }
       if (count > 0) {
         doc.save('print.pdf');
         setLoading(false);
         message.success({ content: 'Generate PDF success!', key: 'INV_BL' });
-        // message.loading({ content: 'zip', key: 'INV_BL' });
-        // zip
-        //   .generateAsync({ type: 'blob' })
-        //   .then((res) => {
-        //     FileSaver.saveAs(res, props?.fileName || '压缩包.zip');
-        //     setLoading(false);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //     setLoading(false);
-        //   });
       } else {
         message.warn('ダンロードできる項目が見つかりません。');
       }
@@ -100,28 +83,6 @@ const Waybills: React.FC<WaybillsProps> = (props) => {
     let dataURI2 = canvas2.toDataURL('image/jpeg');
     let width2 = doc.internal.pageSize.width;
     doc.addImage(dataURI2, 'JPEG', 0, 0, width2, 0);
-  }
-
-  async function handleAddPDF(HAB: string) {
-    const doc = new jsPDF({
-      orientation: 'p',
-      format: 'a4',
-    });
-    let elem = document.getElementById(HAB + 'INV') as HTMLElement;
-    let canvas = await html2canvas(elem, { scale: 2 });
-    let dataURI = canvas.toDataURL('image/jpeg');
-    let width = doc.internal.pageSize.width;
-    doc.addImage(dataURI, 'JPEG', 0, 0, width, 0);
-
-    doc.addPage();
-
-    elem = document.getElementById(HAB + 'BL') as HTMLElement;
-    canvas = await html2canvas(elem, { scale: 2 });
-    dataURI = canvas.toDataURL('image/jpeg');
-    width = doc.internal.pageSize.width;
-    doc.addImage(dataURI, 'JPEG', 0, 0, width, 0);
-
-    return doc.output('blob');
   }
 
   return (
@@ -236,7 +197,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               width: 180,
             }}
             contentStyle={{
-              lineHeight: '150px',
+              lineHeight: '100px',
             }}
           >
             {props?.dataSource?.CMN}
@@ -313,6 +274,47 @@ const Waybill: React.FC<WaybillProps> = (props) => {
             {props?.dataSource?.OR}
           </Descriptions.Item>
         </Descriptions>
+      </div>
+      <div style={{ padding: 48 }} id={props.dataSource.HAB + 'HS'}>
+        <Paragraph style={{ textAlign: 'center' }}>
+          {props?.dataSource?.HAB}
+        </Paragraph>
+        <Title level={2} style={{ textAlign: 'center' }}>
+          INVOICE
+        </Title>
+        <Paragraph style={{ textAlign: 'right' }}>
+          {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
+            .add(-1, 'day')
+            .format('MM/DD/YYYY')}`}
+        </Paragraph>
+        <Table
+          rowKey="CMD"
+          size="small"
+          pagination={false}
+          bordered
+          dataSource={props?.dataSource?.HSRepeat}
+          summary={() => (
+            <Table.Summary fixed>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0}>
+                  <div>TOTAL</div>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={1} colSpan={4}>
+                  <div style={{ textAlign: 'right' }}>
+                    {props?.dataSource?.IP3}
+                    {Sum}
+                  </div>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
+        >
+          <Table.Column title="DESCRIPTION" dataIndex="CMN" />
+          <Table.Column title="OR" dataIndex="OR" />
+          <Table.Column title="HS CODE" dataIndex="CMD" />
+          <Table.Column title="QUANTITY" dataIndex="QN1" />
+          <Table.Column title="PRICE" dataIndex="DPR" />
+        </Table>
       </div>
       <div style={{ padding: 48 }} id={props.dataSource.HAB + 'BL'}>
         <Title level={2} style={{ textAlign: 'center' }}>

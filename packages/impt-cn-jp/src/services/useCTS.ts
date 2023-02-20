@@ -81,11 +81,15 @@ export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
     };
     setSearchParams(LS, params);
     const data = await getAllWaybillsAdvance(params);
-    const { trackings = [] } = await getAllTrackings({
-      page: 0,
-      perPage,
-      BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
-    });
+    let trackings: any[] = [];
+    if (data?.waybills?.length > 0) {
+      const res = await getAllTrackings({
+        page: 0,
+        perPage,
+        BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
+      });
+      trackings = res?.trackings || [];
+    }
     setMeta({
       totalCount: data?.totalCount || 0,
       cleansingCount: data?.cleansingCount || 0,

@@ -1,10 +1,17 @@
-import { Descriptions, Typography, message } from 'antd';
+import { Descriptions, Typography, message, Table } from 'antd';
 import dayjs from 'dayjs';
 import { useLocation } from 'umi';
 import { useRequest } from 'ahooks';
 import { getAllWaybillsAdvance } from '@/services/request/waybill';
 
 const { Title, Paragraph } = Typography;
+
+const pageStyle: React.CSSProperties = {
+  padding: 48,
+  width: 900,
+  height: 1100,
+  pageBreakAfter: 'always',
+};
 
 export interface WaybillsProps {
   fileName?: string;
@@ -54,7 +61,9 @@ const INV_BL: React.FC<INV_BLProps> = (props) => {
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: 900 }}>
         {dataSource?.map((item) => {
-          return <Waybill key={item._id} dataSource={item} />;
+          return (
+            <Waybill key={item._id} dataSource={item} LS={urlParams?.LS} />
+          );
         })}
       </div>
     </div>
@@ -63,6 +72,7 @@ const INV_BL: React.FC<INV_BLProps> = (props) => {
 
 export interface WaybillProps {
   dataSource: API.Waybill;
+  LS: string;
 }
 const Waybill: React.FC<WaybillProps> = (props) => {
   // data
@@ -74,7 +84,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
 
   return (
     <>
-      <div style={{ padding: 48 }} id={props?.dataSource.HAB + 'INV'}>
+      <div style={pageStyle} id={props?.dataSource.HAB + 'INV'}>
         <Paragraph style={{ textAlign: 'center' }}>
           {props?.dataSource?.HAB}
         </Paragraph>
@@ -143,7 +153,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               width: 180,
             }}
             contentStyle={{
-              lineHeight: '150px',
+              lineHeight: '100px',
             }}
           >
             {props?.dataSource?.CMN}
@@ -221,10 +231,50 @@ const Waybill: React.FC<WaybillProps> = (props) => {
           </Descriptions.Item>
         </Descriptions>
       </div>
-      <div
-        style={{ padding: 48, pageBreakAfter: 'always' }}
-        id={props?.dataSource.HAB + 'BL'}
-      >
+      {props?.LS !== 'M' && (
+        <div style={pageStyle} id={props?.dataSource.HAB + 'HS'}>
+          <Paragraph style={{ textAlign: 'center' }}>
+            {props?.dataSource?.HAB}
+          </Paragraph>
+          <Title level={2} style={{ textAlign: 'center' }}>
+            INVOICE
+          </Title>
+          <Paragraph style={{ textAlign: 'right' }}>
+            {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
+              .add(-1, 'day')
+              .format('MM/DD/YYYY')}`}
+          </Paragraph>
+          <Table
+            rowKey="CMD"
+            size="small"
+            pagination={false}
+            bordered
+            dataSource={props?.dataSource?.HSRepeat}
+            summary={() => (
+              <Table.Summary fixed>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0}>
+                    <div>TOTAL</div>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={1} colSpan={4}>
+                    <div style={{ textAlign: 'right' }}>
+                      {props?.dataSource?.IP3}
+                      {Sum}
+                    </div>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </Table.Summary>
+            )}
+          >
+            <Table.Column title="DESCRIPTION" dataIndex="CMN" />
+            <Table.Column title="OR" dataIndex="OR" />
+            <Table.Column title="HS CODE" dataIndex="CMD" />
+            <Table.Column title="QUANTITY" dataIndex="QN1" />
+            <Table.Column title="PRICE" dataIndex="DPR" />
+          </Table>
+        </div>
+      )}
+      <div style={pageStyle} id={props?.dataSource.HAB + 'BL'}>
         <Title level={2} style={{ textAlign: 'center' }}>
           {props?.dataSource?.HAB}
         </Title>

@@ -41,7 +41,7 @@ const SmallWaybill: React.FC = () => {
   // 导出waybill表单功能
   const { exportApi, handleExport } = useExportXlsx('S', state?.selectedRows);
   // 批量打印 INV BL
-  const { handleDownload } = useDownloadINVBL('L');
+  const { handleDownload } = useDownloadINVBL('S');
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;

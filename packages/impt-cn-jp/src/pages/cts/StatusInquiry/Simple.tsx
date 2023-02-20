@@ -249,6 +249,7 @@ const SimpleStatusInquiry: React.FC = () => {
               }}
               okText="Yes"
               cancelText="No"
+              disabled={!selectedRow}
             >
               <Button disabled={!selectedRow} type="primary">
                 削除
@@ -290,18 +291,21 @@ const SimpleStatusInquiry: React.FC = () => {
               <Space>
                 <Link
                   to="/cts/large"
+                  target="_blank"
                   onClick={() => handleLinkTo('L', row?.mab)}
                 >
                   L({row?.lCount})
                 </Link>
                 <Link
                   to="/cts/small"
+                  target="_blank"
                   onClick={() => handleLinkTo('S', row?.mab)}
                 >
                   S({row?.sCount})
                 </Link>
                 <Link
                   to="/cts/manifest"
+                  target="_blank"
                   onClick={() => handleLinkTo('M', row?.mab)}
                 >
                   M({row?.mCount})
