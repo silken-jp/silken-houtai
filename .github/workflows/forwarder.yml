@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Clean packages
         run: lerna clean -y
       - name: Install packages
@@ -17,7 +17,7 @@ jobs:
       - name: Run yarn build
         run: yarn build @sk-houtai/forwarder
       - name: Upload build result
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: build
           path: public/

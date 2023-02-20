@@ -124,6 +124,7 @@ const SimpleStatusInquiry: React.FC = () => {
         waybillId: selectedRow._id,
         ...v,
       });
+      setSelectedRows([]);
       refresh();
     }
   }
@@ -357,7 +358,7 @@ const SimpleStatusInquiry: React.FC = () => {
                     waybillId: iterator?._id,
                   });
                 }
-                setSelectedRows(null);
+                setSelectedRows([]);
                 refresh();
               }}
               okButtonProps={{
