@@ -7,11 +7,12 @@ jobs:
   CI:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
       - name: Clean packages
         run: lerna clean -y
       - name: Install packages
@@ -38,11 +39,12 @@ jobs:
     needs: [CI]
         runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
       - name: List files in the repository
         uses: appleboy/ssh-action@master
         with:

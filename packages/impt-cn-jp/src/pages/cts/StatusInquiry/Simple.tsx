@@ -1,5 +1,5 @@
 /**
- * title: test page
+ * title: SIMPLE
  */
 import { useState } from 'react';
 import { Link } from 'umi';
