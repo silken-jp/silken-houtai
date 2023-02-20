@@ -3,7 +3,7 @@ on:
   push:
     branches: [ dev ]
     paths: 
-        - "packages/impt-cn-jp/**"
+      - "packages/impt-cn-jp/**"
 
 jobs:
   build:
