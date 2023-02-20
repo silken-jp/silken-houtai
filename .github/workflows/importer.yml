@@ -22,7 +22,7 @@ jobs:
       - name: Run yarn build
         run: yarn build @sk-houtai/importer
       - name: Upload build result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: public/
