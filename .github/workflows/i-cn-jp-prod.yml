@@ -3,11 +3,15 @@ on:
   push:
     branches: [ prod ]
     paths: 
-      - "packages/impt-cn-jp/**"
+        - "packages/impt-cn-jp/**"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
       - name: Clean packages
@@ -24,7 +28,11 @@ jobs:
 
   deploy:
     needs: [build]
-    runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       - name: Download build result
         uses: actions/download-artifact@v2
