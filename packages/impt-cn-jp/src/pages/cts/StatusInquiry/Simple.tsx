@@ -1,5 +1,5 @@
 /**
- * title: SIMPLE
+ * title: SIMPLE2
  */
 import { useState } from 'react';
 import { Link } from 'umi';
