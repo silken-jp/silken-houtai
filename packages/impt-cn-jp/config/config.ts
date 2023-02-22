@@ -15,7 +15,7 @@ export default defineConfig({
   history: {
     type: 'hash',
   },
-  title: 'sclogi',
+  // title: 'sclogi',
   locale: {
     // default zh-CN
     default: 'ja-JP',

@@ -1,6 +1,3 @@
-/**
- * title: SIMPLE2
- */
 import { useState } from 'react';
 import { Link } from 'umi';
 import dayjs from 'dayjs';
@@ -18,7 +15,7 @@ import {
   DatePicker,
   Select,
 } from 'antd';
-import { useAntdTable, useRequest } from 'ahooks';
+import { useAntdTable, useRequest, useTitle } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';

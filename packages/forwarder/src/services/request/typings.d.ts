@@ -242,14 +242,6 @@ declare namespace API {
     name: string;
   }>;
   type Waybill = {
-    mawb_no?: string;
-    hawb_no?: string;
-    track_history?: any[];
-    is_PER_image?: number;
-    PER_image?: string;
-    EXA_image?: string;
-    flightNo?: string;
-
     _id?: ID;
     // ---------------------------开发用------------------------------
     // フォワーダー
@@ -278,6 +270,7 @@ declare namespace API {
     // 航班日期flghtDate
     DATE: Date;
     holdMemo: string;
+    todo_memo: string;
     sendbackMemo: string;
     holdFeedbackMemo: string;
     sendbackFeedbackMemo: string;
@@ -465,6 +458,26 @@ declare namespace API {
       arr_code2: string;
       zipcode: string;
     };
+    HSRepeat?: {
+      CMD?: string;
+      CM2?: string;
+      CMN?: string;
+      OR?: string;
+      ORS?: string;
+      QN1?: string;
+      QT1?: string;
+      QN2?: string;
+      QT2?: string;
+      IT?: string;
+      RG?: string;
+      BPR?: string;
+      FRS?: string;
+      DPR?: string;
+      JKB?: string;
+      JKO?: string;
+      RE?: string;
+      REG?: string;
+    }[];
   };
   type ZipCode = {
     _id?: ID;

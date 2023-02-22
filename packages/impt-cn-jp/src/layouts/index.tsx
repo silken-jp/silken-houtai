@@ -10,7 +10,7 @@ import {
   CarOutlined,
   IssuesCloseOutlined,
 } from '@ant-design/icons';
-import { useHistory, Link, setLocale } from 'umi';
+import { useHistory, Link, setLocale, Helmet } from 'umi';
 ////
 import { utils } from '@silken-houtai/core';
 import { useIntlFormat } from '../services/useIntl';
@@ -39,6 +39,9 @@ const Index: React.FC<{ children: any }> = (props) => {
     <>{props?.children}</>
   ) : (
     <Layout className={styles['layout']}>
+      <Helmet>
+        <title>Sclogi</title>
+      </Helmet>
       <Layout.Sider
         className={styles['slider-layout']}
         width={260}

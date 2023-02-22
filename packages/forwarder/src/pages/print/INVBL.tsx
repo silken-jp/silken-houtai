@@ -1,4 +1,4 @@
-import { Descriptions, Typography, message } from 'antd';
+import { Descriptions, Typography, message, Table } from 'antd';
 import dayjs from 'dayjs';
 import { useLocation } from 'umi';
 import { useRequest } from 'ahooks';
@@ -6,6 +6,13 @@ import { getAllWaybillsAdvance } from '@/services/request/waybill';
 import { getAgentInfo } from '@/services/useStorage';
 
 const { Title, Paragraph } = Typography;
+
+const pageStyle: React.CSSProperties = {
+  padding: 48,
+  width: 900,
+  height: 1100,
+  pageBreakAfter: 'always',
+};
 
 export interface WaybillsProps {
   fileName?: string;
@@ -74,10 +81,45 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const unitPrice = toFloorFixed(_NT1, IP3);
   const NO = props?.dataSource?.NO || 0;
   const Sum = toFloorFixed(NO * _NT1, IP3);
+  const HSRepeat = props?.dataSource?.HSRepeat || [];
+  const isIDA = props?.dataSource?.waybill_type === 'IDA';
+
+  let showAttached = false;
+  let data: any[] = [
+    {
+      ...props?.dataSource,
+      Price: `${IP3} ${unitPrice}`,
+      Amount: `${IP3} ${Sum}`,
+    },
+  ];
+  if (isIDA) {
+    if (HSRepeat?.length > 1) {
+      showAttached = true;
+      data = [
+        {
+          CMN: 'See the attached sheet',
+          NO,
+          Price: `${IP3} ${unitPrice}`,
+          Amount: `${IP3} ${Sum}`,
+        },
+      ];
+    } else if (HSRepeat?.length === 1) {
+      data = [
+        {
+          ...HSRepeat[0],
+          Price: `${IP3} ${unitPrice}`,
+          Amount: `${IP3} ${Sum}`,
+        },
+      ];
+    }
+  }
 
   return (
     <>
-      <div style={{ padding: 48 }} id={props?.dataSource.HAB + 'INV'}>
+      <div style={pageStyle} id={props?.dataSource.HAB + 'INV'}>
+        <Paragraph style={{ float: 'right' }}>
+          {isIDA ? '1/2' : '1/1'}
+        </Paragraph>
         <Paragraph style={{ textAlign: 'center' }}>
           {props?.dataSource?.HAB}
         </Paragraph>
@@ -138,76 +180,46 @@ const Waybill: React.FC<WaybillProps> = (props) => {
             {props?.dataSource?.IP3}
           </Descriptions.Item>
         </Descriptions>
-        <Descriptions size="small" layout="vertical" column={4} bordered>
-          <Descriptions.Item
-            label="Description(Material/Use)"
-            labelStyle={{
-              display: 'block',
-              width: 180,
-            }}
-            contentStyle={{
-              lineHeight: '150px',
-            }}
-          >
-            {props?.dataSource?.CMN}
-          </Descriptions.Item>
-          <Descriptions.Item
-            label="Quantity"
-            labelStyle={{
-              display: 'block',
-              width: 60,
-            }}
-            contentStyle={{
-              display: 'block',
-              width: '100%',
-              textAlign: 'right',
-            }}
-          >
-            {NO}
-          </Descriptions.Item>
-          <Descriptions.Item
-            label="Unit Price"
-            labelStyle={{
-              display: 'block',
-              width: 80,
-            }}
-            contentStyle={{
-              display: 'block',
-              width: '100%',
-              textAlign: 'right',
-            }}
-          >
-            {props?.dataSource?.IP3} {unitPrice}
-          </Descriptions.Item>
-          <Descriptions.Item
-            label="Amount"
-            labelStyle={{
-              display: 'block',
-              width: 80,
-            }}
-            contentStyle={{
-              display: 'block',
-              width: '100%',
-              textAlign: 'right',
-            }}
-          >
-            {props?.dataSource?.IP3} {Sum}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions
+        <Table
+          rowKey="CMD"
           size="small"
-          column={1}
+          pagination={false}
           bordered
-          style={{ marginTop: -1 }}
+          dataSource={data}
+          summary={() => (
+            <Table.Summary fixed>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0}>
+                  <div>TOTAL</div>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={1} colSpan={4}>
+                  <div style={{ textAlign: 'right' }}>
+                    {props?.dataSource?.IP3}
+                    {Sum}
+                  </div>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </Table.Summary>
+          )}
         >
-          <Descriptions.Item
-            label="TOTAL"
-            labelStyle={{ width: 120 }}
-            contentStyle={{ textAlign: 'right' }}
-          >
-            {props?.dataSource?.IP3} {Sum}
-          </Descriptions.Item>
-        </Descriptions>
+          <Table.Column
+            title="Description(Material/Use)"
+            width="50%"
+            dataIndex="CMN"
+            onCell={() => (showAttached ? { colSpan: 3 } : {})}
+          />
+          <Table.Column
+            title="Quantity"
+            dataIndex="NO"
+            onCell={() => (showAttached ? { colSpan: 0 } : {})}
+          />
+          <Table.Column
+            title="Unit Price"
+            dataIndex="Price"
+            onCell={() => (showAttached ? { colSpan: 0 } : {})}
+          />
+          <Table.Column title="Amount" dataIndex="Amount" />
+        </Table>
         <br />
         <Descriptions size="small" column={2}>
           <Descriptions.Item label="TOTAL Piece">
@@ -224,10 +236,55 @@ const Waybill: React.FC<WaybillProps> = (props) => {
           </Descriptions.Item>
         </Descriptions>
       </div>
-      <div
-        style={{ padding: 48, pageBreakAfter: 'always' }}
-        id={props?.dataSource.HAB + 'BL'}
-      >
+      {props?.dataSource?.LS !== 'M' && (
+        <div style={pageStyle} id={props?.dataSource.HAB + 'HS'}>
+          <Paragraph style={{ float: 'right' }}>2/2</Paragraph>
+          <Paragraph style={{ textAlign: 'center' }}>
+            {props?.dataSource?.HAB}
+          </Paragraph>
+          <Title level={2} style={{ textAlign: 'center' }}>
+            INVOICE
+          </Title>
+          <Paragraph style={{ textAlign: 'right' }}>
+            {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
+              .add(-1, 'day')
+              .format('MM/DD/YYYY')}`}
+          </Paragraph>
+          <Table
+            rowKey="CMD"
+            size="small"
+            pagination={false}
+            bordered
+            dataSource={props?.dataSource?.HSRepeat}
+            summary={() => (
+              <Table.Summary fixed>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0}>
+                    <div>TOTAL</div>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={1} colSpan={5}>
+                    <div style={{ textAlign: 'right' }}>
+                      {props?.dataSource?.IP3}
+                      {Sum}
+                    </div>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </Table.Summary>
+            )}
+          >
+            <Table.Column title="DESCRIPTION" dataIndex="CMN" />
+            <Table.Column title="OR" dataIndex="OR" />
+            <Table.Column title="HS CODE" dataIndex="CMD" />
+            <Table.Column title="QUANTITY" dataIndex="QN1" />
+            <Table.Column title="UNIT PRICE" dataIndex="DPR" />
+            <Table.Column
+              title="PRICE"
+              render={(item) => item?.DPR * item?.QN1}
+            />
+          </Table>
+        </div>
+      )}
+      <div style={pageStyle} id={props?.dataSource.HAB + 'BL'}>
         <Title level={2} style={{ textAlign: 'center' }}>
           {props?.dataSource?.HAB}
         </Title>
