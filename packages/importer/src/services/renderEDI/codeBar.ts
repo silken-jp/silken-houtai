@@ -27,7 +27,9 @@ export function codeBar(ctx: CanvasRenderingContext2D, option: any) {
     d: [dx, dy, dw, dh],
   } = option;
 
-  const barCode = (code as string).split('').map((str: string) => Encode[str]);
+  const barCode = (code as string)
+    .split('')
+    .map((str: string) => Encode?.[str]);
 
   let gap = 2;
   let shortBar = 2;
@@ -58,6 +60,7 @@ export function codeBar(ctx: CanvasRenderingContext2D, option: any) {
   // 绘制解码条
   function draw(bstr: string) {
     start_x += gap;
+    if (!bstr) return;
     for (let i = 0; i < bstr.length; i++) {
       let width;
       if (bstr.substring(i, i + 1).startsWith('0')) {
