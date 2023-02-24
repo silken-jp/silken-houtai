@@ -120,11 +120,11 @@ const EDIPrint: React.FC = () => {
       <Card>
         <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 1100 }}>
           <Table.Column sorter width={200} title="MAWB番号" dataIndex="_id" />
-          <Table.ColumnGroup title="Download">
+          <Table.ColumnGroup title="Download（一列）">
             <Table.Column
               sorter
               width={80}
-              title="一列"
+              title="すべて"
               render={(row) => (
                 <Link target="_blank" to={`/print/SagawaEDI?MAB=${row?._id}`}>
                   <DownloadOutlined />
@@ -134,14 +134,42 @@ const EDIPrint: React.FC = () => {
             <Table.Column
               sorter
               width={80}
-              title="二列"
+              title="未搬入"
+              render={(row) => (
+                <Link
+                  target="_blank"
+                  to={`/print/SagawaEDITrackBIN?MAB=${row?._id}&agent=${row?.agentId}`}
+                >
+                  <DownloadOutlined />
+                </Link>
+              )}
+            />
+            <Table.Column
+              sorter
+              width={80}
+              title="未搬出"
+              render={(row) => (
+                <Link
+                  target="_blank"
+                  to={`/print/SagawaEDITrackBOU?MAB=${row?._id}&agent=${row?.agentId}`}
+                >
+                  <DownloadOutlined />
+                </Link>
+              )}
+            />
+          </Table.ColumnGroup>
+          {/* <Table.ColumnGroup title="Download（二列）">
+          <Table.Column
+              sorter
+              width={80}
+              title="すべて"
               render={(row) => (
                 <Link target="_blank" to={`/print/SagawaEDI2?MAB=${row?._id}`}>
                   <DownloadOutlined />
                 </Link>
               )}
             />
-          </Table.ColumnGroup>
+          </Table.ColumnGroup> */}
           <Table.Column
             sorter
             width={200}
