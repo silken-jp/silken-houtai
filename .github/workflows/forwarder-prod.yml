@@ -3,7 +3,7 @@ on:
   push:
     branches: [ prod ]
     paths: 
-      - "packages/forwarder/**"
+      - "apps/forwarder/**"
 
 jobs:
   build:

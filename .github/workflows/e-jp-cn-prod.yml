@@ -3,7 +3,7 @@ on:
   push:
     branches: [ prod ]
     paths:
-      - 'app/expt-jp-cn/**'
+      - 'apps/expt-jp-cn/**'
 
 jobs:
   build:

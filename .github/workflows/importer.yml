@@ -3,7 +3,7 @@ on:
   push:
     branches: [ dev ]
     paths: 
-      - "packages/importer/**"
+      - "apps/importer/**"
 
 jobs:
   build:
