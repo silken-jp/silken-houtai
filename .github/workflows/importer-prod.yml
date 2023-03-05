@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: '16.x'
       - name: Clean packages
-        run: lerna clean -y
+        run: yarn cache clean
       - name: Install packages
-        run: lerna bootstrap
+        run: yarn
       - name: Run yarn build
-        run: yarn build:prod @sk-houtai/importer
+        run: yarn workspace @sk-houtai/importer build:prod
       - name: Upload build result
         uses: actions/upload-artifact@v3
         with:
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Download build result
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build
           path: public/
