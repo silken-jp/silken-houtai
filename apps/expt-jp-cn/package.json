@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "UMI_ENV=host umi dev",
-    "start:prod": "UMI_ENV=prod umi dev",
+    "dev": "UMI_ENV=dev umi dev",
+    "dev:host": "UMI_ENV=host umi dev",
+    "dev:prod": "UMI_ENV=prod umi dev",
     "build": "UMI_ENV=dev umi build",
     "build:prod": "UMI_ENV=prod umi build"
   },

@@ -1,1 +1,0 @@
-PG="none" docker-compose build image

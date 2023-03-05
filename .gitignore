@@ -4,11 +4,11 @@ node_modules
 yarn.lock
 
 # dependencies
-packages/**/node_modules
-packages/**/npm-debug.log*
-packages/**/yarn-error.log
-packages/**/yarn.lock
-packages/**/package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+yarn.lock*
+package-lock.json*
 
 # production
 /dist
@@ -20,7 +20,7 @@ packages/**/package-lock.json
 **/.DS_Store
 
 # umi
-packages/**/src/.umi
-packages/**/src/.umi-production
-packages/**/src/.umi-test
-packages/**/.env.local
+.umi
+.umi-production
+.umi-test
+.env.local

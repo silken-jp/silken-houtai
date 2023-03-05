@@ -1,0 +1,7 @@
+{
+  "extend": {
+    "colors": {
+      "primary": "#253970"
+    }
+  }
+}

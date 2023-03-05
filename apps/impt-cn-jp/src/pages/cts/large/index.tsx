@@ -1,10 +1,12 @@
 import { Table, Card, Space, Row, Tag, Button, Dropdown, Menu } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import { updateWaybill } from '@/services/request/waybill';
+import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import Create from '@/components/Common/Create';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
-import WaybillModal from '@/components/Modal/WaybillModal';
+import WaybillModal from '@/components/Modal/WaybillModal2';
 import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';
@@ -13,8 +15,11 @@ import useIssueModal from '@/services/useCTSActions/useIssueModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
 import useCleansing from '@/services/useCTSActions/useCleansing';
 import useDownloadINVBL from '@/services/useCTSActions/useDownloadINVBL';
+import WaybillINVBLForm from '@/components/Form/WaybillINVBLForm';
 
-const SmallWaybill: React.FC = () => {
+const LargeWaybill: React.FC = () => {
+  // state
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
   const [intlMenu] = useIntlFormat('menu');
   const {
     form,
@@ -24,14 +29,14 @@ const SmallWaybill: React.FC = () => {
     refreshAsync,
     cardProps,
     disActions,
-  } = useCTS('S', {
+  } = useCTS('L', {
     pagination: {
       position: ['topLeft', 'bottomRight'],
     },
   });
   // cleansing功能
   const { cleansingApi, handleCleansing } = useCleansing(
-    'S',
+    'L',
     state.selectedRowKeys,
   );
   // 导出问题件功能
@@ -39,24 +44,42 @@ const SmallWaybill: React.FC = () => {
   // 新建问题件功能
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
-  const { exportApi, handleExport } = useExportXlsx('S', state?.selectedRows);
+  const { exportApi, handleExport } = useExportXlsx('L', state?.selectedRows);
   // 批量打印 INV BL
-  const { handleDownload } = useDownloadINVBL('S');
+  const { handleDownload } = useDownloadINVBL('L');
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;
+
+  // action
+  const handleSubmit = async (v: any) => {
+    try {
+      await updateWaybill({
+        waybillId: formProps.dataSource._id,
+        ...v,
+      });
+      await refreshAsync();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <PageContainer
       header={{
         breadcrumb: {
           routes: [
-            { path: `/cts/small`, breadcrumbName: intlMenu('cts') },
-            { path: '', breadcrumbName: 'Small' },
+            { path: `/cts/large`, breadcrumbName: intlMenu('cts') },
+            { path: '', breadcrumbName: 'Large' },
           ],
         },
       }}
     >
+      <WaybillINVBLForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <CTSSearch form={form} search={search} />
 
       <Row justify="end" className="sk-table-stat">
@@ -70,7 +93,7 @@ const SmallWaybill: React.FC = () => {
             Mas CLS
           </Button>
           <Create
-            LS="S"
+            LS="L"
             text="Mas CRT"
             refreshAsync={refreshAsync}
             disabled={disActions.create}
@@ -103,7 +126,7 @@ const SmallWaybill: React.FC = () => {
               Single CLS
             </Button>
             <Create
-              LS="S"
+              LS="L"
               text="Single CRT"
               useSource
               refreshAsync={refreshAsync}
@@ -146,6 +169,32 @@ const SmallWaybill: React.FC = () => {
             title="HAWB番号"
             render={(row) => <WaybillModal dataSource={row} />}
           />
+          {/* <Table.Column
+            width={180}
+            title="品名"
+            render={(row) => {
+              const handleEdit = () => {
+                handleOpen({
+                  title: 'INV BL 品名修正',
+                  type: 'IDA',
+                  data: row,
+                });
+              };
+              return (
+                <>
+                  <Typography.Text
+                    style={{ width: 120 }}
+                    ellipsis={{ tooltip: row?.CMN }}
+                  >
+                    {row?.CMN}
+                  </Typography.Text>
+                  <Button size="small" onClick={handleEdit}>
+                    <FormOutlined />
+                  </Button>
+                </>
+              );
+            }}
+          /> */}
           <Table.Column
             width={100}
             title="許可書"
@@ -266,4 +315,4 @@ const SmallWaybill: React.FC = () => {
   );
 };
 
-export default SmallWaybill;
+export default LargeWaybill;

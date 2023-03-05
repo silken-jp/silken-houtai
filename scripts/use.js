@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const inquirer = require('inquirer');
-const spawn = require('child_process').spawn;
+import inquirer from 'inquirer';
+import { spawn } from 'child_process';
 
 const prompts = [
   {
@@ -10,18 +10,20 @@ const prompts = [
     type: 'list',
     pageSize: 11,
     choices: [
-      { name: 'forwarder', value: '@sk-houtai/forwarder' },
       { name: 'import-cn-jp', value: '@sk-houtai/i-cn-jp' },
-      { name: 'export-jp-cn', value: '@sk-houtai/e-jp-cn' },
+      { name: 'forwarder', value: '@sk-houtai/forwarder' },
       { name: 'importer', value: '@sk-houtai/importer' },
+      { name: 'export-jp-cn', value: '@sk-houtai/e-jp-cn' },
     ],
   },
 ];
 
+const [, , ...commend] = process.argv;
+
 inquirer
   .prompt(prompts)
   .then((answers) => {
-    spawn('yarn', ['workspace', answers.packages, process.argv[2]], {
+    spawn('yarn', ['workspace', answers.packages, ...commend], {
       stdio: 'inherit',
     });
   })
