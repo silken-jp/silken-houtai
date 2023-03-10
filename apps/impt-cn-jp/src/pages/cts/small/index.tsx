@@ -39,7 +39,11 @@ const SmallWaybill: React.FC = () => {
   // 新建问题件功能
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
-  const { exportApi, handleExport } = useExportXlsx('S', state?.selectedRows);
+  const { exportApi, handleExport } = useExportXlsx(
+    'S',
+    state?.selectedRows,
+    state?.meta?.tabCount[state.tabKey as any],
+  );
   // 批量打印 INV BL
   const { handleDownload } = useDownloadINVBL('S');
 

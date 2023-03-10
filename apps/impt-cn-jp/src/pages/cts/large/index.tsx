@@ -44,7 +44,11 @@ const LargeWaybill: React.FC = () => {
   // 新建问题件功能
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能
-  const { exportApi, handleExport } = useExportXlsx('L', state?.selectedRows);
+  const { exportApi, handleExport } = useExportXlsx(
+    'L',
+    state?.selectedRows,
+    state?.meta?.tabCount[state.tabKey as any],
+  );
   // 批量打印 INV BL
   const { handleDownload } = useDownloadINVBL('L');
 

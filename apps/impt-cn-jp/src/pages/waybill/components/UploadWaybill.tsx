@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Button, Form, Radio } from 'antd';
+import { Modal, Button, Form, Radio, Select } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
@@ -57,7 +57,8 @@ const failedFormat = (success: boolean, failedNo: string[], type: string) => ({
 });
 
 export interface UploadWaybillProps {
-  payload?: any;
+  // payload?: any;
+  agentOptions: any[];
   onUpload?: () => void;
 }
 
@@ -95,11 +96,13 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     console.log(jsonArr);
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     console.log(waybills);
-    const { successCount: count, failedNo } = await importMultiWaybill({
-      waybills,
-      ...values,
-      ...props?.payload,
-    });
+    // const { successCount: count, failedNo } = await importMultiWaybill({
+    //   waybills,
+    //   ...values,
+    //   ...props?.payload,
+    // });
+    const count = waybills.length;
+    const failedNo: any[] = [];
     props?.onUpload?.();
     const success =
       count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
@@ -126,13 +129,13 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   return (
     <>
       <Modal
-        title="Upload Waybills"
+        title="MAWB　アップロード"
         visible={visible}
         onCancel={handleClose}
         footer={
           <UploadXlsx
             onUpload={handleUpload}
-            text="Upload"
+            text="アップロード"
             rightHeader={rightHeader}
           />
         }
@@ -141,6 +144,13 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           form={form}
           initialValues={{ user: '1', isIp4X6: '1', isImpNameReverse: '0' }}
         >
+          <Form.Item
+            label="フォワーダー"
+            name="agentId"
+            rules={[{ required: true }]}
+          >
+            <Select options={props?.agentOptions} />
+          </Form.Item>
           <Form.Item label="Ip4" name="isIp4X6">
             <Radio.Group>
               <Radio value="1"> x 0.6 </Radio>
@@ -161,7 +171,9 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           </Form.Item>
         </Form>
       </Modal>
-      <Button onClick={handleOpen}>Upload</Button>
+      <Button type="primary" onClick={handleOpen}>
+        アップロード
+      </Button>
     </>
   );
 };

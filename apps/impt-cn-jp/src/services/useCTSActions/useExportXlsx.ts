@@ -84,16 +84,33 @@ const handleExportXlsx = (data: any[]) => {
   }
 };
 
-const useExportXlsx = (LS: string, dataSource: any) => {
+const useExportXlsx = (LS: string, dataSource: any, totalCount: number) => {
   const exportApi = useRequest(
-    async () =>
-      await getAllWaybillsAdvance({
-        ...getSearchParams(LS),
-        page: 0,
-        perPage: 100000000,
-      }),
+    async () => {
+      if (totalCount > 500) {
+        let waybills: any = [];
+        const pageNum = totalCount / 500;
+        for (let page = 0; page < pageNum; page++) {
+          const data = await getAllWaybillsAdvance({
+            ...getSearchParams(LS),
+            page,
+            perPage: 500,
+          });
+          waybills = [...waybills, ...data.waybills];
+        }
+        return { totalCount, waybills };
+      } else {
+        const data = await getAllWaybillsAdvance({
+          ...getSearchParams(LS),
+          page: 0,
+          perPage: 50000,
+        });
+        return { total: data?.totalCount, waybills: data?.waybills };
+      }
+    },
     {
       manual: true,
+      ready: !!totalCount,
       onSuccess: (result) => {
         handleExportXlsx(result?.waybills);
       },
