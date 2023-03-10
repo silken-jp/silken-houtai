@@ -28,6 +28,7 @@ import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
 import MABForm from '@/components/Form/MABForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
+import Create from './components/Create';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -218,6 +219,7 @@ const SimpleStatusInquiry: React.FC = () => {
         }
         extra={
           <Space>
+            <Create refreshAsync={search.submit} dataSource={selectedRow} />
             <ExportWaybillXlsx
               // disabled={!selectedRow || selectedRow?.uploaderId !== apiUploader}
               dataSource={selectedRow}

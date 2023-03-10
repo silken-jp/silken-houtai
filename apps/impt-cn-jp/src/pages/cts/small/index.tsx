@@ -4,7 +4,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import Create from '@/components/Common/Create';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
-import WaybillModal from '@/components/Modal/WaybillModal2';
+import WaybillModal from '@/components/Modal/WaybillModal';
 import { useIntlFormat } from '@/services/useIntl';
 import { dayFormat } from '@/utils/helper/day';
 import { useCTS } from '@/services/useCTS';

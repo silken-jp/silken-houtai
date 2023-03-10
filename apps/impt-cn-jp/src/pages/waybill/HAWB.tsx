@@ -25,6 +25,9 @@ import {
 } from '@/services/request/waybill';
 import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
+import WaybillModal from './components/WaybillModal';
+import usePERImage from '@/services/useCTSActions/usePERImage';
+import PERImage from './components/PERImage';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -36,6 +39,8 @@ const SimpleStatusInquiry: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
+
+  const { PERImageApi } = usePERImage([]);
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -403,6 +408,16 @@ const SimpleStatusInquiry: React.FC = () => {
             width={150}
             title={intlWaybill('hawbNo')}
             dataIndex="HAB"
+          />
+          <Table.Column
+            width={100}
+            title="INV&BL"
+            render={(row) => <WaybillModal dataSource={row} />}
+          />
+          <Table.Column
+            width={100}
+            title="許可書"
+            render={(row) => <PERImage dataSource={row} />}
           />
           <Table.Column
             sorter
