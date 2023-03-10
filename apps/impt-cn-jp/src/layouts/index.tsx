@@ -87,25 +87,25 @@ const Index: React.FC<{ children: any }> = (props) => {
               icon: <SettingOutlined />,
               label: <Link to="/company">会社設定</Link>,
             },
-            // {
-            //   key: '/waybill',
-            //   icon: <FormOutlined />,
-            //   label: "通関管理 NEW",
-            //   children: [
-            //     {
-            //       key: '/waybill/dashboard',
-            //       label: <Link to="/waybill/dashboard">Dashboard</Link>,
-            //     },
-            //     {
-            //       key: '/waybill/MAWB',
-            //       label: <Link to="/waybill/MAWB">MAWB</Link>,
-            //     },
-            //     {
-            //       key: '/waybill/HAWB',
-            //       label: <Link to="/waybill/HAWB">HAWB</Link>,
-            //     },
-            //   ],
-            // },
+            {
+              key: '/waybill',
+              icon: <FormOutlined />,
+              label: '通関管理 NEW',
+              children: [
+                {
+                  key: '/waybill/dashboard',
+                  label: <Link to="/waybill/dashboard">Dashboard</Link>,
+                },
+                {
+                  key: '/waybill/MAWB',
+                  label: <Link to="/waybill/MAWB">MAWB</Link>,
+                },
+                {
+                  key: '/waybill/HAWB',
+                  label: <Link to="/waybill/HAWB">HAWB</Link>,
+                },
+              ],
+            },
             {
               key: '/cts',
               icon: <FormOutlined />,

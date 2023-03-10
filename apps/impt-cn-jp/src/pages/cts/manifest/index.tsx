@@ -15,7 +15,7 @@ import { FormOutlined } from '@ant-design/icons';
 import Create from '@/components/Common/Create';
 import CTSSearch from '@/components/Search/CTSSearch';
 import CTSStatus from '@/components/Common/CTSStatus';
-import WaybillModal from '@/components/Modal/WaybillModal2';
+import WaybillModal from '@/components/Modal/WaybillModal';
 import CargoIssueForm from '@/components/Form/CargoIssueForm';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
