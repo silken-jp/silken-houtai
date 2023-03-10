@@ -1,7 +1,0 @@
-FROM nginx
-
-COPY ./dist/ /usr/share/nginx/html
-COPY ./docker/sources/index.html /usr/share/nginx/html/index.html
-COPY ./docker/sources/sk-houtai.nginx.conf /etc/nginx/conf.d/sk-houtai.conf
-
-EXPOSE 80

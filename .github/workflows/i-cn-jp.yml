@@ -3,7 +3,7 @@ on:
   push:
     branches: [ dev ]
     paths: 
-      - "packages/impt-cn-jp/**"
+      - "apps/impt-cn-jp/**"
 
 jobs:
   build:
@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: '16.x'
       - name: Clean packages
-        run: lerna clean -y
+        run: yarn cache clean
       - name: Install packages
-        run: lerna bootstrap
+        run: yarn
       - name: Run yarn build
-        run: yarn build @sk-houtai/i-cn-jp
+        run: yarn workspace @sk-houtai/i-cn-jp build
       - name: Upload build result
         uses: actions/upload-artifact@v3
         with:
@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Download build result
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build
           path: public/
