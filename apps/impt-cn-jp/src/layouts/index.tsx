@@ -104,6 +104,24 @@ const Index: React.FC<{ children: any }> = (props) => {
             //       key: '/waybill/HAWB',
             //       label: <Link to="/waybill/HAWB">HAWB</Link>,
             //     },
+            //     {
+            //       key: '/waybill/cts',
+            //       label: "クレンジング",
+            //       children: [
+            //         {
+            //           key: '/waybill/cts/large',
+            //           label: <Link to="/waybill/cts/large">IDA-Large</Link>,
+            //         },
+            //         {
+            //           key: '/waybill/cts/small',
+            //           label: <Link to="/waybill/cts/small">IDA-Small</Link>,
+            //         },
+            //         {
+            //           key: '/waybill/cts/manifest',
+            //           label: <Link to="/waybill/cts/manifest">MIC</Link>,
+            //         },
+            //       ]
+            //     },
             //   ],
             // },
             {
@@ -171,20 +189,6 @@ const Index: React.FC<{ children: any }> = (props) => {
                   key: '/cts/manifest',
                   label: <Link to="/cts/manifest">MIC</Link>,
                 },
-                // {
-                //   key: '/cts/mutiEdit',
-                //   label: 'Muti Broker Check',
-                //   children: [
-                //     {
-                //       key: '/cts/mutiEdit/Brok',
-                //       label: <Link to="/cts/mutiEdit/Brok">Demo1</Link>,
-                //     },
-                //     {
-                //       key: '/cts/mutiEdit/Brok2',
-                //       label: <Link to="/cts/mutiEdit/Brok2">Demo2</Link>,
-                //     },
-                //   ],
-                // },
                 {
                   key: '/cts/settings',
                   icon: <SettingOutlined />,

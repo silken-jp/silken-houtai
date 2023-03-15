@@ -96,13 +96,12 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     console.log(jsonArr);
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     console.log(waybills);
-    // const { successCount: count, failedNo } = await importMultiWaybill({
-    //   waybills,
-    //   ...values,
-    //   ...props?.payload,
-    // });
-    const count = waybills.length;
-    const failedNo: any[] = [];
+    const { successCount: count, failedNo } = await importMultiWaybill({
+      waybills,
+      ...values,
+    });
+    // const count = waybills.length;
+    // const failedNo: any[] = [];
     props?.onUpload?.();
     const success =
       count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;

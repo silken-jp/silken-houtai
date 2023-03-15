@@ -221,9 +221,8 @@ const SimpleStatusInquiry: React.FC = () => {
           <Space>
             <Create refreshAsync={search.submit} dataSource={selectedRow} />
             <ExportWaybillXlsx
-              // disabled={!selectedRow || selectedRow?.uploaderId !== apiUploader}
+              disabled={!selectedRow}
               dataSource={selectedRow}
-              // MAB={selectedRow?.mab}
               refresh={refresh}
             />
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
