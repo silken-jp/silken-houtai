@@ -15,6 +15,7 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
@@ -23,17 +24,15 @@ import {
   deleteByWaybillId,
   getAllWaybillsForwarder,
 } from '@/services/request/waybill';
-import HAWBForm from '@/components/Form/HAWBForm';
-import useSKForm from '@silken-houtai/core/lib/useHooks';
-import WaybillModal from './components/WaybillModal';
 import usePERImage from '@/services/useCTSActions/usePERImage';
+import WaybillModal from './components/WaybillModal';
+import HAWBForm from './components/HAWBForm';
 import PERImage from './components/PERImage';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlWaybill] = useIntlFormat('waybill');
-  const [intlPages] = useIntlFormat('pages');
   const [intlPerOpt] = useIntlFormat('options.permit');
   const [selectedRows, setSelectedRows] = useState<any>();
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
@@ -77,7 +76,9 @@ const SimpleStatusInquiry: React.FC = () => {
       ),
       page,
       perPage,
+      waybill_type: 'MIC',
       ...sorter,
+      MAB: '09897507572',
     });
     return {
       total: data?.totalCount,
@@ -117,7 +118,7 @@ const SimpleStatusInquiry: React.FC = () => {
   // action
   function handleEdit() {
     handleOpen({
-      title: '編集する',
+      title: '編集',
       type: 'edit',
       data: selectedRow,
     });
@@ -139,13 +140,14 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/HAWB',
+              path: '/waybill/MIC/HAWB',
               breadcrumbName: '通関管理',
             },
+            { path: '', breadcrumbName: 'MIC' },
             { path: '', breadcrumbName: 'HAWB' },
           ],
         },
-        title: 'HAWB',
+        title: 'MIC - HAWB',
       }}
     >
       <Form
@@ -158,7 +160,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="waybill_type">
               <Select
                 allowClear
-                placeholder={intlWaybill('waybill_type')}
+                placeholder="識別"
                 options={[
                   { label: 'MIC', value: 'MIC' },
                   { label: 'IDA', value: 'IDA' },
@@ -170,10 +172,10 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="is_PER">
               <Select
                 allowClear
-                placeholder={intlWaybill('is_PER')}
+                placeholder="通関結果"
                 options={[
-                  { label: intlPerOpt('is_PER.1'), value: '1' },
-                  { label: intlPerOpt('is_PER.0'), value: '0' },
+                  { label: '許可', value: '1' },
+                  { label: '未許可', value: '0' },
                 ]}
               />
             </Form.Item>
@@ -182,7 +184,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="is_PER_image">
               <Select
                 allowClear
-                placeholder={intlWaybill('is_PER_image')}
+                placeholder="許可書有無"
                 options={[
                   { label: intlPerOpt('is_PER_image.1'), value: '1' },
                   { label: intlPerOpt('is_PER_image.0'), value: '0' },
@@ -305,35 +307,12 @@ const SimpleStatusInquiry: React.FC = () => {
               <Input placeholder={intlWaybill('searchValue2')} />
             </Form.Item>
           </Col>
-          {/* <Col flex="100px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="納税"
-                options={[
-                  { label: '有税', value: '1', disabled: true },
-                  { label: '無税', value: '2', disabled: true },
-                ]}
-              />
-            </Form.Item>
-          </Col> */}
-          {/* <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="配送業者"
-                options={[{ label: '佐川急便', value: '1' }]}
-              />
-            </Form.Item>
-          </Col> */}
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
-                {intlPages('search.submit')}
+                検索
               </Button>
-              <Button onClick={search.reset}>
-                {intlPages('search.reset')}
-              </Button>
+              <Button onClick={search.reset}>リセット</Button>
             </Space>
           </Col>
         </Row>
@@ -403,12 +382,7 @@ const SimpleStatusInquiry: React.FC = () => {
               userOptions?.find((item) => item?.value === uploaderId)?.label
             }
           />
-          <Table.Column
-            sorter
-            width={150}
-            title={intlWaybill('hawbNo')}
-            dataIndex="HAB"
-          />
+          <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column
             width={100}
             title="INV&BL"
@@ -419,25 +393,19 @@ const SimpleStatusInquiry: React.FC = () => {
             title="許可書"
             render={(row) => <PERImage dataSource={row} />}
           />
-          <Table.Column
-            sorter
-            width={150}
-            title={intlWaybill('mawbNo')}
-            dataIndex="MAB"
-          />
+          <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
           <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
-          {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
             width={150}
-            title={intlWaybill('EXA_DIS')}
+            title="審査検査区分"
             dataIndex={['tracking', 'EXA_DIS']}
           />
-          <Table.Column
+          {/* <Table.Column
             sorter
             width={80}
-            title={intlWaybill('waybill_type')}
+            title="識別"
             dataIndex="waybill_type"
-          />
+          /> */}
           <Table.Column sorter width={100} title="仕出地" dataIndex="PSC" />
           <Table.Column
             sorter
@@ -447,52 +415,26 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title="FLIGHT DATE"
             dataIndex="DATE"
             render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}
           />
           <Table.Column
             width={180}
-            title={intlWaybill('declaredNo')}
+            title="申告番号"
             dataIndex={['tracking', 'ID']}
           />
-          <Table.Column
-            sorter
-            width={80}
-            title={intlWaybill('PCS')}
-            dataIndex="PCS"
-          />
-          <Table.Column
-            sorter
-            width={100}
-            title={intlWaybill('GW')}
-            dataIndex="GW"
-          />
-          <Table.Column
-            width={150}
-            title={intlWaybill('tax')}
-            render={() => 0}
-          />
-          <Table.Column
-            width={150}
-            title={intlWaybill('consumptionTax')}
-            render={() => 0}
-          />
-          <Table.Column
-            width={150}
-            title={intlWaybill('localConsumptionTax')}
-            render={() => 0}
-          />
-          <Table.Column
-            width={150}
-            title={intlWaybill('totalTax')}
-            render={() => 0}
-          />
+          <Table.Column sorter width={80} title="個数" dataIndex="PCS" />
+          <Table.Column sorter width={100} title="重量(KG)" dataIndex="GW" />
+          <Table.Column width={150} title="関税" render={() => 0} />
+          <Table.Column width={150} title="消費税" render={() => 0} />
+          <Table.Column width={150} title="地方消費税" render={() => 0} />
+          <Table.Column width={150} title="納税額合計" render={() => 0} />
           <Table.Column
             sorter
             width={150}
-            title={intlWaybill('createdAt')}
+            title="登録日時"
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />

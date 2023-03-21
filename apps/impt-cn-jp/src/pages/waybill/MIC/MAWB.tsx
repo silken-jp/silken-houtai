@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import { Link } from 'umi';
 import dayjs from 'dayjs';
 import {
   Form,
@@ -18,17 +17,16 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
-// import { removeSearchParams, setSearchParams } from '@/services/useStorage';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import { deleteALLWaybillsByMAWB, updateMAB } from '@/services/request/waybill';
-import { genMabs, getMabs } from '@/services/request/mabs';
-import ExportWaybillXlsx from './components/ExportWaybillXlsx';
+import { getMabs } from '@/services/request/mabs';
+import Create from './components/Create';
+import MABForm from './components/MABForm';
 import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
-import MABForm from '@/components/Form/MABForm';
-import useSKForm from '@silken-houtai/core/lib/useHooks';
-import Create from './components/Create';
+import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -40,9 +38,6 @@ const SimpleStatusInquiry: React.FC = () => {
   // api
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
-  const apiUploader = userOptions?.find(
-    (item) => item?.label === 'forwarder共通ユーザー',
-  )?.value;
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -77,19 +72,6 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });
-  // const genMabsAPI = useRequest(genMabs, {
-  //   manual: true,
-  // });
-
-  // const handleUpdate = async () => {
-  //   const formData = form.getFieldsValue();
-  //   await genMabsAPI.runAsync({
-  //     ...formData,
-  //     flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
-  //     flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
-  //   });
-  //   refresh();
-  // };
 
   const rowSelection: any = {
     type: 'radio',
@@ -135,13 +117,14 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/MAWB',
+              path: '/waybill/MIC/MAWB',
               breadcrumbName: '通関管理',
             },
+            { path: '', breadcrumbName: 'MIC' },
             { path: '', breadcrumbName: 'MAWB' },
           ],
         },
-        title: 'MAWB',
+        title: 'MIC - MAWB',
       }}
     >
       <Form
@@ -207,14 +190,10 @@ const SimpleStatusInquiry: React.FC = () => {
         title={
           <Space>
             <span>合計: {tableProps.pagination.total} 件</span>
-            {/* <Button
-              loading={genMabsAPI.loading}
-              type="primary"
-              onClick={handleUpdate}
-            >
-              更新
-            </Button> */}
-            <UploadWaybill agentOptions={agentOptions} />
+            <UploadWaybill
+              agentOptions={agentOptions}
+              onUpload={search.submit}
+            />
           </Space>
         }
         extra={
@@ -260,10 +239,10 @@ const SimpleStatusInquiry: React.FC = () => {
         >
           <Table.Column
             width={100}
-            title="アプロード"
+            title="アップデート"
             render={(row) => (
               <UpdateWaybill
-                payload={{ MAWB: row?._id }}
+                payload={{ mab_id: row?._id }}
                 onUpload={search.submit}
               />
             )}

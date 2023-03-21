@@ -77,6 +77,36 @@ export async function importMultiWaybill(params: ImportMultiWaybill) {
   });
 }
 
+// 批量创建导入 POST /api/waybills/import-multi2
+interface ImportMultiWaybill {
+  waybills: API.Waybill[];
+  user?: API.ID;
+  uploader: API.ID;
+}
+export async function importMultiWaybill2(params: ImportMultiWaybill) {
+  return request<any>(ApiURL + '/waybills/import-multi2', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 批量更新导入 POST /api/waybills/broker-multi2
+interface ImportMultiWaybill {
+  waybills: API.Waybill[];
+  user?: API.ID;
+  uploader: API.ID;
+}
+export async function importMultiBrokerWaybill2(params: ImportMultiWaybill) {
+  return request<any>(ApiURL + '/waybills/broker-multi2', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 // 更新运单 PATCH /api/waybills/:id
 interface UpdateWaybill extends Partial<API.Waybill> {
   waybillId: API.ID;

@@ -30,6 +30,7 @@ const handleExportXlsx = (data: any[], agentOptions: any[]) => {
       配達営業所TEL: d?.delivery_tel,
       配達営業所FAX: d?.delivery_fax,
       出荷日: dayFormat(d?.delivery_day),
+      更新日: dayFormat(d?.updatedAt),
     }));
 
     let wb = XLSX.utils.book_new();

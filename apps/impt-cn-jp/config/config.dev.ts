@@ -3,6 +3,7 @@ import { defineConfig } from 'umi';
 export default defineConfig({
   define: {
     'process.env': {
+      mode: 'dev',
       ApiURL: 'https://api-dev.sclogi.jp',
       ApiURL2: 'https://api-dev.sclogi.jp',
     },

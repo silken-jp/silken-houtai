@@ -3,10 +3,9 @@ import { Modal, Button, Form, Radio, Select } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiWaybill } from '@/services/request/waybill';
+import { importMultiWaybill2 } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
-// const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
 const rightHeader = [
   'VSN',
   'DATE',
@@ -93,15 +92,12 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   const [visible, setVisible] = useState(false);
 
   async function onUpload(jsonArr: any[], values: any) {
-    console.log(jsonArr);
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     console.log(waybills);
-    const { successCount: count, failedNo } = await importMultiWaybill({
+    const { successCount: count, failedNo } = await importMultiWaybill2({
       waybills,
       ...values,
     });
-    // const count = waybills.length;
-    // const failedNo: any[] = [];
     props?.onUpload?.();
     const success =
       count > 0 ? successFormat(count, jsonArr.length - 1, '新規') : null;
@@ -117,12 +113,9 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     setVisible(false);
   }
   function handleUpload(jsonArr: any[]) {
-    let { user, ...values } = form.getFieldsValue();
-    if (user === '1') {
-      values.user = _id;
-    }
+    let values = form.getFieldsValue();
     handleClose();
-    return onUpload(jsonArr, { ...values, uploader: _id });
+    return onUpload(jsonArr, { ...values, user: _id, uploader: _id });
   }
 
   return (
@@ -141,11 +134,15 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
       >
         <Form
           form={form}
-          initialValues={{ user: '1', isIp4X6: '1', isImpNameReverse: '0' }}
+          initialValues={{
+            isIp4X6: '1',
+            isImpNameReverse: '0',
+            isImpNameEN: '1',
+          }}
         >
           <Form.Item
             label="フォワーダー"
-            name="agentId"
+            name="agent"
             rules={[{ required: true }]}
           >
             <Select options={props?.agentOptions} />
@@ -156,16 +153,16 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
               <Radio value="0"> ÷ 0.6</Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="ImpName" name="isImpNameReverse">
+          <Form.Item label="名前" name="isImpNameReverse">
             <Radio.Group>
               <Radio value="0"> 正転 </Radio>
               <Radio value="1"> 逆転 </Radio>
             </Radio.Group>
           </Form.Item>
-          <Form.Item label="クレンジング" name="user">
+          <Form.Item label="名前" name="isImpNameEN">
             <Radio.Group>
-              <Radio value="1"> 自動 </Radio>
-              <Radio value="0"> 手動 </Radio>
+              <Radio value="1"> 英訳する </Radio>
+              <Radio value="0"> そのまま </Radio>
             </Radio.Group>
           </Form.Item>
         </Form>
