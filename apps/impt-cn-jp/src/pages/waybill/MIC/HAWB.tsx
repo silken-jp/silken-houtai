@@ -22,12 +22,14 @@ import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
   updateWaybill,
   deleteByWaybillId,
+  getAllWaybills,
   getAllWaybillsForwarder,
 } from '@/services/request/waybill';
 import usePERImage from '@/services/useCTSActions/usePERImage';
 import WaybillModal from './components/WaybillModal';
 import HAWBForm from './components/HAWBForm';
 import PERImage from './components/PERImage';
+import { getAllTrackings } from '@/services/request/tracking';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -47,14 +49,11 @@ const SimpleStatusInquiry: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    let { search1, search2, PER_date, ...search } = formData;
+    let { search1, PER_date, ...search } = formData;
     search.PER_date_start = PER_date?.[0]?.format('YYYY/MM/DD');
     search.PER_date_end = PER_date?.[1]?.format('YYYY/MM/DD');
     if (search1?.key && search1?.value) {
       search[search1.key] = search1.value;
-    }
-    if (search2?.key && search2?.value) {
-      search[search2.key] = search2.value;
     }
     let sorter: any = {};
     if (typeof pageData?.sorter?.field === 'string') {
@@ -70,7 +69,7 @@ const SimpleStatusInquiry: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getAllWaybillsForwarder({
+    const data = await getAllWaybills({
       ...JSON.parse(JSON.stringify(search), (_, value) =>
         value === null || value === '' ? undefined : value,
       ),
@@ -79,13 +78,25 @@ const SimpleStatusInquiry: React.FC = () => {
       waybill_type: 'MIC',
       ...sorter,
     });
+    let trackings: any[] = [];
+    if (data?.waybills?.length > 0) {
+      const res = await getAllTrackings({
+        page: 0,
+        perPage,
+        BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
+      });
+      trackings = res?.trackings || [];
+    }
+
     return {
       total: data?.totalCount,
-      list: data?.waybills?.map((item: any) => ({
-        ...item,
-        track: item?.tracks?.[0],
-        tracking: item?.trackings?.[0] || item?.trackings,
-      })),
+      list: data?.waybills?.map((item: any) => {
+        const temp = trackings?.find((t: any) => t?.BL_ === item?.HAB);
+        let tracking = temp?.trackingHistory?.reduce((a: any, b: any) => {
+          return { ...a, [b?.TKG_CD]: b?.TKG_DT };
+        }, temp);
+        return { ...item, tracking };
+      }),
     };
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
@@ -185,8 +196,8 @@ const SimpleStatusInquiry: React.FC = () => {
                 allowClear
                 placeholder="許可書有無"
                 options={[
-                  { label: intlPerOpt('is_PER_image.1'), value: '1' },
-                  { label: intlPerOpt('is_PER_image.0'), value: '0' },
+                  { label: '有', value: '1' },
+                  { label: '無', value: '0' },
                 ]}
               />
             </Form.Item>
@@ -196,23 +207,6 @@ const SimpleStatusInquiry: React.FC = () => {
               <Input placeholder={intlWaybill('MAB')} />
             </Form.Item>
           </Col>
-          {/* <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="タイプ"
-                options={[
-                  { label: 'BtoC', value: 'BtoC', disabled: true },
-                  { label: 'BtoB', value: 'BtoB', disabled: true },
-                  {
-                    label: 'AMAZON FBA',
-                    value: 'AMAZON FBA',
-                    disabled: true,
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col> */}
           <Col flex="270px">
             <Form.Item name="PER_date">
               <DatePicker.RangePicker
@@ -289,21 +283,9 @@ const SimpleStatusInquiry: React.FC = () => {
               />
             </Form.Item>
           </Col>
-          <Col flex="150px">
-            <Form.Item name={['search2', 'key']}>
-              <Select
-                allowClear
-                placeholder={intlWaybill('searchKey')}
-                options={[
-                  { label: intlWaybill('hawbNo'), value: 'HAB' },
-                  { label: intlWaybill('declaredNo'), value: 'DEC_ID' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
           <Col flex="auto">
-            <Form.Item name={['search2', 'value']}>
-              <Input placeholder={intlWaybill('searchValue2')} />
+            <Form.Item name="hawb">
+              <Input placeholder="HAWB番号" />
             </Form.Item>
           </Col>
           <Col flex="160px">
@@ -426,10 +408,10 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column sorter width={80} title="個数" dataIndex="PCS" />
           <Table.Column sorter width={100} title="重量(KG)" dataIndex="GW" />
-          <Table.Column width={150} title="関税" render={() => 0} />
+          {/* <Table.Column width={150} title="関税" render={() => 0} />
           <Table.Column width={150} title="消費税" render={() => 0} />
           <Table.Column width={150} title="地方消費税" render={() => 0} />
-          <Table.Column width={150} title="納税額合計" render={() => 0} />
+          <Table.Column width={150} title="納税額合計" render={() => 0} /> */}
           <Table.Column
             sorter
             width={150}

@@ -1,10 +1,10 @@
 import * as Encoding from 'encoding-japanese';
+import { Button } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiBrokerWaybill2 } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
-// const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
 const rightHeader = [
   'holdMemo',
   'waybill_status',
@@ -57,6 +57,7 @@ const waybill_status: any = { other: 0, normal: 1, hold: 2, sendBack: 3 };
 
 export interface UploadWaybillProps {
   payload?: any;
+  disabled?: boolean;
   onUpload?: () => void;
 }
 
@@ -116,6 +117,9 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     return onUpload(jsonArr, { ...props?.payload, uploader: _id });
   }
 
+  if (props?.disabled) {
+    return <Button disabled>更新</Button>;
+  }
   return (
     <UploadXlsx onUpload={handleUpload} text="更新" rightHeader={rightHeader} />
   );

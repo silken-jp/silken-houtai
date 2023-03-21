@@ -244,6 +244,7 @@ const SimpleStatusInquiry: React.FC = () => {
               <UpdateWaybill
                 payload={{ mab_id: row?._id }}
                 onUpload={search.submit}
+                disabled={!!row.creator}
               />
             )}
           />
