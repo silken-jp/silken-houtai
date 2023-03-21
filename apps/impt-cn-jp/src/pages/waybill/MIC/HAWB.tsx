@@ -78,7 +78,6 @@ const SimpleStatusInquiry: React.FC = () => {
       perPage,
       waybill_type: 'MIC',
       ...sorter,
-      MAB: '09897507572',
     });
     return {
       total: data?.totalCount,
