@@ -29,18 +29,22 @@ const waybill: any = {
           label: <Link to="/waybill/dashboard">Dashboard</Link>,
         },
         {
-          key: '/waybill/MIC',
-          label: 'MIC',
+          key: '/waybill/cts',
+          label: '通関',
           children: [
             {
-              key: '/waybill/MIC/MAWB',
-              label: <Link to="/waybill/MIC/MAWB">MAWB</Link>,
+              key: '/waybill/cts/MAWB',
+              label: <Link to="/waybill/cts/MAWB">MAWB</Link>,
             },
             {
-              key: '/waybill/MIC/HAWB',
-              label: <Link to="/waybill/MIC/HAWB">HAWB</Link>,
+              key: '/waybill/cts/HAWB',
+              label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
             },
           ],
+        },
+        {
+          key: '/waybill/Tracking',
+          label: <Link to="/waybill/Tracking">通関結果</Link>,
         },
       ],
     },

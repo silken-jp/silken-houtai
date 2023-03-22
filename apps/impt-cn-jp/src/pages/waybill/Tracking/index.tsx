@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import {
   Form,
   Table,
@@ -10,38 +10,35 @@ import {
   Space,
   Select,
   DatePicker,
-  Popconfirm,
+  // Popconfirm,
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
+import { compressAndDownload } from '@/utils/helper/downloadPDF';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
-  updateWaybill,
-  deleteByWaybillId,
-  getAllWaybills,
+  // updateWaybill,
+  // deleteByWaybillId,
   getAllWaybillsForwarder,
+  getAllPERImagesByWaybillIds,
 } from '@/services/request/waybill';
-import usePERImage from '@/services/useCTSActions/usePERImage';
-import WaybillModal from './components/WaybillModal';
-import HAWBForm from './components/HAWBForm';
-import PERImage from './components/PERImage';
-import { getAllTrackings } from '@/services/request/tracking';
+// import HAWBForm from '@/components/Form/HAWBForm';
+// import useSKForm from '@silken-houtai/core/lib/useHooks';
 
-const SimpleStatusInquiry: React.FC = () => {
+const Tracking: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const [intlMenu] = useIntlFormat('menu');
   const [intlWaybill] = useIntlFormat('waybill');
+  const [intlPages] = useIntlFormat('pages');
   const [intlPerOpt] = useIntlFormat('options.permit');
-  const [selectedRows, setSelectedRows] = useState<any>();
-  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
+  // const [selectedRows, setSelectedRows] = useState<any>();
+  // const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
-  const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
-
-  const { PERImageApi } = usePERImage([]);
+  // const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -49,11 +46,14 @@ const SimpleStatusInquiry: React.FC = () => {
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
-    let { search1, PER_date, ...search } = formData;
+    let { search1, search2, PER_date, ...search } = formData;
     search.PER_date_start = PER_date?.[0]?.format('YYYY/MM/DD');
     search.PER_date_end = PER_date?.[1]?.format('YYYY/MM/DD');
     if (search1?.key && search1?.value) {
       search[search1.key] = search1.value;
+    }
+    if (search2?.key && search2?.value) {
+      search[search2.key] = search2.value;
     }
     let sorter: any = {};
     if (typeof pageData?.sorter?.field === 'string') {
@@ -69,34 +69,21 @@ const SimpleStatusInquiry: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getAllWaybills({
+    const data = await getAllWaybillsForwarder({
       ...JSON.parse(JSON.stringify(search), (_, value) =>
         value === null || value === '' ? undefined : value,
       ),
       page,
       perPage,
-      waybill_type: 'MIC',
       ...sorter,
     });
-    let trackings: any[] = [];
-    if (data?.waybills?.length > 0) {
-      const res = await getAllTrackings({
-        page: 0,
-        perPage,
-        BL_: data?.waybills?.map((item: any) => item?.HAB).join(' '),
-      });
-      trackings = res?.trackings || [];
-    }
-
     return {
       total: data?.totalCount,
-      list: data?.waybills?.map((item: any) => {
-        const temp = trackings?.find((t: any) => t?.BL_ === item?.HAB);
-        let tracking = temp?.trackingHistory?.reduce((a: any, b: any) => {
-          return { ...a, [b?.TKG_CD]: b?.TKG_DT };
-        }, temp);
-        return { ...item, tracking };
-      }),
+      list: data?.waybills?.map((item: any) => ({
+        ...item,
+        track: item?.tracks?.[0],
+        tracking: item?.trackings?.[0] || item?.trackings,
+      })),
     };
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
@@ -104,45 +91,51 @@ const SimpleStatusInquiry: React.FC = () => {
     manual: true,
     defaultPageSize: 500,
   });
-  const editWaybill = useRequest(updateWaybill, {
+  // const editWaybill = useRequest(updateWaybill, {
+  //   manual: true,
+  // });
+  // const deleteWaybill = useRequest(deleteByWaybillId, {
+  //   manual: true,
+  // });
+  const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
     manual: true,
-  });
-  const deleteWaybill = useRequest(deleteByWaybillId, {
-    manual: true,
+    onSuccess: (data) => {
+      compressAndDownload(data, dayFormat(Date(), 'YYYY-MM-DD-hh-mm'));
+    },
   });
 
-  const rowSelection: any = {
-    type: 'checkbox',
-    fixed: true,
-    selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
-    preserveSelectedRowKeys: true,
-    onChange: (_: any[], selectedRows: any[]) => {
-      setSelectedRows(selectedRows);
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: !record._id,
-      name: record._id,
-    }),
-  };
+  // const rowSelection: any = {
+  //   type: 'checkbox',
+  //   fixed: true,
+  //   selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
+  //   preserveSelectedRowKeys: true,
+  //   onChange: (_: any[], selectedRows: any[]) => {
+  //     setSelectedRows(selectedRows);
+  //   },
+  //   getCheckboxProps: (record: any) => ({
+  //     disabled: !record._id,
+  //     name: record._id,
+  //   }),
+  // };
 
   // action
-  function handleEdit() {
-    handleOpen({
-      title: '編集',
-      type: 'edit',
-      data: selectedRow,
-    });
-  }
-  async function handleSubmit(v: any) {
-    if (formType === 'edit') {
-      await editWaybill.runAsync({
-        waybillId: selectedRow._id,
-        ...v,
-      });
-      setSelectedRows([]);
-      refresh();
-    }
-  }
+  // function handleEdit() {
+  //   handleOpen({
+  //     title: '編集する',
+  //     type: 'edit',
+  //     data: selectedRow,
+  //   });
+  // }
+  // async function handleSubmit(v: any) {
+  //   if (formType === 'edit') {
+  //     await editWaybill.runAsync({
+  //       waybillId: selectedRow._id,
+  //       ...v,
+  //     });
+  //     setSelectedRows([]);
+  //     refresh();
+  //   }
+  // }
 
   return (
     <PageContainer
@@ -150,14 +143,13 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/MIC/HAWB',
+              path: '/waybill/Tracking',
               breadcrumbName: '通関管理',
             },
-            { path: '', breadcrumbName: 'MIC' },
-            { path: '', breadcrumbName: 'HAWB' },
+            { path: '', breadcrumbName: '通関結果' },
           ],
         },
-        title: 'MIC - HAWB',
+        title: '通関結果',
       }}
     >
       <Form
@@ -170,7 +162,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="waybill_type">
               <Select
                 allowClear
-                placeholder="識別"
+                placeholder={intlWaybill('waybill_type')}
                 options={[
                   { label: 'MIC', value: 'MIC' },
                   { label: 'IDA', value: 'IDA' },
@@ -182,10 +174,10 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="is_PER">
               <Select
                 allowClear
-                placeholder="通関結果"
+                placeholder={intlWaybill('is_PER')}
                 options={[
-                  { label: '許可', value: '1' },
-                  { label: '未許可', value: '0' },
+                  { label: intlPerOpt('is_PER.1'), value: '1' },
+                  { label: intlPerOpt('is_PER.0'), value: '0' },
                 ]}
               />
             </Form.Item>
@@ -194,10 +186,10 @@ const SimpleStatusInquiry: React.FC = () => {
             <Form.Item name="is_PER_image">
               <Select
                 allowClear
-                placeholder="許可書有無"
+                placeholder={intlWaybill('is_PER_image')}
                 options={[
-                  { label: '有', value: '1' },
-                  { label: '無', value: '0' },
+                  { label: intlPerOpt('is_PER_image.1'), value: '1' },
+                  { label: intlPerOpt('is_PER_image.0'), value: '0' },
                 ]}
               />
             </Form.Item>
@@ -283,64 +275,78 @@ const SimpleStatusInquiry: React.FC = () => {
               />
             </Form.Item>
           </Col>
+          <Col flex="150px">
+            <Form.Item name={['search2', 'key']}>
+              <Select
+                allowClear
+                placeholder={intlWaybill('searchKey')}
+                options={[
+                  { label: intlWaybill('hawbNo'), value: 'HAB' },
+                  { label: intlWaybill('declaredNo'), value: 'DEC_ID' },
+                ]}
+              />
+            </Form.Item>
+          </Col>
           <Col flex="auto">
-            <Form.Item name="hawb">
-              <Input placeholder="HAWB番号" />
+            <Form.Item name={['search2', 'value']}>
+              <Input placeholder={intlWaybill('searchValue2')} />
             </Form.Item>
           </Col>
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
-                検索
+                {intlPages('search.submit')}
               </Button>
-              <Button onClick={search.reset}>リセット</Button>
+              <Button onClick={search.reset}>
+                {intlPages('search.reset')}
+              </Button>
             </Space>
           </Col>
         </Row>
       </Form>
-      <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} />
+      {/* <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} /> */}
       <Card
         title={<>合計: {tableProps.pagination.total} 件</>}
-        extra={
-          <Space>
-            <span>selected: {selectedRows?.length || 0} items</span>
-            <Button
-              size="small"
-              type="link"
-              onClick={() => setSelectedRows(null)}
-            >
-              clear
-            </Button>
-            <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
-              編集
-            </Button>
-            <Popconfirm
-              title={`【選択したHAWBをすべて削除しますか?`}
-              onConfirm={async () => {
-                for await (const iterator of selectedRows) {
-                  await deleteWaybill.runAsync({
-                    waybillId: iterator?._id,
-                  });
-                }
-                setSelectedRows([]);
-                refresh();
-              }}
-              okButtonProps={{
-                loading: deleteWaybill.loading,
-              }}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button disabled={!selectedRows?.length} danger>
-                削除
-              </Button>
-            </Popconfirm>
-          </Space>
-        }
+        // extra={
+        //   <Space>
+        //     <span>selected: {selectedRows?.length || 0} items</span>
+        //     <Button
+        //       size="small"
+        //       type="link"
+        //       onClick={() => setSelectedRows(null)}
+        //     >
+        //       clear
+        //     </Button>
+        //     <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
+        //       編集
+        //     </Button>
+        //     <Popconfirm
+        //       title={`【選択したHAWBをすべて削除しますか?`}
+        //       onConfirm={async () => {
+        //         for await (const iterator of selectedRows) {
+        //           await deleteWaybill.runAsync({
+        //             waybillId: iterator?._id,
+        //           });
+        //         }
+        //         setSelectedRows([]);
+        //         refresh();
+        //       }}
+        //       okButtonProps={{
+        //         loading: deleteWaybill.loading,
+        //       }}
+        //       okText="Yes"
+        //       cancelText="No"
+        //     >
+        //       <Button disabled={!selectedRows?.length} danger>
+        //         削除
+        //       </Button>
+        //     </Popconfirm>
+        //   </Space>
+        // }
       >
         <Table
           size="small"
-          rowSelection={rowSelection}
+          // rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
           scroll={{ x: 3000 }}
@@ -363,30 +369,49 @@ const SimpleStatusInquiry: React.FC = () => {
               userOptions?.find((item) => item?.value === uploaderId)?.label
             }
           />
-          <Table.Column sorter width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column
-            width={100}
-            title="INV&BL"
-            render={(row) => <WaybillModal dataSource={row} />}
+            sorter
+            width={150}
+            title={intlWaybill('hawbNo')}
+            dataIndex="HAB"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title={intlWaybill('mawbNo')}
+            dataIndex="MAB"
           />
           <Table.Column
             width={100}
-            title="許可書"
-            render={(row) => <PERImage dataSource={row} />}
+            title={intlWaybill('permit')}
+            render={(row) =>
+              !!row?.is_PER_image && (
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() =>
+                    downloadApi.run({
+                      waybillIds: [row._id],
+                    })
+                  }
+                >
+                  {intlWaybill('permit')}
+                </Button>
+              )
+            }
           />
-          <Table.Column sorter width={150} title="MAWB番号" dataIndex="MAB" />
-          <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
+          {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
             width={150}
-            title="審査検査区分"
+            title={intlWaybill('EXA_DIS')}
             dataIndex={['tracking', 'EXA_DIS']}
           />
-          {/* <Table.Column
+          <Table.Column
             sorter
             width={80}
-            title="識別"
+            title={intlWaybill('waybill_type')}
             dataIndex="waybill_type"
-          /> */}
+          />
           <Table.Column sorter width={100} title="仕出地" dataIndex="PSC" />
           <Table.Column
             sorter
@@ -396,26 +421,52 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column
             sorter
-            width={120}
+            width={100}
             title="FLIGHT DATE"
             dataIndex="DATE"
             render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}
           />
           <Table.Column
             width={180}
-            title="申告番号"
+            title={intlWaybill('declaredNo')}
             dataIndex={['tracking', 'ID']}
           />
-          <Table.Column sorter width={80} title="個数" dataIndex="PCS" />
-          <Table.Column sorter width={100} title="重量(KG)" dataIndex="GW" />
-          {/* <Table.Column width={150} title="関税" render={() => 0} />
-          <Table.Column width={150} title="消費税" render={() => 0} />
-          <Table.Column width={150} title="地方消費税" render={() => 0} />
-          <Table.Column width={150} title="納税額合計" render={() => 0} /> */}
+          <Table.Column
+            sorter
+            width={80}
+            title={intlWaybill('PCS')}
+            dataIndex="PCS"
+          />
+          <Table.Column
+            sorter
+            width={100}
+            title={intlWaybill('GW')}
+            dataIndex="GW"
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('tax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('consumptionTax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('localConsumptionTax')}
+            render={() => 0}
+          />
+          <Table.Column
+            width={150}
+            title={intlWaybill('totalTax')}
+            render={() => 0}
+          />
           <Table.Column
             sorter
             width={150}
-            title="登録日時"
+            title={intlWaybill('createdAt')}
             dataIndex="createdAt"
             render={(createdAt) => dayFormat(createdAt)}
           />
@@ -425,4 +476,4 @@ const SimpleStatusInquiry: React.FC = () => {
   );
 };
 
-export default SimpleStatusInquiry;
+export default Tracking;

@@ -74,7 +74,7 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
 
   return (
     <Modal {...modalProps} width={1200}>
-      <Form name="HAWBForm" {...formItemLayout} {...formProps}>
+      <Form size="small" name="HAWBForm" {...formItemLayout} {...formProps}>
         <Form.Item label="L・S・M識別" name="LS" rules={[{ required: true }]}>
           <Radio.Group
             onChange={(e) => {

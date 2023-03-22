@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Button, Form, Radio, Select } from 'antd';
+import { Modal, Button, Form, Radio, Select, Space } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
@@ -121,15 +121,22 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   return (
     <>
       <Modal
-        title="MAWB　アップロード"
+        title={`アップロード MAWB`}
         visible={visible}
         onCancel={handleClose}
         footer={
-          <UploadXlsx
-            onUpload={handleUpload}
-            text="アップロード"
-            rightHeader={rightHeader}
-          />
+          <Space>
+            <UploadXlsx
+              onUpload={handleUpload}
+              text="MIC"
+              rightHeader={rightHeader}
+            />
+            {/* <UploadXlsx
+              onUpload={handleUpload}
+              text="IDA"
+              rightHeader={rightHeader}
+            /> */}
+          </Space>
         }
       >
         <Form

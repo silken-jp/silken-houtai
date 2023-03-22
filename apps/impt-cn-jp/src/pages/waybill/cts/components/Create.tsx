@@ -21,7 +21,7 @@ export function findValuesByKey(LS: 'L' | 'S' | 'M', data?: any[]) {
 }
 
 export interface CreateProps {
-  refreshAsync: any;
+  refreshAsync?: any;
   dataSource?: any;
 }
 

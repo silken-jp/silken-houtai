@@ -117,14 +117,13 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/MIC/MAWB',
+              path: '/waybill/cts/MAWB',
               breadcrumbName: '通関管理',
             },
-            { path: '', breadcrumbName: 'MIC' },
             { path: '', breadcrumbName: 'MAWB' },
           ],
         },
-        title: 'MIC - MAWB',
+        title: 'MAWB',
       }}
     >
       <Form
@@ -235,10 +234,10 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2500 }}
+          scroll={{ x: 2000 }}
         >
           <Table.Column
-            width={100}
+            width={60}
             title="アップデート"
             render={(row) => (
               <UpdateWaybill
@@ -267,30 +266,35 @@ const SimpleStatusInquiry: React.FC = () => {
             }
           />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="mab" />
-          <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
+          <Table.ColumnGroup title="件数">
+            <Table.Column sorter width={60} title="M" dataIndex="mCount" />
+            <Table.Column sorter width={60} title="L" dataIndex="lCount" />
+            <Table.Column sorter width={60} title="S" dataIndex="sCount" />
+            <Table.Column
+              sorter
+              width={60}
+              title="合計"
+              dataIndex="waybillCount"
+            />
+          </Table.ColumnGroup>
           <Table.Column
             sorter
-            width={150}
+            width={120}
             title="FlightNo"
             dataIndex="flightNo"
           />
           <Table.Column
             sorter
-            width={150}
+            width={120}
             title="FlightDate"
             dataIndex="flightDate"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column sorter width={120} title="仕出地" dataIndex="PSC" />
+          <Table.Column sorter width={120} title="個数" dataIndex="NOCount" />
           <Table.Column
             sorter
-            width={150}
-            title="個数"
-            dataIndex="waybillCount"
-          />
-          <Table.Column
-            sorter
-            width={150}
+            width={120}
             title="重量（KG）"
             dataIndex="GWCount"
             render={(GWCount) => GWCount?.toFixed(2)}
