@@ -25,6 +25,10 @@ import {
 import HAWBForm from './components/HAWBForm';
 import Create from './components/Create';
 
+function removeEmpty(obj: any) {
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
+}
+
 const waybillStatus: any[] = [
   { value: 0, label: 'other' },
   { value: 1, label: 'normal' },
@@ -42,6 +46,7 @@ const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [selectedRows, setSelectedRows] = useState<any>();
+  const [disCreating, setDisCreating] = useState<boolean>(true);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
@@ -69,9 +74,11 @@ const SimpleStatusInquiry: React.FC = () => {
     const data = await getAllWaybills({
       page,
       perPage,
-      ...formData,
+      ...removeEmpty(formData),
       ...sorter,
     });
+    setDisCreating(!(formData?.HAB || (formData?.LS && formData?.MAB)));
+    setSelectedRows([]);
     return {
       total: data?.totalCount,
       list: data?.waybills,
@@ -191,12 +198,17 @@ const SimpleStatusInquiry: React.FC = () => {
             >
               clear
             </Button>
-            <Create refreshAsync={search.submit} />
+            <Create
+              refreshAsync={search.submit}
+              dataSource={selectedRows}
+              disabled={disCreating || !selectedRows?.length}
+              LS={Form.useWatch('LS', form)}
+            />
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
               編集
             </Button>
             <Popconfirm
-              title={`【選択したHAWBをすべて削除しますか?`}
+              title="選択したHAWBをすべて削除しますか?"
               onConfirm={async () => {
                 for await (const iterator of selectedRows) {
                   await deleteWaybill.runAsync({

@@ -33,13 +33,18 @@ export const SimpleManifestItems = [
   { no: 47, limit: 1, name: 'IN1', holder: '保険区分コード' },
   { no: 48, limit: 3, name: 'IN2', holder: '保険通貨コード' },
   { no: 49, limit: 9, name: 'IN3', holder: '保険金額', ruleType: 'number' },
-  { type: 'text', no: 10, limit: 70, name: 'ImpNameJP', holder: '輸入者名' },
+  {
+    type: 'text',
+    no: '10text',
+    limit: 70,
+    name: 'ImpNameJP',
+    holder: '輸入者名',
+  },
   { no: 10, limit: 70, name: 'ImpName', holder: '輸入者名' },
   { no: 9, limit: 17, name: 'ImpCode', holder: '輸入者コード' },
   { no: 16, limit: 11, name: 'Tel', holder: '輸入者電話番号' },
   { no: 11, limit: 7, name: 'Zip', holder: '郵便番号' },
   { type: 'text', no: 17, limit: 105, name: 'IADJP', holder: '輸入者住所' },
-  { type: 'text', no: 17, limit: 105, name: 'IAD', holder: '輸入者住所' },
   { no: 12, limit: 15, name: 'Add1', holder: '住所１（都道府県）' },
   {
     no: 13,
@@ -161,8 +166,12 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
         )}
         {SimpleManifestItems?.map((item) => {
           return (
-            <Form.Item key={item.no} label={item.holder} name={item.name}>
-              <Input />
+            <Form.Item
+              key={item.no}
+              label={`${item.no}.${item.name}.${item.holder}`}
+              name={item.name}
+            >
+              <Input disabled={item.type === 'text'} />
             </Form.Item>
           );
         })}

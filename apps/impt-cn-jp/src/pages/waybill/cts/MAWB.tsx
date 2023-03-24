@@ -28,6 +28,10 @@ import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 
+function removeEmpty(obj: any) {
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
+}
+
 const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
@@ -59,10 +63,12 @@ const SimpleStatusInquiry: React.FC = () => {
       page,
       perPage,
       ...sorter,
-      ...formData,
+      ...removeEmpty(formData),
       flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
       flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
     });
+    setSelectedRow(null);
+    setSelectedRowKeys([]);
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
@@ -197,7 +203,11 @@ const SimpleStatusInquiry: React.FC = () => {
         }
         extra={
           <Space>
-            <Create refreshAsync={search.submit} dataSource={selectedRow} />
+            <Create
+              refreshAsync={search.submit}
+              dataSource={selectedRow}
+              disabled={!selectedRow}
+            />
             <ExportWaybillXlsx
               disabled={!selectedRow}
               dataSource={selectedRow}

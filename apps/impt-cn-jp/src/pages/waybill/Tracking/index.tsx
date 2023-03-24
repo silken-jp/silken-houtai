@@ -27,11 +27,15 @@ import {
 } from '@/services/request/waybill';
 // import HAWBForm from '@/components/Form/HAWBForm';
 // import useSKForm from '@silken-houtai/core/lib/useHooks';
+import WaybillModal from './components/WaybillModal';
+
+function removeEmpty(obj: any) {
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
+}
 
 const Tracking: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const [intlMenu] = useIntlFormat('menu');
   const [intlWaybill] = useIntlFormat('waybill');
   const [intlPages] = useIntlFormat('pages');
   const [intlPerOpt] = useIntlFormat('options.permit');
@@ -70,9 +74,7 @@ const Tracking: React.FC = () => {
       sorter.sortOrder = -1;
     }
     const data = await getAllWaybillsForwarder({
-      ...JSON.parse(JSON.stringify(search), (_, value) =>
-        value === null || value === '' ? undefined : value,
-      ),
+      ...removeEmpty(search),
       page,
       perPage,
       ...sorter,
@@ -349,7 +351,7 @@ const Tracking: React.FC = () => {
           // rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 3000 }}
+          scroll={{ x: 2800 }}
         >
           <Table.Column
             sorter
@@ -380,6 +382,11 @@ const Tracking: React.FC = () => {
             width={150}
             title={intlWaybill('mawbNo')}
             dataIndex="MAB"
+          />
+          <Table.Column
+            width={100}
+            title="INV"
+            render={(row) => <WaybillModal dataSource={row} />}
           />
           <Table.Column
             width={100}
@@ -415,13 +422,13 @@ const Tracking: React.FC = () => {
           <Table.Column sorter width={100} title="仕出地" dataIndex="PSC" />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title="FLIGHT NO"
             dataIndex="flight_no"
           />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title="FLIGHT DATE"
             dataIndex="DATE"
             render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}
@@ -439,29 +446,29 @@ const Tracking: React.FC = () => {
           />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title={intlWaybill('GW')}
             dataIndex="GW"
           />
           <Table.Column
             width={150}
             title={intlWaybill('tax')}
-            render={() => 0}
+            dataIndex="tax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('consumptionTax')}
-            render={() => 0}
+            dataIndex="consumptionTax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('localConsumptionTax')}
-            render={() => 0}
+            dataIndex="localConsumptionTax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('totalTax')}
-            render={() => 0}
+            dataIndex="totalTax"
           />
           <Table.Column
             sorter
