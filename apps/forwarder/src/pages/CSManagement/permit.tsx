@@ -380,16 +380,22 @@ const waybill: React.FC = () => {
             dataIndex={['tracking', 'EXA_DIS']}
           />
           <Table.Column
-            width={200}
+            width={180}
             title={intlWaybill('status')}
-            render={(row) =>
-              row?.tracking?.trackingHistory?.map((item: any, key: any) => (
-                <Tag key={key} color="blue">
-                  {TrackingCode[item?.TKG_CD as keyof typeof TrackingCode]}
-                  {'：' + item?.TKG_DT}
-                </Tag>
-              ))
-            }
+            render={(row) => {
+              const showBin = row?.tracking?.trackingHistory?.some(
+                (h: any) => h.TKG_CD === 'BOU',
+              );
+              return row?.tracking?.trackingHistory?.map(
+                (item: any, key: any) =>
+                  !showBin && item.TKG_CD === 'BIN' ? null : (
+                    <Tag key={key} color="blue">
+                      {TrackingCode[item?.TKG_CD as keyof typeof TrackingCode]}
+                      {'：' + item?.TKG_DT}
+                    </Tag>
+                  ),
+              );
+            }}
           />
           <Table.Column
             width={100}
