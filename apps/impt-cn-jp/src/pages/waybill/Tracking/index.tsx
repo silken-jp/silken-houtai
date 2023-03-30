@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import {
   Form,
   Table,
@@ -20,14 +20,15 @@ import { compressAndDownload } from '@/utils/helper/downloadPDF';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
-  // updateWaybill,
+  updateWaybill,
   // deleteByWaybillId,
   getAllWaybillsForwarder,
   getAllPERImagesByWaybillIds,
 } from '@/services/request/waybill';
-// import HAWBForm from '@/components/Form/HAWBForm';
-// import useSKForm from '@silken-houtai/core/lib/useHooks';
-import WaybillModal from './components/WaybillModal';
+import HAWBForm from '@/components/Form/HAWBForm';
+import useSKForm from '@silken-houtai/core/lib/useHooks';
+// import WaybillModal from './components/WaybillModal';
+import WaybillModal from '@/components/Modal/WaybillModal';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -39,10 +40,10 @@ const Tracking: React.FC = () => {
   const [intlWaybill] = useIntlFormat('waybill');
   const [intlPages] = useIntlFormat('pages');
   const [intlPerOpt] = useIntlFormat('options.permit');
-  // const [selectedRows, setSelectedRows] = useState<any>();
-  // const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
+  const [selectedRows, setSelectedRows] = useState<any>();
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
-  // const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
+  const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -93,9 +94,9 @@ const Tracking: React.FC = () => {
     manual: true,
     defaultPageSize: 500,
   });
-  // const editWaybill = useRequest(updateWaybill, {
-  //   manual: true,
-  // });
+  const editWaybill = useRequest(updateWaybill, {
+    manual: true,
+  });
   // const deleteWaybill = useRequest(deleteByWaybillId, {
   //   manual: true,
   // });
@@ -106,38 +107,38 @@ const Tracking: React.FC = () => {
     },
   });
 
-  // const rowSelection: any = {
-  //   type: 'checkbox',
-  //   fixed: true,
-  //   selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
-  //   preserveSelectedRowKeys: true,
-  //   onChange: (_: any[], selectedRows: any[]) => {
-  //     setSelectedRows(selectedRows);
-  //   },
-  //   getCheckboxProps: (record: any) => ({
-  //     disabled: !record._id,
-  //     name: record._id,
-  //   }),
-  // };
+  const rowSelection: any = {
+    type: 'radio',
+    fixed: true,
+    selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
+    preserveSelectedRowKeys: true,
+    onChange: (_: any[], selectedRows: any[]) => {
+      setSelectedRows(selectedRows);
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: !record._id,
+      name: record._id,
+    }),
+  };
 
   // action
-  // function handleEdit() {
-  //   handleOpen({
-  //     title: '編集する',
-  //     type: 'edit',
-  //     data: selectedRow,
-  //   });
-  // }
-  // async function handleSubmit(v: any) {
-  //   if (formType === 'edit') {
-  //     await editWaybill.runAsync({
-  //       waybillId: selectedRow._id,
-  //       ...v,
-  //     });
-  //     setSelectedRows([]);
-  //     refresh();
-  //   }
-  // }
+  function handleEdit() {
+    handleOpen({
+      title: '編集する',
+      type: 'edit',
+      data: selectedRow,
+    });
+  }
+  async function handleSubmit(v: any) {
+    if (formType === 'edit') {
+      await editWaybill.runAsync({
+        waybillId: selectedRow._id,
+        ...v,
+      });
+      setSelectedRows([]);
+      refresh();
+    }
+  }
 
   return (
     <PageContainer
@@ -306,49 +307,49 @@ const Tracking: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      {/* <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} /> */}
+      <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
         title={<>合計: {tableProps.pagination.total} 件</>}
-        // extra={
-        //   <Space>
-        //     <span>selected: {selectedRows?.length || 0} items</span>
-        //     <Button
-        //       size="small"
-        //       type="link"
-        //       onClick={() => setSelectedRows(null)}
-        //     >
-        //       clear
-        //     </Button>
-        //     <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
-        //       編集
-        //     </Button>
-        //     <Popconfirm
-        //       title={`【選択したHAWBをすべて削除しますか?`}
-        //       onConfirm={async () => {
-        //         for await (const iterator of selectedRows) {
-        //           await deleteWaybill.runAsync({
-        //             waybillId: iterator?._id,
-        //           });
-        //         }
-        //         setSelectedRows([]);
-        //         refresh();
-        //       }}
-        //       okButtonProps={{
-        //         loading: deleteWaybill.loading,
-        //       }}
-        //       okText="Yes"
-        //       cancelText="No"
-        //     >
-        //       <Button disabled={!selectedRows?.length} danger>
-        //         削除
-        //       </Button>
-        //     </Popconfirm>
-        //   </Space>
-        // }
+        extra={
+          <Space>
+            <span>selected: {selectedRows?.length || 0} items</span>
+            <Button
+              size="small"
+              type="link"
+              onClick={() => setSelectedRows(null)}
+            >
+              clear
+            </Button>
+            <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
+              編集
+            </Button>
+            {/* <Popconfirm
+              title={`【選択したHAWBをすべて削除しますか?`}
+              onConfirm={async () => {
+                for await (const iterator of selectedRows) {
+                  await deleteWaybill.runAsync({
+                    waybillId: iterator?._id,
+                  });
+                }
+                setSelectedRows([]);
+                refresh();
+              }}
+              okButtonProps={{
+                loading: deleteWaybill.loading,
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button disabled={!selectedRows?.length} danger>
+                削除
+              </Button>
+            </Popconfirm> */}
+          </Space>
+        }
       >
         <Table
           size="small"
-          // rowSelection={rowSelection}
+          rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
           scroll={{ x: 2800 }}
@@ -372,21 +373,15 @@ const Tracking: React.FC = () => {
             }
           />
           <Table.Column
-            sorter
-            width={150}
+            width={250}
             title={intlWaybill('hawbNo')}
-            dataIndex="HAB"
+            render={(row) => <WaybillModal dataSource={row} />}
           />
           <Table.Column
             sorter
             width={150}
             title={intlWaybill('mawbNo')}
             dataIndex="MAB"
-          />
-          <Table.Column
-            width={100}
-            title="INV"
-            render={(row) => <WaybillModal dataSource={row} />}
           />
           <Table.Column
             width={100}
