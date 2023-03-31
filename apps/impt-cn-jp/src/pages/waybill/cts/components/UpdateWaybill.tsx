@@ -1,11 +1,14 @@
 import * as Encoding from 'encoding-japanese';
+import { Button, Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiWaybill } from '@/services/request/waybill';
+import { importMultiBrokerWaybill2 } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
-// const exampleHref = 'http://onassets.weixin-jp.com/assets/waybills-import.xlsx';
 const rightHeader = [
+  'holdMemo',
+  'waybill_status',
+  'LS',
   'VSN',
   'DATE',
   'ARR',
@@ -17,9 +20,9 @@ const rightHeader = [
   'CMN',
   'SKB',
   'ImpName',
-  'ImpNameJP',
+  // 'ImpNameJP',
   'IAD',
-  'IADJP',
+  // 'IADJP',
   'Zip',
   'Tel',
   'EPN',
@@ -39,10 +42,6 @@ const rightHeader = [
   'IN1',
   'IN2',
   'IN3',
-  'receiver_name',
-  'receiver_add',
-  'receiver_tel',
-  'receiver_zip',
 ];
 
 const successFormat = (count: number, sum: number) => ({
@@ -54,8 +53,11 @@ const failedFormat = (success: boolean, failedNo: string[]) => ({
   description: `更新失败行数: ${failedNo.join(', ')}`,
 });
 
+const waybill_status: any = { other: 0, normal: 1, hold: 2, sendBack: 3 };
+
 export interface UploadWaybillProps {
   payload?: any;
+  disabled?: boolean;
   onUpload?: () => void;
 }
 
@@ -68,14 +70,22 @@ function fixItemToObj(params: any[]) {
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
-        obj[headers?.[j]?.trim?.()] = line?.[j]
-          ?.toString?.()
-          ?.split('')
-          ?.map((t: string) => {
-            const from = Encoding.detect(t) as any;
-            return Encoding.convert(t, { from, to: 'ASCII', type: 'string' });
-          })
-          ?.join('');
+        let head = headers?.[j]?.trim?.();
+        if (head === 'waybill_status') {
+          obj['waybill_status'] = waybill_status[line?.[j] || 'hold'];
+        } else {
+          if (head === 'VSN') {
+            head = 'flight_no';
+          }
+          obj[head] = line?.[j]
+            ?.toString?.()
+            ?.split('')
+            ?.map((t: string) => {
+              const from = Encoding.detect(t) as any;
+              return Encoding.convert(t, { from, to: 'ASCII', type: 'string' });
+            })
+            ?.join('');
+        }
       }
     }
     waybills.push(obj);
@@ -88,16 +98,14 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   const { _id } = getUserInfo();
 
   async function onUpload(jsonArr: any[], values: any) {
-    console.log(jsonArr);
     const waybills = fixItemToObj(jsonArr) as API.Waybill[];
     console.log(waybills);
-    // const { successCount: count, failedNo } = await importMultiWaybill({
-    //   waybills,
-    //   ...values,
-    //   ...props?.payload,
-    // });
-    const count = waybills.length;
-    const failedNo: any[] = [];
+    const { successCount: count, failedNo } = await importMultiBrokerWaybill2({
+      waybills,
+      ...values,
+    });
+    // const count = waybills.length;
+    // const failedNo: any[] = [];
     props?.onUpload?.();
     const success = count > 0 ? successFormat(count, jsonArr.length - 1) : null;
     const failed =
@@ -109,8 +117,17 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     return onUpload(jsonArr, { ...props?.payload, uploader: _id });
   }
 
+  if (props?.disabled) {
+    return <Button disabled>更新</Button>;
+  }
   return (
-    <UploadXlsx onUpload={handleUpload} text="更新" rightHeader={rightHeader} />
+    <Space>
+      <UploadXlsx
+        onUpload={handleUpload}
+        text="更新"
+        rightHeader={rightHeader}
+      />
+    </Space>
   );
 };
 

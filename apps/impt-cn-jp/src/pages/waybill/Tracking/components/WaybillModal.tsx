@@ -40,7 +40,7 @@ const INVCell: React.FC<INVCellProps> = (props) => {
   };
   return (
     <div style={style}>
-      {props.text}
+      {props?.text}
       {props.children}
     </div>
   );
@@ -65,6 +65,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const printRef = useRef<HTMLDivElement>(null);
 
   // data
+  const DATE = dayjs(props?.dataSource?.DATE).format('MM/DD/YYYY');
   const _NT1 = props?.dataSource?._NT1 || 0;
   const FR3 = Number(props?.dataSource?.FR3 || 0);
   const IP3 = props?.dataSource?.IP3;
@@ -119,26 +120,35 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 flexY="start"
                 text="Commercial Invoice"
               />
-              <INVCell w={700} h={30} size={18} bg="#eee" text="02/28/2022" />
-              <INVCell w={700} h={50} />
+              <INVCell w={700} h={30} size={18} bg="#eee" text={DATE} />
+              <INVCell w={700} h={70} flexX="start">
+                <div style={{ fontSize: 10, lineHeight: '12px' }}>
+                  <div>{props.dataSource.EAD}</div>
+                  <div>{props.dataSource.EPN}</div>
+                </div>
+              </INVCell>
               <div style={{ display: 'flex' }}>
-                <INVCell w={252} size={12} bg="#eee" text="HAWB" />
+                <INVCell w={232} size={12} bg="#eee" text="Ship to" />
+                <INVCell w={122} size={12} bg="#eee" text="HAWB" />
                 <INVCell w={102} size={12} bg="#eee" text="Box Count" />
                 <INVCell w={102} size={12} bg="#eee" text="Total Weight" />
-                <INVCell w={101} size={12} bg="#eee" text="Freight Value" />
                 <INVCell w={151} size={12} bg="#eee" text="Total Value" />
               </div>
               <div style={{ display: 'flex' }}>
-                <INVCell w={252} h={50} size={14} flexY="end" text={HAB} />
+                <INVCell w={232} size={12} bg="#eee">
+                  <div style={{ fontSize: 10, lineHeight: '12px' }}>
+                    <div>{props.dataSource.EAD}</div>
+                    <div>
+                      {props.dataSource.Add1 +
+                        props.dataSource.Add2 +
+                        props.dataSource.Add3 +
+                        props.dataSource.Add4}
+                    </div>
+                  </div>
+                </INVCell>
+                <INVCell w={122} h={50} size={14} flexY="end" text={HAB} />
                 <INVCell w={102} h={50} size={14} flexY="end" text={NO} />
                 <INVCell w={102} h={50} size={14} flexY="end" text={weight} />
-                <INVCell
-                  w={101}
-                  h={50}
-                  size={14}
-                  flexY="end"
-                  text={`${IP3} ${freight}`}
-                />
                 <INVCell
                   w={151}
                   h={50}

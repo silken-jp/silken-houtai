@@ -1,9 +1,10 @@
-import { history } from 'umi';
+import { history, RequestConfig } from 'umi';
 
 import { utils } from '@silken-houtai/core';
 import { checkUserLogin } from '@/services/useStorage';
 
 const loginKey = utils.STORAGE_KEY + 'agentLogin';
+const { ApiKey } = process.env;
 
 /**
  *
@@ -41,3 +42,9 @@ export async function getInitialState() {
   //初始化登陆数据,获取访问权限等
   return {};
 }
+
+export const request: RequestConfig = {
+  headers: {
+    'api-key': ApiKey || '',
+  },
+};

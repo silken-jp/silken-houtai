@@ -36,6 +36,9 @@ export async function agentSingIn(params: AgentSingIn) {
       account: params?.account,
       password: params?.password,
     },
+    headers: {
+      'api-key': '',
+    },
     skipErrorHandler: true,
   });
 }

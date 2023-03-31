@@ -88,14 +88,9 @@ const StatusInquiry: React.FC = () => {
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 1800 }}>
           <Table.Column
-            width={200}
-            title="アプロード"
-            render={(row) => (
-              <UploadWaybill
-                payload={{ agent: row?._id }}
-                onUpload={search.submit}
-              />
-            )}
+            width={150}
+            title="upload"
+            render={() => <UploadWaybill />}
           />
           <Table.Column width={150} title="フォワーダー名" dataIndex="name" />
           <Table.Column width={150} title="アカウント" dataIndex="account" />

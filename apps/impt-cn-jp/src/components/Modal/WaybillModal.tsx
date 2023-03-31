@@ -45,7 +45,10 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       data = [
         {
           CMN: 'See the attached sheet',
-          NO,
+          NO: HSRepeat.reduce(
+            (res, item) => (res += Number(item?.QN1 || 0)),
+            0,
+          ),
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -53,7 +56,8 @@ const Waybill: React.FC<WaybillProps> = (props) => {
     } else if (HSRepeat?.length === 1) {
       data = [
         {
-          ...HSRepeat[0],
+          CMN: HSRepeat[0].CMN,
+          NO: HSRepeat[0]?.QN1,
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -265,11 +269,13 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   dataIndex="NO"
                   onCell={() => (showAttached ? { colSpan: 0 } : {})}
                 />
-                <Table.Column
-                  title="Unit Price"
-                  dataIndex="Price"
-                  onCell={() => (showAttached ? { colSpan: 0 } : {})}
-                />
+                {!isIDA && (
+                  <Table.Column
+                    title="Unit Price"
+                    dataIndex="Price"
+                    onCell={() => (showAttached ? { colSpan: 0 } : {})}
+                  />
+                )}
                 <Table.Column title="Amount" dataIndex="Amount" />
               </Table>
               <br />

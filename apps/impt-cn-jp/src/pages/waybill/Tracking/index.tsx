@@ -10,26 +10,31 @@ import {
   Space,
   Select,
   DatePicker,
-  Popconfirm,
+  // Popconfirm,
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';
+import { compressAndDownload } from '@/utils/helper/downloadPDF';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
   updateWaybill,
-  deleteByWaybillId,
+  // deleteByWaybillId,
   getAllWaybillsForwarder,
+  getAllPERImagesByWaybillIds,
 } from '@/services/request/waybill';
 import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
-import WaybillModal from './components/WaybillModal';
-import usePERImage from '@/services/useCTSActions/usePERImage';
-import PERImage from './components/PERImage';
+// import WaybillModal from './components/WaybillModal';
+import WaybillModal from '@/components/Modal/WaybillModal';
 
-const SimpleStatusInquiry: React.FC = () => {
+function removeEmpty(obj: any) {
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
+}
+
+const Tracking: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [intlWaybill] = useIntlFormat('waybill');
@@ -39,8 +44,6 @@ const SimpleStatusInquiry: React.FC = () => {
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
-
-  const { PERImageApi } = usePERImage([]);
 
   // api
   const { agentOptions } = useAgentOptions();
@@ -72,9 +75,7 @@ const SimpleStatusInquiry: React.FC = () => {
       sorter.sortOrder = -1;
     }
     const data = await getAllWaybillsForwarder({
-      ...JSON.parse(JSON.stringify(search), (_, value) =>
-        value === null || value === '' ? undefined : value,
-      ),
+      ...removeEmpty(search),
       page,
       perPage,
       ...sorter,
@@ -96,12 +97,18 @@ const SimpleStatusInquiry: React.FC = () => {
   const editWaybill = useRequest(updateWaybill, {
     manual: true,
   });
-  const deleteWaybill = useRequest(deleteByWaybillId, {
+  // const deleteWaybill = useRequest(deleteByWaybillId, {
+  //   manual: true,
+  // });
+  const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
     manual: true,
+    onSuccess: (data) => {
+      compressAndDownload(data, dayFormat(Date(), 'YYYY-MM-DD-hh-mm'));
+    },
   });
 
   const rowSelection: any = {
-    type: 'checkbox',
+    type: 'radio',
     fixed: true,
     selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
     preserveSelectedRowKeys: true,
@@ -139,13 +146,13 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/HAWB',
+              path: '/waybill/Tracking',
               breadcrumbName: '通関管理',
             },
-            { path: '', breadcrumbName: 'HAWB' },
+            { path: '', breadcrumbName: '通関結果' },
           ],
         },
-        title: 'HAWB',
+        title: '通関結果',
       }}
     >
       <Form
@@ -195,23 +202,6 @@ const SimpleStatusInquiry: React.FC = () => {
               <Input placeholder={intlWaybill('MAB')} />
             </Form.Item>
           </Col>
-          {/* <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="タイプ"
-                options={[
-                  { label: 'BtoC', value: 'BtoC', disabled: true },
-                  { label: 'BtoB', value: 'BtoB', disabled: true },
-                  {
-                    label: 'AMAZON FBA',
-                    value: 'AMAZON FBA',
-                    disabled: true,
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col> */}
           <Col flex="270px">
             <Form.Item name="PER_date">
               <DatePicker.RangePicker
@@ -305,27 +295,6 @@ const SimpleStatusInquiry: React.FC = () => {
               <Input placeholder={intlWaybill('searchValue2')} />
             </Form.Item>
           </Col>
-          {/* <Col flex="100px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="納税"
-                options={[
-                  { label: '有税', value: '1', disabled: true },
-                  { label: '無税', value: '2', disabled: true },
-                ]}
-              />
-            </Form.Item>
-          </Col> */}
-          {/* <Col flex="150px">
-            <Form.Item>
-              <Select
-                allowClear
-                placeholder="配送業者"
-                options={[{ label: '佐川急便', value: '1' }]}
-              />
-            </Form.Item>
-          </Col> */}
           <Col flex="160px">
             <Space>
               <Button type="primary" onClick={search.submit}>
@@ -354,7 +323,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
               編集
             </Button>
-            <Popconfirm
+            {/* <Popconfirm
               title={`【選択したHAWBをすべて削除しますか?`}
               onConfirm={async () => {
                 for await (const iterator of selectedRows) {
@@ -374,7 +343,7 @@ const SimpleStatusInquiry: React.FC = () => {
               <Button disabled={!selectedRows?.length} danger>
                 削除
               </Button>
-            </Popconfirm>
+            </Popconfirm> */}
           </Space>
         }
       >
@@ -383,7 +352,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 3000 }}
+          scroll={{ x: 2800 }}
         >
           <Table.Column
             sorter
@@ -404,20 +373,9 @@ const SimpleStatusInquiry: React.FC = () => {
             }
           />
           <Table.Column
-            sorter
-            width={150}
+            width={250}
             title={intlWaybill('hawbNo')}
-            dataIndex="HAB"
-          />
-          <Table.Column
-            width={100}
-            title="INV&BL"
             render={(row) => <WaybillModal dataSource={row} />}
-          />
-          <Table.Column
-            width={100}
-            title="許可書"
-            render={(row) => <PERImage dataSource={row} />}
           />
           <Table.Column
             sorter
@@ -425,7 +383,25 @@ const SimpleStatusInquiry: React.FC = () => {
             title={intlWaybill('mawbNo')}
             dataIndex="MAB"
           />
-          <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
+          <Table.Column
+            width={100}
+            title={intlWaybill('permit')}
+            render={(row) =>
+              !!row?.is_PER_image && (
+                <Button
+                  size="small"
+                  type="primary"
+                  onClick={() =>
+                    downloadApi.run({
+                      waybillIds: [row._id],
+                    })
+                  }
+                >
+                  {intlWaybill('permit')}
+                </Button>
+              )
+            }
+          />
           {/* <Table.Column width={120} title="コメント" /> */}
           <Table.Column
             width={150}
@@ -441,13 +417,13 @@ const SimpleStatusInquiry: React.FC = () => {
           <Table.Column sorter width={100} title="仕出地" dataIndex="PSC" />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title="FLIGHT NO"
             dataIndex="flight_no"
           />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title="FLIGHT DATE"
             dataIndex="DATE"
             render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}
@@ -465,29 +441,29 @@ const SimpleStatusInquiry: React.FC = () => {
           />
           <Table.Column
             sorter
-            width={100}
+            width={120}
             title={intlWaybill('GW')}
             dataIndex="GW"
           />
           <Table.Column
             width={150}
             title={intlWaybill('tax')}
-            render={() => 0}
+            dataIndex="tax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('consumptionTax')}
-            render={() => 0}
+            dataIndex="consumptionTax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('localConsumptionTax')}
-            render={() => 0}
+            dataIndex="localConsumptionTax"
           />
           <Table.Column
             width={150}
             title={intlWaybill('totalTax')}
-            render={() => 0}
+            dataIndex="totalTax"
           />
           <Table.Column
             sorter
@@ -502,4 +478,4 @@ const SimpleStatusInquiry: React.FC = () => {
   );
 };
 
-export default SimpleStatusInquiry;
+export default Tracking;

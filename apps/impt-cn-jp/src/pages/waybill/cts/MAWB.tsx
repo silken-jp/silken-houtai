@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// import { Link } from 'umi';
 import dayjs from 'dayjs';
 import {
   Form,
@@ -18,17 +17,20 @@ import {
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
-// import { removeSearchParams, setSearchParams } from '@/services/useStorage';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import { deleteALLWaybillsByMAWB, updateMAB } from '@/services/request/waybill';
-import { genMabs, getMabs } from '@/services/request/mabs';
-import ExportWaybillXlsx from './components/ExportWaybillXlsx';
+import { getMabs } from '@/services/request/mabs';
+import Create from './components/Create';
+import MABForm from './components/MABForm';
 import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
-import MABForm from '@/components/Form/MABForm';
-import useSKForm from '@silken-houtai/core/lib/useHooks';
-import Create from './components/Create';
+import ExportWaybillXlsx from './components/ExportWaybillXlsx';
+
+function removeEmpty(obj: any) {
+  return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
+}
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -40,9 +42,6 @@ const SimpleStatusInquiry: React.FC = () => {
   // api
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
-  const apiUploader = userOptions?.find(
-    (item) => item?.label === 'forwarder共通ユーザー',
-  )?.value;
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -64,10 +63,12 @@ const SimpleStatusInquiry: React.FC = () => {
       page,
       perPage,
       ...sorter,
-      ...formData,
+      ...removeEmpty(formData),
       flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
       flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
     });
+    setSelectedRow(null);
+    setSelectedRowKeys([]);
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
@@ -77,19 +78,6 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });
-  // const genMabsAPI = useRequest(genMabs, {
-  //   manual: true,
-  // });
-
-  // const handleUpdate = async () => {
-  //   const formData = form.getFieldsValue();
-  //   await genMabsAPI.runAsync({
-  //     ...formData,
-  //     flightStartDate: formData?.flightStartDate?.format('YYYY.MM.DD'),
-  //     flightEndDate: formData?.flightEndDate?.format('YYYY.MM.DD'),
-  //   });
-  //   refresh();
-  // };
 
   const rowSelection: any = {
     type: 'radio',
@@ -135,7 +123,7 @@ const SimpleStatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/waybill/MAWB',
+              path: '/waybill/cts/MAWB',
               breadcrumbName: '通関管理',
             },
             { path: '', breadcrumbName: 'MAWB' },
@@ -207,19 +195,19 @@ const SimpleStatusInquiry: React.FC = () => {
         title={
           <Space>
             <span>合計: {tableProps.pagination.total} 件</span>
-            {/* <Button
-              loading={genMabsAPI.loading}
-              type="primary"
-              onClick={handleUpdate}
-            >
-              更新
-            </Button> */}
-            <UploadWaybill agentOptions={agentOptions} />
+            <UploadWaybill
+              agentOptions={agentOptions}
+              onUpload={search.submit}
+            />
           </Space>
         }
         extra={
           <Space>
-            <Create refreshAsync={search.submit} dataSource={selectedRow} />
+            <Create
+              refreshAsync={search.submit}
+              dataSource={selectedRow}
+              disabled={!selectedRow}
+            />
             <ExportWaybillXlsx
               disabled={!selectedRow}
               dataSource={selectedRow}
@@ -256,15 +244,16 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2500 }}
+          scroll={{ x: 2000 }}
         >
           <Table.Column
-            width={100}
-            title="アプロード"
+            width={60}
+            title="アップデート"
             render={(row) => (
               <UpdateWaybill
-                payload={{ MAWB: row?._id }}
+                payload={{ mab_id: row?._id }}
                 onUpload={search.submit}
+                disabled={!!row.creator}
               />
             )}
           />
@@ -287,30 +276,35 @@ const SimpleStatusInquiry: React.FC = () => {
             }
           />
           <Table.Column sorter width={150} title="MAWB番号" dataIndex="mab" />
-          <Table.Column sorter width={150} title="仕出地" dataIndex="PSC" />
+          <Table.ColumnGroup title="件数">
+            <Table.Column sorter width={60} title="M" dataIndex="mCount" />
+            <Table.Column sorter width={60} title="L" dataIndex="lCount" />
+            <Table.Column sorter width={60} title="S" dataIndex="sCount" />
+            <Table.Column
+              sorter
+              width={60}
+              title="合計"
+              dataIndex="waybillCount"
+            />
+          </Table.ColumnGroup>
           <Table.Column
             sorter
-            width={150}
+            width={120}
             title="FlightNo"
             dataIndex="flightNo"
           />
           <Table.Column
             sorter
-            width={150}
+            width={120}
             title="FlightDate"
             dataIndex="flightDate"
             render={(flightDate) => dayFormat(flightDate, 'YYYY.MM.DD')}
           />
-          <Table.Column sorter width={120} title="件数" dataIndex="NOCount" />
+          <Table.Column sorter width={120} title="仕出地" dataIndex="PSC" />
+          <Table.Column sorter width={120} title="個数" dataIndex="NOCount" />
           <Table.Column
             sorter
-            width={150}
-            title="個数"
-            dataIndex="waybillCount"
-          />
-          <Table.Column
-            sorter
-            width={150}
+            width={120}
             title="重量（KG）"
             dataIndex="GWCount"
             render={(GWCount) => GWCount?.toFixed(2)}
