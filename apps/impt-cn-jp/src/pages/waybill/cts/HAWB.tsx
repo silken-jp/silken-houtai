@@ -236,7 +236,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2000 }}
+          scroll={{ x: 3600 }}
         >
           <Table.Column sorter width={100} title="HAWB番号" dataIndex="HAB" />
           <Table.Column sorter width={100} title="MAWB番号" dataIndex="MAB" />
@@ -260,6 +260,45 @@ const SimpleStatusInquiry: React.FC = () => {
             render={(agentId) =>
               agentOptions?.find((item) => item?.value === agentId)?.label
             }
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="クレンザー"
+            dataIndex="cleanserName"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="クレンジング時間"
+            dataIndex="clsDate"
+            render={(clsDate) => dayFormat(clsDate)}
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="ブローカー"
+            dataIndex="brokerName"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="ブローカーチェック時間"
+            dataIndex="brcDate"
+            render={(brcDate) => dayFormat(brcDate)}
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="クリエーター"
+            dataIndex="creatorName"
+          />
+          <Table.Column
+            sorter
+            width={150}
+            title="クリエート時間"
+            dataIndex="crtDate"
+            render={(crtDate) => dayFormat(crtDate)}
           />
           <Table.Column
             sorter

@@ -17,175 +17,6 @@ import { useIntlFormat } from '../services/useIntl';
 import { removeUserInfo } from '@/services/useStorage';
 import styles from './index.less';
 
-const waybill: any = {
-  dev: [
-    {
-      key: '/waybill',
-      icon: <FormOutlined />,
-      label: '通関管理',
-      children: [
-        {
-          key: '/waybill/dashboard',
-          label: <Link to="/waybill/dashboard">Dashboard</Link>,
-        },
-        {
-          key: '/waybill/cts',
-          label: '通関',
-          children: [
-            {
-              key: '/waybill/cts/MAWB',
-              label: <Link to="/waybill/cts/MAWB">MAWB</Link>,
-            },
-            {
-              key: '/waybill/cts/HAWB',
-              label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
-            },
-          ],
-        },
-        {
-          key: '/waybill/Tracking',
-          label: <Link to="/waybill/Tracking">通関結果</Link>,
-        },
-      ],
-    },
-  ],
-  prod: [
-    {
-      key: '/waybill',
-      icon: <FormOutlined />,
-      label: '通関管理',
-      children: [
-        {
-          key: '/waybill/dashboard',
-          label: <Link to="/waybill/dashboard">Dashboard</Link>,
-        },
-        {
-          key: '/waybill/cts',
-          label: '通関',
-          children: [
-            {
-              key: '/waybill/cts/MAWB',
-              label: <Link to="/waybill/cts/MAWB">MAWB</Link>,
-            },
-            {
-              key: '/waybill/cts/HAWB',
-              label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
-            },
-          ],
-        },
-        {
-          key: '/waybill/Tracking',
-          label: <Link to="/waybill/Tracking">通関結果</Link>,
-        },
-      ],
-    },
-    {
-      key: '/cts',
-      icon: <FormOutlined />,
-      label: '通関管理 old',
-      children: [
-        {
-          key: '/cts/dashboard',
-          label: <Link to="/cts/dashboard">Dashboard</Link>,
-        },
-        {
-          key: '/cts/todo',
-          label: 'Todo',
-          children: [
-            {
-              key: '/cts/todo/today',
-              label: <Link to="/cts/todo/today">Today</Link>,
-            },
-            {
-              key: '/cts/todo/other',
-              label: <Link to="/cts/todo/other">Other</Link>,
-            },
-          ],
-        },
-        {
-          key: '/cts/StatusInquiry',
-          label: 'Status Inquiry',
-          children: [
-            {
-              key: '/cts/StatusInquiry/Simple',
-              label: (
-                <Link target="_blank" to="/cts/StatusInquiry/Simple">
-                  Simple
-                </Link>
-              ),
-            },
-            {
-              key: '/cts/StatusInquiry/Full',
-              label: (
-                <Link target="_blank" to="/cts/StatusInquiry/Full">
-                  Full
-                </Link>
-              ),
-            },
-            {
-              key: '/cts/StatusInquiry/HAWB',
-              label: (
-                <Link target="_blank" to="/cts/StatusInquiry/HAWB">
-                  HAWB
-                </Link>
-              ),
-            },
-          ],
-        },
-        {
-          key: '/cts/large',
-          label: <Link to="/cts/large">IDA-Large</Link>,
-        },
-        {
-          key: '/cts/small',
-          label: <Link to="/cts/small">IDA-Small</Link>,
-        },
-        {
-          key: '/cts/manifest',
-          label: <Link to="/cts/manifest">MIC</Link>,
-        },
-        {
-          key: '/cts/settings',
-          icon: <SettingOutlined />,
-          label: '通関設定',
-          children: [
-            {
-              key: '/cts/settings/CMN',
-              label: <Link to="/cts/settings/CMN">品名管理</Link>,
-            },
-            {
-              key: '/cts/settings/GW_FR3',
-              label: <Link to="/cts/settings/GW_FR3">運賃管理</Link>,
-            },
-            {
-              key: '/cts/settings/GW_IP4',
-              label: <Link to="/cts/settings/GW_IP4">インボイス価格管理</Link>,
-            },
-            {
-              key: '/cts/settings/Currency',
-              label: <Link to="/cts/settings/Currency">為替レート管理</Link>,
-            },
-            {
-              key: '/cts/settings/Importer',
-              label: <Link to="/cts/settings/Importer">法人輸入者管理</Link>,
-            },
-            {
-              key: '/cts/settings/MICkey',
-              label: <Link to="/cts/settings/MICkey">フォルダ変更管理</Link>,
-            },
-            {
-              key: '/cts/settings/BlackList',
-              label: (
-                <Link to="/cts/settings/BlackList">ブラックリスト管理</Link>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const Index: React.FC<{ children: any }> = (props) => {
   const history = useHistory();
   const isFull = ['/login', '/print', '/cts/check/'].some((item: any) =>
@@ -256,7 +87,151 @@ const Index: React.FC<{ children: any }> = (props) => {
               icon: <SettingOutlined />,
               label: <Link to="/company">会社設定</Link>,
             },
-            ...waybill['dev' || process.env?.mode || 'dev'],
+            {
+              key: '/waybill',
+              icon: <FormOutlined />,
+              label: '通関管理',
+              children: [
+                {
+                  key: '/waybill/dashboard',
+                  label: <Link to="/waybill/dashboard">Dashboard</Link>,
+                },
+                {
+                  key: '/waybill/cts',
+                  label: '通関',
+                  children: [
+                    {
+                      key: '/waybill/cts/MAWB',
+                      label: <Link to="/waybill/cts/MAWB">MAWB</Link>,
+                    },
+                    {
+                      key: '/waybill/cts/HAWB',
+                      label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
+                    },
+                  ],
+                },
+                {
+                  key: '/waybill/Tracking',
+                  label: <Link to="/waybill/Tracking">通関結果</Link>,
+                },
+              ],
+            },
+            {
+              key: '/cts',
+              icon: <FormOutlined />,
+              label: '通関管理 old',
+              children: [
+                {
+                  key: '/cts/dashboard',
+                  label: <Link to="/cts/dashboard">Dashboard</Link>,
+                },
+                {
+                  key: '/cts/todo',
+                  label: 'Todo',
+                  children: [
+                    {
+                      key: '/cts/todo/today',
+                      label: <Link to="/cts/todo/today">Today</Link>,
+                    },
+                    {
+                      key: '/cts/todo/other',
+                      label: <Link to="/cts/todo/other">Other</Link>,
+                    },
+                  ],
+                },
+                {
+                  key: '/cts/StatusInquiry',
+                  label: 'Status Inquiry',
+                  children: [
+                    {
+                      key: '/cts/StatusInquiry/Simple',
+                      label: (
+                        <Link target="_blank" to="/cts/StatusInquiry/Simple">
+                          Simple
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/StatusInquiry/Full',
+                      label: (
+                        <Link target="_blank" to="/cts/StatusInquiry/Full">
+                          Full
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/StatusInquiry/HAWB',
+                      label: (
+                        <Link target="_blank" to="/cts/StatusInquiry/HAWB">
+                          HAWB
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+                {
+                  key: '/cts/large',
+                  label: <Link to="/cts/large">IDA-Large</Link>,
+                },
+                {
+                  key: '/cts/small',
+                  label: <Link to="/cts/small">IDA-Small</Link>,
+                },
+                {
+                  key: '/cts/manifest',
+                  label: <Link to="/cts/manifest">MIC</Link>,
+                },
+                {
+                  key: '/cts/settings',
+                  icon: <SettingOutlined />,
+                  label: '通関設定',
+                  children: [
+                    {
+                      key: '/cts/settings/CMN',
+                      label: <Link to="/cts/settings/CMN">品名管理</Link>,
+                    },
+                    {
+                      key: '/cts/settings/GW_FR3',
+                      label: <Link to="/cts/settings/GW_FR3">運賃管理</Link>,
+                    },
+                    {
+                      key: '/cts/settings/GW_IP4',
+                      label: (
+                        <Link to="/cts/settings/GW_IP4">
+                          インボイス価格管理
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/Currency',
+                      label: (
+                        <Link to="/cts/settings/Currency">為替レート管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/Importer',
+                      label: (
+                        <Link to="/cts/settings/Importer">法人輸入者管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/MICkey',
+                      label: (
+                        <Link to="/cts/settings/MICkey">フォルダ変更管理</Link>
+                      ),
+                    },
+                    {
+                      key: '/cts/settings/BlackList',
+                      label: (
+                        <Link to="/cts/settings/BlackList">
+                          ブラックリスト管理
+                        </Link>
+                      ),
+                    },
+                  ],
+                },
+              ],
+            },
             {
               key: '/delivery',
               icon: <CarOutlined />,
