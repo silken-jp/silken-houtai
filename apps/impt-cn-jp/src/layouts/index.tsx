@@ -51,9 +51,38 @@ const waybill: any = {
   ],
   prod: [
     {
-      key: '/cts',
+      key: '/waybill',
       icon: <FormOutlined />,
       label: '通関管理',
+      children: [
+        {
+          key: '/waybill/dashboard',
+          label: <Link to="/waybill/dashboard">Dashboard</Link>,
+        },
+        {
+          key: '/waybill/cts',
+          label: '通関',
+          children: [
+            {
+              key: '/waybill/cts/MAWB',
+              label: <Link to="/waybill/cts/MAWB">MAWB</Link>,
+            },
+            {
+              key: '/waybill/cts/HAWB',
+              label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
+            },
+          ],
+        },
+        {
+          key: '/waybill/Tracking',
+          label: <Link to="/waybill/Tracking">通関結果</Link>,
+        },
+      ],
+    },
+    {
+      key: '/cts',
+      icon: <FormOutlined />,
+      label: '通関管理 old',
       children: [
         {
           key: '/cts/dashboard',
