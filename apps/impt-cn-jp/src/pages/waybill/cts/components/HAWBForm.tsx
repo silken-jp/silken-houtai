@@ -1,5 +1,14 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Radio, Space, Button } from 'antd';
+import {
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Radio,
+  Space,
+  Button,
+  Select,
+} from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -8,6 +17,13 @@ const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 16 },
 };
+
+const waybill_status: any = [
+  { label: 'other', value: 0 },
+  { label: 'normal', value: 1 },
+  { label: 'hold', value: 2 },
+  { label: 'sendBack', value: 3 },
+];
 
 export const SimpleManifestItems = [
   { no: 56, limit: 20, name: 'REF', holder: '社内整理用番号' },
@@ -80,6 +96,13 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   return (
     <Modal {...modalProps} width={1200}>
       <Form size="small" name="HAWBForm" {...formItemLayout} {...formProps}>
+        <Form.Item
+          label="waybill_status"
+          name="waybill_status"
+          rules={[{ required: true }]}
+        >
+          <Select placeholder="waybill_status" options={waybill_status} />
+        </Form.Item>
         <Form.Item label="L・S・M識別" name="LS" rules={[{ required: true }]}>
           <Radio.Group
             onChange={(e) => {
