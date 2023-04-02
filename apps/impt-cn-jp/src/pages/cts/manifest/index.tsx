@@ -243,7 +243,7 @@ const ManifestWaybill: React.FC = () => {
           />
           <Table.Column
             sorter
-            width={220}
+            width={500}
             title="品名"
             dataIndex="CMN"
             render={(_, row: any) => {
