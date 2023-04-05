@@ -107,23 +107,26 @@ const Create: React.FC<CreateProps> = (props) => {
       let filter = props?.LS
         ? {
             hawbs: props?.dataSource?.map((item: any) => item?.HAB),
+            waybill_status: 1,
+            process_status: 4,
           }
         : {
             mawbs: props?.dataSource?.mab,
             waybill_status: 1,
+            process_status: 4,
             LS,
           };
-      await creating({
+      const res = await creating({
         filter,
         creatorId: userInfo?._id,
         ...values,
       });
       await props?.refreshAsync?.();
-      message.info('create success');
+      message.info(res);
       setLoading(false);
       handleCancel();
-    } catch (error) {
-      message.error('create error');
+    } catch (error: any) {
+      message.error(error?.message || 'create error');
       setLoading(false);
     }
   }
@@ -152,7 +155,7 @@ const Create: React.FC<CreateProps> = (props) => {
                 options={LS_OPT}
               />
             </Descriptions.Item>
-            <Descriptions.Item label="クリエート 件数">
+            <Descriptions.Item label="総件数">
               {props?.dataSource?.[`${LS?.toLocaleLowerCase()}Count`]}
             </Descriptions.Item>
           </Descriptions>
