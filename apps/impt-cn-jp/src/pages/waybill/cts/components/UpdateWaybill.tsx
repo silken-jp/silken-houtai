@@ -20,9 +20,7 @@ const rightHeader = [
   'CMN',
   'SKB',
   'ImpName',
-  // 'ImpNameJP',
   'IAD',
-  // 'IADJP',
   'Zip',
   'Tel',
   'EPN',
@@ -61,7 +59,7 @@ export interface UploadWaybillProps {
   onUpload?: () => void;
 }
 
-function fixItemToObj(params: any[]) {
+async function fixItemToObj(params: any[]) {
   let waybills = [];
   const headers: string[] = params[0];
   for (let i = 1; i < params.length; i++) {
@@ -70,21 +68,37 @@ function fixItemToObj(params: any[]) {
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
-        let head = headers?.[j]?.trim?.();
-        if (head === 'waybill_status') {
+        let header = headers?.[j]?.trim?.();
+        if (header === 'waybill_status') {
           obj['waybill_status'] = waybill_status[line?.[j] || 'hold'];
         } else {
-          if (head === 'VSN') {
-            head = 'flight_no';
+          if (header === 'VSN') {
+            header = 'flight_no';
           }
-          obj[head] = line?.[j]
+          obj[header] = line?.[j]
             ?.toString?.()
             ?.split('')
             ?.map((t: string) => {
-              const from = Encoding.detect(t) as any;
-              return Encoding.convert(t, { from, to: 'ASCII', type: 'string' });
+              let str = Encoding.toHankakuCase(t);
+              if (['−', '－', '‐', '-', 'ｰ', '―'].includes(t)) {
+                str = '-';
+              }
+              const from = Encoding.detect(str) as any;
+              return Encoding.convert(str, {
+                from,
+                to: 'ASCII',
+                type: 'string',
+              });
             })
             ?.join('');
+          if (!['holdMemo', 'ImpName', 'IAD'].includes(header)) {
+            if (new RegExp('[^\x00-\xff]').test(obj[header])) {
+              throw {
+                message: '导入失败',
+                description: `${i + 1}行の${header}を確認してください`,
+              };
+            }
+          }
         }
       }
     }
@@ -98,19 +112,27 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   const { _id } = getUserInfo();
 
   async function onUpload(jsonArr: any[], values: any) {
-    const waybills = fixItemToObj(jsonArr) as API.Waybill[];
-    console.log(waybills);
-    const { successCount: count, failedNo } = await importMultiBrokerWaybill2({
-      waybills,
-      ...values,
-    });
-    // const count = waybills.length;
-    // const failedNo: any[] = [];
-    props?.onUpload?.();
-    const success = count > 0 ? successFormat(count, jsonArr.length - 1) : null;
-    const failed =
-      failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
-    return { success, failed };
+    try {
+      const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
+      // return { success: null, failed: null }
+      const { successCount: count, failedNo } = await importMultiBrokerWaybill2(
+        {
+          waybills,
+          ...values,
+        },
+      );
+      props?.onUpload?.();
+      const success =
+        count > 0 ? successFormat(count, jsonArr.length - 1) : null;
+      const failed =
+        failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
+      return { success, failed };
+    } catch (error: any) {
+      return {
+        success: null,
+        failed: error,
+      };
+    }
   }
 
   function handleUpload(jsonArr: any[]) {

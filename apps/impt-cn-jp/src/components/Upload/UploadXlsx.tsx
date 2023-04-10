@@ -46,14 +46,14 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       notification.open({
         key,
         message: success?.message || failed?.message,
-        description: success?.description || failed?.message,
+        description: success?.description || failed?.description,
         duration: null,
         placement: 'bottomRight',
       });
       if (success && failed) {
         notification.warning({
           message: failed?.message,
-          description: failed?.message,
+          description: failed?.description,
           duration: null,
           placement: 'bottomRight',
         });

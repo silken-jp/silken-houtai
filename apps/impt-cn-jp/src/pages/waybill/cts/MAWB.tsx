@@ -27,6 +27,7 @@ import MABForm from './components/MABForm';
 import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
+import UploadCleanWaybill from './components/UploadCleanWaybill';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -196,6 +197,10 @@ const SimpleStatusInquiry: React.FC = () => {
           <Space>
             <span>合計: {tableProps.pagination.total} 件</span>
             <UploadWaybill
+              agentOptions={agentOptions}
+              onUpload={search.submit}
+            />
+            <UploadCleanWaybill
               agentOptions={agentOptions}
               onUpload={search.submit}
             />

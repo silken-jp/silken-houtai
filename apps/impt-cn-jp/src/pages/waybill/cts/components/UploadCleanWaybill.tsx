@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Modal, Button, Form, Radio, Select, Space, Typography } from 'antd';
+import { Modal, Button, Form, Typography, Select, Space } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiWaybill2 } from '@/services/request/waybill';
+import {
+  importMultiCleanWaybill,
+  importMultiWaybill2,
+} from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
 const rightHeader = [
+  'LS',
   'VSN',
   'DATE',
   'ARR',
@@ -55,7 +59,7 @@ const failedFormat = (success: boolean, failedNo: string[], type: string) => ({
   description: `${type}失败行数: ${failedNo.join(', ')}`,
 });
 
-export interface UploadWaybillProps {
+export interface UploadCleanWaybillProps {
   // payload?: any;
   agentOptions: any[];
   onUpload?: () => void;
@@ -107,7 +111,7 @@ async function fixItemToObj(params: any[]) {
   return waybills;
 }
 
-const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
+const UploadCleanWaybill: React.FC<UploadCleanWaybillProps> = (props) => {
   // state
   const [form] = Form.useForm();
   const { _id } = getUserInfo();
@@ -116,10 +120,10 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUpload(jsonArr: any[], values: any) {
     try {
       const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
-      // return { success: null, failed: null }
-      const { successCount: count, failedNo } = await importMultiWaybill2({
+      const { successCount: count, failedNo } = await importMultiCleanWaybill({
         waybills,
-        ...values,
+        uploader: _id,
+        agent: values.agent,
       });
       props?.onUpload?.();
       const success =
@@ -160,22 +164,10 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
               text="MIC"
               rightHeader={rightHeader}
             />
-            {/* <UploadXlsx
-              onUpload={handleUpload}
-              text="IDA"
-              rightHeader={rightHeader}
-            /> */}
           </Space>
         }
       >
-        <Form
-          form={form}
-          initialValues={{
-            isIp4X6: '1',
-            isImpNameReverse: '0',
-            isImpNameEN: '1',
-          }}
-        >
+        <Form form={form}>
           <Form.Item
             label="フォワーダー"
             name="agent"
@@ -183,38 +175,20 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           >
             <Select options={props?.agentOptions} />
           </Form.Item>
-          <Form.Item label="Ip4" name="isIp4X6">
-            <Radio.Group>
-              <Radio value="1"> x 0.6 </Radio>
-              <Radio value="0"> ÷ 0.6</Radio>
-            </Radio.Group>
-          </Form.Item>
-          {/* <Form.Item label="名前" name="isImpNameReverse">
-            <Radio.Group>
-              <Radio value="0"> 正転 </Radio>
-              <Radio value="1"> 逆転 </Radio>
-            </Radio.Group>
-          </Form.Item> */}
-          <Form.Item label="名前" name="isImpNameEN">
-            <Radio.Group>
-              <Radio value="1"> 英訳する </Radio>
-              <Radio value="0"> そのまま </Radio>
-            </Radio.Group>
-          </Form.Item>
           <Form.Item>
             <Typography.Paragraph>
               <blockquote>
-                こちらはクレンジング済み状態になり、ブローカーチェックを2回目のアップロードが必要で、注意してください。
+                こちらはブローカーチェック済み状態になり、MAWBのブローカーチェック済みを確認してアップロードしてください。
               </blockquote>
             </Typography.Paragraph>
           </Form.Item>
         </Form>
       </Modal>
       <Button type="primary" onClick={handleOpen}>
-        クレンジグ新規アップロード
+        ブローカーチェック新規アップロード
       </Button>
     </>
   );
 };
 
-export default UploadWaybill;
+export default UploadCleanWaybill;

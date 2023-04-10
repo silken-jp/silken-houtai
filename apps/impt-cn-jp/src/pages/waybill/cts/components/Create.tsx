@@ -15,23 +15,31 @@ import { creating } from '@/services/request/waybill';
 
 export function findValuesByKey(LS: string, data?: any) {
   return {
-    ...(LS === 'M' && { JYO: 'Z', CHB: data?.CHB }),
-    ...(LS === 'L' && { CHB: '55' }),
-    ...(LS === 'S' && { CHB: '77' }),
-    ...(LS !== 'M' && { CHH: data?.[0]?.CHH || '', CHT: data?.CHT || '' }),
+    ...(LS === 'L' && {
+      CHB: '55',
+      CHH: data?.CHH || '',
+      CHT: data?.CHT || '',
+    }),
+    ...(LS === 'S' && {
+      CHB: '77',
+      CHH: data?.CHH || '',
+      CHT: data?.CHT || '',
+    }),
+    ...(LS === 'M' && { JYO: 'Z', CHB: '77', DST: 'NRT' }),
     CH: '1A',
-    ICD: data?.ICD,
-    ST: data?.ST || '',
-    TTC: data?.TTC || '',
+    ICD: data?.ICD || '',
+    PSC: data?.PSC || '',
+    // ST: data?.ST || '',
+    // TTC: data?.TTC || '',
     MAB: data?.MAB || '',
     VSN: data?.VSN || '',
-    ARR: data?.ARR,
+    ARR: data?.ARR || '',
   };
 }
 
 const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 18 },
+  labelCol: { span: 7 },
+  wrapperCol: { span: 15 },
 };
 const LS_OPT = [
   { value: 'M', label: 'M' },
@@ -151,6 +159,7 @@ const Create: React.FC<CreateProps> = (props) => {
               <Select
                 size="small"
                 value={LS}
+                disabled
                 onChange={(e) => setLS(e)}
                 options={LS_OPT}
               />
@@ -178,30 +187,64 @@ const Create: React.FC<CreateProps> = (props) => {
         <Form form={form} {...formItemLayout}>
           {LS === 'M' ? (
             <>
-              <Form.Item label="3.JYO" name="JYO">
-                <Select placeholder="申告条件" allowClear options={JYO_OPT} />
+              <Form.Item
+                label="36.積載機名（VSN）"
+                name="VSN"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="積載機名" />
               </Form.Item>
-              <Form.Item label="6.CH" name="CH" rules={[{ required: true }]}>
-                <Input placeholder="あて先官署コード" />
+              <Form.Item
+                label="37.到着/入港年月日（ARR）"
+                name="ARR"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="到着/入港年月日" />
               </Form.Item>
-              <Form.Item label="7.CHB" name="CHB" rules={[{ required: true }]}>
-                <Input placeholder="あて先部門コード" />
+              <Form.Item
+                label="39.積出地コード（PSC）"
+                name="PSC"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="積出地コード" />
               </Form.Item>
-              <Form.Item label="8.ICD" name="ICD" rules={[{ required: true }]}>
+              <Form.Item
+                label="8.申告予定年月日（ICD）"
+                name="ICD"
+                rules={[{ required: true }]}
+              >
                 <Input placeholder="申告予定年月日" />
               </Form.Item>
-              <Form.Item label="21.ST" name="ST" rules={[{ required: true }]}>
+              <Form.Item
+                label="6.あて先官署コード（CH）"
+                name="CH"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="あて先官署コード" />
+              </Form.Item>
+              <Form.Item label="3.申告条件（JYO）" name="JYO">
+                <Select placeholder="申告条件" allowClear options={JYO_OPT} />
+              </Form.Item>
+              <Form.Item
+                label="7.あて先部門コード（CHB）"
+                name="CHB"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="あて先部門コード" />
+              </Form.Item>
+              <Form.Item
+                label="38.到着港/取卸港コード（DST）"
+                name="DST"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="到着港/取卸港コード" />
+              </Form.Item>
+              {/* <Form.Item label="21.ST" name="ST" rules={[{ required: true }]}>
                 <Select placeholder="通関予定蔵置場コード" options={ST_OPT} />
               </Form.Item>
               <Form.Item label="22.TTC" name="TTC">
                 <Input placeholder="検査立会者" />
-              </Form.Item>
-              <Form.Item label="36.VSN" name="VSN">
-                <Input placeholder="積載機名" />
-              </Form.Item>
-              <Form.Item label="37.ARR" name="ARR">
-                <Input placeholder="入港年月日" />
-              </Form.Item>
+              </Form.Item> */}
             </>
           ) : (
             <>

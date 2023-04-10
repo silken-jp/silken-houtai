@@ -107,6 +107,21 @@ export async function importMultiBrokerWaybill2(params: ImportMultiWaybill) {
   });
 }
 
+// 批量导入brokerCheck完成件 POST /api/waybills/broker-multi2
+interface ImportMultiCleanWaybill {
+  waybills: API.Waybill[];
+  uploader?: API.ID;
+  agent: API.ID;
+}
+export async function importMultiCleanWaybill(params: ImportMultiCleanWaybill) {
+  return request<any>(ApiURL + '/waybills/clean-broker-multi2', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
 // 更新运单 PATCH /api/waybills/:id
 interface UpdateWaybill extends Partial<API.Waybill> {
   waybillId: API.ID;
