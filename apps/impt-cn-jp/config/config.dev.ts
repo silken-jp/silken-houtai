@@ -5,8 +5,8 @@ export default defineConfig({
     'process.env': {
       mode: 'dev',
       ApiKey: 'fysOHxR9Wn0K7NnGCpQFdu16aVreJPeH',
-      ApiURL: 'https://api2.sclogi.jp',
-      ApiURL2: 'https://api2.sclogi.jp',
+      ApiURL: 'https://api-dev.sclogi.jp',
+      ApiURL2: 'https://api-dev.sclogi.jp',
     },
   },
   publicPath: '/houtai-import-cn-jp/',
