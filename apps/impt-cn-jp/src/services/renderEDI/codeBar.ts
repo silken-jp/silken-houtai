@@ -27,7 +27,9 @@ export function codeBar(ctx: CanvasRenderingContext2D, option: any) {
     d: [dx, dy, dw, dh],
   } = option;
 
-  const barCode = (code as string).split('').map((str: string) => Encode[str]);
+  const barCode = (code as string)
+    .split('')
+    .flatMap((str: string) => (Encode?.[str] ? [Encode?.[str]] : []));
 
   let gap = 2;
   let shortBar = 2;
