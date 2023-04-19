@@ -386,14 +386,21 @@ const waybill: React.FC = () => {
               const showBin = row?.tracking?.trackingHistory?.some(
                 (h: any) => h.TKG_CD === 'BOU',
               );
-              return row?.tracking?.trackingHistory?.map(
-                (item: any, key: any) =>
-                  !showBin && item.TKG_CD === 'BIN' ? null : (
+              return row?.tracking?.trackingHistory?.flatMap(
+                (item: any, key: any) => {
+                  if (
+                    !showBin &&
+                    !['HCH', 'STT', 'DEC', 'PIN'].includes(item.TKG_CD)
+                  ) {
+                    return [];
+                  }
+                  return [
                     <Tag key={key} color="blue">
                       {TrackingCode[item?.TKG_CD as keyof typeof TrackingCode]}
                       {'：' + item?.TKG_DT}
-                    </Tag>
-                  ),
+                    </Tag>,
+                  ];
+                },
               );
             }}
           />
