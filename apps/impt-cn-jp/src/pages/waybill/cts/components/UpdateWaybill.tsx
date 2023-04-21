@@ -75,7 +75,7 @@ async function fixItemToObj(params: any[]) {
           if (header === 'VSN') {
             header = 'flight_no';
           }
-          obj[header] = line?.[j]
+          const value = line?.[j]
             ?.toString?.()
             ?.split('')
             ?.map((t: string) => {
@@ -99,10 +99,15 @@ async function fixItemToObj(params: any[]) {
               };
             }
           }
+          if (value) {
+            obj[header] = value;
+          }
         }
       }
     }
-    waybills.push(obj);
+    if (Object.keys(obj)?.length > 0) {
+      waybills.push(obj);
+    }
   }
   return waybills;
 }

@@ -75,7 +75,7 @@ async function fixItemToObj(params: any[]) {
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
         const header = headers?.[j]?.trim?.();
-        obj[header] = line?.[j]
+        const value = line?.[j]
           ?.toString?.()
           ?.split('')
           ?.map((t: string) => {
@@ -104,9 +104,14 @@ async function fixItemToObj(params: any[]) {
             };
           }
         }
+        if (value) {
+          obj[header] = value;
+        }
       }
     }
-    waybills.push(obj);
+    if (Object.keys(obj)?.length > 0) {
+      waybills.push(obj);
+    }
   }
   return waybills;
 }
