@@ -338,7 +338,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 <Table.Column title="UNIT PRICE" dataIndex="DPR" />
                 <Table.Column
                   title="PRICE"
-                  render={(item) => item?.DPR * item?.QN1}
+                  render={(item) => toFloorFixed(item?.DPR * item?.QN1, IP3)}
                 />
               </Table>
             </>
