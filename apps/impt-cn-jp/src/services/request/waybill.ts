@@ -6,6 +6,8 @@ const { ApiURL2: ApiURL } = process.env;
 interface GetAllWaybills extends Partial<API.Waybill> {
   page?: number;
   perPage?: number;
+  sortField?: string;
+  sortOrder?: number;
 }
 export async function getAllWaybills(params?: GetAllWaybills) {
   return request<any>(ApiURL + '/waybills', {

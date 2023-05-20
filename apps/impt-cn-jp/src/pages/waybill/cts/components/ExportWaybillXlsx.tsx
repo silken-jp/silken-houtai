@@ -3,10 +3,7 @@ import { Button, message } from 'antd';
 import { useRequest } from 'ahooks';
 import dayjs from 'dayjs';
 ////
-import {
-  getAllWaybills,
-  // deleteALLWaybillsByMAWB,
-} from '@/services/request/waybill';
+import { getAllWaybills } from '@/services/request/waybill';
 
 export interface ExportWaybillXlsxProps {
   disabled?: boolean;
@@ -33,6 +30,8 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
         const data = await getAllWaybills({
           page: 0,
           perPage: 50000,
+          sortField: 'modified_fields',
+          sortOrder: -1,
           MAB: props?.dataSource.mab,
         });
         return { total: data?.totalCount, list: data?.waybills };
@@ -62,6 +61,7 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
       ?.map((d: any) => {
         return {
           holdMemo: d?.holdMemo,
+          modified_fields: d?.modified_fields,
           waybill_status: ['other', 'normal', 'hold', 'sendBack'][
             d?.waybill_status
           ],
