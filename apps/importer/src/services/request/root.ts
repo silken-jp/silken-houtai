@@ -43,3 +43,13 @@ export async function washAll(params: WashAll) {
     },
   });
 }
+
+// 转换地址 GET /api/gen-impname/:num
+interface GenImpName {
+  num: number;
+}
+export async function genImpName(params: GenImpName) {
+  return request<any>(ApiURL + '/gen-impname/' + params.num, {
+    method: 'GET',
+  });
+}

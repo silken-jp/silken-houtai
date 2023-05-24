@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, Descriptions, Checkbox } from 'antd';
 ////
 import Wash from './components/Wash';
+import GenName from './components/GenName';
 
 export interface ToolsProps {}
 
@@ -60,6 +61,9 @@ const Tools: React.FC<ToolsProps> = () => {
           <Wash payload={washOpt} />
         </Descriptions.Item>
       </Descriptions>
+      <br />
+      <br />
+      <GenName />
     </Card>
   );
 };
