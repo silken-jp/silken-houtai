@@ -285,6 +285,7 @@ declare namespace API {
     io_type: number;
     // IDA or MIC
     waybill_type: string;
+    agentId: string;
     // IDA类型
     IDA_type: string;
     // {0: other, 1: normal, 2: hold, 3: sendBack}

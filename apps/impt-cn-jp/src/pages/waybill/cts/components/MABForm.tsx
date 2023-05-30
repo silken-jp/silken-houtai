@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -20,11 +21,13 @@ export interface HAWBFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);
+  const { agentOptions } = useAgentOptions();
 
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         MAB: props?.dataSource?.mab || '',
+        agent: props?.dataSource?.agentId || '',
         PSC: props?.dataSource?.PSC || '',
         flight_no: props?.dataSource?.flightNo || '',
         VSN: props?.dataSource?.VSN || '',
@@ -40,6 +43,13 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
       <Form name="HAWBForm" {...formItemLayout} {...formProps}>
         <Form.Item label="MAWB番号" name="MAB" rules={[{ required: true }]}>
           <Input placeholder="MAWB番号" autoComplete="off" />
+        </Form.Item>
+        <Form.Item
+          label="フォワーダー"
+          name="agent"
+          rules={[{ required: true }]}
+        >
+          <Select placeholder="フォワーダー" options={agentOptions} />
         </Form.Item>
         <Form.Item label="仕出地" name="PSC" rules={[{ required: true }]}>
           <Input placeholder="仕出地" autoComplete="off" />

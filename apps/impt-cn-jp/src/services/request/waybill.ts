@@ -181,12 +181,13 @@ export async function moveWaybill(params: MoveWaybill) {
   });
 }
 
-// 批量创建导入 POST /api/waybills/move
+// 批量创建导入 POST /api/waybills/update_mab
 interface UpdateMAB {
   oldMab: string;
   MAB: string;
   PSC: string;
   flight_no: string;
+  agent: string;
   VSN: string;
   ARR: string;
   DATE: string;

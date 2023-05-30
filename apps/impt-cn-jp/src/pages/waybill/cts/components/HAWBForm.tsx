@@ -12,6 +12,7 @@ import {
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
+import { useAgentOptions } from '@/services/useAPIOption';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -81,6 +82,7 @@ export interface HAWBFormProps extends useSKForm.SKFormProps<DataSource> {}
 
 const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);
+  const { agentOptions } = useAgentOptions();
 
   const LS = Form?.useWatch('LS', formProps.form);
 
@@ -102,6 +104,13 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
           rules={[{ required: true }]}
         >
           <Select placeholder="waybill_status" options={waybill_status} />
+        </Form.Item>
+        <Form.Item
+          label="フォワーダー"
+          name="agent"
+          rules={[{ required: true }]}
+        >
+          <Select placeholder="フォワーダー" options={agentOptions} />
         </Form.Item>
         <Form.Item label="L・S・M識別" name="LS" rules={[{ required: true }]}>
           <Radio.Group
