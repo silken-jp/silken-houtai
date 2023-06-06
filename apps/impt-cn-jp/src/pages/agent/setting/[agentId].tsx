@@ -22,7 +22,7 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
       }}
       tabList={[{ key: 0, tab: '請求設定' }]}
     >
-      <Card title="通关费用">
+      <Card title="通関费用">
         <Table>
           <Table.Column title="件数" />
           <Table.Column title="价格" />
@@ -50,16 +50,6 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
           <Descriptions.Item label="单价设置">30 / 每件3k</Descriptions.Item>
           <Descriptions.Item label="包月设置">30,000 / 每月</Descriptions.Item>
         </Descriptions>
-      </Card>
-      <br />
-      <Card title="イレギュラー対応">
-        <Table>
-          <Table.Column title="DESCRIPTION" />
-          <Table.Column title="JPY" />
-          <Table.Column title="单位" />
-          <Table.Column title="课税" />
-          <Table.Column title="REMARK" />
-        </Table>
       </Card>
     </PageContainer>
   );

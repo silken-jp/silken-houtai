@@ -329,8 +329,7 @@ export async function getAgentStat(params?: GetDstByDate) {
 }
 
 // 获取所有绑定track等完整数据的运单 GET /api/waybills
-interface GetAllWaybillsForwarder extends API.Waybill {
-  agent: string;
+interface GetAllWaybillsForwarder extends Partial<API.Waybill> {
   page?: number;
   perPage?: number;
   sortField?: string;

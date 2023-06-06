@@ -12,6 +12,7 @@ import {
   updateAgent,
   deleteAgentById,
 } from '@/services/request/agent';
+import { Link } from 'umi';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -92,7 +93,14 @@ const StatusInquiry: React.FC = () => {
             title="upload"
             render={() => <UploadWaybill />}
           />
-          <Table.Column width={150} title="フォワーダー名" dataIndex="name" />
+          <Table.Column<API.Agent>
+            width={150}
+            title="フォワーダー名"
+            dataIndex="name"
+            // render={(name, row) => (
+            //   <Link to={`/agent/setting/${row?._id}`}>{name}</Link>
+            // )}
+          />
           <Table.Column width={150} title="アカウント" dataIndex="account" />
           <Table.Column width={140} title="代理店コード" dataIndex="AGT_CD" />
           <Table.Column width={150} title="荷送り人名" dataIndex="SHN" />

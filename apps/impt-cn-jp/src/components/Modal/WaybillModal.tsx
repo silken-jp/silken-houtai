@@ -28,6 +28,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const unitPrice = toFloorFixed(_NT1, IP3);
   const NO = props?.dataSource?.NO || 0;
   const Sum = toFloorFixed(NO * _NT1, IP3);
+  const Sum6 = toFloorFixed(NO * _NT1 * 0.6, IP3);
   const HSRepeat = props?.dataSource?.HSRepeat || [];
   const isIDA = props?.dataSource?.waybill_type === 'IDA';
 
@@ -293,6 +294,11 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   {props?.dataSource?.OR}
                 </Descriptions.Item>
               </Descriptions>
+              <div hidden={isIDA}>
+                <br />
+                <div>本件、個人使用の為、下記の様に申告致します。</div>
+                <div>{`${IP3} ${Sum} x 0.6 = ${IP3} ${Sum6}`}</div>
+              </div>
             </>
           )}
           {viewType === 'HS' && (

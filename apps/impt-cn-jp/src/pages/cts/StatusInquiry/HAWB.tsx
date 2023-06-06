@@ -458,22 +458,26 @@ const SimpleStatusInquiry: React.FC = () => {
           <Table.Column
             width={150}
             title={intlWaybill('tax')}
-            render={() => 0}
+            dataIndex={['tracking', 'CUS_DTY']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('consumptionTax')}
-            render={() => 0}
+            dataIndex={['tracking', 'CON_TAX']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('localConsumptionTax')}
-            render={() => 0}
+            dataIndex={['tracking', 'LC_TAX']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('totalTax')}
-            render={() => 0}
+            render={(row) =>
+              Number(row?.tracking?.CUS_DTY || 0) +
+              Number(row?.tracking?.CON_TAX || 0) +
+              Number(row?.tracking?.LC_TAX || 0)
+            }
           />
           <Table.Column
             sorter

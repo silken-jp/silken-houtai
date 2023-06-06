@@ -29,6 +29,7 @@ import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 // import WaybillModal from './components/WaybillModal';
 import WaybillModal from '@/components/Modal/WaybillModal';
+import useDownloadINV from '@/services/useCTSActions/useDownloadINV';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -41,12 +42,14 @@ const Tracking: React.FC = () => {
   const [intlPages] = useIntlFormat('pages');
   const [intlPerOpt] = useIntlFormat('options.permit');
   const [selectedRows, setSelectedRows] = useState<any>();
+  const [fixParams, setFixParams] = useState<any>({});
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
 
   // api
   const { agentOptions } = useAgentOptions();
+  const { handleDownload } = useDownloadINV({ params: fixParams });
   const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -74,12 +77,14 @@ const Tracking: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
-    const data = await getAllWaybillsForwarder({
+    const params = {
       ...removeEmpty(search),
       page,
       perPage,
       ...sorter,
-    });
+    };
+    setFixParams(params);
+    const data = await getAllWaybillsForwarder(params);
     return {
       total: data?.totalCount,
       list: data?.waybills?.map((item: any) => ({
@@ -108,7 +113,7 @@ const Tracking: React.FC = () => {
   });
 
   const rowSelection: any = {
-    type: 'radio',
+    type: 'checkbox',
     fixed: true,
     selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
     preserveSelectedRowKeys: true,
@@ -296,14 +301,18 @@ const Tracking: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="160px">
-            <Space>
-              <Button type="primary" onClick={search.submit}>
-                {intlPages('search.submit')}
-              </Button>
-              <Button onClick={search.reset}>
-                {intlPages('search.reset')}
-              </Button>
-            </Space>
+            <Form.Item>
+              <Space>
+                <Button type="primary" onClick={search.submit}>
+                  {intlPages('search.submit')}
+                </Button>
+                <Button onClick={search.reset}>
+                  {intlPages('search.reset')}
+                </Button>
+                <Button onClick={() => handleDownload(true)}>Print INV2</Button>
+                <Button onClick={() => handleDownload()}>Print INV&BL</Button>
+              </Space>
+            </Form.Item>
           </Col>
         </Row>
       </Form>
@@ -320,7 +329,23 @@ const Tracking: React.FC = () => {
             >
               clear
             </Button>
-            <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
+            <Button
+              type="primary"
+              loading={downloadApi.loading}
+              disabled={!selectedRows?.length}
+              onClick={() =>
+                downloadApi.run({
+                  waybillIds: selectedRows?.map((item: any) => item?._id),
+                })
+              }
+            >
+              {intlWaybill('permit')}
+            </Button>
+            <Button
+              type="primary"
+              disabled={selectedRows?.length !== 1}
+              onClick={handleEdit}
+            >
               編集
             </Button>
             {/* <Popconfirm
@@ -391,6 +416,7 @@ const Tracking: React.FC = () => {
                 <Button
                   size="small"
                   type="primary"
+                  loading={downloadApi.loading}
                   onClick={() =>
                     downloadApi.run({
                       waybillIds: [row._id],
@@ -448,22 +474,26 @@ const Tracking: React.FC = () => {
           <Table.Column
             width={150}
             title={intlWaybill('tax')}
-            dataIndex="tax"
+            dataIndex={['tracking', 'CUS_DTY']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('consumptionTax')}
-            dataIndex="consumptionTax"
+            dataIndex={['tracking', 'CON_TAX']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('localConsumptionTax')}
-            dataIndex="localConsumptionTax"
+            dataIndex={['tracking', 'LC_TAX']}
           />
           <Table.Column
             width={150}
             title={intlWaybill('totalTax')}
-            dataIndex="totalTax"
+            render={(row) =>
+              Number(row?.tracking?.CUS_DTY || 0) +
+              Number(row?.tracking?.CON_TAX || 0) +
+              Number(row?.tracking?.LC_TAX || 0)
+            }
           />
           <Table.Column
             sorter
