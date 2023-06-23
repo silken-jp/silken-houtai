@@ -158,7 +158,7 @@ const waybill: React.FC = () => {
             </Form.Item>
           </Col>
           <Col flex="150px">
-            <Form.Item name="is_PER_image">
+            <Form.Item name="is_PER_image_BOU">
               <Select
                 allowClear
                 placeholder={intlWaybill('is_PER_image')}
