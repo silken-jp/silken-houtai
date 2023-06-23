@@ -408,7 +408,10 @@ const waybill: React.FC = () => {
             width={100}
             title={intlWaybill('permit')}
             render={(row) =>
-              !!row?.is_PER_image && (
+              !!row?.is_PER_image &&
+              row?.tracking?.trackingHistory?.some(
+                (h: any) => h.TKG_CD === 'BOU',
+              ) && (
                 <Button
                   size="small"
                   type="primary"
