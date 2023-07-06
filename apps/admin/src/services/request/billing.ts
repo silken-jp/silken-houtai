@@ -122,3 +122,16 @@ export async function billingAdvance(params: BillingAdvance) {
     },
   });
 }
+
+// 创建立替項目 POST /api/billings/inspection
+interface BillingInspection {
+  billingId: API.ID;
+}
+export async function billingInspection(params: BillingInspection) {
+  return request<any>(ApiURL + '/billings/inspection', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

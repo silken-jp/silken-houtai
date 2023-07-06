@@ -10,6 +10,7 @@ import {
   billingSecondBonded,
   billingStorage,
   billingClearance,
+  billingInspection,
 } from '@/services/request/billing';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
@@ -51,6 +52,13 @@ const GenBilling: React.FC = () => {
   const storageAPI = useRequest(
     async () => {
       await billingStorage({ billingId });
+      billingAPI.refresh();
+    },
+    { manual: true },
+  );
+  const inspectionAPI = useRequest(
+    async () => {
+      await billingInspection({ billingId });
       billingAPI.refresh();
     },
     { manual: true },
@@ -102,7 +110,12 @@ const GenBilling: React.FC = () => {
     },
     {
       key: '4',
-      field: '税関検査費用',
+      field: (
+        <Button loading={inspectionAPI.loading} onClick={inspectionAPI.run}>
+          税関検査費用
+        </Button>
+      ),
+      ...billingAPI?.data?.inspection_field,
     },
     {
       key: '5',

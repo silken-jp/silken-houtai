@@ -337,6 +337,22 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
             )}
           </Form.List>
         </Card>
+        <br />
+        <Card title="保管料設定">
+          <Form.Item
+            label="単価（円/HAWB）"
+            name={['inspection', 'hawb_price']}
+            rules={[{ required: true }]}
+          >
+            <InputNumber
+              step={1}
+              min={0}
+              style={{ width: 150 }}
+              placeholder="単価（円/HAWB）"
+            />
+          </Form.Item>
+        </Card>
+        <br />
       </Form>
     </PageContainer>
   );
