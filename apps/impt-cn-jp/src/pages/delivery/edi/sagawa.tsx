@@ -18,7 +18,7 @@ import { dayFormat } from '@/utils/helper/day';
 import UploadDeliveryFile from '@/components/Common/UploadDeliveryFile';
 import { useIntlFormat } from '@/services/useIntl';
 import { getAllEDIs } from '@/services/request/edi-put';
-import { importMultiTracks } from '@/services/request/track';
+// import { importMultiTracks } from '@/services/request/track';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 
 interface DeliveryProps {}
@@ -62,9 +62,9 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
     form,
     manual: true,
   });
-  const importAPI = useRequest(importMultiTracks, {
-    manual: true,
-  });
+  // const importAPI = useRequest(importMultiTracks, {
+  //   manual: true,
+  // });
 
   // action
   const handleTabChange = (key: any) => {
@@ -121,15 +121,15 @@ const Delivery: React.FC<DeliveryProps> = (props) => {
         activeTabKey={tabKey}
         tabList={agentOptions}
         onTabChange={handleTabChange}
-        tabBarExtraContent={
-          <Button
-            type="primary"
-            loading={importAPI.loading}
-            onClick={importAPI.run}
-          >
-            更新
-          </Button>
-        }
+        // tabBarExtraContent={
+        //   <Button
+        //     type="primary"
+        //     loading={importAPI.loading}
+        //     onClick={importAPI.run}
+        //   >
+        //     更新
+        //   </Button>
+        // }
       >
         <Table
           title={() => (
