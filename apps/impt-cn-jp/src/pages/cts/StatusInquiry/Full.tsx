@@ -105,7 +105,7 @@ const StatusInquiry: React.FC = () => {
       >
         <Row justify="end" gutter={16}>
           <Col span={3}>
-            <Form.Item name="agent">
+            <Form.Item name="agentId">
               <Select
                 allowClear
                 placeholder="フォワーダー"
