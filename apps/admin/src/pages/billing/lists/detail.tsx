@@ -32,8 +32,10 @@ const Detail: React.FC = () => {
   const params = new URLSearchParams(location.search);
   const initialValues = {
     agent: params.get('agent'),
-    start_date: dayjs(params.get('start_date')),
-    end_date: dayjs(params.get('end_date')),
+    start_date: params.has('start_date')
+      ? dayjs(params.get('start_date'))
+      : null,
+    end_date: params.has('end_date') ? dayjs(params.get('end_date')) : null,
   };
 
   // api

@@ -611,43 +611,6 @@ declare namespace API {
       RE?: string;
       REG?: string;
     }[];
-    irregular: {
-      // 返送番号
-      return_no: string;
-
-      // 転送番号
-      transfer_no: string;
-
-      // 返送料金（課税）
-      return_fee: number;
-
-      // 再発送料金（課税）
-      resend_fee: number;
-
-      // 住所変更手数料（課税）
-      address_change_fee: number;
-
-      // 再梱包手数料（課税）
-      repack_fee: number;
-
-      // その他手数料
-      other_fee: number;
-
-      // 合計（課税）
-      total_fee: number;
-
-      // その他手数料（非課税）
-      no_tax_other_fee: number;
-
-      // 合計（非課税）
-      no_tax_total_fee: number;
-
-      // 備考
-      note: string;
-
-      // 日付
-      date: string;
-    };
     deliveryInvoice: {
       invoice_no: string; //請求書番号
       customer_no: string; //お客様コード

@@ -10,12 +10,13 @@ import {
   Card,
   Space,
   message,
+  DatePicker,
 } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import useSKForm from '@silken-houtai/core/lib/useHooks';
-import Actions from '@/components/Common/Actions';
+import Actions, { deleteConfirm } from '@/components/Common/Actions';
 import {
   getAllIrregular,
   updateIrregular,
@@ -52,7 +53,7 @@ const Irregular: React.FC = () => {
     } else if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
-      sorter.sortField = 'flightDate';
+      sorter.sortField = 'date';
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;
@@ -60,15 +61,24 @@ const Irregular: React.FC = () => {
     if (pageData?.sorter?.order === 'descend') {
       sorter.sortOrder = -1;
     }
+    const params = removeEmpty({
+      ...formData,
+      date_start: formData.date_start
+        ? dayjs(formData.date_start).format('YYYY-MM-DD')
+        : '',
+      date_end: formData.date_end
+        ? dayjs(formData.date_end).format('YYYY-MM-DD')
+        : '',
+    });
     const data = await getAllIrregular({
       page,
       perPage,
       ...sorter,
-      ...removeEmpty(formData),
+      ...params,
     });
     return { total: data?.totalCount, list: data?.irregulars || [] };
   };
-  const { tableProps, search, refresh } = useAntdTable(getTableData, {
+  const { tableProps, search } = useAntdTable(getTableData, {
     form,
   });
 
@@ -77,8 +87,9 @@ const Irregular: React.FC = () => {
       if (formType === 'edit') {
         await updateIrregular({
           irregularId: formProps?.dataSource?._id,
+          ...v,
         });
-        refresh();
+        search.submit();
       }
     } catch (error: any) {
       message.destroy();
@@ -118,6 +129,16 @@ const Irregular: React.FC = () => {
             </Form.Item>
           </Col>
           <Col>
+            <Form.Item name="date_start">
+              <DatePicker placeholder="開始時間" />
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item name="date_end">
+              <DatePicker placeholder="終了時間" />
+            </Form.Item>
+          </Col>
+          <Col>
             <Space>
               <Button type="primary" onClick={search.submit}>
                 検索
@@ -132,20 +153,27 @@ const Irregular: React.FC = () => {
         title="HAWBイレギュラー費用リスト"
         extra={
           <Space>
-            <UploadIrregularReturn />
-            <UploadIrregularOther />
+            <UploadIrregularReturn onUpload={search.submit} />
+            <UploadIrregularOther onUpload={search.submit} />
           </Space>
         }
       >
-        <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 3200 }}>
-          <Table.Column sorter width={120} title="HAWB" dataIndex="HAB" />
+        <Table
+          size="small"
+          rowKey="_id"
+          {...tableProps}
+          scroll={{ x: 4000, y: 'calc( 100vh - 500px )' }}
+        >
+          <Table.Column width={100} title="HAWB" dataIndex="HAB" />
+          <Table.Column width={100} title="MAWB" dataIndex="MAB" />
           <Table.Column
             width={80}
             title="日付"
+            sorter
             dataIndex="date"
             render={renderDate()}
           />
-          <Table.Column width={120} title="返送番号" dataIndex={'return_no'} />
+          <Table.Column width={120} title="返送番号" dataIndex="return_no" />
           <Table.Column width={120} title="転送番号" dataIndex="resend_no" />
           <Table.Column
             width={120}
@@ -201,12 +229,19 @@ const Irregular: React.FC = () => {
             render={(row: any) => {
               const handleEdit = () => {
                 handleOpen({
-                  title: '編集フォワーダー',
+                  title: '編集イレギュラー',
                   type: 'edit',
                   data: row,
                 });
               };
-              return <Actions onEdit={handleEdit} />;
+              const [handleDelete] = deleteConfirm({
+                name: row?.name,
+                submit: async () => {
+                  await deleteIrregularById({ irregularId: row?._id });
+                  search.submit();
+                },
+              });
+              return <Actions onEdit={handleEdit} onDelete={handleDelete} />;
             }}
           />
         </Table>
