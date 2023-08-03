@@ -69,3 +69,47 @@ export async function deleteAgentById(params: DeleteAgentById) {
     method: 'DELETE',
   });
 }
+
+// 佐川配送料設定(税抜) - 発送 POST /agents/import-return
+interface ImportDeliveryPriceArray {
+  agent: API.ID;
+  deliveryPriceArray: any[];
+}
+export async function importDeliveryPriceArray(
+  params: ImportDeliveryPriceArray,
+) {
+  return request<any>(ApiURL + '/agents/import-delivery', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 佐川配送料設定(税抜) - 返送 POST /agents/import-return
+interface ImportReturnPriceArray {
+  agent: API.ID;
+  deliveryPriceArray: any[];
+}
+export async function importReturnPriceArray(params: ImportReturnPriceArray) {
+  return request<any>(ApiURL + '/agents/import-return', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 佐川配送料設定(税抜) - 返送 POST /agents/import-resend
+interface ImportResendPriceArray {
+  agent: API.ID;
+  deliveryPriceArray: any[];
+}
+export async function importResendPriceArray(params: ImportResendPriceArray) {
+  return request<any>(ApiURL + '/agents/import-resend', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

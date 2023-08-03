@@ -1,9 +1,25 @@
 import { Button, Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiMabs } from '@/services/request/mabs';
 
-const rightHeader = ['mab', 'first_bonded'];
+const rightHeader = [
+  '重量（MIN）',
+  '重量（MAX）',
+  '南九州',
+  '北九州',
+  '四国',
+  '中国',
+  '関西',
+  '北陸',
+  '東海',
+  '信越',
+  '関東',
+  '南東北',
+  '北東北',
+  '北海道',
+];
+
+const rightHeader2 = ['重量（MIN）', '重量（MAX）'];
 
 const successFormat = (count: number, sum: number) => ({
   message: `批量更新导入完成`,
@@ -14,10 +30,12 @@ const failedFormat = (success: boolean, failedNo: string[]) => ({
   description: `更新失败行数: ${failedNo.join(', ')}`,
 });
 
-export interface UpdateMABProps {
+export interface UploadDeliveryProps {
+  is_re?: boolean;
   payload?: any;
   disabled?: boolean;
   onUpload?: () => void;
+  importAction?: any;
 }
 
 async function fixItemToObj(params: any[]) {
@@ -30,10 +48,7 @@ async function fixItemToObj(params: any[]) {
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
         let header = headers?.[j]?.trim?.();
-        const value = line?.[j]?.toString?.();
-        if (value) {
-          obj[header] = value;
-        }
+        obj[header] = line?.[j];
       }
     }
     if (Object.keys(obj)?.length > 0) {
@@ -43,12 +58,15 @@ async function fixItemToObj(params: any[]) {
   return waybills;
 }
 
-const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
+const UploadDelivery: React.FC<UploadDeliveryProps> = (props) => {
   async function onUpload(jsonArr: any[]) {
     try {
-      const mabs = (await fixItemToObj(jsonArr)) as API.MAB[];
-      // return { success: null, failed: null }
-      const { successCount: count, failedNo } = await importMultiMabs({ mabs });
+      const deliveryPriceArray = (await fixItemToObj(jsonArr)) as API.MAB[];
+      // return { success: null, failed: null };
+      const { successCount: count, failedNo } = await props?.importAction?.({
+        ...props.payload,
+        deliveryPriceArray,
+      });
       props?.onUpload?.();
       const success =
         count > 0 ? successFormat(count, jsonArr.length - 1) : null;
@@ -64,21 +82,22 @@ const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
   }
 
   function handleUpload(jsonArr: any[]) {
+    jsonArr.shift();
     return onUpload(jsonArr);
   }
 
   if (props?.disabled) {
-    return <Button disabled>更新</Button>;
+    return <Button disabled>アップロード</Button>;
   }
   return (
     <Space>
       <UploadXlsx
         onUpload={handleUpload}
-        text="更新MAB料金"
-        rightHeader={rightHeader}
+        text="アップロード"
+        rightHeader={props?.is_re ? rightHeader2 : rightHeader}
       />
     </Space>
   );
 };
 
-export default UpdateMAB;
+export default UploadDelivery;

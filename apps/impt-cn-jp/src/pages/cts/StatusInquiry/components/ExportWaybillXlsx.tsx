@@ -79,6 +79,7 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
         receiver_add: d?.receiver_add,
         receiver_tel: d?.receiver_tel,
         receiver_zip: d?.receiver_zip,
+        forwarder_order_no: d?.forwarder_order_no,
       };
     });
 

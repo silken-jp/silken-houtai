@@ -1,9 +1,22 @@
+import * as Encoding from 'encoding-japanese';
 import { Button, Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiMabs } from '@/services/request/mabs';
+import { importReturnIrregulars } from '@/services/request/irregular';
+import { useState } from 'react';
 
-const rightHeader = ['mab', 'first_bonded'];
+const rightHeader: any = [
+  'HAWB',
+  '日付',
+  '返送番号',
+  '転送番号',
+  '返送送料（課税）',
+  '再発送送料（課税）',
+  '住所変更/再発送手数料（課税）',
+  '再梱包手数料（課税）',
+  '換面単費ラベル交換（課税）',
+  '合計（課税）',
+];
 
 const successFormat = (count: number, sum: number) => ({
   message: `批量更新导入完成`,
@@ -29,33 +42,42 @@ async function fixItemToObj(params: any[]) {
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
-        let header = headers?.[j]?.trim?.();
-        const value = line?.[j]?.toString?.();
-        if (value) {
+        const header = headers?.[j]?.trim?.();
+        const value = line?.[j]?.toString?.()?.trim?.();
+        if (header) {
           obj[header] = value;
         }
       }
     }
+    console.log(obj, Object.keys(obj));
     if (Object.keys(obj)?.length > 0) {
       waybills.push(obj);
     }
   }
+  console.log(waybills);
   return waybills;
 }
 
 const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
+  const [loading, setLoading] = useState(false);
   async function onUpload(jsonArr: any[]) {
     try {
-      const mabs = (await fixItemToObj(jsonArr)) as API.MAB[];
-      // return { success: null, failed: null }
-      const { successCount: count, failedNo } = await importMultiMabs({ mabs });
-      props?.onUpload?.();
+      setLoading(true);
+      jsonArr.shift();
+      const irregularArray = await fixItemToObj(jsonArr);
+      console.log(irregularArray);
+      // return { success: null, failed: null };
+      const { successCount: count, failedNo } = await importReturnIrregulars({
+        irregularArray,
+      });
       const success =
         count > 0 ? successFormat(count, jsonArr.length - 1) : null;
       const failed =
         failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
+      setLoading(false);
       return { success, failed };
     } catch (error: any) {
+      setLoading(false);
       return {
         success: null,
         failed: error,
@@ -68,14 +90,16 @@ const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
   }
 
   if (props?.disabled) {
-    return <Button disabled>更新</Button>;
+    return <Button disabled>倉庫</Button>;
   }
   return (
     <Space>
       <UploadXlsx
+        loading={loading}
         onUpload={handleUpload}
-        text="更新MAB料金"
+        // fixEncoding={(data) => Encoding.convert(data, 'UNICODE', 'SJIS')}
         rightHeader={rightHeader}
+        text="倉庫"
       />
     </Space>
   );

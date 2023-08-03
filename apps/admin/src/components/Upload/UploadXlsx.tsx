@@ -7,6 +7,8 @@ interface UploadXlsxProps {
     success?: { message?: string; description?: string } | null;
     failed?: { message?: string; description?: string } | null;
   }>;
+  fixEncoding?: (v: any) => any;
+  loading?: boolean;
   text?: string;
   rightHeader?: string[];
 }
@@ -75,6 +77,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
     reader.onload = function (e: any) {
       var data = e.target.result;
       if (!rABS) data = new Uint8Array(data);
+      if (props?.fixEncoding) data = props.fixEncoding(data);
       var workbook = XLSX.read(data, {
         type: rABS ? 'binary' : 'array',
       });
@@ -100,7 +103,7 @@ const UploadXlsx: React.FC<UploadXlsxProps> = (props) => {
       showUploadList={false}
       customRequest={customRequest}
     >
-      <Button type="dashed">
+      <Button type="dashed" loading={props?.loading}>
         <UploadOutlined /> {text}
       </Button>
     </Upload>

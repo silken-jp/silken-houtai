@@ -343,3 +343,16 @@ export async function getAllWaybillsForwarder(
     params,
   });
 }
+
+// フォワーダーlogin POST /waybill/import-delivery-invoice
+interface ImportDeliveryInvoices {
+  deliveryInvoices: any[];
+}
+export async function importDeliveryInvoices(params: ImportDeliveryInvoices) {
+  return request<any>(ApiURL + '/waybills/import-delivery-invoice', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

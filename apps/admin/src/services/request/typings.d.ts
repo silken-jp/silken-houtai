@@ -54,7 +54,31 @@ declare namespace API {
       // 超过7day每kg*day价格
       out_limit_days_kgs_price: number;
     }[];
+    delivery_price_table?: PriceTable;
+    return_price_table?: GWPriceTable;
+    resend_price_table?: GWPriceTable;
   };
+  type GWPriceTable = {
+    price: number;
+    GW_min: number;
+    GW_max: number;
+  }[];
+  type PriceTable = {
+    state1: number;
+    state2: number;
+    state3: number;
+    state4: number;
+    state5: number;
+    state6: number;
+    state7: number;
+    state8: number;
+    state9: number;
+    state10: number;
+    state11: number;
+    state12: number;
+    GW_min: number;
+    GW_max: number;
+  }[];
   type Billing = {
     _id?: ID;
     name?: string;
@@ -173,6 +197,25 @@ declare namespace API {
     Add2?: string;
     Add3?: string;
     Add4?: string;
+  };
+  type Irregular = {
+    HAB: string;
+    date: Date;
+    agent: string;
+    flight_date: string;
+    return_no: string;
+    resend_no: string;
+    return_price: number;
+    resend_price: number;
+    address_change_fee: number;
+    repack_fee: number;
+    label_change_fee: number;
+    tax_price: number;
+    no_tax_price: number;
+    tax_field_name: string;
+    no_tax_field_name: string;
+    tax_note: string;
+    no_tax_note: string;
   };
   type Issue = {
     // -----------自社填写内容-------------
@@ -568,6 +611,66 @@ declare namespace API {
       RE?: string;
       REG?: string;
     }[];
+    irregular: {
+      // 返送番号
+      return_no: string;
+
+      // 転送番号
+      transfer_no: string;
+
+      // 返送料金（課税）
+      return_fee: number;
+
+      // 再発送料金（課税）
+      resend_fee: number;
+
+      // 住所変更手数料（課税）
+      address_change_fee: number;
+
+      // 再梱包手数料（課税）
+      repack_fee: number;
+
+      // その他手数料
+      other_fee: number;
+
+      // 合計（課税）
+      total_fee: number;
+
+      // その他手数料（非課税）
+      no_tax_other_fee: number;
+
+      // 合計（非課税）
+      no_tax_total_fee: number;
+
+      // 備考
+      note: string;
+
+      // 日付
+      date: string;
+    };
+    deliveryInvoice: {
+      invoice_no: string; //請求書番号
+      customer_no: string; //お客様コード
+      customer_name1: string; //お客様名称１
+      customer_name2: string; //お客様名称２
+      document_type: string; //伝票種別
+      office_type: string; //担当営業所種別
+      office_name: string; //担当営業所名称
+      date_type: string; //日付種別
+      shipment_date: string; //出荷日
+      hab: string; //お問合せNO
+      state: string; //都道府県
+      sales_office_type: string; //営業所種別
+      sales_office_name: string; //営業所名称
+      flight_type: string; //便種名称
+      no: number; //個数
+      tax_category: string; //税区分
+      fee: number; //運賃合計金額
+      COD_fee: number; //代引手数料
+      insurance_fee: number; //保険料
+      relay_fee: number; //中継料
+      total_fee: number; //運賃請求金額
+    };
   };
   type User = {
     _id?: ID;

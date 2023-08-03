@@ -3,7 +3,7 @@ import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import Actions, { deleteConfirm } from '@/components/Common/Actions';
-import BillingForm from './components/BillingForm';
+import BillingForm from '../components/BillingForm';
 import { Link } from 'umi';
 import {
   createBilling,
@@ -54,7 +54,7 @@ const BillingList: React.FC = () => {
       title="請求書管理"
       header={{
         breadcrumb: {
-          routes: [{ path: '/agent', breadcrumbName: '請求書管理' }],
+          routes: [{ path: '/billing/gen', breadcrumbName: '請求書管理' }],
         },
       }}
     >

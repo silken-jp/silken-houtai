@@ -1,14 +1,11 @@
 import React, { useState, createElement } from 'react';
 import { Layout, Menu, Row, Col, Button } from 'antd';
 import {
-  FormOutlined,
   SettingOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   GlobalOutlined,
   UserOutlined,
-  CarOutlined,
-  IssuesCloseOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link, setLocale, Helmet } from 'umi';
 ////
@@ -83,12 +80,36 @@ const Index: React.FC<{ children: any }> = (props) => {
               label: '請求管理',
               children: [
                 {
-                  key: '/billing/billing',
-                  label: <Link to="/billing/billing">請求書リスト</Link>,
+                  key: '/billing/gen',
+                  label: <Link to="/billing/gen">請求書リスト</Link>,
                 },
                 {
-                  key: '/billing/mab',
-                  label: <Link to="/billing/MAWB">MABリスト</Link>,
+                  key: '/billing/lists',
+                  label: '料金項目詳細',
+                  children: [
+                    {
+                      key: '/billing/lists/detail',
+                      label: <Link to="/billing/lists/detail">詳細</Link>,
+                    },
+                    {
+                      key: '/billing/lists/MAWB',
+                      label: <Link to="/billing/lists/MAWB">マスタデータ</Link>,
+                    },
+                    {
+                      key: '/billing/lists/irregular',
+                      label: (
+                        <Link to="/billing/lists/irregular">
+                          イレギュラー費用
+                        </Link>
+                      ),
+                    },
+                    {
+                      key: '/billing/lists/delivery',
+                      label: (
+                        <Link to="/billing/lists/delivery">佐川請求料金</Link>
+                      ),
+                    },
+                  ],
                 },
               ],
             },

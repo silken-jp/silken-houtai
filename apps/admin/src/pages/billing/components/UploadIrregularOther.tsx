@@ -1,9 +1,20 @@
+import * as Encoding from 'encoding-japanese';
 import { Button, Space } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiMabs } from '@/services/request/mabs';
+import { importOtherIrregulars } from '@/services/request/irregular';
+import { useState } from 'react';
 
-const rightHeader = ['mab', 'first_bonded'];
+const rightHeader: any = [
+  'HAWB',
+  '日付',
+  '非課税項目名',
+  '非課税費用',
+  '非課税備考',
+  '課税項目名',
+  '課税費用',
+  '課税備考',
+];
 
 const successFormat = (count: number, sum: number) => ({
   message: `批量更新导入完成`,
@@ -29,33 +40,41 @@ async function fixItemToObj(params: any[]) {
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < headers.length; j++) {
       if (line[j] !== null || line[j] !== undefined) {
-        let header = headers?.[j]?.trim?.();
-        const value = line?.[j]?.toString?.();
-        if (value) {
+        const header = headers?.[j]?.trim?.();
+        const value = line?.[j]?.toString?.()?.trim?.();
+        if (header) {
           obj[header] = value;
         }
       }
     }
+    console.log(obj, Object.keys(obj));
     if (Object.keys(obj)?.length > 0) {
       waybills.push(obj);
     }
   }
+  console.log(waybills);
   return waybills;
 }
 
 const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
+  const [loading, setLoading] = useState(false);
   async function onUpload(jsonArr: any[]) {
     try {
-      const mabs = (await fixItemToObj(jsonArr)) as API.MAB[];
-      // return { success: null, failed: null }
-      const { successCount: count, failedNo } = await importMultiMabs({ mabs });
-      props?.onUpload?.();
+      setLoading(true);
+      jsonArr.shift();
+      const irregularArray = await fixItemToObj(jsonArr);
+      // return { success: null, failed: null };
+      const { successCount: count, failedNo } = await importOtherIrregulars({
+        irregularArray,
+      });
       const success =
         count > 0 ? successFormat(count, jsonArr.length - 1) : null;
       const failed =
         failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
+      setLoading(false);
       return { success, failed };
     } catch (error: any) {
+      setLoading(false);
       return {
         success: null,
         failed: error,
@@ -68,14 +87,16 @@ const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
   }
 
   if (props?.disabled) {
-    return <Button disabled>更新</Button>;
+    return <Button disabled>その他</Button>;
   }
   return (
     <Space>
       <UploadXlsx
+        loading={loading}
         onUpload={handleUpload}
-        text="更新MAB料金"
+        // fixEncoding={(data) => Encoding.convert(data, 'UNICODE', 'SJIS')}
         rightHeader={rightHeader}
+        text="その他"
       />
     </Space>
   );

@@ -1,7 +1,8 @@
 import { PageContainer } from '@ant-design/pro-layout';
-import { Table, Card, Button } from 'antd';
+import { Table, Card, Button, Space } from 'antd';
 import { useRequest } from 'ahooks';
-import { useParams } from 'umi';
+import { useParams, Link } from 'umi';
+import { LinkOutlined } from '@ant-design/icons';
 ////
 import {
   getBillingById,
@@ -11,6 +12,8 @@ import {
   billingStorage,
   billingClearance,
   billingInspection,
+  billingIrregular,
+  BillingDelivery,
 } from '@/services/request/billing';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
@@ -22,12 +25,19 @@ const GenBilling: React.FC = () => {
   const { renderAgentLabel } = useAgentOptions();
   const billingAPI = useRequest(() => getBillingById({ billingId }));
 
+  const params = new URLSearchParams({
+    agent: billingAPI?.data?.agent,
+    start_date: dayFormat(billingAPI?.data?.start_date, 'YYYY-MM-DD') || '',
+    end_date: dayFormat(billingAPI?.data?.end_date, 'YYYY-MM-DD') || '',
+  });
+
   const title =
     renderAgentLabel(billingAPI?.data?.agent) +
     dayFormat(billingAPI?.data?.start_date, ' 【 YYYY年MM月DD日 ~ ') +
     dayFormat(billingAPI?.data?.end_date, 'YYYY年MM月DD日 】');
 
   // api
+  // 一次上屋料金
   const firstBondedAPI = useRequest(
     async () => {
       await billingFirstBonded({ billingId });
@@ -35,6 +45,7 @@ const GenBilling: React.FC = () => {
     },
     { manual: true },
   );
+  // 二次上屋料金
   const secondBondedAPI = useRequest(
     async () => {
       await billingSecondBonded({ billingId });
@@ -42,6 +53,7 @@ const GenBilling: React.FC = () => {
     },
     { manual: true },
   );
+  // 通関料
   const clearanceAPI = useRequest(
     async () => {
       await billingClearance({ billingId });
@@ -49,6 +61,7 @@ const GenBilling: React.FC = () => {
     },
     { manual: true },
   );
+  //保管料
   const storageAPI = useRequest(
     async () => {
       await billingStorage({ billingId });
@@ -56,6 +69,7 @@ const GenBilling: React.FC = () => {
     },
     { manual: true },
   );
+  // 税関検査費用
   const inspectionAPI = useRequest(
     async () => {
       await billingInspection({ billingId });
@@ -63,6 +77,23 @@ const GenBilling: React.FC = () => {
     },
     { manual: true },
   );
+  // 配送料金（＊）
+  const deliveryAPI = useRequest(
+    async () => {
+      await BillingDelivery({ billingId });
+      billingAPI.refresh();
+    },
+    { manual: true },
+  );
+  // 立替関税・消費税◎
+  const irregularAPI = useRequest(
+    async () => {
+      await billingIrregular({ billingId });
+      billingAPI.refresh();
+    },
+    { manual: true },
+  );
+  // イレギュラー費用
   const advanceAPI = useRequest(
     async () => {
       await billingAdvance({ billingId });
@@ -119,12 +150,17 @@ const GenBilling: React.FC = () => {
     },
     {
       key: '5',
-      field: '配送料金（＊）',
+      field: (
+        <Button loading={deliveryAPI.loading} onClick={deliveryAPI.run}>
+          配送料金（＊）
+        </Button>
+      ),
+      ...billingAPI?.data?.delivery_field,
     },
-    {
-      key: '6',
-      field: '成田チャーター運賃取消料（＊）',
-    },
+    // {
+    //   key: '6',
+    //   field: '成田チャーター運賃取消料（＊）',
+    // },
     {
       key: '7',
       field: (
@@ -134,8 +170,24 @@ const GenBilling: React.FC = () => {
       ),
       ...billingAPI?.data?.advance_field,
     },
-    { key: '8', field: 'イレギュラー費用（＊）' },
-    { key: '9', field: 'イレギュラー費用（不課税）' },
+    {
+      key: '8',
+      field: (
+        <Button loading={irregularAPI.loading} onClick={irregularAPI.run}>
+          イレギュラー費用（＊）
+        </Button>
+      ),
+      ...billingAPI?.data?.irregular_field,
+    },
+    {
+      key: '9',
+      field: (
+        <Button loading={irregularAPI.loading} onClick={irregularAPI.run}>
+          イレギュラー費用（不課税）
+        </Button>
+      ),
+      ...billingAPI?.data?.irregular_no_tax_field,
+    },
   ];
 
   return (
@@ -143,11 +195,38 @@ const GenBilling: React.FC = () => {
       title="生成請求書"
       header={{
         breadcrumb: {
-          routes: [{ path: '/billing', breadcrumbName: '請求書管理' }],
+          routes: [
+            { path: '/billing/gen', breadcrumbName: '請求書管理' },
+            { path: '', breadcrumbName: '生成請求書' },
+          ],
         },
       }}
     >
-      <Card title={title}>
+      <Card
+        title={title}
+        extra={
+          <Space>
+            <Link
+              to={`/billing/lists/detail?${params.toString()}`}
+              target="_blank"
+            >
+              <Button icon={<LinkOutlined />}>詳細</Button>
+            </Link>
+            <Link
+              to={`/billing/lists/MAWB?${params.toString()}`}
+              target="_blank"
+            >
+              <Button icon={<LinkOutlined />}>マスタデータ</Button>
+            </Link>
+            <Link
+              to={`/billing/lists/irregular?${params.toString()}`}
+              target="_blank"
+            >
+              <Button icon={<LinkOutlined />}>イレギュラー費用</Button>
+            </Link>
+          </Space>
+        }
+      >
         <Table
           size="small"
           dataSource={dataSource}

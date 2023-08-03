@@ -135,3 +135,59 @@ export async function billingInspection(params: BillingInspection) {
     },
   });
 }
+
+// 创建立替項目 POST /api/billings/irregular
+interface BillingIrregular {
+  billingId: API.ID;
+}
+export async function billingIrregular(params: BillingIrregular) {
+  return request<any>(ApiURL + '/billings/irregular', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 创建立替項目 POST /api/billings/delivery
+interface BillingDelivery {
+  billingId: API.ID;
+}
+export async function BillingDelivery(params: BillingDelivery) {
+  return request<any>(ApiURL + '/billings/delivery', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取详细 POST /api/billings/get-waybills
+interface GetBillingWaybills {
+  agent: API.ID;
+  start_date: string;
+  end_date: string;
+}
+export async function getBillingWaybills(params: GetBillingWaybills) {
+  return request<any>(ApiURL + '/billings/get-waybills', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取详细 POST /api/billings/get-mabs
+interface GetBillingMABs {
+  agent: API.ID;
+  start_date: string;
+  end_date: string;
+}
+export async function getBillingMABs(params: GetBillingMABs) {
+  return request<any>(ApiURL + '/billings/get-mabs', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
