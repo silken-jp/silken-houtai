@@ -22,10 +22,11 @@ import {
   updateIrregular,
   deleteIrregularById,
 } from '@/services/request/irregular';
+import { renderDate } from '@/utils/helper/day';
+import { useExportIrregularXlsx } from '@/services/useExportXlsx';
 import IrregularForm from '../components/IrregularForm';
 import UploadIrregularOther from '../components/UploadIrregularOther';
 import UploadIrregularReturn from '../components/UploadIrregularReturn';
-import { renderDate } from '@/utils/helper/day';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -39,11 +40,14 @@ const Irregular: React.FC = () => {
   const params = new URLSearchParams(location.search);
   const initialValues = {
     agent: params.get('agent'),
-    start_date: dayjs(params.get('start_date')),
-    end_date: dayjs(params.get('end_date')),
+    start_date: params.get('start_date')
+      ? dayjs(params.get('start_date'))
+      : null,
+    end_date: params.get('end_date') ? dayjs(params.get('end_date')) : null,
   };
 
   // api
+  const { exportIrregularApi } = useExportIrregularXlsx();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -63,11 +67,11 @@ const Irregular: React.FC = () => {
     }
     const params = removeEmpty({
       ...formData,
-      date_start: formData.date_start
-        ? dayjs(formData.date_start).format('YYYY-MM-DD')
+      start_date: formData.start_date
+        ? dayjs(formData.start_date).format('YYYY-MM-DD')
         : '',
-      date_end: formData.date_end
-        ? dayjs(formData.date_end).format('YYYY-MM-DD')
+      end_date: formData.end_date
+        ? dayjs(formData.end_date).format('YYYY-MM-DD')
         : '',
     });
     const data = await getAllIrregular({
@@ -96,6 +100,20 @@ const Irregular: React.FC = () => {
       message.error(error?.message);
     }
   }
+
+  const handleEXport = () => {
+    const formData = form.getFieldsValue();
+    const params = removeEmpty({
+      ...formData,
+      start_date: formData.start_date
+        ? dayjs(formData.start_date).format('YYYY-MM-DD')
+        : '',
+      end_date: formData.end_date
+        ? dayjs(formData.end_date).format('YYYY-MM-DD')
+        : '',
+    });
+    exportIrregularApi.run(params);
+  };
 
   return (
     <PageContainer
@@ -129,12 +147,12 @@ const Irregular: React.FC = () => {
             </Form.Item>
           </Col>
           <Col>
-            <Form.Item name="date_start">
+            <Form.Item name="start_date">
               <DatePicker placeholder="開始時間" />
             </Form.Item>
           </Col>
           <Col>
-            <Form.Item name="date_end">
+            <Form.Item name="end_date">
               <DatePicker placeholder="終了時間" />
             </Form.Item>
           </Col>
@@ -150,7 +168,18 @@ const Irregular: React.FC = () => {
       </Form>
       <IrregularForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title="HAWBイレギュラー費用リスト"
+        title={
+          <Space>
+            <span>HAWBイレギュラー費用リスト</span>
+            <Button
+              size="small"
+              disabled={tableProps.loading}
+              onClick={handleEXport}
+            >
+              エクスポート
+            </Button>
+          </Space>
+        }
         extra={
           <Space>
             <UploadIrregularReturn onUpload={search.submit} />

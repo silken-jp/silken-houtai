@@ -22,6 +22,8 @@ import { getBillingWaybills } from '@/services/request/billing';
 // import Actions from '@/components/Common/Actions';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { renderDate } from '@/utils/helper/day';
+// import ExportHAWBXlsx from '../components/ExportXlsx';
+import { handleExportXlsx } from '@/services/useExportXlsx';
 
 const Detail: React.FC = () => {
   // state
@@ -59,6 +61,41 @@ const Detail: React.FC = () => {
       !initialValues.end_date,
     cacheKey: 'getBillingWaybills',
   });
+
+  const onExport = () => {
+    const dataSource = tableProps.dataSource?.map((d: any) => ({
+      搬入日: renderDate()(d?.DATE),
+      通関日: renderDate()(d?.PER_date),
+      曜日: d?.PER_date ? dayjs(d?.PER_date).format('ddd') : '',
+      'MAWB No.': d?.MAB,
+      'HAWB No.': d?.BL_,
+      申告等番号: d?.ID,
+      'B2B&C': '',
+      輸入者: d?.ImpName,
+      郵便番号: d?.Zip,
+      輸入者住所: d?.IAD,
+      個数: d?.NO,
+      WEIGHT: d?.GW,
+      区分: d?.EXA_DIS,
+      到着上屋: '',
+      IC通関: d?.waybill_type === 'IDA' ? d?.clearance : '',
+      MIC通関: d?.waybill_type === 'MIC' ? d?.clearance : '',
+      保税倉庫作業量: d?.second_bonded,
+      B2B通関: '',
+      ゆうパケット貨物: '',
+      保管料金: d?.storage,
+      税関検査: d?.inspection,
+      内容点検: d?.a,
+      関税: d?.CUS_DTY,
+      消費税: d?.CON_TAX,
+      地方消費税: d?.LC_TAX,
+      納税:
+        Number(d?.CUS_DTY || 0) +
+        Number(d?.CON_TAX || 0) +
+        Number(d?.LC_TAX || 0),
+    }));
+    handleExportXlsx(dataSource, '詳細');
+  };
 
   // async function handleSubmit(v: any) {
   //   try {
@@ -126,7 +163,20 @@ const Detail: React.FC = () => {
         </Row>
       </Form>
       {/* <DetailForm type={formType} {...formProps} onSubmit={handleSubmit} /> */}
-      <Card title="料金詳細">
+      <Card
+        title={
+          <Space>
+            <span>料金詳細</span>
+            <Button
+              size="small"
+              disabled={tableProps.loading}
+              onClick={onExport}
+            >
+              エクスポート
+            </Button>
+          </Space>
+        }
+      >
         <Table
           rowKey="_id"
           size="small"

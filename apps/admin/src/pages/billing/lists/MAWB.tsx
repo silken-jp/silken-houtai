@@ -16,8 +16,9 @@ import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { useAgentOptions } from '@/services/useAPIOption';
 import { getBillingMABs } from '@/services/request/billing';
-import UpdateMAB from '../components/UpdateMAB';
+import { handleExportXlsx } from '@/services/useExportXlsx';
 import { renderDate } from '@/utils/helper/day';
+import UpdateMAB from '../components/UpdateMAB';
 
 const SimpleStatusInquiry: React.FC = () => {
   // state
@@ -53,6 +54,17 @@ const SimpleStatusInquiry: React.FC = () => {
       !initialValues.start_date ||
       !initialValues.end_date,
   });
+
+  const onExport = () => {
+    const dataSource = tableProps.dataSource?.map((d: any) => ({
+      MAWB番号: d?.mab,
+      入港日: renderDate()(d?.flightDate),
+      便名: d?.VSN,
+      一次上屋料金: d?.first_bonded,
+      // ターミナル料金: d?.a,
+    }));
+    handleExportXlsx(dataSource, 'マスタデータ');
+  };
 
   return (
     <PageContainer
@@ -104,7 +116,21 @@ const SimpleStatusInquiry: React.FC = () => {
           </Col>
         </Row>
       </Form>
-      <Card title="マスタデータ" extra={<UpdateMAB />}>
+      <Card
+        title={
+          <Space>
+            <span>マスタデータ</span>
+            <Button
+              size="small"
+              disabled={tableProps.loading}
+              onClick={onExport}
+            >
+              エクスポート
+            </Button>
+          </Space>
+        }
+        extra={<UpdateMAB />}
+      >
         <Table
           rowKey="_id"
           size="small"
@@ -124,11 +150,11 @@ const SimpleStatusInquiry: React.FC = () => {
             title="一次上屋料金"
             dataIndex="first_bonded"
           />
-          <Table.Column
+          {/* <Table.Column
             width={120}
             title="ターミナル料金"
             dataIndex="first_bonded"
-          />
+          /> */}
         </Table>
       </Card>
     </PageContainer>

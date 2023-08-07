@@ -18,6 +18,7 @@ import {
 import { useAgentOptions } from '@/services/useAPIOption';
 import { dayFormat } from '@/utils/helper/day';
 import { renderPrice } from '@/utils/helper/helper';
+import { handleExportXlsx } from '@/services/useExportXlsx';
 
 const GenBilling: React.FC = () => {
   // state
@@ -190,6 +191,121 @@ const GenBilling: React.FC = () => {
     },
   ];
 
+  const onExport = () => {
+    handleExportXlsx(
+      [
+        {
+          請求項目: '一次上屋料金',
+          数量: billingAPI?.data?.first_bonded_field?.count,
+          単価: billingAPI?.data?.first_bonded_field?.unit_price,
+          立替項目: billingAPI?.data?.first_bonded_field?.advance,
+          不課税項目: billingAPI?.data?.first_bonded_field?.no_tax_price,
+          課税項目: billingAPI?.data?.first_bonded_field?.tax_price,
+        },
+        {
+          請求項目: '二次上屋料金',
+          数量: billingAPI?.data?.second_bonded_field?.count,
+          単価: billingAPI?.data?.second_bonded_field?.unit_price,
+          立替項目: billingAPI?.data?.second_bonded_field?.advance,
+          不課税項目: billingAPI?.data?.second_bonded_field?.no_tax_price,
+          課税項目: billingAPI?.data?.second_bonded_field?.tax_price,
+        },
+        {
+          請求項目: '通関料',
+          数量: billingAPI?.data?.clearance_field?.count,
+          単価: billingAPI?.data?.clearance_field?.unit_price,
+          立替項目: billingAPI?.data?.clearance_field?.advance,
+          不課税項目: billingAPI?.data?.clearance_field?.no_tax_price,
+          課税項目: billingAPI?.data?.clearance_field?.tax_price,
+        },
+        {
+          請求項目: '保管料',
+          数量: billingAPI?.data?.storage_field?.count,
+          単価: billingAPI?.data?.storage_field?.unit_price,
+          立替項目: billingAPI?.data?.storage_field?.advance,
+          不課税項目: billingAPI?.data?.storage_field?.no_tax_price,
+          課税項目: billingAPI?.data?.storage_field?.tax_price,
+        },
+        {
+          請求項目: '税関検査費用',
+          数量: billingAPI?.data?.inspection_field?.count,
+          単価: billingAPI?.data?.inspection_field?.unit_price,
+          立替項目: billingAPI?.data?.inspection_field?.advance,
+          不課税項目: billingAPI?.data?.inspection_field?.no_tax_price,
+          課税項目: billingAPI?.data?.inspection_field?.tax_price,
+        },
+        {
+          請求項目: '配送料金（＊）',
+          数量: billingAPI?.data?.delivery_field?.count,
+          単価: billingAPI?.data?.delivery_field?.unit_price,
+          立替項目: billingAPI?.data?.delivery_field?.advance,
+          不課税項目: billingAPI?.data?.delivery_field?.no_tax_price,
+          課税項目: billingAPI?.data?.delivery_field?.tax_price,
+        },
+        {
+          請求項目: '立替関税・消費税◎',
+          数量: billingAPI?.data?.advance_field?.count,
+          単価: billingAPI?.data?.advance_field?.unit_price,
+          立替項目: billingAPI?.data?.advance_field?.advance,
+          不課税項目: billingAPI?.data?.advance_field?.no_tax_price,
+          課税項目: billingAPI?.data?.advance_field?.tax_price,
+        },
+        {
+          請求項目: 'イレギュラー費用（＊）',
+          数量: billingAPI?.data?.irregular_field?.count,
+          単価: billingAPI?.data?.irregular_field?.unit_price,
+          立替項目: billingAPI?.data?.irregular_field?.advance,
+          不課税項目: billingAPI?.data?.irregular_field?.no_tax_price,
+          課税項目: billingAPI?.data?.irregular_field?.tax_price,
+        },
+        {
+          請求項目: 'イレギュラー費用（不課税）',
+          数量: billingAPI?.data?.irregular_no_tax_field?.count,
+          単価: billingAPI?.data?.irregular_no_tax_field?.unit_price,
+          立替項目: billingAPI?.data?.irregular_no_tax_field?.advance,
+          不課税項目: billingAPI?.data?.irregular_no_tax_field?.no_tax_price,
+          課税項目: billingAPI?.data?.irregular_no_tax_field?.tax_price,
+        },
+        {
+          請求項目: '合計',
+          数量: '',
+          単価: '',
+          立替項目:
+            billingAPI?.data?.first_bonded_field?.advance +
+            billingAPI?.data?.second_bonded_field?.advance +
+            billingAPI?.data?.clearance_field?.advance +
+            billingAPI?.data?.storage_field?.advance +
+            billingAPI?.data?.inspection_field?.advance +
+            billingAPI?.data?.delivery_field?.advance +
+            billingAPI?.data?.advance_field?.advance +
+            billingAPI?.data?.irregular_field?.advance +
+            billingAPI?.data?.irregular_no_tax_field?.advance,
+          不課税項目:
+            billingAPI?.data?.first_bonded_field?.no_tax_price +
+            billingAPI?.data?.second_bonded_field?.no_tax_price +
+            billingAPI?.data?.clearance_field?.no_tax_price +
+            billingAPI?.data?.storage_field?.no_tax_price +
+            billingAPI?.data?.inspection_field?.no_tax_price +
+            billingAPI?.data?.delivery_field?.no_tax_price +
+            billingAPI?.data?.advance_field?.no_tax_price +
+            billingAPI?.data?.irregular_field?.no_tax_price +
+            billingAPI?.data?.irregular_no_tax_field?.no_tax_price,
+          課税項目:
+            billingAPI?.data?.first_bonded_field?.tax_price +
+            billingAPI?.data?.second_bonded_field?.tax_price +
+            billingAPI?.data?.clearance_field?.tax_price +
+            billingAPI?.data?.storage_field?.tax_price +
+            billingAPI?.data?.inspection_field?.tax_price +
+            billingAPI?.data?.delivery_field?.tax_price +
+            billingAPI?.data?.advance_field?.tax_price +
+            billingAPI?.data?.irregular_field?.tax_price +
+            billingAPI?.data?.irregular_no_tax_field?.tax_price,
+        },
+      ],
+      title,
+    );
+  };
+
   return (
     <PageContainer
       title="生成請求書"
@@ -203,7 +319,18 @@ const GenBilling: React.FC = () => {
       }}
     >
       <Card
-        title={title}
+        title={
+          <Space>
+            <span>{title}</span>{' '}
+            <Button
+              size="small"
+              disabled={billingAPI.loading}
+              onClick={onExport}
+            >
+              エクスポート
+            </Button>
+          </Space>
+        }
         extra={
           <Space>
             <Link
