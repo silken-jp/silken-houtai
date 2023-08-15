@@ -93,7 +93,7 @@ const Index: React.FC<{ children: any }> = (props) => {
                     },
                     {
                       key: '/billing/lists/MAWB',
-                      label: <Link to="/billing/lists/MAWB">マスタデータ</Link>,
+                      label: <Link to="/billing/lists/MAWB">一次上屋料金</Link>,
                     },
                     {
                       key: '/billing/lists/irregular',

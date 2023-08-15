@@ -90,6 +90,7 @@ declare namespace API {
     _id?: ID;
     end_hab: string;
     group_name: string;
+    cargo_type: string;
     start_hab: string;
     count: number;
     used_count: number;
@@ -97,6 +98,7 @@ declare namespace API {
   type AgentHAWB = {
     _id?: ID;
     agent: string;
+    group_name: string;
     tracking_type: number;
     cargo_type: number;
     start_hab: string;

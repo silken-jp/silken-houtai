@@ -343,7 +343,7 @@ const GenBilling: React.FC = () => {
               to={`/billing/lists/MAWB?${params.toString()}`}
               target="_blank"
             >
-              <Button icon={<LinkOutlined />}>マスタデータ</Button>
+              <Button icon={<LinkOutlined />}>一次上屋料金</Button>
             </Link>
             <Link
               to={`/billing/lists/irregular?${params.toString()}`}

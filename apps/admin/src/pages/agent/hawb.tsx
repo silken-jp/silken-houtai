@@ -56,19 +56,10 @@ const AgentHAWB: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item name="cargo_type">
-              <Select
-                placeholder="配送種類"
-                options={AGENT_HAWB.CARGO_TYPE}
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="tracking_type">
+            <Form.Item name="group_name">
               <Select
                 placeholder="配送会社"
-                options={AGENT_HAWB.TRACKING_TYPE}
+                options={AGENT_HAWB.GROUP_NAME}
                 allowClear
               />
             </Form.Item>
@@ -100,16 +91,10 @@ const AgentHAWB: React.FC = () => {
             render={(v) => getLabel(agentOptions, v)}
           />
           <Table.Column
-            width={140}
-            title="配送種類"
-            dataIndex="cargo_type"
-            render={(v) => getLabel(AGENT_HAWB.CARGO_TYPE, v)}
-          />
-          <Table.Column
             width={150}
             title="配送会社"
-            dataIndex="tracking_type"
-            render={(v) => getLabel(AGENT_HAWB.TRACKING_TYPE, v)}
+            dataIndex="group_name"
+            render={(v) => getLabel(AGENT_HAWB.GROUP_NAME, v)}
           />
           <Table.Column
             width={150}

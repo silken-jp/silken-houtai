@@ -100,7 +100,7 @@ export const useCTS = (LS: 'L' | 'S' | 'M', options?: any) => {
     return {
       total: data?.totalCount,
       list: data?.waybills?.map((item: any) => {
-        const temp = trackings?.find((t: any) => t?.BL_ === item?.HAB);
+        const temp = trackings?.find((t: any) => t?.waybill === item?.id);
         let tracking = temp?.trackingHistory?.reduce((a: any, b: any) => {
           return { ...a, [b?.TKG_CD]: b?.TKG_DT };
         }, temp);

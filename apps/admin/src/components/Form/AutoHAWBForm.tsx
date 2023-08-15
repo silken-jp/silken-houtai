@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber, Select } from 'antd';
+import { Modal, Form, InputNumber, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import { AGENT_HAWB } from '@/utils/constant';
@@ -21,10 +21,9 @@ const AgentHAWBForm: React.FC<AgentHAWBFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        agent: props?.dataSource?.agent || '',
-        tracking_type: props?.dataSource?.tracking_type || '',
-        cargo_type: props?.dataSource?.cargo_type || '',
-        count: props?.dataSource?.count || '',
+        agent: props?.dataSource?.agent || null,
+        group_name: props?.dataSource?.group_name || null,
+        count: props?.dataSource?.count || null,
       });
     }
   }, [props]);
@@ -33,25 +32,22 @@ const AgentHAWBForm: React.FC<AgentHAWBFormProps> = (props) => {
     <Modal {...modalProps} width={700}>
       <Form name="AgentHAWBForm" {...formItemLayout} {...formProps}>
         <Form.Item
+          label="配送会社"
+          name="group_name"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="配送会社"
+            options={AGENT_HAWB.GROUP_NAME}
+            disabled
+          />
+        </Form.Item>
+        <Form.Item
           label="フォワーダー"
           name="agent"
           rules={[{ required: true }]}
         >
           <Select placeholder="フォワーダー" options={agentOptions} />
-        </Form.Item>
-        <Form.Item
-          label="配送種類"
-          name="cargo_type"
-          rules={[{ required: true }]}
-        >
-          <Select placeholder="配送種類" options={AGENT_HAWB.CARGO_TYPE} />
-        </Form.Item>
-        <Form.Item
-          label="配送会社"
-          name="tracking_type"
-          rules={[{ required: true }]}
-        >
-          <Select placeholder="配送会社" options={AGENT_HAWB.TRACKING_TYPE} />
         </Form.Item>
         <Form.Item label="件数" name="count" rules={[{ required: true }]}>
           <InputNumber placeholder="件数" autoComplete="off" min={1} step={1} />

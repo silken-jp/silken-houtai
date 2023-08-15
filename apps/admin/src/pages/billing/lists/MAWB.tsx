@@ -63,7 +63,7 @@ const SimpleStatusInquiry: React.FC = () => {
       一次上屋料金: d?.first_bonded,
       // ターミナル料金: d?.a,
     }));
-    handleExportXlsx(dataSource, 'マスタデータ');
+    handleExportXlsx(dataSource, '一次上屋料金');
   };
 
   return (
@@ -75,10 +75,10 @@ const SimpleStatusInquiry: React.FC = () => {
               path: '/billing/lists/MAWB',
               breadcrumbName: '請求管理',
             },
-            { path: '', breadcrumbName: 'マスタデータ' },
+            { path: '', breadcrumbName: '一次上屋料金' },
           ],
         },
-        title: 'マスタデータ',
+        title: '一次上屋料金',
       }}
     >
       <Form
@@ -119,7 +119,7 @@ const SimpleStatusInquiry: React.FC = () => {
       <Card
         title={
           <Space>
-            <span>マスタデータ</span>
+            <span>一次上屋料金</span>
             <Button
               size="small"
               disabled={tableProps.loading}
