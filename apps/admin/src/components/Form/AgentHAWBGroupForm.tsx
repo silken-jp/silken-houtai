@@ -31,11 +31,11 @@ const HAWBGroupForm: React.FC<HAWBGroupFormProps> = (props) => {
     <Modal {...modalProps} width={700}>
       <Form name="HAWBGroupForm" {...formItemLayout} {...formProps}>
         <Form.Item
-          label="配送会社"
+          label="配送種類"
           name="group_name"
           rules={[{ required: true }]}
         >
-          <Select placeholder="配送会社" options={AGENT_HAWB.GROUP_NAME} />
+          <Select placeholder="配送種類" options={AGENT_HAWB.GROUP_NAME} />
         </Form.Item>
         <Form.Item
           label="開始HAWB"

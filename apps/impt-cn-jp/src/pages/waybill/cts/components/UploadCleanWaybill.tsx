@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, Button, Form, Typography, Select, Space } from 'antd';
+import { Modal, Button, Form, Typography, Select, Space, message } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
@@ -137,6 +137,8 @@ const UploadCleanWaybill: React.FC<UploadCleanWaybillProps> = (props) => {
         failedNo?.length > 0 ? failedFormat(!!success, failedNo, '新規') : null;
       return { success, failed };
     } catch (error: any) {
+      message.destroy();
+      message.error(error?.message);
       return {
         success: null,
         failed: error,

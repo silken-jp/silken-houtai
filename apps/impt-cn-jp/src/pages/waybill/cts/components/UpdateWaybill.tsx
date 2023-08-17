@@ -1,5 +1,5 @@
 import * as Encoding from 'encoding-japanese';
-import { Button, Space } from 'antd';
+import { Button, Space, message } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiBrokerWaybill2 } from '@/services/request/waybill';
@@ -133,6 +133,8 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
         failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
       return { success, failed };
     } catch (error: any) {
+      message.destroy();
+      message.error(error?.message);
       return {
         success: null,
         failed: error,

@@ -54,15 +54,16 @@ declare namespace API {
       // 超过7day每kg*day价格
       out_limit_days_kgs_price: number;
     }[];
-    delivery_price_table?: PriceTable;
-    return_price_table?: GWPriceTable;
-    resend_price_table?: GWPriceTable;
+    sagawa_to_c?: PriceTableGroup;
+    sagawa_u_packet?: PriceTableGroup;
+    yamato_to_c?: PriceTableGroup;
+    yamato_nekoposu?: PriceTableGroup;
   };
-  type GWPriceTable = {
-    price: number;
-    GW_min: number;
-    GW_max: number;
-  }[];
+  type PriceTableGroup = {
+    delivery_price_table?: PriceTable;
+    return_price_table?: PriceTable;
+    resend_price_table?: PriceTable;
+  };
   type PriceTable = {
     state1: number;
     state2: number;
@@ -102,7 +103,9 @@ declare namespace API {
     tracking_type: number;
     cargo_type: number;
     start_hab: string;
+    end_hab: string;
     count: number;
+    used_count: number;
   };
   type CMN = {
     _id?: ID;
