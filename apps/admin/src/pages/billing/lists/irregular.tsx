@@ -129,6 +129,23 @@ const Irregular: React.FC = () => {
         },
         title: 'イレギュラー費用',
       }}
+      extra={
+        <Space>
+          <span>テンプレート:</span>
+          <Button
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/irregular.xlsx"
+            download
+          >
+            倉庫
+          </Button>
+          <Button
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/irregular_other.xlsx"
+            download
+          >
+            その他テンプレート
+          </Button>
+        </Space>
+      }
     >
       <Form
         form={form}

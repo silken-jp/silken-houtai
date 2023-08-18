@@ -3,6 +3,10 @@
 
 declare namespace API {
   type ID = string;
+  type OPTION = {
+    value: any;
+    label: any;
+  };
   type Agent = {
     _id?: ID;
     name?: string;
@@ -12,11 +16,82 @@ declare namespace API {
     SHA?: string;
     STL?: string;
     AGT_CD?: string;
+    // BtoC 电商货物 报关费（清单报关
+    MIC_clearances?: {
+      count_start: number;
+      count_end: number;
+      hawb_price: number;
+    }[];
+    // BtoC 电商货物 报关费（IC报关）
+    IDA_clearances?: {
+      count_start: number;
+      count_end: number;
+      hawb_price: number;
+    }[];
+    // 二次上屋
+    SecondBondeds?: {
+      // 0
+      count_start: number;
+      // 10w
+      count_end: number;
+      // 5kg
+      limit_GW: number;
+      // 5kg以内25yen
+      limit_price: number;
+      // 超过5kg每kg价格
+      out_limit_kgs_price: number;
+    }[];
+    // 保管料
+    storages?: {
+      // 0
+      count_start: number;
+      // 10w
+      count_end: number;
+      // 7day
+      limit_days: number;
+      // 0
+      limit_price: number;
+      // 超过7day每kg*day价格
+      out_limit_days_kgs_price: number;
+    }[];
+    sagawa_to_c?: PriceTableGroup;
+    sagawa_u_packet?: PriceTableGroup;
+    yamato_to_c?: PriceTableGroup;
+    yamato_nekoposu?: PriceTableGroup;
+  };
+  type PriceTableGroup = {
+    delivery_price_table?: PriceTable;
+    return_price_table?: PriceTable;
+    resend_price_table?: PriceTable;
+  };
+  type PriceTable = {
+    state1: number;
+    state2: number;
+    state3: number;
+    state4: number;
+    state5: number;
+    state6: number;
+    state7: number;
+    state8: number;
+    state9: number;
+    state10: number;
+    state11: number;
+    state12: number;
+    GW_min: number;
+    GW_max: number;
+  }[];
+  type Billing = {
+    _id?: ID;
+    name?: string;
+    agent: API.ID;
+    start_date: string;
+    end_date: string;
   };
   type HAWBGroup = {
     _id?: ID;
     end_hab: string;
     group_name: string;
+    cargo_type: string;
     start_hab: string;
     count: number;
     used_count: number;
@@ -24,10 +99,13 @@ declare namespace API {
   type AgentHAWB = {
     _id?: ID;
     agent: string;
+    group_name: string;
     tracking_type: number;
     cargo_type: number;
     start_hab: string;
+    end_hab: string;
     count: number;
+    used_count: number;
   };
   type CMN = {
     _id?: ID;
@@ -125,6 +203,25 @@ declare namespace API {
     Add3?: string;
     Add4?: string;
   };
+  type Irregular = {
+    HAB: string;
+    date: Date;
+    agent: string;
+    flight_date: string;
+    return_no: string;
+    resend_no: string;
+    return_price: number;
+    resend_price: number;
+    address_change_fee: number;
+    repack_fee: number;
+    label_change_fee: number;
+    tax_price: number;
+    no_tax_price: number;
+    tax_field_name: string;
+    no_tax_field_name: string;
+    tax_note: string;
+    no_tax_note: string;
+  };
   type Issue = {
     // -----------自社填写内容-------------
     waybill: Waybill | ID;
@@ -178,6 +275,11 @@ declare namespace API {
     }[];
     // 備考
     solve_note: string;
+  };
+  type MAB = {
+    _id?: ID;
+    first_bonded: number;
+    second_bonded: number;
   };
   type MICkeys = {
     _id?: ID;
@@ -514,6 +616,29 @@ declare namespace API {
       RE?: string;
       REG?: string;
     }[];
+    deliveryInvoice: {
+      invoice_no: string; //請求書番号
+      customer_no: string; //お客様コード
+      customer_name1: string; //お客様名称１
+      customer_name2: string; //お客様名称２
+      document_type: string; //伝票種別
+      office_type: string; //担当営業所種別
+      office_name: string; //担当営業所名称
+      date_type: string; //日付種別
+      shipment_date: string; //出荷日
+      hab: string; //お問合せNO
+      state: string; //都道府県
+      sales_office_type: string; //営業所種別
+      sales_office_name: string; //営業所名称
+      flight_type: string; //便種名称
+      no: number; //個数
+      tax_category: string; //税区分
+      fee: number; //運賃合計金額
+      COD_fee: number; //代引手数料
+      insurance_fee: number; //保険料
+      relay_fee: number; //中継料
+      total_fee: number; //運賃請求金額
+    };
   };
   type User = {
     _id?: ID;

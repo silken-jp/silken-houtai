@@ -22,6 +22,7 @@ import {
   deleteHAWBGroupById,
   autoHAWBGroup,
 } from '@/services/request/agent_hawb_group';
+import { AGENT_HAWB, getLabel } from '@/utils/constant';
 
 const AgentHAWB: React.FC = () => {
   // state
@@ -127,7 +128,12 @@ const AgentHAWB: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={150} title="配送種類" dataIndex="group_name" />
+          <Table.Column
+            width={150}
+            title="配送種類"
+            dataIndex="group_name"
+            render={(v) => getLabel(AGENT_HAWB.GROUP_NAME, v)}
+          />
           <Table.Column width={150} title="START_HAB" dataIndex="start_hab" />
           <Table.Column width={150} title="END_HAB" dataIndex="end_hab" />
           <Table.Column width={150} title="件数" dataIndex="count" />

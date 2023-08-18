@@ -60,3 +60,19 @@ export async function deleteAgentHAWBById(params: DeleteAgentHAWBById) {
     method: 'DELETE',
   });
 }
+
+// 再分配可用HAWB POST /api/hab-settings
+interface MoveAgentHAWB extends API.AgentHAWB {
+  _id: string;
+  agent: string;
+  start_hab: string;
+  count: number;
+}
+export async function moveAgentHAWB(params: MoveAgentHAWB) {
+  return request<any>(ApiURL + '/hab-settings/move', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

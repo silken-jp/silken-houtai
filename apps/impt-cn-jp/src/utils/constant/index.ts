@@ -36,9 +36,11 @@ export const CODE_SOURCE: { [key: string]: any[] } = {
 
 export const STORAGE_KEY: string = 'SILKEN.';
 export const AGENT_HAWB = {
-  CARGO_TYPE: [
-    { value: 1, label: '小包' },
-    { value: 2, label: 'u-packet' },
+  GROUP_NAME: [
+    { value: 'sagawa_to_c', label: '佐川ToC' },
+    { value: 'sagawa_u_packet', label: '佐川ゆうパケット' },
+    { value: 'yamato_to_c', label: 'ヤマトToC' },
+    { value: 'yamato_nekoposu', label: 'ヤマトネコポス' },
   ],
   TRACKING_TYPE: [
     { value: 1, label: '自社' },

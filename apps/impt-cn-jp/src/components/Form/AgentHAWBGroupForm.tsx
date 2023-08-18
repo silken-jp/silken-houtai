@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input, InputNumber } from 'antd';
+import { Modal, Form, Input, InputNumber, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
+import { AGENT_HAWB } from '@/utils/constant';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -18,10 +19,10 @@ const HAWBGroupForm: React.FC<HAWBGroupFormProps> = (props) => {
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
-        group_name: props?.dataSource?.group_name || '',
-        start_hab: props?.dataSource?.start_hab || '',
-        end_hab: props?.dataSource?.end_hab || '',
-        count: props?.dataSource?.count || '',
+        group_name: props?.dataSource?.group_name || null,
+        start_hab: props?.dataSource?.start_hab || null,
+        end_hab: props?.dataSource?.end_hab || null,
+        count: props?.dataSource?.count || null,
       });
     }
   }, [props]);
@@ -30,11 +31,11 @@ const HAWBGroupForm: React.FC<HAWBGroupFormProps> = (props) => {
     <Modal {...modalProps} width={700}>
       <Form name="HAWBGroupForm" {...formItemLayout} {...formProps}>
         <Form.Item
-          label="配送会社"
+          label="配送種類"
           name="group_name"
           rules={[{ required: true }]}
         >
-          <Input placeholder="配送会社" />
+          <Select placeholder="配送種類" options={AGENT_HAWB.GROUP_NAME} />
         </Form.Item>
         <Form.Item
           label="開始HAWB"

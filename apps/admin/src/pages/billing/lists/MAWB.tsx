@@ -80,6 +80,17 @@ const SimpleStatusInquiry: React.FC = () => {
         },
         title: '一次上屋料金',
       }}
+      extra={
+        <Space>
+          <span>テンプレート:</span>
+          <Button
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/first_bonded.xlsx"
+            download
+          >
+            一次上屋料金
+          </Button>
+        </Space>
+      }
     >
       <Form
         form={form}

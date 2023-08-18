@@ -65,9 +65,15 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
         },
       }}
       extra={
-        <Button type="primary" onClick={handleSubmit}>
-          保存
-        </Button>
+        <Space>
+          <span>テンプレート:</span>
+          <Button
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/delivery.xlsx"
+            download
+          >
+            運賃
+          </Button>
+        </Space>
       }
     >
       <div style={{ overflow: 'auto', height: 'calc(100vh - 220px)' }}>
@@ -201,6 +207,10 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   )}
                 </Form.List>
               </Card>
+              <br />
+              <Button type="primary" onClick={handleSubmit}>
+                保存
+              </Button>
             </Collapse.Panel>
             <Collapse.Panel header="保税" key="2">
               <Card title="一次上屋料金設定">
@@ -406,6 +416,10 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   </Form.Item>
                 </Space>
               </Card>
+              <br />
+              <Button type="primary" onClick={handleSubmit}>
+                保存
+              </Button>
             </Collapse.Panel>
             <Collapse.Panel header="配送" key="3">
               <Card title="住所変更費・再梱包費・換面単費設定">
@@ -433,6 +447,12 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   </Form.Item>
                 </Space>
               </Card>
+              <br />
+              <Button type="primary" onClick={handleSubmit}>
+                保存
+              </Button>
+              <br />
+              <br />
               <Collapse
                 activeKey={activeKeyPriceTable}
                 onChange={setActiveKeyPriceTable}

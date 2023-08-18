@@ -19,10 +19,10 @@ import AutoHAWBForm from '@/components/Form/AutoHAWBForm';
 import {
   getAllHAWBGroups,
   createHAWBGroup,
-  updateHAWBGroup,
   deleteHAWBGroupById,
   autoHAWBGroup,
 } from '@/services/request/agent_hawb_group';
+import { AGENT_HAWB, getLabel } from '@/utils/constant';
 
 const AgentHAWB: React.FC = () => {
   // state
@@ -91,7 +91,7 @@ const AgentHAWB: React.FC = () => {
         <Row justify="end" gutter={16}>
           <Col span={4}>
             <Form.Item name="group_name">
-              <Input placeholder="配送会社" />
+              <Input placeholder="配送種類" />
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -128,11 +128,16 @@ const AgentHAWB: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={150} title="配送会社" dataIndex="group_name" />
+          <Table.Column
+            width={150}
+            title="配送種類"
+            dataIndex="group_name"
+            render={(v) => getLabel(AGENT_HAWB.GROUP_NAME, v)}
+          />
           <Table.Column width={150} title="START_HAB" dataIndex="start_hab" />
           <Table.Column width={150} title="END_HAB" dataIndex="end_hab" />
           <Table.Column width={150} title="件数" dataIndex="count" />
-          <Table.Column width={150} title="使用済み" dataIndex="used_count" />
+          <Table.Column width={150} title="配布済み" dataIndex="used_count" />
           <Table.Column
             width={60}
             fixed="right"

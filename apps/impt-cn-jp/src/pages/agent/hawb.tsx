@@ -8,20 +8,24 @@ import {
   Card,
   Space,
   Select,
+  message,
 } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
-import { getAllAgentHAWBs } from '@/services/request/agent_hawb';
+import useSKForm from '@silken-houtai/core/lib/useHooks';
+import { getAllAgentHAWBs, moveAgentHAWB } from '@/services/request/agent_hawb';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { getLabel, AGENT_HAWB } from '@/utils/constant';
 import ExportHAWBXlsx from './components/ExportHAWBXlsx';
+import AutoChangeHAWBForm from '@/components/Form/AutoChangeHAWBForm';
 
 const AgentHAWB: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const { agentOptions } = useAgentOptions();
-
+  const { formType, formProps, handleOpen } =
+    useSKForm.useForm<API.AgentHAWB>();
   // api
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -29,11 +33,28 @@ const AgentHAWB: React.FC = () => {
     const data = await getAllAgentHAWBs({
       page,
       perPage,
+      sortField: 'start_hab',
+      sortOrder: 1,
       ...formData,
     });
     return { total: data?.totalCount, list: data?.habSettings || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+
+  // action
+  const handleSubmit = async (v: any) => {
+    try {
+      search.submit();
+      await moveAgentHAWB({
+        ...v,
+        _id: formProps.dataSource._id,
+      });
+      search.submit();
+    } catch (error: any) {
+      message.destroy();
+      message.warning(error?.data?.message, 5);
+    }
+  };
 
   return (
     <PageContainer
@@ -44,6 +65,11 @@ const AgentHAWB: React.FC = () => {
         },
       }}
     >
+      <AutoChangeHAWBForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
           <Col span={4}>
@@ -56,19 +82,10 @@ const AgentHAWB: React.FC = () => {
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item name="cargo_type">
+            <Form.Item name="group_name">
               <Select
                 placeholder="配送種類"
-                options={AGENT_HAWB.CARGO_TYPE}
-                allowClear
-              />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="tracking_type">
-              <Select
-                placeholder="配送会社"
-                options={AGENT_HAWB.TRACKING_TYPE}
+                options={AGENT_HAWB.GROUP_NAME}
                 allowClear
               />
             </Form.Item>
@@ -100,23 +117,31 @@ const AgentHAWB: React.FC = () => {
             render={(v) => getLabel(agentOptions, v)}
           />
           <Table.Column
-            width={140}
-            title="配送種類"
-            dataIndex="cargo_type"
-            render={(v) => getLabel(AGENT_HAWB.CARGO_TYPE, v)}
-          />
-          <Table.Column
             width={150}
-            title="配送会社"
-            dataIndex="tracking_type"
-            render={(v) => getLabel(AGENT_HAWB.TRACKING_TYPE, v)}
+            title="配送種類"
+            dataIndex="group_name"
+            render={(v) => getLabel(AGENT_HAWB.GROUP_NAME, v)}
           />
           <Table.Column
             width={150}
             title="操作"
-            render={(row) => (
-              <ExportHAWBXlsx start={row.start_hab} count={row.count} />
-            )}
+            render={(row) => {
+              const handleAuto = () => {
+                handleOpen({
+                  title: 'フォワーダーに自動配布',
+                  type: 'auto',
+                  data: row,
+                });
+              };
+              return (
+                <Space>
+                  <Button size="small" onClick={handleAuto}>
+                    再配布
+                  </Button>
+                  <ExportHAWBXlsx start={row.start_hab} count={row.count} />
+                </Space>
+              );
+            }}
           />
         </Table>
       </Card>
