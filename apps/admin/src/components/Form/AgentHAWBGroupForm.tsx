@@ -42,6 +42,7 @@ const HAWBGroupForm: React.FC<HAWBGroupFormProps> = (props) => {
           name="start_hab"
           rules={[
             { required: true },
+            { len: 11, message: '11桁のみです。' },
             {
               pattern: new RegExp('^[0-9]+$'),
               message: 'HAWBは数字のみです。',

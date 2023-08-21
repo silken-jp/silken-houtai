@@ -76,11 +76,28 @@ const waybill: React.FC = () => {
     });
     return {
       total: data?.totalCount,
-      list: data?.waybills?.map((item: any) => ({
-        ...item,
-        track: item?.tracks?.[0],
-        tracking: item?.trackings?.[0] || item?.trackings,
-      })),
+      list: data?.waybills?.map((item: any) => {
+        const tracking = item?.trackings?.[0] || item?.trackings;
+        const showBin = tracking?.trackingHistory?.some(
+          (h: any) => h.TKG_CD === 'BOU',
+        );
+        tracking.trackingHistory = tracking?.trackingHistory?.flatMap(
+          (item: any) => {
+            if (
+              !showBin &&
+              !['HCH', 'STT', 'DEC', 'PIN'].includes(item.TKG_CD)
+            ) {
+              return [];
+            }
+            return [item];
+          },
+        );
+        return {
+          ...item,
+          track: item?.tracks?.[0],
+          tracking: item?.trackings?.[0] || item?.trackings,
+        };
+      }),
     };
   };
   const { tableProps, search } = useAntdTable(getTableData, {
@@ -383,24 +400,13 @@ const waybill: React.FC = () => {
             width={180}
             title={intlWaybill('status')}
             render={(row) => {
-              const showBin = row?.tracking?.trackingHistory?.some(
-                (h: any) => h.TKG_CD === 'BOU',
-              );
-              return row?.tracking?.trackingHistory?.flatMap(
-                (item: any, key: any) => {
-                  if (
-                    !showBin &&
-                    !['HCH', 'STT', 'DEC', 'PIN'].includes(item.TKG_CD)
-                  ) {
-                    return [];
-                  }
-                  return [
-                    <Tag key={key} color="blue">
-                      {TrackingCode[item?.TKG_CD as keyof typeof TrackingCode]}
-                      {'：' + item?.TKG_DT}
-                    </Tag>,
-                  ];
-                },
+              return row?.tracking?.trackingHistory?.map(
+                (item: any, key: any) => (
+                  <Tag key={key} color="blue">
+                    {TrackingCode[item?.TKG_CD as keyof typeof TrackingCode]}
+                    {'：' + item?.TKG_DT}
+                  </Tag>
+                ),
               );
             }}
           />

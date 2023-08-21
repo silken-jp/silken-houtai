@@ -11,12 +11,13 @@ export interface ExportHAWBXlsxProps {
 export const genHabEnd = (start: string, count: number) => {
   const len = start.length;
   const endNum = Number(start) + count;
+  const lastNum = endNum % 7;
   let end = String(endNum).slice(0, len);
   const diffLen = len - end.length;
   if (diffLen > 0) {
     end = '0'.repeat(diffLen) + end;
   }
-  return end;
+  return `${end}${lastNum}`;
 };
 
 const ExportHAWBXlsx: React.FC<ExportHAWBXlsxProps> = (props) => {
