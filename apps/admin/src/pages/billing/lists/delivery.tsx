@@ -15,6 +15,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import { useAgentOptions } from '@/services/useAPIOption';
 import { getAllWaybills } from '@/services/request/waybill';
 import UploadDelivery from '../components/UploadDelivery';
+import { AGENT_HAWB, getLabel } from '@/utils/constant';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -65,14 +66,23 @@ const SagawaDelivery: React.FC = () => {
               path: '/billing/lists/delivery',
               breadcrumbName: '請求管理',
             },
-            { path: '', breadcrumbName: '佐川請求料金' },
+            { path: '', breadcrumbName: '配送会社請求料金' },
           ],
         },
-        title: '佐川請求料金',
+        title: '配送会社請求料金',
       }}
     >
       <Form form={form} className="sk-table-search">
         <Row justify="end" gutter={16}>
+          <Col span={4}>
+            <Form.Item name="group_name">
+              <Select
+                placeholder="配送種類"
+                options={AGENT_HAWB.GROUP_NAME}
+                allowClear
+              />
+            </Form.Item>
+          </Col>
           <Col span={4}>
             <Form.Item name="agent">
               <Select
@@ -103,10 +113,22 @@ const SagawaDelivery: React.FC = () => {
         </Row>
       </Form>
       <Card
-        title="佐川請求料金リスト"
+        title="配送会社請求料金リスト"
         extra={<UploadDelivery onUpload={search.submit} />}
       >
         <Table size="small" rowKey="_id" {...tableProps} scroll={{ x: 3500 }}>
+          <Table.Column
+            width={150}
+            title="配送種類"
+            dataIndex="group_name"
+            render={(v) => getLabel(AGENT_HAWB.GROUP_NAME, v)}
+          />
+          <Table.Column
+            width={150}
+            title="フォワーダー"
+            dataIndex="agent"
+            render={(v) => getLabel(agentOptions, v)}
+          />
           <Table.Column
             sorter
             width={100}

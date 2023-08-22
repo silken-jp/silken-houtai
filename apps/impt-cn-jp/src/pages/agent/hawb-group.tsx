@@ -6,6 +6,7 @@ import {
   Row,
   Col,
   Card,
+  Select,
   Space,
   message,
 } from 'antd';
@@ -91,7 +92,11 @@ const AgentHAWB: React.FC = () => {
         <Row justify="end" gutter={16}>
           <Col span={4}>
             <Form.Item name="group_name">
-              <Input placeholder="配送種類" />
+              <Select
+                placeholder="配送種類"
+                options={AGENT_HAWB.GROUP_NAME}
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col span={4}>

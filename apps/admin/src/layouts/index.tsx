@@ -106,7 +106,9 @@ const Index: React.FC<{ children: any }> = (props) => {
                     {
                       key: '/billing/lists/delivery',
                       label: (
-                        <Link to="/billing/lists/delivery">佐川請求料金</Link>
+                        <Link to="/billing/lists/delivery">
+                          配送会社請求料金
+                        </Link>
                       ),
                     },
                   ],

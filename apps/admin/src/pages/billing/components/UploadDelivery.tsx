@@ -107,7 +107,7 @@ const UpdateMAB: React.FC<UpdateMABProps> = (props) => {
       <UploadXlsx
         onUpload={handleUpload}
         fixEncoding={(data) => Encoding.convert(data, 'UNICODE', 'SJIS')}
-        text="更新佐川請求料金"
+        text="更新請求料金"
         // rightHeader={rightHeader}
       />
     </Space>

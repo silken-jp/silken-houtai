@@ -26,3 +26,17 @@ export async function updateCompany(params: UpdateCompany) {
     },
   });
 }
+
+// 通用配送料上传 POST /agents/import-delivery
+interface ImportDeliveryPrice {
+  deliveryKey: string;
+  deliveryPriceArray: any[];
+}
+export async function importDeliveryPrice(params: ImportDeliveryPrice) {
+  return request<any>(ApiURL + '/company/import-delivery', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

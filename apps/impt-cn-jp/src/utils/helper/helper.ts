@@ -26,3 +26,16 @@ export function removeDeepEmpty(obj: object): object {
       {},
     );
 }
+
+// 风格化日元
+export function formatterEn(value: any, def?: string) {
+  if (value) {
+    return `￥ ${value}`?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  } else {
+    return def || '-';
+  }
+}
+
+export function renderPrice(def?: string) {
+  return (value: any) => formatterEn(value, def);
+}

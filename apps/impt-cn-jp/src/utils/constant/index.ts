@@ -41,6 +41,7 @@ export const AGENT_HAWB = {
     { value: 'sagawa_u_packet', label: '佐川ゆうパケット' },
     { value: 'yamato_to_c', label: 'ヤマトToC' },
     { value: 'yamato_nekoposu', label: 'ヤマトネコポス' },
+    { value: 'other', label: 'その他' },
   ],
   TRACKING_TYPE: [
     { value: 1, label: '自社' },
