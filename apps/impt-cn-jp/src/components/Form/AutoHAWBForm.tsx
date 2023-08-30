@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal, Form, InputNumber, Select } from 'antd';
+import { Modal, Form, InputNumber, Select, Input } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import { AGENT_HAWB } from '@/utils/constant';
@@ -48,6 +48,20 @@ const AgentHAWBForm: React.FC<AgentHAWBFormProps> = (props) => {
           rules={[{ required: true }]}
         >
           <Select placeholder="フォワーダー" options={agentOptions} />
+        </Form.Item>
+        <Form.Item
+          label="開始HAWB"
+          name="start_hab"
+          rules={[
+            { required: true },
+            { len: 11, message: '11桁のみです。' },
+            {
+              pattern: new RegExp('^[0-9]+$'),
+              message: 'HAWBは数字のみです。',
+            },
+          ]}
+        >
+          <Input placeholder="開始HAWB" autoComplete="off" />
         </Form.Item>
         <Form.Item label="件数" name="count" rules={[{ required: true }]}>
           <InputNumber placeholder="件数" autoComplete="off" min={1} step={1} />

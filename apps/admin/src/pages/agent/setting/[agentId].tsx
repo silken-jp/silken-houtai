@@ -68,10 +68,16 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
         <Space>
           <span>テンプレート:</span>
           <Button
-            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/delivery.xlsx"
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/delivery_sagawa.xlsx"
             download
           >
-            運賃
+            佐川
+          </Button>
+          <Button
+            href="https://s3.ap-northeast-1.amazonaws.com/assets.sclogi.jp/upload_template/delivery_yamato.xlsx"
+            download
+          >
+            ヤマト
           </Button>
         </Space>
       }
@@ -523,7 +529,7 @@ interface PriceTableGroup {
   };
 }
 const PriceTableGroup: React.FC<PriceTableGroup> = (props) => {
-  const columns = [
+  const sagawa_columns = [
     {
       title: '重量(MIN)',
       dataIndex: 'GW_min',
@@ -547,6 +553,37 @@ const PriceTableGroup: React.FC<PriceTableGroup> = (props) => {
     { title: '北東北', dataIndex: 'state11', render: renderPrice() },
     { title: '北海道', dataIndex: 'state12', render: renderPrice() },
   ];
+  const yamato_columns = [
+    {
+      title: '重量(MIN)',
+      dataIndex: 'GW_min',
+      render: (text: number) => `${text} KG`,
+    },
+    {
+      title: '重量(MAX)',
+      dataIndex: 'GW_max',
+      render: (text: number) => `${text} KG`,
+    },
+    { title: '北海道', dataIndex: 'state1', render: renderPrice() },
+    { title: '北東北', dataIndex: 'state2', render: renderPrice() },
+    { title: '南東北', dataIndex: 'state3', render: renderPrice() },
+    { title: '関東', dataIndex: 'state4', render: renderPrice() },
+    { title: '信越', dataIndex: 'state5', render: renderPrice() },
+    { title: '北陸', dataIndex: 'state6', render: renderPrice() },
+    { title: '中部', dataIndex: 'state7', render: renderPrice() },
+    { title: '関西', dataIndex: 'state8', render: renderPrice() },
+    { title: '中国', dataIndex: 'state9', render: renderPrice() },
+    { title: '四国', dataIndex: 'state10', render: renderPrice() },
+    { title: '九州', dataIndex: 'state11', render: renderPrice() },
+    { title: '沖縄', dataIndex: 'state12', render: renderPrice() },
+  ];
+  const columns = {
+    sagawa_to_c: sagawa_columns,
+    sagawa_u_packet: sagawa_columns,
+    yamato_to_c: yamato_columns,
+    yamato_nekoposu: yamato_columns,
+  }[props?.priceTableKey];
+
   return (
     <>
       <Card
