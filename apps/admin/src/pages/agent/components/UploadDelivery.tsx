@@ -19,7 +19,22 @@ const rightHeader = [
   '北海道',
 ];
 
-const rightHeader2 = ['重量（MIN）', '重量（MAX）'];
+const rightHeader2 = [
+  '重量（MIN）',
+  '重量（MAX）',
+  '北海道',
+  '北東北',
+  '南東北',
+  '関東',
+  '信越',
+  '北陸',
+  '中部',
+  '関西',
+  '中国',
+  '四国',
+  '九州',
+  '沖縄',
+];
 
 const successFormat = (count: number, sum: number) => ({
   message: `批量更新导入完成`,
@@ -31,7 +46,7 @@ const failedFormat = (success: boolean, failedNo: string[]) => ({
 });
 
 export interface UploadDeliveryProps {
-  is_re?: boolean;
+  is_sagawa?: boolean;
   payload?: any;
   disabled?: boolean;
   onUpload?: () => void;
@@ -94,7 +109,7 @@ const UploadDelivery: React.FC<UploadDeliveryProps> = (props) => {
       <UploadXlsx
         onUpload={handleUpload}
         text="アップロード"
-        rightHeader={props?.is_re ? rightHeader2 : rightHeader}
+        rightHeader={props?.is_sagawa ? rightHeader2 : rightHeader}
       />
     </Space>
   );

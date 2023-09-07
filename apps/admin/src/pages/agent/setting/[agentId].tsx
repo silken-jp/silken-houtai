@@ -584,6 +584,10 @@ const PriceTableGroup: React.FC<PriceTableGroup> = (props) => {
     yamato_nekoposu: yamato_columns,
   }[props?.priceTableKey];
 
+  const is_sagawa = ['sagawa_to_c', 'sagawa_u_packet']?.includes(
+    props?.priceTableKey,
+  );
+
   return (
     <>
       <Card
@@ -591,6 +595,7 @@ const PriceTableGroup: React.FC<PriceTableGroup> = (props) => {
         extra={
           <UploadDelivery
             {...props.uploadProps}
+            is_sagawa={is_sagawa}
             importAction={(d: any) =>
               importDeliveryPrice({
                 ...d,
