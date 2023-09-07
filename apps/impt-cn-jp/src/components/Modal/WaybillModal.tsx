@@ -10,6 +10,12 @@ export interface WaybillProps {
   dataSource: API.Waybill;
 }
 
+function toFixFloor(price: any, no: any) {
+  const a = Number(price) * 1000;
+  const b = Number(no) * 1000;
+  return (a * b) / 1000000;
+}
+
 function toFloorFixed(v: number, type: string) {
   return type === 'JPY'
     ? Math.floor(v).toFixed(0)
@@ -344,7 +350,9 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 <Table.Column title="UNIT PRICE" dataIndex="DPR" />
                 <Table.Column
                   title="PRICE"
-                  render={(item) => toFloorFixed(item?.DPR * item?.QN1, IP3)}
+                  render={(item) =>
+                    toFloorFixed(toFixFloor(item?.DPR, item?.QN1), IP3)
+                  }
                 />
               </Table>
             </>
