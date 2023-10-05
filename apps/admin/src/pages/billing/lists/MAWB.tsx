@@ -147,6 +147,7 @@ const SimpleStatusInquiry: React.FC = () => {
           size="small"
           loading={tableProps.loading}
           dataSource={tableProps.dataSource}
+          scroll={{ y: 'calc(100vh - 530px)' }}
         >
           <Table.Column width={150} title="MAWB番号" dataIndex="mab" />
           <Table.Column

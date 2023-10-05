@@ -182,7 +182,7 @@ const StatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2500 }}
+          scroll={{ x: 3000 }}
         >
           <Table.Column
             sorter
@@ -276,9 +276,18 @@ const StatusInquiry: React.FC = () => {
               width={150}
               title="検査率（区分３）"
               render={(_, row: any) =>
-                `${(
-                  ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
-                )?.toFixed(2)} (${row?.count3 + row?.count3K})%`
+                `${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
+                  row?.count3
+                })`
+              }
+            />
+            <Table.Column
+              width={150}
+              title="検査率（区分３K）"
+              render={(_, row: any) =>
+                `${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
+                  row?.count3K
+                })`
               }
             />
           </Table.ColumnGroup>

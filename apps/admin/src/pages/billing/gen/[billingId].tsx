@@ -16,7 +16,7 @@ import {
   BillingDelivery,
 } from '@/services/request/billing';
 import { useAgentOptions } from '@/services/useAPIOption';
-import { dayFormat } from '@/utils/helper/day';
+import { dayFormat, dayFormatTZ } from '@/utils/helper/day';
 import { renderPrice } from '@/utils/helper/helper';
 import { handleExportXlsx } from '@/services/useExportXlsx';
 
@@ -34,8 +34,8 @@ const GenBilling: React.FC = () => {
 
   const title =
     renderAgentLabel(billingAPI?.data?.agent) +
-    dayFormat(billingAPI?.data?.start_date, ' 【 YYYY年MM月DD日 ~ ') +
-    dayFormat(billingAPI?.data?.end_date, 'YYYY年MM月DD日 】');
+    dayFormatTZ(billingAPI?.data?.start_date, ' 【 YYYY年MM月DD日 ~ ') +
+    dayFormatTZ(billingAPI?.data?.end_date, 'YYYY年MM月DD日 】');
 
   // api
   // 一次上屋料金

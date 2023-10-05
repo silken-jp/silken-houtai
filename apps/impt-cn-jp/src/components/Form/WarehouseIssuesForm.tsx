@@ -74,12 +74,8 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
         <Card title="S.C.LOGISTICS" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item
-                label="MASTER番号"
-                name={['waybill', 'MAB']}
-                rules={[{ required: true }]}
-              >
-                <Input disabled={props.type === 'edit'} />
+              <Form.Item label="MASTER番号" name={['waybill', 'MAB']}>
+                <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -88,27 +84,27 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
                 name={['waybill', 'HAB']}
                 rules={[{ required: true }]}
               >
-                <Input disabled={props.type === 'edit'} />
+                <Input />
               </Form.Item>
             </Col>
             {props.type === 'edit' && (
               <Col span={8}>
                 <Form.Item label="登録者" name={['created_user', 'name']}>
-                  <Input disabled />
+                  <Input />
                 </Form.Item>
               </Col>
             )}
             {props.type === 'edit' && (
               <Col span={8}>
                 <Form.Item label="伝票番号" name={['waybill', 'HAB']}>
-                  <Input disabled />
+                  <Input />
                 </Form.Item>
               </Col>
             )}
             {props.type === 'edit' && (
               <Col span={8}>
                 <Form.Item label="代理店" name={['waybill', 'agent']}>
-                  <Select allowClear disabled options={agentOptions} />
+                  <Select allowClear options={agentOptions} />
                 </Form.Item>
               </Col>
             )}
@@ -188,18 +184,18 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
         <Card title="Forwarder" style={shadowStyle}>
           <Row>
             <Col span={8}>
-              <Form.Item label="科目" name="reply_subject" required>
-                <Input disabled />
+              <Form.Item label="科目" name="reply_subject">
+                <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label="回答日" name="reply_date" required>
-                <DatePicker disabled />
+              <Form.Item label="回答日" name="reply_date">
+                <DatePicker />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="通知者" name={['agent', 'name']}>
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -208,22 +204,22 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
                 name="reply_content"
                 {...formRowItemLayout}
               >
-                <Input.TextArea rows={7} disabled />
+                <Input.TextArea rows={7} />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="受取人" name="receiver_name">
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="受取人電話番号" name="receiver_tel">
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="受取人郵便番号" name="receiver_zip">
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -232,7 +228,7 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
                 name="receiver_add"
                 {...formRowItemLayout}
               >
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -242,7 +238,7 @@ const WarehouseIssuesForm: React.FC<WarehouseIssuesFormProps> = (props) => {
                 {...formRowItemLayout}
                 required
               >
-                <Input disabled />
+                <Input />
               </Form.Item>
             </Col>
           </Row>

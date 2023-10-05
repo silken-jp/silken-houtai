@@ -70,19 +70,19 @@ const Detail: React.FC = () => {
       'MAWB No.': d?.MAB,
       'HAWB No.': d?.BL_,
       申告等番号: d?.ID,
-      'B2B&C': '',
+      // 'B2B&C': '',
       輸入者: d?.ImpName,
       郵便番号: d?.Zip,
       輸入者住所: d?.IAD,
       個数: d?.NO,
       WEIGHT: d?.GW,
       区分: d?.EXA_DIS,
-      到着上屋: '',
+      // 到着上屋: '',
       IC通関: d?.waybill_type === 'IDA' ? d?.clearance : '',
       MIC通関: d?.waybill_type === 'MIC' ? d?.clearance : '',
       保税倉庫作業量: d?.second_bonded,
-      B2B通関: '',
-      ゆうパケット貨物: '',
+      // B2B通関: '',
+      // ゆうパケット貨物: '',
       保管料金: d?.storage,
       税関検査: d?.inspection,
       内容点検: d?.a,
@@ -206,14 +206,14 @@ const Detail: React.FC = () => {
           <Table.Column width={120} title="MAWB No." dataIndex="MAB" />
           <Table.Column width={120} title="HAWB No." dataIndex="BL_" />
           <Table.Column width={120} title="申告等番号" dataIndex="ID" />
-          <Table.Column width={120} title="B2B&C" dataIndex="" />
+          {/* <Table.Column width={120} title="B2B&C" dataIndex="" /> */}
           <Table.Column width={180} title="輸入者" dataIndex="ImpName" />
           <Table.Column width={120} title="郵便番号" dataIndex="Zip" />
           <Table.Column width={250} title="輸入者住所" dataIndex="IAD" />
           <Table.Column width={60} title="個数" dataIndex="NO" />
           <Table.Column width={60} title="WEIGHT" dataIndex="GW" />
           <Table.Column width={60} title="区分" dataIndex="EXA_DIS" />
-          <Table.Column width={120} title="到着上屋" dataIndex="" />
+          {/* <Table.Column width={120} title="到着上屋" dataIndex="" /> */}
           <Table.Column
             width={70}
             title="IC通関"
@@ -233,8 +233,8 @@ const Detail: React.FC = () => {
             title="保税倉庫作業量"
             dataIndex="second_bonded"
           />
-          <Table.Column width={120} title="B2B通関" dataIndex="" />
-          <Table.Column width={120} title="ゆうパケット貨物" dataIndex="" />
+          {/* <Table.Column width={120} title="B2B通関" dataIndex="" /> */}
+          {/* <Table.Column width={120} title="ゆうパケット貨物" dataIndex="" /> */}
           <Table.Column width={120} title="保管料金" dataIndex="storage" />
           <Table.Column width={120} title="税関検査" dataIndex="inspection" />
           <Table.Column width={120} title="内容点検" dataIndex="" />

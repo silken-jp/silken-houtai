@@ -329,42 +329,47 @@ const Index: React.FC<{ children: any }> = (props) => {
             {
               key: '/issues',
               icon: <IssuesCloseOutlined />,
-              label: intlMenu('issues'),
-              children: [
-                {
-                  key: '/issues/clearanceIssues',
-                  label: (
-                    <Link to="/issues/clearanceIssues">
-                      {intlMenu('issues.clearanceIssues')}
-                    </Link>
-                  ),
-                },
-                {
-                  key: '/issues/warehouseIssues',
-                  label: (
-                    <Link to="/issues/warehouseIssues">
-                      {intlMenu('issues.warehouseIssues')}
-                    </Link>
-                  ),
-                },
-                {
-                  key: '/issues/inspectionIssues',
-                  label: (
-                    <Link to="/issues/inspectionIssues">
-                      {intlMenu('issues.inspectionIssues')}
-                    </Link>
-                  ),
-                },
-                {
-                  key: '/issues/cargoIssues',
-                  label: (
-                    <Link to="/issues/cargoIssues">
-                      {intlMenu('issues.cargoIssues')}
-                    </Link>
-                  ),
-                },
-              ],
+              label: <Link to="/issues">问题件</Link>,
             },
+            // {
+            //   key: '/issues',
+            //   icon: <IssuesCloseOutlined />,
+            //   label: intlMenu('issues'),
+            //   children: [
+            //     {
+            //       key: '/issues/clearanceIssues',
+            //       label: (
+            //         <Link to="/issues/clearanceIssues">
+            //           {intlMenu('issues.clearanceIssues')}
+            //         </Link>
+            //       ),
+            //     },
+            //     {
+            //       key: '/issues/warehouseIssues',
+            //       label: (
+            //         <Link to="/issues/warehouseIssues">
+            //           {intlMenu('issues.warehouseIssues')}
+            //         </Link>
+            //       ),
+            //     },
+            //     {
+            //       key: '/issues/inspectionIssues',
+            //       label: (
+            //         <Link to="/issues/inspectionIssues">
+            //           {intlMenu('issues.inspectionIssues')}
+            //         </Link>
+            //       ),
+            //     },
+            //     {
+            //       key: '/issues/cargoIssues',
+            //       label: (
+            //         <Link to="/issues/cargoIssues">
+            //           {intlMenu('issues.cargoIssues')}
+            //         </Link>
+            //       ),
+            //     },
+            //   ],
+            // },
           ]}
         />
       </Layout.Sider>

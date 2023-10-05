@@ -10,7 +10,7 @@ import {
   deleteBillingById,
   getAllBilling,
 } from '@/services/request/billing';
-import { dayFormat, renderDate } from '@/utils/helper/day';
+import { dayFormat, renderDateTZ } from '@/utils/helper/day';
 import { useAgentOptions } from '@/services/useAPIOption';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { renderLabel, BILLING } from '@/utils/constant/Billing';
@@ -39,8 +39,8 @@ const BillingList: React.FC = () => {
     if (formType === 'add') {
       await createBilling({
         agent: v?.agent,
-        start_date: dayFormat(v?.start_date, 'YYYY/MM/DD 00:00:00.000')!,
-        end_date: dayFormat(v?.end_date, 'YYYY/MM/DD 23:59:59.000')!,
+        start_date: dayFormat(v?.start_date, 'YYYY-MM-DDT00:00:00.000+00:00')!,
+        end_date: dayFormat(v?.end_date, 'YYYY-MM-DDT23:59:59.000+00:00')!,
       });
       search.submit();
     }
@@ -110,13 +110,13 @@ const BillingList: React.FC = () => {
             width={100}
             title="請求開始日"
             dataIndex="start_date"
-            render={renderDate()}
+            render={renderDateTZ()}
           />
           <Table.Column
             width={100}
             title="請求終了日"
             dataIndex="end_date"
-            render={renderDate()}
+            render={renderDateTZ()}
           />
           <Table.Column width={150} title="請求金額" dataIndex="" />
           <Table.Column
