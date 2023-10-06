@@ -164,6 +164,11 @@ const StatusInquiry: React.FC = () => {
           size="small"
           {...tableProps}
           rowSelection={rowSelection}
+          pagination={{
+            ...tableProps.pagination,
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '20', '50', '100', '200', '300'],
+          }}
           scroll={{ x: 2000, y: 'calc(100vh - 500px)' }}
         >
           <Table.Column

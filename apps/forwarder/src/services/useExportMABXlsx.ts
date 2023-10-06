@@ -23,9 +23,12 @@ const handleExportXlsx = (data: any[]) => {
       '審査率（区分２）': `${((d?.count2 * 100) / d?.NOCount || 0)?.toFixed(
         2,
       )}% (${d?.count2})`,
-      '検査率（区分３）': `${(
-        ((d?.count3 + d?.count3K) * 100) / d?.NOCount || 0
-      )?.toFixed(2)} (${d?.count3 + d?.count3K})%`,
+      '検査率（区分３）': `${((d?.count3 * 100) / d?.NOCount || 0)?.toFixed(
+        2,
+      )} (${d?.count3})%`,
+      '検査率（区分３K）': `${((d?.count3K * 100) / d?.NOCount || 0)?.toFixed(
+        2,
+      )} (${d?.count3K})%`,
       個数: d?.waybillCount,
       '重量（KG）': d?.GWCount?.toFixed(2),
       登録時間: dayFormat(d?.createdAt),
