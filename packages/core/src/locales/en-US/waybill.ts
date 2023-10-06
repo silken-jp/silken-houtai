@@ -69,6 +69,7 @@ export default {
   'waybill.count1': 'Per Rate (1)',
   'waybill.count2': 'Review Rate (2)',
   'waybill.count3': 'Exam Rate (3)',
+  'waybill.count3K': 'Exam Rate (3K)',
   'waybill.waybillCount': 'PIECES',
   'waybill.GWCount': 'Weight (KG)',
 };

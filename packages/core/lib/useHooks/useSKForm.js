@@ -63,7 +63,7 @@ var __generator =
     }
     function step(op) {
       if (f) throw new TypeError('Generator is already executing.');
-      while (_)
+      while ((g && ((g = 0), op[0] && (_ = 0)), _))
         try {
           if (
             ((f = 1),

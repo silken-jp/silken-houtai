@@ -244,9 +244,18 @@ const StatusInquiry: React.FC = () => {
               width={150}
               title={intlWaybill('count3')}
               render={(_, row: any) =>
-                `${(
-                  ((row?.count3 + row?.count3K) * 100) / row?.NOCount || 0
-                )?.toFixed(2)} (${row?.count3 + row?.count3K})%`
+                `${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(2)} (${
+                  row?.count3
+                })%`
+              }
+            />
+            <Table.Column
+              width={150}
+              title={intlWaybill('count3K')}
+              render={(_, row: any) =>
+                `${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(2)} (${
+                  row?.count3K
+                })%`
               }
             />
           </Table.ColumnGroup>
