@@ -23,6 +23,7 @@ import {
   deleteALLWaybillsByMAWB,
   getStatusInquiry,
 } from '@/services/request/waybill';
+import { Link } from 'umi';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -85,7 +86,7 @@ const StatusInquiry: React.FC = () => {
         breadcrumb: {
           routes: [
             {
-              path: '/cts/StatusInquiry/StatusInquiry',
+              path: '/cts/StatusInquiry/Full',
               breadcrumbName: intlMenu('cts'),
             },
             { path: '', breadcrumbName: 'Full Status Inquiry' },
@@ -182,7 +183,7 @@ const StatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 3000 }}
+          scroll={{ x: 3000, y: 'calc(100vh - 560px)' }}
         >
           <Table.Column
             sorter
@@ -227,9 +228,16 @@ const StatusInquiry: React.FC = () => {
             sorter
             width={150}
             title="未申告件数"
-            dataIndex="notDecNo"
+            render={(_, row: any) => (
+              <Link
+                target="_blank"
+                to={`/cts/StatusInquiry/Full/notDec?MAB=${row?._id}`}
+              >
+                {row?.notDecNo}
+              </Link>
+            )}
           />
-          <Table.ColumnGroup title="許可件数">
+          <Table.ColumnGroup title="申告件数">
             <Table.Column
               sorter
               width={120}
@@ -246,7 +254,14 @@ const StatusInquiry: React.FC = () => {
               sorter
               width={120}
               title="未許可"
-              dataIndex="notPerNo"
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/Full/notPer?MAB=${row?._id}`}
+                >
+                  {row?.notPerNo}
+                </Link>
+              )}
             />
           </Table.ColumnGroup>
           <Table.ColumnGroup title="許可・審査・検査区分">
@@ -275,20 +290,30 @@ const StatusInquiry: React.FC = () => {
             <Table.Column
               width={150}
               title="検査率（区分３）"
-              render={(_, row: any) =>
-                `${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
-                  row?.count3
-                })`
-              }
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/Full/isCheck?MAB=${row?._id}`}
+                >
+                  {`${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(
+                    2,
+                  )}% (${row?.count3})`}
+                </Link>
+              )}
             />
             <Table.Column
               width={150}
               title="検査率（区分３K）"
-              render={(_, row: any) =>
-                `${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(2)}% (${
-                  row?.count3K
-                })`
-              }
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/Full/isCheck?MAB=${row?._id}`}
+                >
+                  {`${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(
+                    2,
+                  )}% (${row?.count3K})`}
+                </Link>
+              )}
             />
           </Table.ColumnGroup>
           <Table.Column sorter width={150} title="個数" dataIndex="NOCount" />
