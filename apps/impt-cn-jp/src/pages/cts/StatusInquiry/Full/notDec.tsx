@@ -91,7 +91,7 @@ const StatusInquiryNotDec: React.FC = () => {
           scroll={{ y: 'calc(100vh - 380px)' }}
         >
           <Table.Column
-            width={100}
+            width={150}
             title="申告状態"
             render={(_, row: any) => {
               return [
