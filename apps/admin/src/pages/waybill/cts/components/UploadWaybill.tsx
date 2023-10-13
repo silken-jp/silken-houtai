@@ -178,7 +178,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           initialValues={{
             isIp4X6: '1',
             isImpNameReverse: '0',
-            isImpNameEN: '1',
+            isImpNameEN: '0',
           }}
         >
           <Form.Item
@@ -202,8 +202,8 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           </Form.Item> */}
           <Form.Item label="名前" name="isImpNameEN">
             <Radio.Group>
-              <Radio value="1"> 英訳する </Radio>
               <Radio value="0"> そのまま </Radio>
+              <Radio value="1"> 英訳する </Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item>

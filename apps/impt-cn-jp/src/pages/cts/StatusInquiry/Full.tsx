@@ -293,7 +293,7 @@ const StatusInquiry: React.FC = () => {
               render={(_, row: any) => (
                 <Link
                   target="_blank"
-                  to={`/cts/StatusInquiry/Full/isCheck?MAB=${row?._id}`}
+                  to={`/cts/StatusInquiry/Full/isStatus3?MAB=${row?._id}`}
                 >
                   {`${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(
                     2,
@@ -302,16 +302,16 @@ const StatusInquiry: React.FC = () => {
               )}
             />
             <Table.Column
-              width={150}
-              title="検査率（区分３K）"
+              width={200}
+              title="検査率（検査待ち/区分３K）"
               render={(_, row: any) => (
                 <Link
                   target="_blank"
-                  to={`/cts/StatusInquiry/Full/isCheck?MAB=${row?._id}`}
+                  to={`/cts/StatusInquiry/Full/isStatus3K?MAB=${row?._id}`}
                 >
                   {`${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(
                     2,
-                  )}% (${row?.count3K})`}
+                  )}% (${row?.count3KNotPer}/${row?.count3K})`}
                 </Link>
               )}
             />

@@ -1,22 +1,13 @@
 import { useLocation } from 'umi';
-import dayjs from 'dayjs';
-import {
-  Form,
-  Badge,
-  Table,
-  Input,
-  Button,
-  Row,
-  Col,
-  Card,
-  Space,
-  DatePicker,
-  Select,
-} from 'antd';
-import { useAntdTable } from 'ahooks';
+import { Badge, Table, Card, Button, Space } from 'antd';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { EditFilled } from '@ant-design/icons';
+import useSKForm from '@silken-houtai/core/lib/useHooks';
 ////
 import ExportXlsx from '@/pages/cts/StatusInquiry/components/ExportXlsx';
+import NotDecReasonForm from '@/pages/cts/StatusInquiry/components/NotDecReasonForm';
+import { updateWaybill } from '@/services/request/waybill';
 import { dayFormat } from '@/utils/helper/day';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
@@ -25,39 +16,34 @@ import { getAllTrackingsFull } from '@/services/request/tracking';
 const StatusInquiryNotDec: React.FC = () => {
   // state
   const searchParams = (useLocation() as any).query;
-  const [form] = Form.useForm();
   const [intlMenu] = useIntlFormat('menu');
+  const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   // api
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
-  const getTableData = async (pageData: any, formData: any) => {
-    // const page = pageData.current - 1;
-    // const perPage = pageData.pageSize;
-    // let sorter: any = {};
-    // if (typeof pageData?.sorter?.field === 'string') {
-    //   sorter.sortField = pageData?.sorter?.field;
-    // } else if (Array.isArray(pageData?.sorter?.field)) {
-    //   sorter.sortField = pageData?.sorter?.field?.join('.');
-    // } else {
-    //   sorter.sortField = 'flightDate';
-    // }
-    // if (pageData?.sorter?.order === 'ascend') {
-    //   sorter.sortOrder = 1;
-    // }
-    // if (pageData?.sorter?.order === 'descend') {
-    //   sorter.sortOrder = -1;
-    // }
+  const getTableData = async () => {
     const data = await getAllTrackingsFull({
-      ...formData,
       ...searchParams,
       category: 'notDec',
     });
     return { total: data?.length, list: data || [] };
   };
-  const { tableProps } = useAntdTable(getTableData, {
-    form,
+  const { tableProps, refresh } = useAntdTable(getTableData);
+
+  const editWaybill = useRequest(updateWaybill, {
+    manual: true,
   });
+
+  async function handleSubmit(v: any) {
+    if (formType === 'edit') {
+      await editWaybill.runAsync({
+        waybillId: formProps.dataSource._id,
+        ...v,
+      });
+      refresh();
+    }
+  }
 
   const fixExpData = tableProps.dataSource?.map((item: any) => ({
     申告状態: [, '申告待ち', '時間オーバー'][item?.status],
@@ -86,57 +72,11 @@ const StatusInquiryNotDec: React.FC = () => {
         title: `MAB: ${searchParams?.MAB}`,
       }}
     >
-      {/* <Form
-        form={form}
-        className="sk-table-search"
-        initialValues={{
-          ...searchParams,
-        }}
-      >
-        <Row justify="end" gutter={16}>
-          <Col span={3}>
-            <Form.Item name="agentId">
-              <Select
-                allowClear
-                placeholder="フォワーダー"
-                options={agentOptions}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={3}>
-            <Form.Item name="broker">
-              <Select
-                allowClear
-                placeholder="ブローカー"
-                options={userOptions}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={3}>
-            <Form.Item name="MAB">
-              <Input placeholder="MAWB番号" />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name="flightStartDate">
-              <DatePicker placeholder="到着開始日" />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item name="flightEndDate">
-              <DatePicker placeholder="到着終了日" />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Space>
-              <Button type="primary" onClick={search.submit}>
-                検索
-              </Button>
-              <Button onClick={search.reset}>リセット</Button>
-            </Space>
-          </Col>
-        </Row>
-      </Form> */}
+      <NotDecReasonForm
+        type={formType}
+        {...formProps}
+        onSubmit={handleSubmit}
+      />
       <Card
         title={<>合計: {tableProps.pagination.total} 件</>}
         extra={
@@ -151,7 +91,7 @@ const StatusInquiryNotDec: React.FC = () => {
           scroll={{ y: 'calc(100vh - 380px)' }}
         >
           <Table.Column
-            width={150}
+            width={100}
             title="申告状態"
             render={(_, row: any) => {
               return [
@@ -161,9 +101,29 @@ const StatusInquiryNotDec: React.FC = () => {
               ][row?.status];
             }}
           />
-          <Table.Column width={300} title="未申告理由" dataIndex="" />
           <Table.Column
-            width={150}
+            title="未申告理由"
+            dataIndex="not_dec_reason"
+            render={(not_dec_reason, row: any) => (
+              <Space>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    handleOpen({
+                      title: 'HAB: ' + row?.HAB,
+                      type: 'edit',
+                      data: row,
+                    })
+                  }
+                >
+                  <EditFilled />
+                </Button>
+                {not_dec_reason}
+              </Space>
+            )}
+          />
+          <Table.Column
+            width={100}
             title="ブローカー"
             dataIndex="broker"
             render={(broker) =>
@@ -172,7 +132,7 @@ const StatusInquiryNotDec: React.FC = () => {
           />
           <Table.Column width={150} title="HAWB番号" dataIndex="HAB" />
           <Table.Column
-            width={150}
+            width={250}
             title="フォワーダー"
             dataIndex="agent"
             render={(agent) =>
@@ -180,7 +140,7 @@ const StatusInquiryNotDec: React.FC = () => {
             }
           />
           <Table.Column
-            width={150}
+            width={100}
             title="到着日"
             dataIndex="DATE"
             render={(DATE) => dayFormat(DATE, 'YYYY.MM.DD')}

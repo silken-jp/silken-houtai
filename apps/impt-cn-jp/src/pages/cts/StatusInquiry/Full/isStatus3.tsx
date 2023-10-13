@@ -1,5 +1,5 @@
 import { useLocation } from 'umi';
-import { Badge, Table, Card } from 'antd';
+import { Table, Card } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
@@ -16,20 +16,18 @@ const StatusInquiryNotPer: React.FC = () => {
 
   // api
   const { agentOptions } = useAgentOptions();
-  const getTableData = async () => {
+  const getTableData = async (pageData: any, formData: any) => {
     const data = await getAllTrackingsFull({
+      ...formData,
       ...searchParams,
-      category: 'notPer',
+      category: 'isStatus3',
     });
     return { total: data?.length, list: data || [] };
   };
   const { tableProps } = useAntdTable(getTableData);
 
   const fixExpData = tableProps.dataSource?.map((item: any) => ({
-    荷物状態: [, '税关检查', '未搬出'][item?.status],
-    申告日: item?.DEC_date,
     HAWB番号: item?.HAB,
-    MAWB番号: item?.MAB,
     到着日: item?.DATE,
     登録時間: item?.createdAt,
   }));
@@ -47,7 +45,7 @@ const StatusInquiryNotPer: React.FC = () => {
               path: '',
               breadcrumbName: 'Full Status Inquiry',
             },
-            { path: '', breadcrumbName: '未許可詳細' },
+            { path: '', breadcrumbName: '検査詳細 - 3' },
           ],
         },
         title: `MAB: ${searchParams?.MAB}`,
@@ -66,25 +64,7 @@ const StatusInquiryNotPer: React.FC = () => {
           pagination={false}
           scroll={{ y: 'calc(100vh - 380px)' }}
         >
-          <Table.Column
-            width={150}
-            title="荷物状態"
-            render={(_, row: any) => {
-              return [
-                <></>,
-                <Badge status="success" text="税关检查" />,
-                <Badge status="warning" text="未搬出" />,
-              ][row?.status];
-            }}
-          />
-          <Table.Column
-            width={150}
-            title="申告日"
-            dataIndex="DEC_date"
-            render={(DEC_date) => dayFormat(DEC_date)}
-          />
           <Table.Column width={150} title="HAWB番号" dataIndex="HAB" />
-          <Table.Column width={150} title="MAWB番号" dataIndex="MAB" />
           <Table.Column
             width={150}
             title="フォワーダー"
