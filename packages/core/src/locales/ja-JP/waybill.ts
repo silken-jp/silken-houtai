@@ -69,6 +69,7 @@ export default {
   'waybill.count1': '許可率（区分１）',
   'waybill.count2': '審査率（区分２）',
   'waybill.count3': '検査率（区分３）',
+  'waybill.count3K': '検査率（検査待ち/区分３K）',
   'waybill.waybillCount': '個数',
   'waybill.GWCount': '重量（KG）',
 };

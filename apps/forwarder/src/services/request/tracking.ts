@@ -13,3 +13,15 @@ export async function getAllTrackings(params?: GetAllTrackings) {
     params,
   });
 }
+
+// 获取所有追踪数据 GET /api/trackings
+interface GetAllTrackings extends API.Tracking {
+  MAB: string;
+  category: string;
+}
+export async function getAllTrackingsFull(params?: GetAllTrackings) {
+  return request<any>(ApiURL + '/trackings/full', {
+    method: 'GET',
+    params,
+  });
+}

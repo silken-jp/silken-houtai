@@ -67,6 +67,7 @@ export declare const locales: {
     'waybill.count1': string;
     'waybill.count2': string;
     'waybill.count3': string;
+    'waybill.count3K': string;
     'waybill.waybillCount': string;
     'waybill.GWCount': string;
     'component.tagSelect.expand': string;
@@ -310,6 +311,7 @@ export declare const locales: {
     'waybill.count1': string;
     'waybill.count2': string;
     'waybill.count3': string;
+    'waybill.count3K': string;
     'waybill.waybillCount': string;
     'waybill.GWCount': string;
     'component.tagSelect.expand': string;
