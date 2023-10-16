@@ -15,7 +15,7 @@ import {
   DatePicker,
   Select,
 } from 'antd';
-import { useAntdTable, useRequest, useTitle } from 'ahooks';
+import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';
@@ -51,7 +51,8 @@ const SimpleStatusInquiry: React.FC = () => {
     } else if (Array.isArray(pageData?.sorter?.field)) {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
-      sorter.sortField = 'flightDate';
+      sorter.sortField = 'createdAt';
+      sorter.sortOrder = -1;
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;

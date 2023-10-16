@@ -60,6 +60,7 @@ const SimpleStatusInquiry: React.FC = () => {
       sorter.sortField = pageData?.sorter?.field?.join('.');
     } else {
       sorter.sortField = 'createdAt';
+      sorter.sortOrder = -1;
     }
     if (pageData?.sorter?.order === 'ascend') {
       sorter.sortOrder = 1;
