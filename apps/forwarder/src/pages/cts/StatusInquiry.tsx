@@ -1,3 +1,4 @@
+import { Link } from 'umi';
 import { useState } from 'react';
 import {
   Form,
@@ -200,7 +201,14 @@ const StatusInquiry: React.FC = () => {
             sorter
             width={150}
             title={intlWaybill('notDecNo')}
-            dataIndex="notDecNo"
+            render={(_, row: any) => (
+              <Link
+                target="_blank"
+                to={`/cts/StatusInquiry/notDec?MAB=${row?._id}`}
+              >
+                {row?.notDecNo}
+              </Link>
+            )}
           />
           <Table.ColumnGroup title={intlWaybill('perNo')}>
             <Table.Column
@@ -219,7 +227,14 @@ const StatusInquiry: React.FC = () => {
               sorter
               width={120}
               title={intlWaybill('notPerNo')}
-              dataIndex="notPerNo"
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/notPer?MAB=${row?._id}`}
+                >
+                  {row?.notPerNo}
+                </Link>
+              )}
             />
           </Table.ColumnGroup>
           <Table.ColumnGroup title={intlWaybill('counts')}>
@@ -248,20 +263,30 @@ const StatusInquiry: React.FC = () => {
             <Table.Column
               width={150}
               title={intlWaybill('count3')}
-              render={(_, row: any) =>
-                `${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(2)} (${
-                  row?.count3
-                })%`
-              }
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/isStatus3?MAB=${row?._id}`}
+                >
+                  {`${((row?.count3 * 100) / row?.NOCount || 0)?.toFixed(
+                    2,
+                  )}% (${row?.count3})`}
+                </Link>
+              )}
             />
             <Table.Column
-              width={150}
-              title={intlWaybill('count3K')}
-              render={(_, row: any) =>
-                `${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(2)} (${
-                  row?.count3K
-                })%`
-              }
+              width={200}
+              title="検査率（検査待ち/区分３K）"
+              render={(_, row: any) => (
+                <Link
+                  target="_blank"
+                  to={`/cts/StatusInquiry/isStatus3K?MAB=${row?._id}`}
+                >
+                  {`${((row?.count3K * 100) / row?.NOCount || 0)?.toFixed(
+                    2,
+                  )}% (${row?.count3KNotPer}/${row?.count3K})`}
+                </Link>
+              )}
             />
           </Table.ColumnGroup>
           <Table.Column
