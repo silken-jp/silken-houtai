@@ -1,4 +1,4 @@
-name: deploy to s3 admin
+name: deploy to s3 admin prod
 on:
   push:
     branches: [ prod ]
