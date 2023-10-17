@@ -202,8 +202,8 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           </Form.Item> */}
           <Form.Item label="名前" name="isImpNameEN">
             <Radio.Group>
-              <Radio value="0"> そのまま </Radio>
               <Radio value="1"> 英訳する </Radio>
+              <Radio value="0"> そのまま </Radio>
             </Radio.Group>
           </Form.Item>
           <Form.Item>
