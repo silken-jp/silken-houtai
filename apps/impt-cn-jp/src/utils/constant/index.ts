@@ -48,3 +48,8 @@ export const AGENT_HAWB = {
     { value: 2, label: '他社' },
   ],
 };
+
+export const DATABASE_NAME = [
+  { value: 1, label: '2022/01/01 ~ 2022/10/31' },
+  { value: 2, label: '2022/11/01 ~ 2023/07/31' },
+];
