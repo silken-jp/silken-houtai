@@ -39,8 +39,8 @@ const BillingList: React.FC = () => {
     if (formType === 'add') {
       await createBilling({
         agent: v?.agent,
-        start_date: dayFormat(v?.start_date, 'YYYY-MM-DDT00:00:00.000+00:00')!,
-        end_date: dayFormat(v?.end_date, 'YYYY-MM-DDT23:59:59.000+00:00')!,
+        start_date: dayFormat(v?.start_date, 'YYYY/MM/DD 00:00:00.000')!,
+        end_date: dayFormat(v?.end_date, 'YYYY/MM/DD 23:59:59.000')!,
       });
       search.submit();
     }

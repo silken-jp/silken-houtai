@@ -12,6 +12,7 @@ import {
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
+import WaybillModal from '@/components/Modal/WaybillModal';
 import { DATABASE_NAME } from '@/utils/constant';
 import { getWaybillsHistories } from '@/services/request/history';
 import { dayFormat } from '@/utils/helper/day';
@@ -113,7 +114,11 @@ const WaybillsHistory: React.FC = () => {
       </Form>
       <Card title="データベース">
         <Table rowKey="_id" {...tableProps}>
-          <Table.Column width={150} title="HAWB" dataIndex="HAB" />
+          <Table.Column
+            width={150}
+            title="HAWB"
+            render={(row) => <WaybillModal dataSource={row} />}
+          />
           <Table.Column width={150} title="MAWB" dataIndex="MAB" />
           <Table.Column
             sorter

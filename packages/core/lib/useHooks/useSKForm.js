@@ -236,6 +236,7 @@ var useFormBasic = function (props) {
       onOk: onOk,
       afterClose: afterClose,
       centered: true,
+      maskClosable: false,
     },
     formProps: {
       form: form,

@@ -89,6 +89,7 @@ export const useFormBasic = <T>(props: BasicFormProps<T>) => {
       onOk,
       afterClose,
       centered: true,
+      maskClosable: false,
     },
     formProps: {
       form,
