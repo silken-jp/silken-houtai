@@ -42,6 +42,7 @@ export declare const useFormBasic: <T>(props: BasicFormProps<T>) => {
     onOk: () => Promise<void>;
     afterClose: () => void;
     centered: boolean;
+    maskClosable: boolean;
   };
   formProps: {
     form: import('antd').FormInstance<any>;

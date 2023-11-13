@@ -153,7 +153,7 @@ export async function billingIrregular(params: BillingIrregular) {
 interface BillingDelivery {
   billingId: API.ID;
 }
-export async function BillingDelivery(params: BillingDelivery) {
+export async function billingDelivery(params: BillingDelivery) {
   return request<any>(ApiURL + '/billings/delivery', {
     method: 'POST',
     data: {
@@ -170,6 +170,47 @@ interface GetBillingWaybills {
 }
 export async function getBillingWaybills(params: GetBillingWaybills) {
   return request<any>(ApiURL + '/billings/get-waybills', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取二次上屋，通关详细 POST /api/waybills/by-billing
+interface GetWaybillsByBillingId {
+  billingId: string;
+}
+export async function getWaybillsByBillingId(params: GetWaybillsByBillingId) {
+  return request<any>(ApiURL + '/billings/get-waybills-by-billing', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取保管详细 POST /api/billings/get-storage-by-billing
+interface GetStorageByBillingId {
+  billingId: string;
+}
+export async function getStorageByBillingId(params: GetStorageByBillingId) {
+  return request<any>(ApiURL + '/billings/get-storage-by-billing', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取税関検査详细 POST /api/billings/get-inspection-by-billing
+interface GetInspectionByBillingId {
+  billingId: string;
+}
+export async function getInspectionByBillingId(
+  params: GetInspectionByBillingId,
+) {
+  return request<any>(ApiURL + '/billings/get-inspection-by-billing', {
     method: 'POST',
     data: {
       ...params,

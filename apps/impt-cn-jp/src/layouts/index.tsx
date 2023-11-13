@@ -8,7 +8,8 @@ import {
   GlobalOutlined,
   UserOutlined,
   CarOutlined,
-  IssuesCloseOutlined,
+  HistoryOutlined,
+  QuestionOutlined,
 } from '@ant-design/icons';
 import { useHistory, Link, setLocale, Helmet } from 'umi';
 ////
@@ -328,8 +329,27 @@ const Index: React.FC<{ children: any }> = (props) => {
             },
             {
               key: '/issues',
-              icon: <IssuesCloseOutlined />,
+              icon: <QuestionOutlined />,
               label: <Link to="/issues">问题件</Link>,
+            },
+            {
+              key: '/history',
+              icon: <HistoryOutlined />,
+              label: 'バックアップデータ',
+              children: [
+                {
+                  key: '/history/waybills',
+                  label: <Link to="/history/waybills">貨物データ</Link>,
+                },
+                {
+                  key: '/history/trackings',
+                  label: <Link to="/history/trackings">通関データ</Link>,
+                },
+                {
+                  key: '/history/tracks',
+                  label: <Link to="/history/tracks">配送データ</Link>,
+                },
+              ],
             },
             // {
             //   key: '/issues',

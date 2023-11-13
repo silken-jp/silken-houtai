@@ -96,47 +96,49 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field) => (
-                        <Space key={field.key} align="baseline" wrap>
-                          <Form.Item
-                            name={[field.name, 'count_start']}
-                            rules={[{ required: true }]}
-                            label="件数（MIN）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MIN）"
+                        <div key={field.key}>
+                          <Space align="baseline">
+                            <Form.Item
+                              name={[field.name, 'count_start']}
+                              rules={[{ required: true }]}
+                              label="件数（MIN）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MIN）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name={[field.name, 'count_end']}
+                              rules={[{ required: true }]}
+                              label="件数（MAX）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MAX）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name={[field.name, 'hawb_price']}
+                              rules={[{ required: true }]}
+                              label="単価（HAWB）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="単価（HAWB）"
+                              />
+                            </Form.Item>
+                            <MinusCircleOutlined
+                              onClick={() => remove(field.name)}
                             />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'count_end']}
-                            rules={[{ required: true }]}
-                            label="件数（MAX）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MAX）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'hawb_price']}
-                            rules={[{ required: true }]}
-                            label="単価（HAWB）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="単価（HAWB）"
-                            />
-                          </Form.Item>
-                          <MinusCircleOutlined
-                            onClick={() => remove(field.name)}
-                          />
-                        </Space>
+                          </Space>
+                        </div>
                       ))}
                       <Form.Item>
                         <Button
@@ -157,47 +159,49 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field) => (
-                        <Space key={field.key} align="baseline" wrap>
-                          <Form.Item
-                            name={[field.name, 'count_start']}
-                            rules={[{ required: true }]}
-                            label="件数（MIN）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MIN）"
+                        <div key={field.key}>
+                          <Space align="baseline" wrap>
+                            <Form.Item
+                              name={[field.name, 'count_start']}
+                              rules={[{ required: true }]}
+                              label="件数（MIN）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MIN）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name={[field.name, 'count_end']}
+                              rules={[{ required: true }]}
+                              label="件数（MAX）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MAX）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              name={[field.name, 'hawb_price']}
+                              rules={[{ required: true }]}
+                              label="単価（HAWB）"
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="単価（HAWB）"
+                              />
+                            </Form.Item>
+                            <MinusCircleOutlined
+                              onClick={() => remove(field.name)}
                             />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'count_end']}
-                            rules={[{ required: true }]}
-                            label="件数（MAX）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MAX）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'hawb_price']}
-                            rules={[{ required: true }]}
-                            label="単価（HAWB）"
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="単価（HAWB）"
-                            />
-                          </Form.Item>
-                          <MinusCircleOutlined
-                            onClick={() => remove(field.name)}
-                          />
-                        </Space>
+                          </Space>
+                        </div>
                       ))}
                       <Form.Item>
                         <Button
@@ -229,71 +233,73 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field) => (
-                        <Space key={field.key} align="baseline" wrap>
-                          <Form.Item
-                            label="件数（MIN）"
-                            name={[field.name, 'count_start']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MIN）"
+                        <div key={field.key}>
+                          <Space align="baseline" wrap>
+                            <Form.Item
+                              label="件数（MIN）"
+                              name={[field.name, 'count_start']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MIN）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="件数（MAX）"
+                              name={[field.name, 'count_end']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MAX）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限（KG）"
+                              name={[field.name, 'limit_GW']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限（KG）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限内単価（HAWB）"
+                              name={[field.name, 'limit_price']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限内単価（HAWB）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限外単価（kg）"
+                              name={[field.name, 'out_limit_kgs_price']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限外単価（kg）"
+                              />
+                            </Form.Item>
+                            <MinusCircleOutlined
+                              onClick={() => remove(field.name)}
                             />
-                          </Form.Item>
-                          <Form.Item
-                            label="件数（MAX）"
-                            name={[field.name, 'count_end']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MAX）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限（KG）"
-                            name={[field.name, 'limit_GW']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限（KG）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限内単価（HAWB）"
-                            name={[field.name, 'limit_price']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限内単価（HAWB）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限外単価（kg）"
-                            name={[field.name, 'out_limit_kgs_price']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限外単価（kg）"
-                            />
-                          </Form.Item>
-                          <MinusCircleOutlined
-                            onClick={() => remove(field.name)}
-                          />
-                        </Space>
+                          </Space>
+                        </div>
                       ))}
                       <Form.Item>
                         <Button
@@ -314,71 +320,73 @@ const AgentSettings: React.FC<AgentSettingsProps> = () => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map((field) => (
-                        <Space key={field.key} align="baseline" wrap>
-                          <Form.Item
-                            label="件数（MIN）"
-                            name={[field.name, 'count_start']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MIN）"
+                        <div key={field.key}>
+                          <Space align="baseline" wrap>
+                            <Form.Item
+                              label="件数（MIN）"
+                              name={[field.name, 'count_start']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MIN）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="件数（MAX）"
+                              name={[field.name, 'count_end']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="件数（MAX）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限（days）"
+                              name={[field.name, 'limit_days']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限（days）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限内単価（HAWB）"
+                              name={[field.name, 'limit_price']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限内単価（HAWB）"
+                              />
+                            </Form.Item>
+                            <Form.Item
+                              label="制限外単価（kg * day）"
+                              name={[field.name, 'out_limit_days_kgs_price']}
+                              rules={[{ required: true }]}
+                            >
+                              <InputNumber
+                                step={1}
+                                min={0}
+                                style={{ width: 120 }}
+                                placeholder="制限外単価（kg * day）"
+                              />
+                            </Form.Item>
+                            <MinusCircleOutlined
+                              onClick={() => remove(field.name)}
                             />
-                          </Form.Item>
-                          <Form.Item
-                            label="件数（MAX）"
-                            name={[field.name, 'count_end']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="件数（MAX）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限（days）"
-                            name={[field.name, 'limit_days']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限（days）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限内単価（HAWB）"
-                            name={[field.name, 'limit_price']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限内単価（HAWB）"
-                            />
-                          </Form.Item>
-                          <Form.Item
-                            label="制限外単価（kg * day）"
-                            name={[field.name, 'out_limit_days_kgs_price']}
-                            rules={[{ required: true }]}
-                          >
-                            <InputNumber
-                              step={1}
-                              min={0}
-                              style={{ width: 120 }}
-                              placeholder="制限外単価（kg * day）"
-                            />
-                          </Form.Item>
-                          <MinusCircleOutlined
-                            onClick={() => remove(field.name)}
-                          />
-                        </Space>
+                          </Space>
+                        </div>
                       ))}
                       <Form.Item>
                         <Button
