@@ -33,19 +33,22 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const IP3 = props?.dataSource?.IP3;
   const unitPrice = toFloorFixed(_NT1, IP3);
   const NO = props?.dataSource?.NO || 0;
-  const Sum = toFloorFixed(NO * _NT1, IP3);
-  const Sum6 = toFloorFixed(NO * _NT1 * 0.6, IP3);
+  const Sum = toFloorFixed(toFixFloor(_NT1, NO), IP3);
+  const Sum6 = toFloorFixed(toFixFloor(toFixFloor(_NT1, NO), 0.6), IP3);
+
   const HSRepeat = props?.dataSource?.HSRepeat || [];
   const isIDA = props?.dataSource?.waybill_type === 'IDA';
 
   let showAttached = false;
   let data: any[] = [
     {
-      ...props?.dataSource,
+      CMN: props?.dataSource?.CMN,
+      NO: props?.dataSource?.NO,
       Price: `${IP3} ${unitPrice}`,
       Amount: `${IP3} ${Sum}`,
     },
   ];
+
   if (isIDA) {
     if (HSRepeat?.length > 1) {
       showAttached = true;
@@ -244,7 +247,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                 </Descriptions.Item>
               </Descriptions>
               <Table
-                rowKey="CMD"
+                rowKey="CMN"
                 size="small"
                 pagination={false}
                 bordered
