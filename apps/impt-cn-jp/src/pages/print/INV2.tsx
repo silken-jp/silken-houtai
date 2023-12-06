@@ -20,6 +20,12 @@ export interface WaybillsProps {
   dataSource: API.Waybill[];
 }
 
+function toFixFloor(price: any, no: any) {
+  const a = Number(price) * 1000;
+  const b = Number(no) * 1000;
+  return (a * b) / 1000000;
+}
+
 function toFloorFixed(v: number, type: string) {
   return type === 'JPY'
     ? Math.floor(v).toFixed(0)
@@ -83,14 +89,16 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const IP3 = props?.dataSource?.IP3;
   const unitPrice = toFloorFixed(_NT1, IP3);
   const NO = props?.dataSource?.NO || 0;
-  const Sum = toFloorFixed(NO * _NT1, IP3);
+  const Sum = toFloorFixed(toFixFloor(_NT1, NO), IP3);
+
   const HSRepeat = props?.dataSource?.HSRepeat || [];
   const isIDA = props?.dataSource?.waybill_type === 'IDA';
 
   let showAttached = false;
   let data: any[] = [
     {
-      ...props?.dataSource,
+      CMN: props?.dataSource?.CMN,
+      NO: props?.dataSource?.NO,
       Price: `${IP3} ${unitPrice}`,
       Amount: `${IP3} ${Sum}`,
     },
@@ -101,7 +109,10 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       data = [
         {
           CMN: 'See the attached sheet',
-          NO,
+          NO: HSRepeat.reduce(
+            (res, item) => (res += Number(item?.QN1 || 0)),
+            0,
+          ),
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -109,7 +120,8 @@ const Waybill: React.FC<WaybillProps> = (props) => {
     } else if (HSRepeat?.length === 1) {
       data = [
         {
-          ...HSRepeat[0],
+          CMN: HSRepeat[0].CMN,
+          NO: HSRepeat[0]?.QN1,
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -161,7 +173,9 @@ const Waybill: React.FC<WaybillProps> = (props) => {
           <Table.Column title="UNIT PRICE" dataIndex="DPR" />
           <Table.Column
             title="PRICE"
-            render={(item) => item?.DPR * item?.QN1}
+            render={(item) =>
+              toFloorFixed(toFixFloor(item?.DPR, item?.QN1), IP3)
+            }
           />
         </Table>
       </div>
