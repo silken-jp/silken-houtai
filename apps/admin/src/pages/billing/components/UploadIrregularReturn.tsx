@@ -1,9 +1,9 @@
 import * as Encoding from 'encoding-japanese';
 import { Button, Space } from 'antd';
+import { useState } from 'react';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importReturnIrregulars } from '@/services/request/irregular';
-import { useState } from 'react';
 
 const rightHeader: any = [
   'HAWB',

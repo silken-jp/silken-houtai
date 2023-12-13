@@ -662,4 +662,8 @@ declare namespace API {
     total: number;
     list: T[];
   };
+  type HScodes = {
+    hscode: string;
+    tax_rate: number;
+  };
 }

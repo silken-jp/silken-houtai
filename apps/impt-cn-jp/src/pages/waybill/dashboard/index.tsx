@@ -100,7 +100,7 @@ const Dashboard: React.FC<dashboardProps> = () => {
       header={{
         breadcrumb: {
           routes: [
-            { path: '/cts/dashboard', breadcrumbName: intlMenu('cts') },
+            { path: '/waybill/cts/dashboard', breadcrumbName: '通関管理' },
             { path: '', breadcrumbName: 'Status Inquiry' },
           ],
         },

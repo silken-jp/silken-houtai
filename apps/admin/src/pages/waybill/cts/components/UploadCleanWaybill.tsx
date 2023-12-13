@@ -125,6 +125,10 @@ const UploadCleanWaybill: React.FC<UploadCleanWaybillProps> = (props) => {
   async function onUpload(jsonArr: any[], values: any) {
     try {
       const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
+      if (waybills.some((w) => w.IP1)) {
+        throw 'IP1 が必須項目です、空欄の確認をしてください。';
+      }
+      // return { success: null, failed: null }
       const { successCount: count, failedNo } = await importMultiCleanWaybill({
         waybills,
         uploader: _id,

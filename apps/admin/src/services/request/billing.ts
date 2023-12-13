@@ -22,8 +22,16 @@ export async function getBillingById(params?: GetBillingById) {
   return request<any>(ApiURL + '/billings/' + params?.billingId);
 }
 
+// 获取单个billing GET /api/billings/tabs//:billingId
+interface GetBillingById {
+  billingId: API.ID;
+}
+export async function getBillingTabs(params?: GetBillingById) {
+  return request<any>(ApiURL + '/billings/tabs/' + params?.billingId);
+}
+
 // 创建billing POST /api/billings
-interface CreateBilling extends API.Billing {
+interface CreateBilling {
   agent: API.ID;
   start_date: string;
   end_date: string;
@@ -55,6 +63,19 @@ interface DeleteBillingById {
 export async function deleteBillingById(params: DeleteBillingById) {
   return request<any>(ApiURL + '/billings/' + params.billingId, {
     method: 'DELETE',
+  });
+}
+
+// 创建billing POST /api/billings
+interface CreateAllPrice {
+  billingId: API.ID;
+}
+export async function createAllPrice(params: CreateAllPrice) {
+  return request<any>(ApiURL + '/billings/create-all-price', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
   });
 }
 

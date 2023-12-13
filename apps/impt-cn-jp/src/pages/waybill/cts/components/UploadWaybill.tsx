@@ -130,7 +130,12 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUpload(jsonArr: any[], values: any) {
     try {
       const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
-      // return { success: null, failed: null }
+      if (waybills.some((w) => w.IP1)) {
+        throw {
+          message: 'IP1 が必須項目です、空欄の確認をしてください。',
+        };
+      }
+      // return { success: null, failed: null };
       const { successCount: count, failedNo } = await importMultiWaybill2({
         waybills,
         ...values,
@@ -173,14 +178,9 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
           <Space>
             <UploadXlsx
               onUpload={handleUpload}
-              text="MIC"
+              text="Upload"
               rightHeader={rightHeader}
             />
-            {/* <UploadXlsx
-              onUpload={handleUpload}
-              text="IDA"
-              rightHeader={rightHeader}
-            /> */}
           </Space>
         }
       >
@@ -200,7 +200,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
             <Select options={props?.agentOptions} />
           </Form.Item>
           <Form.Item label="Ip4" name="isIp4X6">
-            <Radio.Group>
+            <Radio.Group disabled>
               <Radio value="1"> x 0.6 </Radio>
               <Radio value="0"> ÷ 0.6</Radio>
             </Radio.Group>
