@@ -3,10 +3,7 @@ import { Modal, Button, Form, Typography, Select, Space } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import {
-  importMultiCleanWaybill,
-  importMultiWaybill2,
-} from '@/services/request/waybill';
+import { importMultiCleanWaybill } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
 const rightHeader = [
@@ -125,8 +122,10 @@ const UploadCleanWaybill: React.FC<UploadCleanWaybillProps> = (props) => {
   async function onUpload(jsonArr: any[], values: any) {
     try {
       const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
-      if (waybills.some((w) => w.IP1)) {
-        throw 'IP1 が必須項目です、空欄の確認をしてください。';
+      if (waybills.some((w) => !w.IP1)) {
+        throw {
+          message: 'IP1 が必須項目です、空欄の確認をしてください。',
+        };
       }
       // return { success: null, failed: null }
       const { successCount: count, failedNo } = await importMultiCleanWaybill({

@@ -130,7 +130,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   async function onUpload(jsonArr: any[], values: any) {
     try {
       const waybills = (await fixItemToObj(jsonArr)) as API.Waybill[];
-      if (waybills.some((w) => w.IP1)) {
+      if (waybills.some((w) => !w.IP1)) {
         throw {
           message: 'IP1 が必須項目です、空欄の確認をしてください。',
         };

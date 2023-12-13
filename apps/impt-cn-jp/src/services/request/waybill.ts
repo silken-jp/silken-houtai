@@ -343,3 +343,30 @@ export async function getAllWaybillsForwarder(
     params,
   });
 }
+
+// 统一更新IP1数据 GET /api/waybills/
+interface ImportMultiWaybillIP1 {
+  updateIP1Array: {
+    MAWB: string;
+    HAWB: string;
+    IP1: string;
+  }[];
+}
+export async function importMultiWaybillIP1(params?: ImportMultiWaybillIP1) {
+  return request<any>(ApiURL + '/waybills/modify-ip1', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 获取INV GET /api/waybills/gen-invoice/:id
+interface GenInvoice extends Partial<API.Waybill> {
+  waybillId: API.ID;
+}
+export async function genInvoice(params: GenInvoice) {
+  return request<any>(ApiURL + '/waybills/gen-invoice/' + params.waybillId, {
+    method: 'GET',
+  });
+}

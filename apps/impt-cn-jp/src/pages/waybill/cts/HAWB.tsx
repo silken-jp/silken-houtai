@@ -24,6 +24,7 @@ import {
 } from '@/services/request/waybill';
 import HAWBForm from './components/HAWBForm';
 import Create from './components/Create';
+import UpdateWaybillIP1 from './components/UpdateWaybillIP1';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -187,7 +188,12 @@ const SimpleStatusInquiry: React.FC = () => {
       </Form>
       <HAWBForm type={formType} {...formProps} onSubmit={handleSubmit} />
       <Card
-        title={<>合計: {tableProps.pagination.total} 件</>}
+        title={
+          <Space>
+            <span>合計: {tableProps.pagination.total} 件</span>
+            <UpdateWaybillIP1 onUpload={search.submit} />
+          </Space>
+        }
         extra={
           <Space>
             <span>selected: {selectedRows?.length || 0} items</span>
@@ -238,8 +244,20 @@ const SimpleStatusInquiry: React.FC = () => {
           {...tableProps}
           scroll={{ x: 3600 }}
         >
-          <Table.Column sorter width={100} title="HAWB番号" dataIndex="HAB" />
-          <Table.Column sorter width={100} title="MAWB番号" dataIndex="MAB" />
+          <Table.Column
+            sorter
+            width={100}
+            title="HAWB番号"
+            dataIndex="HAB"
+            fixed="left"
+          />
+          <Table.Column
+            sorter
+            width={100}
+            title="MAWB番号"
+            dataIndex="MAB"
+            fixed="left"
+          />
           <Table.Column sorter width={60} title="LS" dataIndex="LS" />
           <Table.Column
             sorter
@@ -309,6 +327,7 @@ const SimpleStatusInquiry: React.FC = () => {
               userOptions?.find((item) => item?.value === uploaderId)?.label
             }
           />
+          <Table.Column sorter width={60} title="IP1" dataIndex="IP1" />
           <Table.Column sorter width={250} title="品名" dataIndex="CMN" />
           <Table.Column sorter width={80} title="仕出地" dataIndex="PSC" />
           <Table.Column

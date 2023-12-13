@@ -252,7 +252,7 @@ const SimpleStatusInquiry: React.FC = () => {
           scroll={{ x: 2000 }}
         >
           <Table.Column
-            width={60}
+            width={80}
             title="アップデート"
             render={(row) => (
               <UpdateWaybill
