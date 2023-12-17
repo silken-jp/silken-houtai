@@ -1,9 +1,9 @@
-import { Space, message } from 'antd';
+import { Button, Space, message } from 'antd';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import { importMultiWaybillIP1 } from '@/services/request/waybill';
+import { importMultiWaybillHSCODE } from '@/services/request/waybill-hscode';
 
-const rightHeader = ['HAB', 'MAB', 'IP1'];
+const rightHeader = ['MAB', 'HAB', 'CMN', 'NO', 'price', 'CMD', 'SKU'];
 
 const successFormat = (count: number, sum: number) => ({
   message: `批量更新导入完成`,
@@ -16,6 +16,7 @@ const failedFormat = (success: boolean, failedNo: string[]) => ({
 
 export interface UploadWaybillProps {
   payload?: any;
+  disabled?: boolean;
   onUpload?: () => void;
 }
 
@@ -30,7 +31,7 @@ async function fixItemToObj(params: any[]) {
       if (line[j] !== null || line[j] !== undefined) {
         let header = headers?.[j]?.trim?.();
         const value = line?.[j]?.toString?.();
-        if (value) {
+        if (value && header) {
           obj[header] = value;
         }
       }
@@ -46,19 +47,14 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
   // state
   async function onUpload(jsonArr: any[]) {
     try {
-      const updateIP1Array = (await fixItemToObj(jsonArr)) as any[];
-      if (updateIP1Array.some((w) => !w.IP1)) {
-        throw {
-          message: 'IP1 が必須項目です、空欄の確認をしてください。',
-        };
-      }
+      const waybillHscodesArray = (await fixItemToObj(jsonArr)) as any[];
       // return { success: null, failed: null }
-      const { successCount: count, failedNo } = await importMultiWaybillIP1({
-        updateIP1Array,
+      const { successCount: count, failedNo } = await importMultiWaybillHSCODE({
+        waybillHscodesArray,
       });
       props?.onUpload?.();
       const success =
-        count > 0 ? successFormat(count, jsonArr.length - 1) : null;
+        count > 0 ? successFormat(count, waybillHscodesArray.length) : null;
       const failed =
         failedNo?.length > 0 ? failedFormat(!!success, failedNo) : null;
       return { success, failed };
@@ -76,11 +72,15 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
     return onUpload(jsonArr);
   }
 
+  if (props?.disabled) {
+    return <Button disabled>更新</Button>;
+  }
+
   return (
     <Space>
       <UploadXlsx
         onUpload={handleUpload}
-        text="更新IP1(个人使用)"
+        text="新規＆更新HSCODE"
         rightHeader={rightHeader}
       />
     </Space>

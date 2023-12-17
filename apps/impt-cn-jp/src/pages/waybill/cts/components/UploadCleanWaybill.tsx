@@ -3,10 +3,7 @@ import { Modal, Button, Form, Typography, Select, Space, message } from 'antd';
 import * as Encoding from 'encoding-japanese';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
-import {
-  importMultiCleanWaybill,
-  importMultiWaybill2,
-} from '@/services/request/waybill';
+import { importMultiCleanWaybill } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
 const rightHeader = [

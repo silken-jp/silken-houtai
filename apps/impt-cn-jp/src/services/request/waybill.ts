@@ -370,3 +370,16 @@ export async function genInvoice(params: GenInvoice) {
     method: 'GET',
   });
 }
+
+// 获取INV GET /api/waybills/get-main-hscode/:id
+interface GenMainHSCODE {
+  waybillId: API.ID;
+}
+export async function genMainHSCODE(params: GenMainHSCODE) {
+  return request<any>(
+    ApiURL + '/waybills/get-main-hscode/' + params.waybillId,
+    {
+      method: 'GET',
+    },
+  );
+}

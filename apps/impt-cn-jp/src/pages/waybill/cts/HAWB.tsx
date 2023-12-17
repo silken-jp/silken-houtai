@@ -13,6 +13,8 @@ import {
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
+import { FileSearchOutlined } from '@ant-design/icons';
+
 ////
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import { dayFormat } from '@/utils/helper/day';
@@ -21,6 +23,7 @@ import {
   updateWaybill,
   deleteByWaybillId,
   getAllWaybills,
+  genMainHSCODE,
 } from '@/services/request/waybill';
 import HAWBForm from './components/HAWBForm';
 import Create from './components/Create';
@@ -94,6 +97,9 @@ const SimpleStatusInquiry: React.FC = () => {
     manual: true,
   });
   const deleteWaybill = useRequest(deleteByWaybillId, {
+    manual: true,
+  });
+  const countWaybillHSCODE = useRequest(genMainHSCODE, {
     manual: true,
   });
 
@@ -259,6 +265,39 @@ const SimpleStatusInquiry: React.FC = () => {
             fixed="left"
           />
           <Table.Column sorter width={60} title="LS" dataIndex="LS" />
+          <Table.ColumnGroup title="代表HSCODE">
+            <Table.Column
+              sorter
+              width={100}
+              title="課税"
+              dataIndex="main_HSCODE_tax"
+            />
+            <Table.Column
+              sorter
+              width={100}
+              title="非課税"
+              dataIndex="main_HSCODE_no_tax"
+            />
+            <Table.Column
+              width={60}
+              title="計算"
+              render={(item) =>
+                item?.waybill_type === 'IDA' && (
+                  <Button
+                    onClick={async () => {
+                      await countWaybillHSCODE.runAsync({
+                        waybillId: item?._id,
+                      });
+                      refresh();
+                    }}
+                    size="small"
+                  >
+                    <FileSearchOutlined />
+                  </Button>
+                )
+              }
+            />
+          </Table.ColumnGroup>
           <Table.Column
             sorter
             width={60}

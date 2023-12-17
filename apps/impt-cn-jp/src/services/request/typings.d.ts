@@ -596,6 +596,8 @@ declare namespace API {
       arr_code2: string;
       zipcode: string;
     };
+    main_HSCODE_tax: string;
+    main_HSCODE_no_tax: string;
     HSRepeat?: {
       CMD?: string;
       CM2?: string;
@@ -663,7 +665,14 @@ declare namespace API {
     list: T[];
   };
   type HScodes = {
-    hscode: string;
+    CMD: string;
+    CMN: string;
+    HAB: string;
+    MAB: string;
+    NO: number;
+    SKU: string;
+    currency: string;
+    price: number;
     tax_rate: number;
   };
 }

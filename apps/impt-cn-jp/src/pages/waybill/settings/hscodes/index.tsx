@@ -21,7 +21,7 @@ function fixItemToObj(params: any[]) {
     const line = params?.[i];
     let obj: { [key: string]: any } = {};
     if (!line || line?.length === 0) continue;
-    for (let j = 1; j < line.length; j++) {
+    for (let j = 0; j < line.length; j++) {
       const h = headers?.[j]?.trim?.();
       if (!h) continue;
       if (line[j] !== null || line[j] !== undefined) {
@@ -45,7 +45,6 @@ const HScodes: React.FC = () => {
   const { tableProps, refresh } = useAntdTable(getTableData);
 
   async function handleUpload(arr: any[]) {
-    arr.shift();
     const hscodesArray = (fixItemToObj(arr) as API.HScodes[]).filter(
       (item) => !!item.hscode && !!item.tax_rate,
     );
