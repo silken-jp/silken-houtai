@@ -5,11 +5,11 @@ import {
   Input,
   InputNumber,
   Radio,
-  Space,
-  Button,
+  // Space,
+  // Button,
   Select,
 } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+// import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
 import { useAgentOptions } from '@/services/useAPIOption';
@@ -84,13 +84,13 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
   const { modalProps, formProps } = useSKForm.useFormBasic(props);
   const { agentOptions } = useAgentOptions();
 
-  const LS = Form?.useWatch('LS', formProps.form);
+  // const LS = Form?.useWatch('LS', formProps.form);
 
   useEffect(() => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         ...props?.dataSource,
-        HSRepeat: props?.dataSource?.HSRepeat || [],
+        // HSRepeat: props?.dataSource?.HSRepeat || [],
       });
     }
   }, [props]);
@@ -148,7 +148,7 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
         <Form.Item label="値段" name="_NT1" rules={[{ required: true }]}>
           <InputNumber placeholder="値段" autoComplete="off" step={0.01} />
         </Form.Item>
-        {LS !== 'M' && (
+        {/* {LS !== 'M' && (
           <Form.Item label="繰返部" required>
             <Form.List name="HSRepeat">
               {(fields, { add, remove }) => (
@@ -195,7 +195,7 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
               )}
             </Form.List>
           </Form.Item>
-        )}
+        )} */}
         {SimpleManifestItems?.map((item) => {
           return (
             <Form.Item

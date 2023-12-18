@@ -3,6 +3,8 @@ import { Descriptions, Space, Modal, Button, Typography, Table } from 'antd';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import dayjs from 'dayjs';
+import { useRequest } from 'ahooks';
+import { getAllWaybillHSCODEs } from '@/services/request/waybill-hscode';
 
 const { Title, Paragraph } = Typography;
 
@@ -28,6 +30,17 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const [viewType, setViewType] = useState('');
   const printRef = useRef<HTMLDivElement>(null);
 
+  const HSRepeatAPI = useRequest(
+    () =>
+      getAllWaybillHSCODEs({
+        HAB: props?.dataSource.HAB,
+        MAB: props?.dataSource.MAB,
+      }),
+    {
+      manual: true,
+    },
+  );
+
   // data
   const _NT1 = props?.dataSource?._NT1 || 0;
   const IP3 = props?.dataSource?.IP3;
@@ -36,7 +49,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   const Sum = toFloorFixed(toFixFloor(_NT1, NO), IP3);
   const Sum6 = toFloorFixed(toFixFloor(toFixFloor(_NT1, NO), 0.6), IP3);
 
-  const HSRepeat = props?.dataSource?.HSRepeat || [];
+  const HSRepeat: API.HScodes[] = HSRepeatAPI?.data?.waybillhscodes || [];
   const isIDA = props?.dataSource?.waybill_type === 'IDA';
 
   let showAttached = false;
@@ -55,10 +68,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       data = [
         {
           CMN: 'See the attached sheet',
-          NO: HSRepeat.reduce(
-            (res, item) => (res += Number(item?.QN1 || 0)),
-            0,
-          ),
+          NO: HSRepeat.reduce((res, item) => (res += Number(item?.NO || 0)), 0),
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -67,7 +77,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       data = [
         {
           CMN: HSRepeat[0].CMN,
-          NO: HSRepeat[0]?.QN1,
+          NO: HSRepeat[0]?.NO,
           Price: `${IP3} ${unitPrice}`,
           Amount: `${IP3} ${Sum}`,
         },
@@ -78,14 +88,17 @@ const Waybill: React.FC<WaybillProps> = (props) => {
   // action
   function handleOpenINV() {
     setViewType('INV');
+    HSRepeatAPI.run();
     setVisible(true);
   }
   function handleOpenHS() {
     setViewType('HS');
+    HSRepeatAPI.run();
     setVisible(true);
   }
   function handleOpenBL() {
     setViewType('BL');
+    HSRepeatAPI.run();
     setVisible(true);
   }
   function handleClose() {
@@ -140,7 +153,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   {props?.dataSource?.EAD}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="Phone No./電話番号">
-                  {/* {props?.dataSource?.MAB} */}
+                  {/* {props?.dataSource?.MAB} */ ` `}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="">
                   Consignee/荷受人
@@ -212,10 +225,10 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   {props?.dataSource?.EPY_Zip}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="Tel">
-                  {/* {props?.dataSource?.MAB} */}
+                  {/* {props?.dataSource?.MAB} */ ' '}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="Contact">
-                  {/* {props?.dataSource?.Tel} */}
+                  {/* {props?.dataSource?.Tel} */ ' '}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="">
                   <br />
@@ -234,7 +247,7 @@ const Waybill: React.FC<WaybillProps> = (props) => {
                   {props?.dataSource?.Tel}
                 </Descriptions.Item>
                 <Descriptions.Item span={3} label="Contact">
-                  {/* {props?.dataSource?.Tel} */}
+                  {/* {props?.dataSource?.Tel} */ ' '}
                 </Descriptions.Item>
               </Descriptions>
               <br />
@@ -319,17 +332,28 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               <Title level={2} style={{ textAlign: 'center' }}>
                 INVOICE
               </Title>
-              <Paragraph style={{ textAlign: 'right' }}>
-                {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
-                  .add(-1, 'day')
-                  .format('MM/DD/YYYY')}`}
+              <Paragraph
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <div>
+                  {props?.dataSource?.main_HSCODE_tax}
+                  <br />
+                  {props?.dataSource?.main_HSCODE_no_tax}
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  {`\u2002 DATE: ${dayjs(props?.dataSource?.DATE)
+                    .add(-1, 'day')
+                    .format('MM/DD/YYYY')}`}
+                  <br />
+                  Currency:{IP3}
+                </div>
               </Paragraph>
               <Table
-                rowKey="CMD"
+                rowKey="_id"
                 size="small"
                 pagination={false}
                 bordered
-                dataSource={props?.dataSource?.HSRepeat}
+                dataSource={HSRepeat}
                 summary={() => (
                   <Table.Summary fixed>
                     <Table.Summary.Row>
@@ -348,15 +372,19 @@ const Waybill: React.FC<WaybillProps> = (props) => {
               >
                 <Table.Column title="DESCRIPTION" dataIndex="CMN" />
                 <Table.Column title="OR" dataIndex="OR" />
-                <Table.Column title="HS CODE" dataIndex="CMD" />
-                <Table.Column title="QUANTITY" dataIndex="QN1" />
-                <Table.Column title="UNIT PRICE" dataIndex="DPR" />
                 <Table.Column
-                  title="PRICE"
-                  render={(item) =>
-                    toFloorFixed(toFixFloor(item?.DPR, item?.QN1), IP3)
+                  title="HS CODE"
+                  render={(row) =>
+                    `${row.CMD} | ${
+                      row.tax_rate
+                        ? toFixFloor(row.tax_rate, 100) + '%'
+                        : 'Free'
+                    }`
                   }
                 />
+                <Table.Column title="QUANTITY" dataIndex="NO" />
+                <Table.Column title="UNIT PRICE" dataIndex="unit_price" />
+                <Table.Column title="PRICE" dataIndex="price" />
               </Table>
             </>
           )}

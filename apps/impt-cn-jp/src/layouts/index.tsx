@@ -109,11 +109,28 @@ const Index: React.FC<{ children: any }> = (props) => {
                       key: '/waybill/cts/HAWB',
                       label: <Link to="/waybill/cts/HAWB">HAWB</Link>,
                     },
+                    {
+                      key: '/waybill/cts/HSCODE',
+                      label: <Link to="/waybill/cts/HSCODE">HSCODE</Link>,
+                    },
                   ],
                 },
                 {
                   key: '/waybill/Tracking',
                   label: <Link to="/waybill/Tracking">通関結果</Link>,
+                },
+                {
+                  key: '/waybill/settings',
+                  icon: <SettingOutlined />,
+                  label: '通関設定',
+                  children: [
+                    {
+                      key: '/waybill/settings/hscodes',
+                      label: (
+                        <Link to="/waybill/settings/hscodes">税号归类参考</Link>
+                      ),
+                    },
+                  ],
                 },
               ],
             },

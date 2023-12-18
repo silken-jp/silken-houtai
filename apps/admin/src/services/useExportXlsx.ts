@@ -47,6 +47,36 @@ const handleExportXlsx = (data: any[], filename?: string) => {
   }
 };
 
+const handleExportXlsx2 = (
+  dataSource: {
+    sheetName: string;
+    emptyData?: any[];
+    data: any[];
+  }[],
+  filename?: string,
+) => {
+  if (dataSource?.length > 0) {
+    const wb = XLSX.utils.book_new();
+
+    for (let index = 0; index < dataSource.length; index++) {
+      const element = dataSource[index];
+      const data =
+        element?.data?.length > 0 ? element.data : element.emptyData || [];
+
+      let ws = XLSX.utils.json_to_sheet(data, { skipHeader: false });
+      ws['!cols'] = Array.from(Object.keys(data?.[0] || {}), () => ({
+        wch: 30,
+      }));
+
+      XLSX.utils.book_append_sheet(wb, ws, element.sheetName);
+    }
+
+    XLSX.writeFile(wb, `${filename}.xls`);
+  } else {
+    message.warn('出力データが見つかりません');
+  }
+};
+
 const useExportIrregularXlsx = () => {
   const exportIrregularApi = useRequest(
     async (params: any) =>
@@ -89,5 +119,5 @@ const useExportIrregularXlsx = () => {
   };
 };
 
-export { useExportIrregularXlsx, handleExportXlsx };
+export { useExportIrregularXlsx, handleExportXlsx, handleExportXlsx2 };
 export default useExportIrregularXlsx;
