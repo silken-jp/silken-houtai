@@ -87,26 +87,17 @@ const handleExportXlsx = (data: any[]) => {
 const useExportXlsx = (LS: string, dataSource: any, totalCount: number) => {
   const exportApi = useRequest(
     async () => {
-      if (totalCount > 300) {
-        let waybills: any = [];
-        const pageNum = totalCount / 300;
-        for (let page = 0; page < pageNum; page++) {
-          const data = await getAllWaybillsAdvance({
-            ...getSearchParams(LS),
-            page,
-            perPage: 300,
-          });
-          waybills = [...waybills, ...data.waybills];
-        }
-        return { totalCount, waybills };
-      } else {
+      let waybills: any = [];
+      const pageNum = Math.ceil(totalCount / 300);
+      for (let page = 0; page < pageNum; page++) {
         const data = await getAllWaybillsAdvance({
           ...getSearchParams(LS),
-          page: 0,
-          perPage: 50000,
+          page,
+          perPage: 300,
         });
-        return { total: data?.totalCount, waybills: data?.waybills };
+        waybills = [...waybills, ...data.waybills];
       }
+      return { totalCount, waybills };
     },
     {
       manual: true,

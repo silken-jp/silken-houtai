@@ -14,28 +14,17 @@ export interface ExportWaybillXlsxProps {
 const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
   const { loading, run } = useRequest(
     async () => {
-      if (props.dataSource.waybillCount > 500) {
-        let list: any = [];
-        const pageNum = props.dataSource.waybillCount / 500;
-        for (let page = 0; page < pageNum; page++) {
-          const data = await getAllWaybills({
-            page,
-            perPage: 500,
-            MAB: props?.dataSource.mab,
-          });
-          list = [...list, ...data.waybills];
-        }
-        return { total: props.dataSource.waybillCount, list };
-      } else {
+      let list: any = [];
+      const pageNum = Math.ceil(props.dataSource.waybillCount / 500);
+      for (let page = 0; page < pageNum; page++) {
         const data = await getAllWaybills({
-          page: 0,
-          perPage: 50000,
-          sortField: 'modified_fields',
-          sortOrder: -1,
+          page,
+          perPage: 500,
           MAB: props?.dataSource.mab,
         });
-        return { total: data?.totalCount, list: data?.waybills };
+        list = [...list, ...data.waybills];
       }
+      return { total: props.dataSource.waybillCount, list };
     },
     {
       manual: true,

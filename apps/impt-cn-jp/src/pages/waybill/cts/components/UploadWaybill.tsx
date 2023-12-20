@@ -148,10 +148,10 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
       return { success, failed };
     } catch (error: any) {
       message.destroy();
-      message.error(error?.data?.message, 10);
+      message.error(error?.data?.message || error?.message);
       return {
         success: null,
-        failed: error,
+        failed: error?.data?.message || error?.message,
       };
     }
   }

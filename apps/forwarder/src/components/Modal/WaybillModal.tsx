@@ -1,103 +1,86 @@
-import { useState } from 'react';
-import { Descriptions, Card, Space, Modal, Button } from 'antd';
-import { Link } from 'umi';
+import jsPDF from 'jspdf';
+import { Modal, Button } from 'antd';
+import { useRef, useState } from 'react';
+
+import renderINV from '@/services/renderINV';
 
 export interface WaybillProps {
   dataSource: API.Waybill;
 }
 
 const Waybill: React.FC<WaybillProps> = (props) => {
-  const [visible, setVisible] = useState(false);
-  function handleOpen() {
-    setVisible(true);
-  }
-  function handleCancel() {
-    setVisible(false);
-  }
+  // state
+  const [visibleKey, setVisibleKey] = useState<string>('');
+  const printRef = useRef<HTMLCanvasElement>(null);
+
+  // action
+  const handleOpen: React.MouseEventHandler<HTMLElement> = async (e) => {
+    const renderKey = e.currentTarget.getAttribute(
+      'data-key',
+    ) as keyof typeof renderINV;
+    const ctx = printRef.current?.getContext('2d');
+    if (printRef.current && ctx && renderKey) {
+      await renderINV[renderKey](ctx, props.dataSource);
+    }
+    setVisibleKey(renderKey);
+  };
+  const handleClose = () => {
+    setVisibleKey('');
+  };
+  const pdfPrint = async () => {
+    if (!printRef.current) return;
+    const doc = new jsPDF({
+      orientation: 'p',
+      format: 'a4',
+    });
+    const dataURI = printRef.current.toDataURL('image/jpeg', 1.0);
+    doc.addImage(
+      dataURI,
+      'jpeg',
+      0,
+      0,
+      doc.internal.pageSize.width,
+      doc.internal.pageSize.height,
+    );
+    doc.save(`${props?.dataSource?.HAB}_${visibleKey}.pdf`);
+  };
+
   return (
     <>
+      <canvas
+        ref={printRef}
+        width={2480}
+        height={3508}
+        hidden
+        style={{ width: 620, height: 877, background: '#FFF' }}
+      />
       <Modal
-        title="Waybill"
-        width={800}
-        visible={visible}
-        onCancel={handleCancel}
+        forceRender
+        width={670}
+        visible={!!visibleKey}
+        onCancel={handleClose}
         footer={
-          <Space>
-            <Link to={`/cts/check/${props?.dataSource?._id}`}>
-              <Button type="primary">仮クレンジング</Button>
-            </Link>
-          </Space>
+          <Button type="primary" onClick={pdfPrint}>
+            print
+          </Button>
         }
       >
-        <Descriptions column={3} style={{ marginBottom: -16 }}>
-          <Descriptions.Item label="HAWB番号">
-            {props?.dataSource?.HAB}
-          </Descriptions.Item>
-          <Descriptions.Item label="MAWB番号">
-            {props?.dataSource?.MAB}
-          </Descriptions.Item>
-          {/* <Descriptions.Item label="派送单号"> </Descriptions.Item> */}
-          {/* <Descriptions.Item label="货物名称">肥宅快乐水</Descriptions.Item> */}
-          {/* <Descriptions.Item label="重量">12kg</Descriptions.Item> */}
-          {/* <Descriptions.Item label="快递员">吴昊</Descriptions.Item> */}
-        </Descriptions>
-        <br />
-        <Card size="small" title="寄件人信息">
-          <Descriptions column={1} style={{ marginBottom: -16 }}>
-            <Descriptions.Item label="寄件人">
-              {props?.dataSource?.EPN}
-            </Descriptions.Item>
-            <Descriptions.Item label="寄件联系方式"> - </Descriptions.Item>
-            <Descriptions.Item label="寄件人地址">
-              {props?.dataSource?.EAD}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
-        <br />
-        <Card size="small" title="收件人信息">
-          <Descriptions column={1} style={{ marginBottom: -16 }}>
-            <Descriptions.Item label="收件人">
-              {props?.dataSource?.receiver_name}
-            </Descriptions.Item>
-            <Descriptions.Item label="收件人联系方式">
-              {props?.dataSource?.receiver_tel}
-            </Descriptions.Item>
-            <Descriptions.Item label="收件人地址">
-              {props?.dataSource?.receiver_add}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
-        {/* <br />
-
-          <Card title="货物追踪">
-            <Timeline>
-              <Timeline.Item color="green">Create a services site 2015-09-01</Timeline.Item>
-              <Timeline.Item color="green">Create a services site 2015-09-01</Timeline.Item>
-              <Timeline.Item color="red">
-                <p>Solve initial network problems 1</p>
-                <p>Solve initial network problems 2</p>
-                <p>Solve initial network problems 3 2015-09-01</p>
-              </Timeline.Item>
-              <Timeline.Item>
-                <p>Technical testing 1</p>
-                <p>Technical testing 2</p>
-                <p>Technical testing 3 2015-09-01</p>
-              </Timeline.Item>
-              <Timeline.Item color="gray">
-                <p>Technical testing 1</p>
-                <p>Technical testing 2</p>
-                <p>Technical testing 3 2015-09-01</p>
-              </Timeline.Item>
-              <Timeline.Item color="gray">
-                <p>Technical testing 1</p>
-                <p>Technical testing 2</p>
-                <p>Technical testing 3 2015-09-01</p>
-              </Timeline.Item>
-            </Timeline>
-          </Card> */}
+        <canvas
+          ref={printRef}
+          width={2480}
+          height={3508}
+          style={{ width: 620, height: 877, background: '#FFF' }}
+        />
       </Modal>
-      <Button type="link" onClick={handleOpen}>
-        {props?.dataSource?.HAB}
+      <span>{props?.dataSource.HAB}</span>
+      <Button type="link" size="small" onClick={handleOpen} data-key="INV">
+        INV
+      </Button>
+      <Button type="link" size="small" onClick={handleOpen} data-key="INV2">
+        INV2
+      </Button>
+      <Button type="link" size="small" onClick={handleOpen} data-key="BL">
+        BL
       </Button>
     </>
   );

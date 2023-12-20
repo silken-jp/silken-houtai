@@ -9,6 +9,7 @@ import {
   Card,
   Space,
   Select,
+  message,
   Popconfirm,
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
@@ -101,6 +102,10 @@ const SimpleStatusInquiry: React.FC = () => {
   });
   const countWaybillHSCODE = useRequest(genMainHSCODE, {
     manual: true,
+    onError: (e: any) => {
+      message.destroy();
+      message.error(e?.data?.message, 30);
+    },
   });
 
   const rowSelection: any = {
