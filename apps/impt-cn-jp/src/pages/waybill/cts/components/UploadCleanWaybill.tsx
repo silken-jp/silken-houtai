@@ -144,7 +144,7 @@ const UploadCleanWaybill: React.FC<UploadCleanWaybillProps> = (props) => {
       message.error(error?.message);
       return {
         success: null,
-        failed: error,
+        failed: error?.message,
       };
     }
   }

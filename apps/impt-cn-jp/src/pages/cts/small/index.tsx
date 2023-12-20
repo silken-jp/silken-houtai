@@ -45,7 +45,7 @@ const SmallWaybill: React.FC = () => {
     state?.meta?.tabCount[state.tabKey as any],
   );
   // 批量打印 INV BL
-  const { handleDownload } = useDownloadINVBL('S');
+  const downloadINVBLApi = useDownloadINVBL('S');
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;
@@ -83,7 +83,7 @@ const SmallWaybill: React.FC = () => {
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
           </Button>
-          <Button onClick={handleDownload}>Print INV&BL</Button>
+          <Button onClick={downloadINVBLApi.run}>Print INV&BL</Button>
         </Space>
       </Row>
 

@@ -27,9 +27,8 @@ import {
 } from '@/services/request/waybill';
 import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
-// import WaybillModal from './components/WaybillModal';
 import WaybillModal from '@/components/Modal/WaybillModal';
-import useDownloadINV from '@/services/useCTSActions/useDownloadINV';
+import { useMutiINV } from '@/services/renderINV/useMutiINV';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -49,7 +48,10 @@ const Tracking: React.FC = () => {
 
   // api
   const { agentOptions } = useAgentOptions();
-  const { handleDownload } = useDownloadINV({ params: fixParams });
+  const downloadINV_API = useMutiINV({
+    params: fixParams,
+  });
+
   const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -102,9 +104,6 @@ const Tracking: React.FC = () => {
   const editWaybill = useRequest(updateWaybill, {
     manual: true,
   });
-  // const deleteWaybill = useRequest(deleteByWaybillId, {
-  //   manual: true,
-  // });
   const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
     manual: true,
     onSuccess: (data) => {
@@ -309,8 +308,7 @@ const Tracking: React.FC = () => {
                 <Button onClick={search.reset}>
                   {intlPages('search.reset')}
                 </Button>
-                <Button onClick={() => handleDownload(true)}>Print INV2</Button>
-                <Button onClick={() => handleDownload()}>Print INV&BL</Button>
+                <Button onClick={downloadINV_API.run}>Print INV&BL</Button>
               </Space>
             </Form.Item>
           </Col>

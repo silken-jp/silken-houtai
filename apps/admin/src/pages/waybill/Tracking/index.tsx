@@ -29,7 +29,7 @@ import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 // import WaybillModal from './components/WaybillModal';
 import WaybillModal from '@/components/Modal/WaybillModal';
-import useDownloadINV from '@/services/useCTSActions/useDownloadINV';
+import { useMutiINV } from '@/services/renderINV/useMutiINV';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -49,7 +49,7 @@ const Tracking: React.FC = () => {
 
   // api
   const { agentOptions } = useAgentOptions();
-  const { handleDownload } = useDownloadINV({ params: fixParams });
+  const downloadAPI = useMutiINV({ params: fixParams });
   const { userOptions } = useUserOptions();
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
@@ -309,8 +309,7 @@ const Tracking: React.FC = () => {
                 <Button onClick={search.reset}>
                   {intlPages('search.reset')}
                 </Button>
-                <Button onClick={() => handleDownload(true)}>Print INV2</Button>
-                <Button onClick={() => handleDownload()}>Print INV&BL</Button>
+                <Button onClick={downloadAPI.run}>Print INV&BL</Button>
               </Space>
             </Form.Item>
           </Col>

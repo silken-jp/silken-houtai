@@ -67,7 +67,7 @@ const UploadWaybill: React.FC<UploadWaybillProps> = (props) => {
       message.error(error?.message);
       return {
         success: null,
-        failed: error,
+        failed: error?.message,
       };
     }
   }

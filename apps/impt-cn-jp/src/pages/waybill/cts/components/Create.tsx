@@ -38,8 +38,8 @@ export function findValuesByKey(LS: string, data?: any) {
 }
 
 const formItemLayout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 15 },
+  labelCol: { span: 8 },
+  wrapperCol: { span: 14 },
 };
 const LS_OPT = [
   { value: 'M', label: 'M' },
@@ -144,7 +144,7 @@ const Create: React.FC<CreateProps> = (props) => {
       <Modal
         title="クリエート"
         visible={visible}
-        width={800}
+        width={900}
         forceRender
         okButtonProps={{ loading }}
         onCancel={handleCancel}
@@ -159,7 +159,7 @@ const Create: React.FC<CreateProps> = (props) => {
               <Select
                 size="small"
                 value={LS}
-                disabled
+                // disabled
                 onChange={(e) => setLS(e)}
                 options={LS_OPT}
               />
@@ -239,41 +239,51 @@ const Create: React.FC<CreateProps> = (props) => {
               >
                 <Input placeholder="到着港/取卸港コード" />
               </Form.Item>
-              {/* <Form.Item label="21.ST" name="ST" rules={[{ required: true }]}>
-                <Select placeholder="通関予定蔵置場コード" options={ST_OPT} />
-              </Form.Item>
-              <Form.Item label="22.TTC" name="TTC">
-                <Input placeholder="検査立会者" />
-              </Form.Item> */}
             </>
           ) : (
             <>
-              <Form.Item label="8.CH" name="CH" rules={[{ required: true }]}>
-                <Input placeholder="あて先官署コード" />
-              </Form.Item>
-              <Form.Item label="9.CHB" name="CHB" rules={[{ required: true }]}>
-                <Input placeholder="あて先部門コード" />
-              </Form.Item>
-              <Form.Item label="10.CHH" name="CHH">
-                <Input placeholder="特例申告あて先官署コード" />
-              </Form.Item>
-              <Form.Item label="11.CHT" name="CHT">
-                <Input placeholder="特例申告あて先部門コード" />
-              </Form.Item>
-              <Form.Item label="12.ICD" name="ICD" rules={[{ required: true }]}>
-                <Input placeholder="申告予定年月日" />
-              </Form.Item>
-              <Form.Item label="24.ST" name="ST" rules={[{ required: true }]}>
-                <Select placeholder="通関予定蔵置場コード" options={ST_OPT} />
-              </Form.Item>
-              <Form.Item label="37.TTC" name="TTC">
-                <Input placeholder="検査立会者" />
-              </Form.Item>
-              <Form.Item label="45.VSN" name="VSN">
+              <Form.Item label="45.積載機名（VSN）" name="VSN">
                 <Input placeholder="積載機名" />
               </Form.Item>
-              <Form.Item label="46.ARR" name="ARR">
+              <Form.Item label="46.到着/入港年月日（ARR）" name="ARR">
                 <Input placeholder="入港年月日" />
+              </Form.Item>
+              <Form.Item
+                label="12.申告予定年月日（ICD）"
+                name="ICD"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="申告予定年月日" />
+              </Form.Item>
+              <Form.Item
+                label="8.あて先官署コード（CH）"
+                name="CH"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="あて先官署コード" />
+              </Form.Item>
+              <Form.Item
+                label="9.あて先部門コード（CHB）"
+                name="CHB"
+                rules={[{ required: true }]}
+              >
+                <Input placeholder="あて先部門コード" />
+              </Form.Item>
+              <Form.Item label="10.特例申告あて先官署コード（CHH）" name="CHH">
+                <Input placeholder="特例申告あて先官署コード" />
+              </Form.Item>
+              <Form.Item label="11.特例申告あて先部門コード（CHT）" name="CHT">
+                <Input placeholder="特例申告あて先部門コード" />
+              </Form.Item>
+              <Form.Item
+                label="24.通関予定蔵置場コード（ST）"
+                name="ST"
+                rules={[{ required: true }]}
+              >
+                <Select placeholder="通関予定蔵置場コード" options={ST_OPT} />
+              </Form.Item>
+              <Form.Item label="37.検査立会者（TTC）" name="TTC">
+                <Input placeholder="検査立会者" />
               </Form.Item>
             </>
           )}
