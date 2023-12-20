@@ -663,4 +663,16 @@ declare namespace API {
     total: number;
     list: T[];
   };
+  type HScodes = {
+    CMD: string;
+    CMN: string;
+    HAB: string;
+    MAB: string;
+    NO: number;
+    SKU: string;
+    currency: string;
+    price: number;
+    unit_price: number;
+    tax_rate: number;
+  };
 }
