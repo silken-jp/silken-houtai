@@ -29,6 +29,7 @@ import {
 import HAWBForm from './components/HAWBForm';
 import Create from './components/Create';
 import UpdateWaybillIP1 from './components/UpdateWaybillIP1';
+import WaybillModal from '@/components/Modal/WaybillModal';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -257,10 +258,10 @@ const SimpleStatusInquiry: React.FC = () => {
         >
           <Table.Column
             sorter
-            width={100}
+            width={200}
             title="HAWB番号"
-            dataIndex="HAB"
             fixed="left"
+            render={(row) => <WaybillModal dataSource={row} />}
           />
           <Table.Column
             sorter
@@ -270,6 +271,7 @@ const SimpleStatusInquiry: React.FC = () => {
             fixed="left"
           />
           <Table.Column sorter width={60} title="LS" dataIndex="LS" />
+          {/* <Table.Column sorter width={60} title="個人使用" dataIndex="IP1" /> */}
           <Table.ColumnGroup title="代表HSCODE">
             <Table.Column
               sorter
