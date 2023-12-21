@@ -3,6 +3,10 @@
 
 declare namespace API {
   type ID = string;
+  type OPTION = {
+    value: any;
+    label: any;
+  };
   type Agent = {
     _id?: ID;
     name?: string;
@@ -12,15 +16,101 @@ declare namespace API {
     SHA?: string;
     STL?: string;
     AGT_CD?: string;
+    // BtoC 电商货物 报关费（清单报关
+    MIC_clearances?: {
+      count_start: number;
+      count_end: number;
+      hawb_price: number;
+    }[];
+    // BtoC 电商货物 报关费（IC报关）
+    IDA_clearances?: {
+      count_start: number;
+      count_end: number;
+      hawb_price: number;
+    }[];
+    // 二次上屋
+    SecondBondeds?: {
+      // 0
+      count_start: number;
+      // 10w
+      count_end: number;
+      // 5kg
+      limit_GW: number;
+      // 5kg以内25yen
+      limit_price: number;
+      // 超过5kg每kg价格
+      out_limit_kgs_price: number;
+    }[];
+    // 保管料
+    storages?: {
+      // 0
+      count_start: number;
+      // 10w
+      count_end: number;
+      // 7day
+      limit_days: number;
+      // 0
+      limit_price: number;
+      // 超过7day每kg*day价格
+      out_limit_days_kgs_price: number;
+    }[];
+    sagawa_to_c?: PriceTableGroup;
+    sagawa_u_packet?: PriceTableGroup;
+    yamato_to_c?: PriceTableGroup;
+    yamato_nekoposu?: PriceTableGroup;
   };
-  type Currency = {
+  type PriceTableGroup = {
+    delivery_price_table?: PriceTable;
+    return_price_table?: PriceTable;
+    resend_price_table?: PriceTable;
+  };
+  type PriceTable = {
+    state1: number;
+    state2: number;
+    state3: number;
+    state4: number;
+    state5: number;
+    state6: number;
+    state7: number;
+    state8: number;
+    state9: number;
+    state10: number;
+    state11: number;
+    state12: number;
+    GW_min: number;
+    GW_max: number;
+  }[];
+  type Billing = {
     _id?: ID;
-    country_name?: string;
-    currency_name?: string;
-    ISO?: string;
-    per_jpy?: string;
-    hundred_jpy?: string;
-    updatedAt?: string;
+    name?: string;
+    agent: API.ID;
+    start_date: string;
+    end_date: string;
+  };
+  type HAWBGroup = {
+    _id?: ID;
+    end_hab: string;
+    group_name: string;
+    cargo_type: string;
+    start_hab: string;
+    count: number;
+    used_count: number;
+  };
+  type AgentHAWB = {
+    _id?: ID;
+    agent: string;
+    group_name: string;
+    tracking_type: number;
+    cargo_type: number;
+    start_hab: string;
+    end_hab: string;
+    count: number;
+    used_count: number;
+  };
+  type CMN = {
+    _id?: ID;
+    origin_CMN?: string;
+    modifed_CMN?: string;
   };
   type Company = {
     _id?: ID;
@@ -46,6 +136,15 @@ declare namespace API {
     BW_add_en?: string;
     BW_tel?: string;
   };
+  type Currency = {
+    _id?: ID;
+    country_name?: string;
+    currency_name?: string;
+    ISO?: string;
+    per_jpy?: string;
+    hundred_jpy?: string;
+    updatedAt?: string;
+  };
   type Driver = {
     _id?: ID;
     name?: string;
@@ -62,6 +161,23 @@ declare namespace API {
     clearance_time?: number;
     createdAt?: string;
     updatedAt?: string;
+  };
+  type GW_FR3 = {
+    _id?: ID;
+    PSC?: string;
+    DST?: string;
+    FR2?: string;
+    _GW?: number;
+    FR3?: string;
+    _FR3?: number;
+  };
+  type GW_IP4 = {
+    _id?: ID;
+    GW_min?: number;
+    GW_max?: number;
+    interval?: number;
+    IP4_min?: number;
+    IP4_max?: number;
   };
   type Importer = {
     _id?: ID;
@@ -87,10 +203,29 @@ declare namespace API {
     Add3?: string;
     Add4?: string;
   };
+  type Irregular = {
+    HAB: string;
+    date: Date;
+    agent: string;
+    flight_date: string;
+    return_no: string;
+    resend_no: string;
+    return_price: number;
+    resend_price: number;
+    address_change_fee: number;
+    repack_fee: number;
+    label_change_fee: number;
+    tax_price: number;
+    no_tax_price: number;
+    tax_field_name: string;
+    no_tax_field_name: string;
+    tax_note: string;
+    no_tax_note: string;
+  };
   type Issue = {
     // -----------自社填写内容-------------
-    waybill: Waybill;
-    agent: Agent;
+    waybill: Waybill | ID;
+    agent: Agent | ID;
     created_user: ID;
     updated_user: ID;
     createdAt?: string;
@@ -98,6 +233,8 @@ declare namespace API {
     // // 通知人
     // receive_user: ID;
     // 問題該当
+    issue_type: number;
+    issue_reason: string[];
     issue_category: string;
     // 問題详情
     issue_detail: string;
@@ -139,6 +276,11 @@ declare namespace API {
     // 備考
     solve_note: string;
   };
+  type MAB = {
+    _id?: ID;
+    first_bonded: number;
+    second_bonded: number;
+  };
   type MICkeys = {
     _id?: ID;
     words?: string;
@@ -148,6 +290,7 @@ declare namespace API {
     waybill_status: 0 | 1 | 2 | 3; // ["other","normal","hold","sendBack"]
   };
   type Track = {
+    _id?: ID;
     waybill?: string;
     agent?: string;
     // お問い合わせ送り状NO: 361190298405(27,39)
@@ -189,6 +332,7 @@ declare namespace API {
     }>;
   };
   type Tracking = {
+    _id?: ID;
     waybill?: string;
     // 輸出入区分
     DAT_TPE?: string;
@@ -208,30 +352,23 @@ declare namespace API {
       RAW_XML?: string;
     }>;
   };
-  type User = {
-    _id?: ID;
-    name?: string;
-    initialName?: string;
-    tel?: string;
-    email?: string;
-    password?: string;
-    is_cleanser?: boolean;
-    is_broker?: boolean;
-    is_creator?: boolean;
-  };
   type WaybillMonthStat = {
     mawbThisMonthCount: number;
     mawbLastMonthCount: number;
     mawbTodayCount: number;
+    mawbNextDayCount: number;
     waybillThisMonthCount: number;
     waybillLastMonthCount: number;
     waybillTodayCount: number;
+    waybillNextDayCount: number;
     NOThisMonthCount: number;
     NOLastMonthCount: number;
     NOTodayCount: number;
+    NONextDayCount: number;
     GWThisMonthCount: number;
     GWLastMonthCount: number;
     GWTodayCount: number;
+    GWNextDayCount: number;
   };
   type WaybillDateStat = Array<{
     sum: number;
@@ -250,6 +387,7 @@ declare namespace API {
     io_type: number;
     // IDA or MIC
     waybill_type: string;
+    agentId: string;
     // IDA类型
     IDA_type: string;
     // {0: other, 1: normal, 2: hold, 3: sendBack}
@@ -458,6 +596,9 @@ declare namespace API {
       arr_code2: string;
       zipcode: string;
     };
+    main_HSCODE_tax: string;
+    main_HSCODE_no_tax: string;
+    waybillhscodes?: HScodes[];
     HSRepeat?: {
       CMD?: string;
       CM2?: string;
@@ -478,6 +619,40 @@ declare namespace API {
       RE?: string;
       REG?: string;
     }[];
+    deliveryInvoice: {
+      invoice_no: string; //請求書番号
+      customer_no: string; //お客様コード
+      customer_name1: string; //お客様名称１
+      customer_name2: string; //お客様名称２
+      document_type: string; //伝票種別
+      office_type: string; //担当営業所種別
+      office_name: string; //担当営業所名称
+      date_type: string; //日付種別
+      shipment_date: string; //出荷日
+      hab: string; //お問合せNO
+      state: string; //都道府県
+      sales_office_type: string; //営業所種別
+      sales_office_name: string; //営業所名称
+      flight_type: string; //便種名称
+      no: number; //個数
+      tax_category: string; //税区分
+      fee: number; //運賃合計金額
+      COD_fee: number; //代引手数料
+      insurance_fee: number; //保険料
+      relay_fee: number; //中継料
+      total_fee: number; //運賃請求金額
+    };
+  };
+  type User = {
+    _id?: ID;
+    name?: string;
+    initialName?: string;
+    tel?: string;
+    email?: string;
+    password?: string;
+    is_cleanser?: boolean;
+    is_broker?: boolean;
+    is_creator?: boolean;
   };
   type ZipCode = {
     _id?: ID;
@@ -489,5 +664,17 @@ declare namespace API {
   type Result<T = any> = {
     total: number;
     list: T[];
+  };
+  type HScodes = {
+    CMD: string;
+    CMN: string;
+    HAB: string;
+    MAB: string;
+    NO: number;
+    SKU: string;
+    currency: string;
+    price: number;
+    unit_price: number;
+    tax_rate: number;
   };
 }

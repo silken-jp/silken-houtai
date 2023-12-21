@@ -25,7 +25,6 @@ export async function renderINV(
     ctx.font = '42px msgothic';
     ctx.fillText(data.HAB, 1240, fixY);
     ctx.textAlign = 'right';
-    isIDA && ctx.fillText('1/2', 2330, fixY);
 
     br(250);
     ctx.textAlign = 'center';
@@ -121,12 +120,12 @@ export async function renderINV(
     ctxLine(ctx, { points: [1600, fixY, 1600, fixY + 100] });
     ctx.fillText(data?.NO?.toString() || '', 1620, fixY + 65);
     ctxLine(ctx, { points: [1950, fixY, 1950, fixY + 100] });
-    ctx.fillText(`${data?.IP3 || ''} ${data?.IP4 || ''}`, 1970, fixY + 65);
+    ctx.fillText(`${data?.IP3 || ''} ${data?._NT1 || ''}`, 1970, fixY + 65);
     // 第3行
     br();
     ctx.fillText('TOTAL', 170, fixY + 65);
     ctx.textAlign = 'right';
-    ctx.fillText(`${data?.IP3 || ''} ${data?.IP4 || ''}`, 2310, fixY + 65);
+    ctx.fillText(`${data?.IP3 || ''} ${data?._NT1 || ''}`, 2310, fixY + 65);
 
     // 总结
     br(215);
@@ -140,13 +139,6 @@ export async function renderINV(
     // ctx.fillText(data?.IP2 || "", 350, fixY);
     ctx.fillText('Country Of Origin:', 1200, fixY);
     ctx.fillText(data?.OR || '', 1650, fixY);
-
-    if (isIDA) {
-      br(200);
-      ctx.fillText('本件、個人使用の為、下記の様に申告致します。', 150, fixY);
-      br();
-      ctx.fillText(data?.NT1 || '', 150, fixY);
-    }
   } catch (error) {
     message.error('');
     console.log(error);

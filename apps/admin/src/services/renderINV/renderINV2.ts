@@ -29,12 +29,24 @@ async function renderINV2(ctx: CanvasRenderingContext2D, data: API.Waybill) {
     ctx.fillStyle = 'black';
     ctx.strokeStyle = 'black';
 
+    ctx.textAlign = 'left';
+    ctx.font = '42px msgothic';
+    br(200);
+    if (data?.IP1 === 'D') {
+      ctx.fillText(
+        `本件、個人使用の為、${data?._NT1}${data?.IP3} * 0.6 = ${data?.IP4}${data?.IP3} 申告致します。`,
+        150,
+        fixY,
+      );
+    } else {
+      ctx.fillText(`非個人使用。`, 150, fixY);
+    }
     br(200);
     ctx.textAlign = 'center';
     ctx.font = '42px msgothic';
     ctx.fillText(data.HAB, 1240, fixY);
     ctx.textAlign = 'right';
-    ctx.fillText('2/2', 2330, fixY);
+    // ctx.fillText('2/2', 2330, fixY);
 
     br(250);
     ctx.textAlign = 'center';
@@ -57,7 +69,6 @@ async function renderINV2(ctx: CanvasRenderingContext2D, data: API.Waybill) {
     ctx.fillStyle = '#f0f0f0';
     ctx.strokeStyle = '#f0f0f0';
     ctxLine(ctx, { points: [150, fixY, 2330, fixY] });
-    // ctx.strokeRect(150, fixY, 2180, 2200);
     const tableStartY = fixY;
 
     // 第1行
