@@ -114,10 +114,12 @@ const SimpleStatusInquiry: React.FC = () => {
   const genMutiMainHSCODE_API = useRequest(genMutiMainHSCODE, {
     manual: true,
     onError: (e: any) => {
+      refresh();
       message.destroy();
       message.error(e?.data?.message, 30);
     },
     onSuccess: () => {
+      refresh();
       message.success('計算代表HSCODE成功しました。');
     },
   });
@@ -269,11 +271,11 @@ const SimpleStatusInquiry: React.FC = () => {
             <Button
               disabled={!selectedRows?.length}
               loading={genMutiMainHSCODE_API.loading}
-              onClick={() =>
+              onClick={() => {
                 genMutiMainHSCODE_API.run({
                   ids: selectedRows?.map(({ _id }) => _id) || [],
-                })
-              }
+                });
+              }}
             >
               計算代表HSCODE
             </Button>
