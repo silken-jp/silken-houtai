@@ -33,7 +33,13 @@ export const SimpleManifestItems = [
   { no: 39, limit: 5, name: 'PSC', holder: '積出地コード' },
   { no: 38, limit: 3, name: 'DST', holder: '取卸港コード' },
   { no: 51, limit: 2, name: 'OR', holder: '原産地コード' },
-  { no: 40, limit: 1, name: 'IP1', holder: 'インボイス価格区分コード' },
+  {
+    type: 'text',
+    no: 40,
+    limit: 1,
+    name: 'IP1',
+    holder: 'インボイス価格区分コード',
+  },
   { no: 41, limit: 3, name: 'IP2', holder: 'インボイス価格条件コード' },
   { no: 42, limit: 3, name: 'IP3', holder: 'インボイス通貨コード' },
   {
@@ -145,8 +151,11 @@ const HAWBForm: React.FC<HAWBFormProps> = (props) => {
         >
           <Input placeholder="品名" autoComplete="off" />
         </Form.Item>
-        <Form.Item label="値段" name="_NT1" rules={[{ required: true }]}>
-          <InputNumber placeholder="値段" autoComplete="off" step={0.01} />
+        <Form.Item label="原値段" name="_NT1" rules={[{ required: true }]}>
+          <InputNumber placeholder="原値段" autoComplete="off" step={0.01} />
+        </Form.Item>
+        <Form.Item label="値段記事" name="NT1">
+          <Input placeholder="値段記事" autoComplete="off" step={0.01} />
         </Form.Item>
         {/* {LS !== 'M' && (
           <Form.Item label="繰返部" required>

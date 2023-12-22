@@ -9,6 +9,7 @@ import {
   Card,
   Space,
   Select,
+  Typography,
   Popconfirm,
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
@@ -192,16 +193,47 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ y: 'calc(100vh - 400px)' }}
+          scroll={{ x: 2300, y: 'calc(100vh - 400px)' }}
         >
           <Table.Column sorter width={120} title="MAWB番号" dataIndex="MAB" />
           <Table.Column sorter width={120} title="HAWB番号" dataIndex="HAB" />
-          <Table.Column sorter width={120} title="SKU" dataIndex="SKU" />
+          <Table.Column
+            sorter
+            width={180}
+            title="订单号"
+            dataIndex="order_no"
+          />
+          <Table.Column
+            sorter
+            width={200}
+            title="中文品名"
+            dataIndex="CMN_cn"
+          />
           <Table.Column sorter width={200} title="英文品名" dataIndex="CMN" />
           <Table.Column width={60} title="数量" dataIndex="NO" />
           <Table.Column width={100} title="価格" dataIndex="price" />
           <Table.Column width={60} title="币种" dataIndex="currency" />
+          <Table.Column
+            width={100}
+            title="URL"
+            dataIndex="URL"
+            render={(url: string) => (
+              <Typography.Text ellipsis>
+                <a target="_blank" href={url}>
+                  {url}
+                </a>
+              </Typography.Text>
+            )}
+          />
+          <Table.Column width={120} title="销售品名" dataIndex="CMN_sale" />
+          <Table.Column width={120} title="材质" dataIndex="material" />
+          <Table.Column
+            width={120}
+            title="编织方式"
+            dataIndex="weaving_style"
+          />
           <Table.Column width={100} title="HSCODE" dataIndex="CMD" />
+          <Table.Column sorter width={120} title="SKU" dataIndex="SKU" />
           <Table.Column width={100} title="税率" dataIndex="tax_rate" />
         </Table>
       </Card>

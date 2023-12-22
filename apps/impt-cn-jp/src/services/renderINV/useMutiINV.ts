@@ -10,19 +10,18 @@ interface UseMutiINV {
 
 export function useMutiINV(opt: UseMutiINV) {
   const downloadINVApi = useRequest(
-    async () =>
-      await getAllWaybillsForwarder({
+    async () => {
+      const res = await getAllWaybillsForwarder({
         ...opt?.params,
         page: 0,
         perPage: 100000000,
-      }),
+      });
+      await renderMutiINV(res.waybills);
+    },
     {
       manual: true,
       onError: (err) => {
         message.error(err?.message);
-      },
-      onSuccess: async (data) => {
-        renderMutiINV(data.waybills);
       },
     },
   );

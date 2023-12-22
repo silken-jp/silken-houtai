@@ -10,6 +10,7 @@ import {
   Space,
   Select,
   message,
+  Radio,
   Popconfirm,
 } from 'antd';
 import { useAntdTable, useRequest } from 'ahooks';
@@ -25,6 +26,8 @@ import {
   deleteByWaybillId,
   getAllWaybills,
   genMainHSCODE,
+  genMutiMainHSCODE,
+  modifyWaybillIP1,
 } from '@/services/request/waybill';
 import HAWBForm from './components/HAWBForm';
 import Create from './components/Create';
@@ -51,7 +54,7 @@ const LS_OPT: any[] = [
 const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
-  const [selectedRows, setSelectedRows] = useState<any>();
+  const [selectedRows, setSelectedRows] = useState<any[] | null>();
   const [disCreating, setDisCreating] = useState<boolean>(true);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
@@ -101,7 +104,24 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteWaybill = useRequest(deleteByWaybillId, {
     manual: true,
   });
-  const countWaybillHSCODE = useRequest(genMainHSCODE, {
+  const genMainHSCODE_API = useRequest(genMainHSCODE, {
+    manual: true,
+    onError: (e: any) => {
+      message.destroy();
+      message.error(e?.data?.message, 30);
+    },
+  });
+  const genMutiMainHSCODE_API = useRequest(genMutiMainHSCODE, {
+    manual: true,
+    onError: (e: any) => {
+      message.destroy();
+      message.error(e?.data?.message, 30);
+    },
+    onSuccess: () => {
+      message.success('計算代表HSCODE成功しました。');
+    },
+  });
+  const modifyWaybillIP1API = useRequest(modifyWaybillIP1, {
     manual: true,
     onError: (e: any) => {
       message.destroy();
@@ -228,7 +248,7 @@ const SimpleStatusInquiry: React.FC = () => {
             <Popconfirm
               title="選択したHAWBをすべて削除しますか?"
               onConfirm={async () => {
-                for await (const iterator of selectedRows) {
+                for await (const iterator of selectedRows || []) {
                   await deleteWaybill.runAsync({
                     waybillId: iterator?._id,
                   });
@@ -246,6 +266,17 @@ const SimpleStatusInquiry: React.FC = () => {
                 削除
               </Button>
             </Popconfirm>
+            <Button
+              disabled={!selectedRows?.length}
+              loading={genMutiMainHSCODE_API.loading}
+              onClick={() =>
+                genMutiMainHSCODE_API.run({
+                  ids: selectedRows?.map(({ _id }) => _id) || [],
+                })
+              }
+            >
+              計算代表HSCODE
+            </Button>
           </Space>
         }
       >
@@ -254,7 +285,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 3600 }}
+          scroll={{ x: 4000 }}
         >
           <Table.Column
             sorter
@@ -270,17 +301,48 @@ const SimpleStatusInquiry: React.FC = () => {
             dataIndex="MAB"
             fixed="left"
           />
-          <Table.Column sorter width={60} title="LS" dataIndex="LS" />
+          <Table.Column sorter width={50} title="LS" dataIndex="LS" />
+          <Table.ColumnGroup title="申告">
+            <Table.Column
+              width={100}
+              title="申告値段"
+              render={(row) => row?.IP4 + row?.IP3}
+            />
+            <Table.Column
+              title="個人使用"
+              width={100}
+              render={(row) => (
+                <Radio.Group
+                  size="small"
+                  value={row.IP1}
+                  buttonStyle="solid"
+                  onChange={async (e) => {
+                    await modifyWaybillIP1API.runAsync({
+                      id: row?._id,
+                      IP1: e.target.value,
+                    });
+                    refresh();
+                  }}
+                >
+                  <Radio.Button value="A">A</Radio.Button>
+                  <Radio.Button value="B">B</Radio.Button>
+                  <Radio.Button value="C">C</Radio.Button>
+                  <Radio.Button value="D">D</Radio.Button>
+                </Radio.Group>
+              )}
+            />
+          </Table.ColumnGroup>
+
           <Table.ColumnGroup title="代表HSCODE">
             <Table.Column
               sorter
-              width={100}
+              width={160}
               title="課税"
               dataIndex="main_HSCODE_tax"
             />
             <Table.Column
               sorter
-              width={100}
+              width={160}
               title="非課税"
               dataIndex="main_HSCODE_no_tax"
             />
@@ -290,8 +352,9 @@ const SimpleStatusInquiry: React.FC = () => {
               render={(item) =>
                 item?.waybill_type === 'IDA' && (
                   <Button
+                    loading={genMainHSCODE_API.loading}
                     onClick={async () => {
-                      await countWaybillHSCODE.runAsync({
+                      await genMainHSCODE_API.runAsync({
                         waybillId: item?._id,
                       });
                       refresh();
