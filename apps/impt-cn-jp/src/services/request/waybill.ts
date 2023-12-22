@@ -383,3 +383,30 @@ export async function genMainHSCODE(params: GenMainHSCODE) {
     },
   );
 }
+
+// 批量获取INV GET /api/waybills/get-multi-main-hscode
+interface GenMutiMainHSCODE {
+  ids: API.ID[];
+}
+export async function genMutiMainHSCODE(params: GenMutiMainHSCODE) {
+  return request<any>(ApiURL + '/waybills/get-multi-main-hscode', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}
+
+// 批量获取INV GET /api/waybills/modify-waybill-ip1
+interface ModifyWaybillIP1 {
+  id: API.ID;
+  IP1: string;
+}
+export async function modifyWaybillIP1(params: ModifyWaybillIP1) {
+  return request<any>(ApiURL + '/waybills/modify-waybill-ip1', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
+}

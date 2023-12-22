@@ -308,7 +308,12 @@ const Tracking: React.FC = () => {
                 <Button onClick={search.reset}>
                   {intlPages('search.reset')}
                 </Button>
-                <Button onClick={downloadINV_API.run}>Print INV&BL</Button>
+                <Button
+                  loading={downloadINV_API.loading}
+                  onClick={downloadINV_API.run}
+                >
+                  Print INV&BL
+                </Button>
               </Space>
             </Form.Item>
           </Col>

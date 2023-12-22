@@ -15,6 +15,7 @@ export async function renderMutiINV(data: any) {
   if (!ctx) throw '';
   for (let index = 0; index < data.length; index++) {
     const element = data[index];
+    const isIDA = element.waybill_type === 'IDA';
     const doc = new jsPDF({
       orientation: 'p',
       format: 'a4',
@@ -26,7 +27,7 @@ export async function renderMutiINV(data: any) {
     doc.addImage(dataINV, 'jpeg', 0, 0, w, h);
     doc.addPage('a4', 'p');
 
-    if (data.waybill_type === 'IDA') {
+    if (isIDA) {
       await renderINV2(ctx, element);
       const dataINV2 = canvas.toDataURL('image/jpeg', 1.0);
       doc.addImage(dataINV2, 'jpeg', 0, 0, w, h);
@@ -36,7 +37,8 @@ export async function renderMutiINV(data: any) {
     await renderBL(ctx, element);
     const dataBL = canvas.toDataURL('image/jpeg', 1.0);
     doc.addImage(dataBL, 'jpeg', 0, 0, w, h);
-    zip.file(`${element?.HAB}.pdf`, doc.output('blob'));
+
+    zip.file(`${element?.ID || '*'}-${element?.HAB}.pdf`, doc.output('blob'));
   }
 
   zip

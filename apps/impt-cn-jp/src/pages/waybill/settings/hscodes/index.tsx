@@ -1,9 +1,10 @@
-import { Table, Card } from 'antd';
+import { Table, Card, Space } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { getAllHScodes, importHScodes } from '@/services/request/hscodes';
+import ExportHSCODESettingXlsx from '../components/ExportHSCODESettingXlsx';
 
 const successFormat = (count: number, sum: number) => ({
   message: `Upload Completed`,
@@ -22,9 +23,12 @@ function fixItemToObj(params: any[]) {
     let obj: { [key: string]: any } = {};
     if (!line || line?.length === 0) continue;
     for (let j = 0; j < line.length; j++) {
-      const h = headers?.[j]?.trim?.();
+      let h = headers?.[j]?.trim?.();
       if (!h) continue;
       if (line[j] !== null || line[j] !== undefined) {
+        if (h === 'CMD') {
+          h = 'hscode';
+        }
         obj[h] = line?.[j]?.toString?.();
       }
     }
@@ -78,7 +82,15 @@ const HScodes: React.FC = () => {
         },
       }}
     >
-      <Card title="税号归类参考" extra={<UploadXlsx onUpload={handleUpload} />}>
+      <Card
+        title="税号归类参考"
+        extra={
+          <Space>
+            <ExportHSCODESettingXlsx />
+            <UploadXlsx onUpload={handleUpload} text="アップロード" />
+          </Space>
+        }
+      >
         <Table
           rowKey="_id"
           size="small"

@@ -40,17 +40,26 @@ const ExportWaybillHSCODEXlsx: React.FC<ExportWaybillHSCODEXlsxProps> = (
     },
   );
 
-  const handleExport = (data: any[]) => {
+  const handleExport = (data: API.HScodes[]) => {
     // 修正数据格式
     const fixExportData = data.map((item) => ({
       MAB: item?.MAB,
       HAB: item?.HAB,
-      SKU: item?.SKU,
+      order_no: item?.order_no,
+      CMN_cn: item?.CMN_cn,
       CMN: item?.CMN,
       NO: item?.NO,
       price: item?.price,
       currency: item?.currency,
+      URL: item?.URL,
+      CMN_sale: item?.CMN_sale,
+      material: item?.material,
+      weaving_style: item?.weaving_style,
       CMD: item?.CMD,
+      SKU: item?.SKU,
+      OR: item?.OR,
+      unit_price: item?.unit_price,
+      tax_rate: item?.tax_rate,
     }));
 
     let wb = XLSX.utils.book_new();
