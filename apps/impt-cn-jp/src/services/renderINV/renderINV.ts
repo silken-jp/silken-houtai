@@ -86,10 +86,8 @@ export async function renderINV(
     // ctx.fillText(data?.Zip, 600, 1150 + fixY);
 
     br(200);
-    ctx.fillText('Incoterms:', 150, fixY);
-    ctx.fillText(data?.IP2 || '', 350, fixY);
-    ctx.fillText('Currency:', 1200, fixY);
-    ctx.fillText(data?.IP3 || '', 1450, fixY);
+    ctx.fillText(`Incoterms:  ${data?.IP2 || ''}`, 150, fixY);
+    ctx.fillText(`Currency:  ${data?.IP3 || ''}`, 1200, fixY);
 
     // table
     br(50);
@@ -130,15 +128,21 @@ export async function renderINV(
     // 总结
     br(215);
     ctx.textAlign = 'left';
-    ctx.fillText('TOTAL Piece:', 150, fixY);
-    ctx.fillText(data?.PCS?.toString() || '', 450, fixY);
-    ctx.fillText('Freight:', 1200, fixY);
-    ctx.fillText(`${data?.FR3 || ''} ${data?.FR2 || ''}`, 1450, fixY);
+    ctx.fillText(`TOTAL Piece:  ${data?.PCS?.toString() || ''}`, 150, fixY);
+    ctx.fillText(`Freight:  ${data?.FR3 || ''} ${data?.FR2 || ''}`, 1200, fixY);
     br();
-    ctx.fillText('Signed by:', 150, fixY);
-    // ctx.fillText(data?.IP2 || "", 350, fixY);
-    ctx.fillText('Country Of Origin:', 1200, fixY);
-    ctx.fillText(data?.OR || '', 1650, fixY);
+    ctx.fillText(`Signed by:`, 150, fixY);
+    // ctx.fillText(`Signed by: ${data?.IP2 || ""}`, 150, fixY);
+    ctx.fillText(`Country Of Origin:  ${data?.OR || ''}`, 1200, fixY);
+
+    if (data?.IP1 === 'D') {
+      br(200);
+      ctx.fillText(
+        `本件、個人使用の為、${data?._NT1}${data?.IP3} * 0.6 = ${data?.IP4}${data?.IP3} 申告致します。`,
+        150,
+        fixY,
+      );
+    }
   } catch (error) {
     message.error('');
     console.log(error);
