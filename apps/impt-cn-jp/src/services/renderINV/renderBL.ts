@@ -106,9 +106,14 @@ async function renderBL(ctx: CanvasRenderingContext2D, data: API.Waybill) {
 
     br(250);
     // 左列
+    wrapText(ctx, {
+      text: data?.CMN || '',
+      x: 600,
+      y: fixY - 100,
+      maxWidth: 750,
+    });
     ctx.fillText('Product name', 200, fixY - 140);
     ctx.fillText('name/品名', 200, fixY - 70);
-    ctx.fillText(data?.CMN || '', 600, fixY - 100);
     // 右列
     ctx.fillText('Pcs/個数', 1500, fixY - 160);
     ctx.fillText('Weight/重量', 1500, fixY - 80);

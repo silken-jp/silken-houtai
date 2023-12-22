@@ -2,13 +2,21 @@ export function wrapText(
   ctx: CanvasRenderingContext2D,
   opt: {
     text: string;
-    x: number;
-    y: number;
+    x?: number;
+    y?: number;
     maxWidth: number;
     lineHeight?: number;
+    is_count?: boolean;
   },
 ) {
-  let { text = '', x = 0, y = 0, maxWidth = 0, lineHeight = 50 } = opt;
+  let {
+    text = '',
+    x = 0,
+    y = 0,
+    maxWidth = 0,
+    lineHeight = 50,
+    is_count = false,
+  } = opt;
   // 字符分隔为数组
   const arrText = text.split(' ');
   let line = '';
@@ -19,7 +27,7 @@ export function wrapText(
     const metrics = ctx.measureText(testLine);
     const testWidth = metrics.width;
     if (testWidth > maxWidth && n > 0) {
-      ctx.fillText(line, x, y);
+      !is_count && ctx.fillText(line, x, y);
       line = arrText[n] + ' ';
       y += lineHeight;
       height += lineHeight;
@@ -27,7 +35,7 @@ export function wrapText(
       line = testLine;
     }
   }
-  ctx.fillText(line, x, y);
+  !is_count && ctx.fillText(line, x, y);
   return height;
 }
 

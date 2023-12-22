@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "UMI_ENV=dev umi dev",
     "dev:host": "UMI_ENV=host umi dev",
-    "dev:prod": "UMI_ENV=prod umi dev",
+    "dev:prod": "UMI_ENV=dev_prod umi dev",
     "build": "UMI_ENV=dev umi build",
     "build:prod": "UMI_ENV=prod umi build"
   },
