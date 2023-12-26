@@ -131,7 +131,7 @@ async function renderINV2(ctx: CanvasRenderingContext2D, data: API.Waybill) {
     ctxLine(ctx, { points: [2330, tableStartY, 2330, fixY + 100] });
     ctx.fillText('TOTAL', 170, fixY + 65);
     ctx.textAlign = 'right';
-    ctx.fillText(`${data?.IP3 || ''} ${data?.IP4 || ''}`, 2310, fixY + 65);
+    ctx.fillText(`${data?.IP3 || ''} ${data?._NT1 || ''}`, 2310, fixY + 65);
 
     br();
     ctxLine(ctx, { points: [150, fixY, 2330, fixY] });
