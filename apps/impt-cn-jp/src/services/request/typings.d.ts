@@ -86,6 +86,7 @@ declare namespace API {
     agent: API.ID;
     start_date: string;
     end_date: string;
+    waybills_obj: any;
   };
   type HAWBGroup = {
     _id?: ID;
