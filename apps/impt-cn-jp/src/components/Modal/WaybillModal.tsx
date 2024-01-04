@@ -11,6 +11,7 @@ export interface WaybillProps {
 const Waybill: React.FC<WaybillProps> = (props) => {
   // state
   const [visibleKey, setVisibleKey] = useState<string>('');
+  const [images, setImages] = useState<string[]>([]);
   const printRef = useRef<HTMLCanvasElement>(null);
 
   // action
@@ -20,7 +21,8 @@ const Waybill: React.FC<WaybillProps> = (props) => {
     ) as keyof typeof renderINV;
     const ctx = printRef.current?.getContext('2d');
     if (printRef.current && ctx && renderKey) {
-      await renderINV[renderKey](ctx, props.dataSource);
+      const img = await renderINV[renderKey](ctx, props.dataSource);
+      setImages(img || []);
     }
     setVisibleKey(renderKey);
   };
@@ -33,15 +35,18 @@ const Waybill: React.FC<WaybillProps> = (props) => {
       orientation: 'p',
       format: 'a4',
     });
-    const dataURI = printRef.current.toDataURL('image/jpeg', 1.0);
-    doc.addImage(
-      dataURI,
-      'jpeg',
-      0,
-      0,
-      doc.internal.pageSize.width,
-      doc.internal.pageSize.height,
-    );
+    for (let index = 0; index < images.length; index++) {
+      if (index > 0) doc.addPage();
+      const dataURI = images[index];
+      doc.addImage(
+        dataURI,
+        'jpeg',
+        0,
+        0,
+        doc.internal.pageSize.width,
+        doc.internal.pageSize.height,
+      );
+    }
     doc.save(`${props?.dataSource?.HAB}_${visibleKey}.pdf`);
   };
 
@@ -69,8 +74,18 @@ const Waybill: React.FC<WaybillProps> = (props) => {
           ref={printRef}
           width={2480}
           height={3508}
+          hidden
           style={{ width: 620, height: 877, background: '#FFF' }}
         />
+        {images.map((src, k) => {
+          return (
+            <img
+              key={k}
+              src={src}
+              style={{ width: 620, height: 877, background: '#FFF' }}
+            />
+          );
+        })}
       </Modal>
       <span>{props?.dataSource.HAB}</span>
       <Button type="link" size="small" onClick={handleOpen} data-key="INV">

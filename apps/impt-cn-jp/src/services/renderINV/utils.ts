@@ -39,6 +39,34 @@ export function wrapText(
   return height;
 }
 
+export function wrapTextCount(
+  ctx: CanvasRenderingContext2D,
+  opt: {
+    text: string;
+    maxWidth: number;
+    lineHeight?: number;
+  },
+) {
+  let { text = '', maxWidth = 0 } = opt;
+  // 字符分隔为数组
+  const arrText = text.split(' ');
+  let line = '';
+  let count = 1;
+
+  for (let n = 0; n < arrText.length; n++) {
+    const testLine = line + arrText[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+    const testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      line = arrText[n] + ' ';
+      count++;
+    } else {
+      line = testLine;
+    }
+  }
+  return count;
+}
+
 export function ctxLine(
   ctx: CanvasRenderingContext2D,
   opt: {
