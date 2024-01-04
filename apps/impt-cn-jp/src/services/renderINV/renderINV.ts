@@ -143,6 +143,8 @@ export async function renderINV(
         fixY,
       );
     }
+
+    return [ctx.canvas.toDataURL('image/jpeg', 1.0)];
   } catch (error) {
     message.error('');
     console.log(error);

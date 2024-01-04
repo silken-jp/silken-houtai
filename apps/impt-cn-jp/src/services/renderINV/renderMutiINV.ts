@@ -28,10 +28,14 @@ export async function renderMutiINV(data: any) {
     doc.addPage('a4', 'p');
 
     if (isIDA) {
-      await renderINV2(ctx, element);
-      const dataINV2 = canvas.toDataURL('image/jpeg', 1.0);
-      doc.addImage(dataINV2, 'jpeg', 0, 0, w, h);
-      doc.addPage('a4', 'p');
+      const dataINV2s = await renderINV2(ctx, element);
+      if (dataINV2s) {
+        for (let index = 0; index < dataINV2s?.length; index++) {
+          const dataURI = dataINV2s[index];
+          doc.addImage(dataURI, 'jpeg', 0, 0, w, h);
+          doc.addPage('a4', 'p');
+        }
+      }
     }
 
     await renderBL(ctx, element);

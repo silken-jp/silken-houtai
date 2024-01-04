@@ -121,6 +121,8 @@ async function renderBL(ctx: CanvasRenderingContext2D, data: API.Waybill) {
     ctx.fillText(data?.PCS?.toString() || '', 1900, fixY - 160);
     ctx.fillText(`${data?.GW || ''} ${data?.GWT || ''}`, 1900, fixY - 80);
     ctx.fillText(`${data?.FR3 || ''} ${data?.FR2 || ''}`, 1900, fixY);
+
+    return [ctx.canvas.toDataURL('image/jpeg', 1.0)];
   } catch (error) {
     message.error('');
     console.log(error);

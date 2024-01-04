@@ -28,3 +28,13 @@ export async function importHScodes(params: ImportMultiHScodes) {
     },
   });
 }
+
+// 删除HS code DELETE /api/hscodes/:id
+interface DeleteHscodesById {
+  hscodeId: API.ID;
+}
+export async function deleteHscodesById(params: DeleteHscodesById) {
+  return request<any>(ApiURL + '/hscodes/' + params.hscodeId, {
+    method: 'DELETE',
+  });
+}
