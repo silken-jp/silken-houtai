@@ -68,7 +68,7 @@ const ExportWaybillXlsx: React.FC<ExportWaybillXlsxProps> = (props) => {
         IP1: d?.IP1,
         IP2: d?.IP2,
         IP3: d?.IP3,
-        IP4: d?.IP4,
+        IP4: d?._NT1,
         FR1: d?.FR1,
         FR2: d?.FR2,
         FR3: d?.FR3,
