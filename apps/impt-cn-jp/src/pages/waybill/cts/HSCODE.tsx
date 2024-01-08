@@ -225,7 +225,14 @@ const SimpleStatusInquiry: React.FC = () => {
               </Typography.Text>
             )}
           />
-          <Table.Column width={120} title="销售品名" dataIndex="CMN_sale" />
+          <Table.Column
+            width={120}
+            title="销售品名"
+            dataIndex="CMN_sale"
+            render={(CMN_sale: string) => (
+              <Typography.Text ellipsis>{CMN_sale}</Typography.Text>
+            )}
+          />
           <Table.Column width={120} title="材质" dataIndex="material" />
           <Table.Column
             width={120}
