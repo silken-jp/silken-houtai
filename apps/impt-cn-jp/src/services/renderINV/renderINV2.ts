@@ -44,7 +44,7 @@ async function renderINV2(ctx: CanvasRenderingContext2D, data: API.Waybill) {
 
     return resData.map((_, k) => {
       renderINV2Page(ctx, data, resData, k);
-      return ctx.canvas.toDataURL('image/jpeg', 1.0);
+      return ctx.canvas.toDataURL('image/jpeg', 0.6);
     });
   } catch (error) {
     message.error('');

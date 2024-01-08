@@ -23,7 +23,7 @@ export async function renderMutiINV(data: any) {
     const w = doc.internal.pageSize.width;
     const h = doc.internal.pageSize.height;
     await renderINV(ctx, element);
-    const dataINV = canvas.toDataURL('image/jpeg', 1.0);
+    const dataINV = canvas.toDataURL('image/jpeg', 0.6);
     doc.addImage(dataINV, 'jpeg', 0, 0, w, h);
     doc.addPage('a4', 'p');
 
@@ -39,7 +39,7 @@ export async function renderMutiINV(data: any) {
     }
 
     await renderBL(ctx, element);
-    const dataBL = canvas.toDataURL('image/jpeg', 1.0);
+    const dataBL = canvas.toDataURL('image/jpeg', 0.6);
     doc.addImage(dataBL, 'jpeg', 0, 0, w, h);
 
     zip.file(`${element?.ID || '*'}-${element?.HAB}.pdf`, doc.output('blob'));

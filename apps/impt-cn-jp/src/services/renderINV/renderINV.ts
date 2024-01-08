@@ -144,7 +144,7 @@ export async function renderINV(
       );
     }
 
-    return [ctx.canvas.toDataURL('image/jpeg', 1.0)];
+    return [ctx.canvas.toDataURL('image/jpeg', 0.6)];
   } catch (error) {
     message.error('');
     console.log(error);
