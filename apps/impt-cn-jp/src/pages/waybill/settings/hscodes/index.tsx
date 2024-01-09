@@ -56,8 +56,27 @@ const HScodes: React.FC = () => {
   const [form] = Form.useForm();
 
   // api
-  const getTableData = async (_: any, formData: any) => {
-    const data = await getAllHScodes(formData);
+  const getTableData = async (pageData: any, formData: any) => {
+    let sorter: any = {};
+    if (typeof pageData?.sorter?.field === 'string') {
+      sorter.sortField = pageData?.sorter?.field;
+    } else if (Array.isArray(pageData?.sorter?.field)) {
+      sorter.sortField = pageData?.sorter?.field?.join('.');
+    } else {
+      sorter.sortField = 'createdAt';
+    }
+    if (pageData?.sorter?.order === 'ascend') {
+      sorter.sortOrder = 1;
+    }
+    if (pageData?.sorter?.order === 'descend') {
+      sorter.sortOrder = -1;
+    }
+    const data = await getAllHScodes({
+      page: 0,
+      perPage: 99999999,
+      ...sorter,
+      ...formData,
+    });
     return {
       total: data?.totalCount,
       list: data?.hscodes,
@@ -141,7 +160,6 @@ const HScodes: React.FC = () => {
           <Table.Column sorter width={300} title="HSCODE" dataIndex="hscode" />
           <Table.Column sorter width={300} title="税率" dataIndex="tax_rate" />
           <Table.Column
-            sorter
             width={50}
             title="操作"
             render={(row) => {
@@ -160,7 +178,9 @@ const HScodes: React.FC = () => {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button danger>削除</Button>
+                  <Button size="small" danger>
+                    削除
+                  </Button>
                 </Popconfirm>
               );
             }}

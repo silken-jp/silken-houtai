@@ -9,16 +9,23 @@ export interface ExportHSCODESettingXlsxProps {}
 const ExportHSCODESettingXlsx: React.FC<ExportHSCODESettingXlsxProps> = (
   props,
 ) => {
-  const { loading, run } = useRequest(() => getAllHScodes(), {
-    manual: true,
-    onSuccess: async (result) => {
-      console.log(result);
-      handleExport(result?.hscodes);
+  const { loading, run } = useRequest(
+    () =>
+      getAllHScodes({
+        page: 0,
+        perPage: 99999999,
+      }),
+    {
+      manual: true,
+      onSuccess: async (result) => {
+        console.log(result);
+        handleExport(result?.hscodes);
+      },
+      onError: (err) => {
+        message.error(err?.message);
+      },
     },
-    onError: (err) => {
-      message.error(err?.message);
-    },
-  });
+  );
 
   const handleExport = (data: any[]) => {
     // 修正数据格式
