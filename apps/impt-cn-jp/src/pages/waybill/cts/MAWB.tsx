@@ -249,7 +249,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2000 }}
+          scroll={{ x: 2000, y: 'calc(100vh - 550px)' }}
         >
           <Table.Column
             width={80}

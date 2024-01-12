@@ -287,7 +287,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 4000 }}
+          scroll={{ x: 4000, y: 'calc(100vh - 520px)' }}
         >
           <Table.Column
             sorter

@@ -64,7 +64,7 @@ const SimpleStatusInquiry: React.FC = () => {
   const { tableProps, search, refresh } = useAntdTable(getTableData, {
     form,
     manual: true,
-    defaultPageSize: 500,
+    defaultPageSize: 1000,
   });
 
   const deleteWaybillHSCODE = useRequest(deleteByWaybillHSCODEId, {
@@ -193,13 +193,13 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2300, y: 'calc(100vh - 400px)' }}
+          scroll={{ x: 3000, y: 'calc(100vh - 520px)' }}
         >
           <Table.Column sorter width={120} title="MAWB番号" dataIndex="MAB" />
           <Table.Column sorter width={120} title="HAWB番号" dataIndex="HAB" />
           <Table.Column
             sorter
-            width={180}
+            width={150}
             title="订单号"
             dataIndex="order_no"
           />
@@ -209,7 +209,7 @@ const SimpleStatusInquiry: React.FC = () => {
             title="中文品名"
             dataIndex="CMN_cn"
           />
-          <Table.Column sorter width={200} title="英文品名" dataIndex="CMN" />
+          <Table.Column sorter width={300} title="英文品名" dataIndex="CMN" />
           <Table.Column width={60} title="数量" dataIndex="NO" />
           <Table.Column width={100} title="価格" dataIndex="price" />
           <Table.Column width={60} title="币种" dataIndex="currency" />
@@ -240,7 +240,7 @@ const SimpleStatusInquiry: React.FC = () => {
             dataIndex="weaving_style"
           />
           <Table.Column width={100} title="HSCODE" dataIndex="CMD" />
-          <Table.Column sorter width={120} title="SKU" dataIndex="SKU" />
+          <Table.Column sorter width={150} title="SKU" dataIndex="SKU" />
           <Table.Column width={100} title="税率" dataIndex="tax_rate" />
         </Table>
       </Card>
