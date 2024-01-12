@@ -5,6 +5,12 @@ import UploadXlsx from '@/components/Upload/UploadXlsx';
 import { importMultiBrokerWaybill2 } from '@/services/request/waybill';
 import { getUserInfo } from '@/services/useStorage';
 
+const WAYBILL_TYPE = {
+  L: 'IDA',
+  S: 'IDA',
+  M: 'MIC',
+};
+
 const rightHeader = [
   'holdMemo',
   'waybill_status',
@@ -101,6 +107,9 @@ async function fixItemToObj(params: any[]) {
           }
           if (value) {
             obj[header] = value;
+            if (header === 'LS') {
+              obj['waybill_type'] = WAYBILL_TYPE[value as 'L' | 'S' | 'M'];
+            }
           }
         }
       }
