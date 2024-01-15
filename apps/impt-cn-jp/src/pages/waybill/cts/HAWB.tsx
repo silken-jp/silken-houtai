@@ -306,6 +306,7 @@ const SimpleStatusInquiry: React.FC = () => {
           <Table.Column sorter width={50} title="LS" dataIndex="LS" />
           <Table.ColumnGroup title="申告">
             <Table.Column
+              sorter
               width={100}
               title="申告値段"
               render={(row) => row?.IP4 + row?.IP3}
