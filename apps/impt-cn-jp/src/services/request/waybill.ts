@@ -155,13 +155,17 @@ export async function deleteByWaybillId(params: DeleteByWaybillId) {
   });
 }
 
-// 按MAWB删除运单 DELETE /api/waybills/mawb
+// 按MAWB删除运单 POST /api/waybills/mawb
 interface DeleteALLWaybillsByMAWB {
   mawb: string;
+  LS: string;
 }
 export async function deleteALLWaybillsByMAWB(params: DeleteALLWaybillsByMAWB) {
-  return request<any>(ApiURL + '/waybills/mawb/' + params.mawb, {
-    method: 'DELETE',
+  return request<any>(ApiURL + '/waybills/mawb', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
   });
 }
 

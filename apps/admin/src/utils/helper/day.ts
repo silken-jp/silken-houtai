@@ -26,3 +26,7 @@ export function renderDateTZ(format = 'YYYY-MM-DD') {
   return (date?: Date | string | number) =>
     date ? dayjs(date).utc().format(format) : '';
 }
+
+export const dayDiffTimeZone = (date: string = '', diff: number) => {
+  return date && dayjs(date).add(diff, 'hour');
+};

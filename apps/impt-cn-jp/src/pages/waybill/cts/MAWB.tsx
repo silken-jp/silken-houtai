@@ -10,11 +10,12 @@ import {
   Card,
   Space,
   message,
-  Popconfirm,
+  Divider,
+  Popover,
   DatePicker,
   Select,
 } from 'antd';
-import { useAntdTable, useRequest } from 'ahooks';
+import { useAntdTable, useBoolean, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import useSKForm from '@silken-houtai/core/lib/useHooks';
@@ -36,6 +37,8 @@ function removeEmpty(obj: any) {
 const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
+  const [deleteLS, setDeleteLS] = useState('ALL');
+  const [deleteOpen, deleteOpenActions] = useBoolean();
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>();
   const [selectedRow, setSelectedRow] = useState<any>();
   const { formType, formProps, handleOpen } = useSKForm.useForm<any>();
@@ -79,6 +82,23 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteALLWaybills = useRequest(deleteALLWaybillsByMAWB, {
     manual: true,
   });
+
+  const deleteMAWB = async () => {
+    try {
+      deleteOpenActions.setFalse();
+      const data = await deleteALLWaybills.runAsync({
+        LS: deleteLS,
+        mawb: selectedRow.mab,
+      });
+      message.success(
+        `MAWB番号:${selectedRow.mab} 合:${data.successCount}条を削除しました。`,
+      );
+      setSelectedRow(null);
+      refresh();
+    } catch (error: any) {
+      message.error(error?.message || error);
+    }
+  };
 
   const rowSelection: any = {
     type: 'radio',
@@ -221,26 +241,50 @@ const SimpleStatusInquiry: React.FC = () => {
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
               編集
             </Button>
-            <Popconfirm
-              title={`【MAWB番号 ${selectedRow?.mab} 合${selectedRow?.waybillCount}個 】 を全て削除しますか?`}
-              onConfirm={async () => {
-                await deleteALLWaybills.runAsync({
-                  mawb: selectedRow?.mab,
-                });
-                setSelectedRow(null);
-                refresh();
-              }}
-              okButtonProps={{
-                loading: deleteALLWaybills.loading,
-              }}
-              okText="Yes"
-              cancelText="No"
-              disabled={!selectedRow}
+            <Popover
+              placement="topRight"
+              content={
+                <div>
+                  <div>
+                    {`MAWB番号 ${selectedRow?.mab} の`}
+                    <Select
+                      size="small"
+                      value={deleteLS}
+                      style={{ width: 80 }}
+                      onSelect={(LS: string) => setDeleteLS(LS)}
+                      options={[
+                        { value: 'ALL', label: 'すべて' },
+                        { value: 'L', label: 'L' },
+                        { value: 'S', label: 'S' },
+                        { value: 'M', label: 'M' },
+                      ]}
+                    />
+                    を削除しますか?
+                  </div>
+                  <div style={{ marginTop: 6, textAlign: 'right' }}>
+                    <Space>
+                      <Button onClick={deleteOpenActions.setFalse} size="small">
+                        取消
+                      </Button>
+                      <Button onClick={deleteMAWB} size="small" type="primary">
+                        確認
+                      </Button>
+                    </Space>
+                  </div>
+                </div>
+              }
+              trigger="click"
+              visible={deleteOpen}
+              onVisibleChange={deleteOpenActions.set}
             >
-              <Button disabled={!selectedRow} type="primary">
+              <Button
+                disabled={!selectedRow}
+                type="primary"
+                loading={deleteALLWaybills.loading}
+              >
                 削除
               </Button>
-            </Popconfirm>
+            </Popover>
           </Space>
         }
       >

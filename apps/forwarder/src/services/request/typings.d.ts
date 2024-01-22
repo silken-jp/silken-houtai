@@ -328,7 +328,7 @@ declare namespace API {
       // 集配状態: 日文解释
       code_jp?: string;
       // 報告時間: 121800(76,82) 報告日: 20220522(214,222)
-      datetime?: Date;
+      datetime?: string;
     }>;
   };
   type Tracking = {

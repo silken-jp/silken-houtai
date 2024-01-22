@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Descriptions, Modal, Button, Timeline, Tag } from 'antd';
-import { dayFormat } from '@/utils/helper/day';
+import { dayFormat, dayDiffTimeZone } from '@/utils/helper/day';
 import { HistoryOutlined } from '@ant-design/icons';
 
 export interface TrackModalProps {
@@ -42,7 +42,12 @@ const TrackModal: React.FC<TrackModalProps> = (props) => {
             return (
               <Timeline.Item key={key}>
                 <span>
-                  <p>{dayFormat(item?.datetime, 'YYYY年MM月DD日 H:mm')}</p>
+                  <p>
+                    {dayFormat(
+                      dayDiffTimeZone(item?.datetime, -9).toString(),
+                      'YYYY年MM月DD日 H:mm',
+                    )}
+                  </p>
                   <p>
                     <Tag color="blue">{item?.code_jp}</Tag>
                     {item?.office && `${item?.office} 営業所`}
