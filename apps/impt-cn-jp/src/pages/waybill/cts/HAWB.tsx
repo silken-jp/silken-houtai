@@ -45,6 +45,15 @@ const waybillStatus: any[] = [
   { value: 3, label: 'sendBack' },
 ];
 
+const processStatus: any[] = [
+  { value: 0, label: 'wait cleansing' },
+  { value: 1, label: 'doing cleasing' },
+  { value: 2, label: 'done cleansing' },
+  { value: 3, label: 'doing broker check' },
+  { value: 4, label: 'done broker check' },
+  { value: 5, label: 'done created' },
+];
+
 const LS_OPT: any[] = [
   { value: 'L', label: 'L' },
   { value: 'S', label: 'S' },
@@ -55,7 +64,7 @@ const SimpleStatusInquiry: React.FC = () => {
   // state
   const [form] = Form.useForm();
   const [selectedRows, setSelectedRows] = useState<any[] | null>();
-  const [disCreating, setDisCreating] = useState<boolean>(true);
+  // const [disCreating, setDisCreating] = useState<boolean>(true);
   const { formType, formProps, handleOpen } = useSKForm.useForm<API.Waybill>();
 
   const selectedRow = selectedRows?.length === 1 ? selectedRows[0] : null;
@@ -86,7 +95,7 @@ const SimpleStatusInquiry: React.FC = () => {
       ...removeEmpty(formData),
       ...sorter,
     });
-    setDisCreating(!(formData?.HAB || (formData?.LS && formData?.MAB)));
+    // setDisCreating(!(formData?.HAB || (formData?.LS && formData?.MAB)));
     setSelectedRows([]);
     return {
       total: data?.totalCount,
@@ -134,6 +143,7 @@ const SimpleStatusInquiry: React.FC = () => {
   const rowSelection: any = {
     type: 'checkbox',
     fixed: true,
+    disabled: true,
     selectedRowKeys: selectedRows?.map((s: any) => s?._id) || [],
     preserveSelectedRowKeys: true,
     onChange: (_: any[], selectedRows: any[]) => {
@@ -181,6 +191,15 @@ const SimpleStatusInquiry: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
+          <Col flex="200px">
+            <Form.Item name="process_status">
+              <Select
+                allowClear
+                placeholder="申告ステップ"
+                options={processStatus}
+              />
+            </Form.Item>
+          </Col>
           <Col flex="150px">
             <Form.Item name="waybill_status">
               <Select allowClear placeholder="状態" options={waybillStatus} />
@@ -241,7 +260,10 @@ const SimpleStatusInquiry: React.FC = () => {
             <Create
               refreshAsync={search.submit}
               dataSource={selectedRows}
-              disabled={disCreating || !selectedRows?.length}
+              disabled={
+                !selectedRows?.length ||
+                selectedRows?.some((item) => item?.process_status !== 4)
+              }
               LS={Form.useWatch('LS', form)}
             />
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>

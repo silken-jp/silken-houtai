@@ -16,6 +16,17 @@ export async function getAllWaybillHSCODEs(params?: GetAllWaybillHSCODEs) {
   });
 }
 
+// 获取所有运单 GET /api/waybills
+interface GetAllWaybillHSCODEsCSV {}
+export async function getAllWaybillHSCODEsCSV(
+  params?: GetAllWaybillHSCODEsCSV,
+) {
+  return request<any>(ApiURL + '/waybill-hscodes/csv', {
+    method: 'GET',
+    params,
+  });
+}
+
 // 上传更新HSCODE数据 GET /api/waybill-hscodes/import
 interface ImportMultiWaybillHSCODE {
   waybillHscodesArray: any[];

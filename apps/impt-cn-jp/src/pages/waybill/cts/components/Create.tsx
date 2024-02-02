@@ -72,6 +72,10 @@ const ST_OPT = [
     label:
       '1CW70: 【ケイヒン（株）ワールド流通センター】東京都江東区青海３-2-17',
   },
+  {
+    value: '4MWA5',
+    label: '4MWA5: 【サンシャイン株式会社】大阪府泉南市泉州空港南1番地',
+  },
 ];
 
 export interface CreateProps {
@@ -114,7 +118,7 @@ const Create: React.FC<CreateProps> = (props) => {
       const values = await form.validateFields();
       let filter = props?.LS
         ? {
-            hawbs: props?.dataSource?.map((item: any) => item?.HAB),
+            hawbs: props?.dataSource?.map((item: any) => item?.HAB)?.join(' '),
             waybill_status: 1,
             process_status: 4,
           }

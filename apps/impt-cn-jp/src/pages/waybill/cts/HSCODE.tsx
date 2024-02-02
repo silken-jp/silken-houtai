@@ -20,6 +20,7 @@ import ExportWaybillHSCODEXlsx from './components/ExportWaybillHSCODEXlsx';
 import {
   deleteByWaybillHSCODEId,
   getAllWaybillHSCODEs,
+  // getAllWaybillHSCODEsCSV,
 } from '@/services/request/waybill-hscode';
 
 function removeEmpty(obj: any) {
@@ -70,6 +71,10 @@ const SimpleStatusInquiry: React.FC = () => {
   const deleteWaybillHSCODE = useRequest(deleteByWaybillHSCODEId, {
     manual: true,
   });
+
+  // const getWaybillHSCODE = useRequest(getAllWaybillHSCODEsCSV, {
+  //   manual: true,
+  // });
 
   const rowSelection: any = {
     type: 'checkbox',
@@ -143,6 +148,22 @@ const SimpleStatusInquiry: React.FC = () => {
                 form={form}
                 count={tableProps.pagination.total}
               />
+              {/* <Button
+              onClick={async () => {
+                const data = await getWaybillHSCODE.runAsync();
+                console.log(JSON.stringify(data));
+                let bom  = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                const blobFile = new Blob([bom, data], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blobFile);
+                const a = document.createElement('a');
+                a.download = 'aa.csv';
+                a.href = url;
+                a.click();
+                window.URL.revokeObjectURL(url);
+              }}
+            >
+              下载
+            </Button> */}
             </Space>
           </Col>
         </Row>

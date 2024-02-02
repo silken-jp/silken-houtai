@@ -127,6 +127,7 @@ const SimpleStatusInquiry: React.FC = () => {
         await updateMAB({
           oldMab: selectedRow.mab,
           ...v,
+          MAB: v?.MAB?.trim(),
         });
         setSelectedRow(null);
         setSelectedRowKeys([]);
