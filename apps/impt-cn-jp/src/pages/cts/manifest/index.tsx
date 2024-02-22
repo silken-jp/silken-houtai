@@ -70,7 +70,7 @@ const ManifestWaybill: React.FC = () => {
     state?.meta?.tabCount[state.tabKey as any],
   );
   // 批量打印 INV BL
-  const downloadINVBLApi = useDownloadINVBL('M');
+  const downloadINVBLApi = useDownloadINVBL('M', tableProps?.pagination?.total);
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;
@@ -154,7 +154,13 @@ const ManifestWaybill: React.FC = () => {
           >
             Export Xlsx
           </Button>
-          <Button onClick={downloadINVBLApi.run}>Print INV&BL</Button>
+          <Button
+            disabled={!tableProps?.pagination?.total}
+            loading={downloadINVBLApi.loading}
+            onClick={downloadINVBLApi.run}
+          >
+            Print INV&BL
+          </Button>
         </Space>
       </Row>
 

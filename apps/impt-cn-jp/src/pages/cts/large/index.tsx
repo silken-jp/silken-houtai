@@ -50,7 +50,7 @@ const LargeWaybill: React.FC = () => {
     state?.meta?.tabCount[state.tabKey as any],
   );
   // 批量打印 INV BL
-  const downloadINVBLApi = useDownloadINVBL('L');
+  const downloadINVBLApi = useDownloadINVBL('L', tableProps?.pagination?.total);
 
   // format
   const selected = state?.selectedRowKeys?.length || 0;
@@ -106,7 +106,13 @@ const LargeWaybill: React.FC = () => {
           <Button loading={exportApi.loading} onClick={exportApi.run}>
             Export Xlsx
           </Button>
-          <Button onClick={downloadINVBLApi.run}>Print INV&BL</Button>
+          <Button
+            disabled={!tableProps?.pagination?.total}
+            loading={downloadINVBLApi.loading}
+            onClick={downloadINVBLApi.run}
+          >
+            Print INV&BL
+          </Button>
         </Space>
       </Row>
 
