@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Select } from 'antd';
 ////
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
+import { AGENT } from '@/utils/constant';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -19,6 +20,7 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
     if (props?.visible) {
       formProps?.form?.setFieldsValue({
         name: props?.dataSource?.name || '',
+        show_status: props?.dataSource?.show_status || 0,
         account: props?.dataSource?.account || '',
         password: props?.dataSource?.password || '',
         SHN: props?.dataSource?.SHN || '',
@@ -38,6 +40,9 @@ const AgentForm: React.FC<AgentFormProps> = (props) => {
           rules={[{ required: true }]}
         >
           <Input placeholder="フォワーダー名" autoComplete="off" />
+        </Form.Item>
+        <Form.Item label="表示状態" name="show_status">
+          <Select placeholder="表示状態" options={AGENT.SHOW_STATUS} />
         </Form.Item>
         <Form.Item
           label="アカウント"

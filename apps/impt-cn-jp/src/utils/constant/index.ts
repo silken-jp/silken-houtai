@@ -35,6 +35,13 @@ export const CODE_SOURCE: { [key: string]: any[] } = {
 };
 
 export const STORAGE_KEY: string = 'SILKEN.';
+export const AGENT = {
+  SHOW_STATUS: [
+    { value: 0, label: '非表示', color: 'default' },
+    { value: 1, label: '表示', color: 'green' },
+  ],
+};
+
 export const AGENT_HAWB = {
   GROUP_NAME: [
     { value: 'sagawa_to_c', label: '佐川ToC' },

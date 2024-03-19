@@ -10,7 +10,6 @@ import {
   Card,
   Space,
   message,
-  Divider,
   Popover,
   DatePicker,
   Select,
@@ -139,6 +138,11 @@ const SimpleStatusInquiry: React.FC = () => {
     }
   }
 
+  // data
+  const showAgentOptions = agentOptions?.filter(
+    (item) => item?.record?.show_status === 1,
+  );
+
   return (
     <PageContainer
       header={{
@@ -218,11 +222,11 @@ const SimpleStatusInquiry: React.FC = () => {
           <Space>
             <span>合計: {tableProps.pagination.total} 件</span>
             <UploadWaybill
-              agentOptions={agentOptions}
+              agentOptions={showAgentOptions}
               onUpload={search.submit}
             />
             <UploadCleanWaybill
-              agentOptions={agentOptions}
+              agentOptions={showAgentOptions}
               onUpload={search.submit}
             />
           </Space>

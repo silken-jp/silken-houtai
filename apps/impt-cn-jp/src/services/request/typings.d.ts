@@ -11,6 +11,7 @@ declare namespace API {
     _id?: ID;
     name?: string;
     account?: string;
+    show_status?: number;
     password?: string;
     SHN?: string;
     SHA?: string;

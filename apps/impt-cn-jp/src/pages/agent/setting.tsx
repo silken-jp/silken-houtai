@@ -1,4 +1,4 @@
-import { Form, Table, Input, Button, Row, Col, Card, Space } from 'antd';
+import { Form, Table, Input, Button, Row, Col, Card, Space, Tag } from 'antd';
 import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 import { useSKForm } from '@silken-houtai/core/lib/useHooks';
@@ -13,6 +13,7 @@ import {
   deleteAgentById,
 } from '@/services/request/agent';
 import { Link } from 'umi';
+import { AGENT } from '@/utils/constant';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -88,10 +89,18 @@ const StatusInquiry: React.FC = () => {
         }
       >
         <Table rowKey="_id" {...tableProps} scroll={{ x: 1800 }}>
-          <Table.Column
+          {/* <Table.Column
             width={150}
             title="upload"
             render={() => <UploadWaybill />}
+          /> */}
+          <Table.Column
+            width={100}
+            title="表示状態"
+            render={(row) => {
+              const showStatus = AGENT.SHOW_STATUS[row?.show_status || 0];
+              return <Tag color={showStatus?.color}>{showStatus.label}</Tag>;
+            }}
           />
           <Table.Column<API.Agent>
             width={150}
