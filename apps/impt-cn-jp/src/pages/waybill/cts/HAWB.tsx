@@ -45,14 +45,14 @@ const waybillStatus: any[] = [
   { value: 3, label: 'sendBack' },
 ];
 
-const processStatus: any[] = [
-  { value: 0, label: 'wait cleansing' },
-  { value: 1, label: 'doing cleasing' },
-  { value: 2, label: 'done cleansing' },
-  { value: 3, label: 'doing broker check' },
-  { value: 4, label: 'done broker check' },
-  { value: 5, label: 'done created' },
-];
+// const processStatus: any[] = [
+//   { value: 0, label: 'wait cleansing' },
+//   { value: 1, label: 'doing cleasing' },
+//   { value: 2, label: 'done cleansing' },
+//   { value: 3, label: 'doing broker check' },
+//   { value: 4, label: 'done broker check' },
+//   { value: 5, label: 'done created' },
+// ];
 
 const LS_OPT: any[] = [
   { value: 'L', label: 'L' },
@@ -191,7 +191,7 @@ const SimpleStatusInquiry: React.FC = () => {
     >
       <Form form={form} className="sk-table-search">
         <Row gutter={8}>
-          <Col flex="200px">
+          {/* <Col flex="200px">
             <Form.Item name="process_status">
               <Select
                 allowClear
@@ -199,7 +199,7 @@ const SimpleStatusInquiry: React.FC = () => {
                 options={processStatus}
               />
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col flex="150px">
             <Form.Item name="waybill_status">
               <Select allowClear placeholder="状態" options={waybillStatus} />
@@ -260,10 +260,11 @@ const SimpleStatusInquiry: React.FC = () => {
             <Create
               refreshAsync={search.submit}
               dataSource={selectedRows}
-              disabled={
-                !selectedRows?.length ||
-                selectedRows?.some((item) => item?.process_status !== 4)
-              }
+              disabled={!selectedRows?.length}
+              // disabled={
+              //   !selectedRows?.length ||
+              //   selectedRows?.some((item) => item?.process_status !== 4)
+              // }
               LS={Form.useWatch('LS', form)}
             />
             <Button type="primary" disabled={!selectedRow} onClick={handleEdit}>
