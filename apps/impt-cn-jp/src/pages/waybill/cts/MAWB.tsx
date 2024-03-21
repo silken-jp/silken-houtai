@@ -28,6 +28,7 @@ import UploadWaybill from './components/UploadWaybill';
 import UpdateWaybill from './components/UpdateWaybill';
 import ExportWaybillXlsx from './components/ExportWaybillXlsx';
 import UploadCleanWaybill from './components/UploadCleanWaybill';
+import usePERImage from '@/services/useCTSActions/usePERImage';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -45,6 +46,10 @@ const SimpleStatusInquiry: React.FC = () => {
   // api
   const { agentOptions } = useAgentOptions();
   const { userOptions } = useUserOptions();
+
+  // 导出许可书功能
+  const { PERImageApi } = usePERImage();
+
   const getTableData = async (pageData: any, formData: any) => {
     const page = pageData.current - 1;
     const perPage = pageData.pageSize;
@@ -298,7 +303,7 @@ const SimpleStatusInquiry: React.FC = () => {
           rowSelection={rowSelection}
           rowKey="_id"
           {...tableProps}
-          scroll={{ x: 2000, y: 'calc(100vh - 550px)' }}
+          scroll={{ x: 2600, y: 'calc(100vh - 550px)' }}
         >
           <Table.Column
             width={80}
@@ -329,7 +334,7 @@ const SimpleStatusInquiry: React.FC = () => {
               userOptions?.find((item) => item?.value === uploaderId)?.label
             }
           />
-          <Table.Column sorter width={150} title="MAWB番号" dataIndex="mab" />
+          <Table.Column sorter width={100} title="MAWB番号" dataIndex="mab" />
           <Table.ColumnGroup title="件数">
             <Table.Column sorter width={60} title="M" dataIndex="mCount" />
             <Table.Column sorter width={60} title="L" dataIndex="lCount" />

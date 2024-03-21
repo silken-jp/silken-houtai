@@ -21,6 +21,7 @@ import { getAgentInfo } from '@/services/useStorage';
 import { getStatusInquiry } from '@/services/request/waybill';
 import { removeEmpty } from '@/utils/helper/helper';
 import useExportMABXlsx from '@/services/useExportMABXlsx';
+import usePERImage from '@/services/usePERImage';
 
 const StatusInquiry: React.FC = () => {
   // state
@@ -68,6 +69,8 @@ const StatusInquiry: React.FC = () => {
     return { total: data?.totalCount, list: data?.mawbs || [] };
   };
   const { tableProps, search } = useAntdTable(getTableData, { form });
+  // 导出许可书功能
+  const { PERImageApi } = usePERImage();
 
   // actions
   const handleClear = () => {
@@ -235,6 +238,21 @@ const StatusInquiry: React.FC = () => {
                 >
                   {row?.notPerNo}
                 </Link>
+              )}
+            />
+            <Table.Column
+              width={100}
+              title={intlWaybill('permit')}
+              render={(row) => (
+                <Button
+                  size="small"
+                  type="primary"
+                  disabled={!row?.micPerNo && !row?.idaPerNo}
+                  loading={PERImageApi.loading}
+                  onClick={() => PERImageApi.run({ MAB: row?._id })}
+                >
+                  {intlWaybill('permit')}
+                </Button>
               )}
             />
           </Table.ColumnGroup>

@@ -4,7 +4,7 @@ import FileSaver from 'file-saver';
 import { message } from 'antd';
 import dayjs from 'dayjs';
 ////
-import { getAllPERImagesByWaybillIds } from '../request/waybill';
+import { getAllPERImagesByWaybillIds } from './request/waybill';
 
 // function handleBase64ToBuffer(data: any) {
 //   const binaryString = window.atob(data);

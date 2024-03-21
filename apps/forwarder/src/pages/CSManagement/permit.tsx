@@ -13,20 +13,17 @@ import {
   DatePicker,
 } from 'antd';
 import { TableRowSelection } from 'antd/lib/table/interface';
-import { useAntdTable, useRequest } from 'ahooks';
+import { useAntdTable } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import ExportXlsx from '@/components/Export/ExportXlsx';
 import { getAgentInfo } from '@/services/useStorage';
 import { useIntlFormat } from '@/services/useIntl';
-import {
-  getAllPERImagesByWaybillIds,
-  getAllWaybillsForwarder,
-} from '@/services/request/waybill';
+import { getAllWaybillsForwarder } from '@/services/request/waybill';
 import { dayFormat } from '@/utils/helper/day';
 import TrackModal from '@/components/Modal/TrackModal';
 import { TrackingCode } from '@/utils/constant';
-import { compressAndDownload } from '@/utils/helper/downloadPDF';
+import usePERImage from '@/services/usePERImage';
 
 const waybill: React.FC = () => {
   // state
@@ -105,12 +102,8 @@ const waybill: React.FC = () => {
     manual: true,
   });
 
-  const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
-    manual: true,
-    onSuccess: (data) => {
-      compressAndDownload(data, dayFormat(Date(), 'YYYY-MM-DD-hh-mm'));
-    },
-  });
+  // 导出许可书功能
+  const { PERImageApi } = usePERImage();
 
   //action
   const handleClear = () => {
@@ -359,11 +352,7 @@ const waybill: React.FC = () => {
             </Button>
             <Button
               type="primary"
-              onClick={() =>
-                downloadApi.run({
-                  waybillIds: selectedRowKeys,
-                })
-              }
+              onClick={() => PERImageApi.run({ waybillIds: selectedRowKeys })}
             >
               {intlPages('action.permit')}
             </Button>
@@ -421,11 +410,7 @@ const waybill: React.FC = () => {
                 <Button
                   size="small"
                   type="primary"
-                  onClick={() =>
-                    downloadApi.run({
-                      waybillIds: [row._id],
-                    })
-                  }
+                  onClick={() => PERImageApi.run({ waybillIds: [row._id] })}
                 >
                   {intlWaybill('permit')}
                 </Button>

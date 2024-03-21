@@ -16,19 +16,18 @@ import { useAntdTable, useRequest } from 'ahooks';
 import { PageContainer } from '@ant-design/pro-layout';
 ////
 import { dayFormat } from '@/utils/helper/day';
-import { compressAndDownload } from '@/utils/helper/downloadPDF';
 import { useIntlFormat } from '@/services/useIntl';
 import { useAgentOptions, useUserOptions } from '@/services/useAPIOption';
 import {
   updateWaybill,
   // deleteByWaybillId,
   getAllWaybillsForwarder,
-  getAllPERImagesByWaybillIds,
 } from '@/services/request/waybill';
 import HAWBForm from '@/components/Form/HAWBForm';
 import useSKForm from '@silken-houtai/core/lib/useHooks';
 import WaybillModal from '@/components/Modal/WaybillModal';
 import { useMutiINV } from '@/services/renderINV/useMutiINV';
+import usePERImage from '@/services/useCTSActions/usePERImage';
 
 function removeEmpty(obj: any) {
   return Object.fromEntries(Object.entries(obj).filter(([k, v]) => v ?? false));
@@ -104,12 +103,9 @@ const Tracking: React.FC = () => {
   const editWaybill = useRequest(updateWaybill, {
     manual: true,
   });
-  const downloadApi = useRequest(getAllPERImagesByWaybillIds, {
-    manual: true,
-    onSuccess: (data) => {
-      compressAndDownload(data, dayFormat(Date(), 'YYYY-MM-DD-hh-mm'));
-    },
-  });
+
+  // 导出许可书功能
+  const { PERImageApi } = usePERImage();
 
   const rowSelection: any = {
     type: 'checkbox',
@@ -334,10 +330,10 @@ const Tracking: React.FC = () => {
             </Button>
             <Button
               type="primary"
-              loading={downloadApi.loading}
+              loading={PERImageApi.loading}
               disabled={!selectedRows?.length}
               onClick={() =>
-                downloadApi.run({
+                PERImageApi.run({
                   waybillIds: selectedRows?.map((item: any) => item?._id),
                 })
               }
@@ -419,12 +415,8 @@ const Tracking: React.FC = () => {
                 <Button
                   size="small"
                   type="primary"
-                  loading={downloadApi.loading}
-                  onClick={() =>
-                    downloadApi.run({
-                      waybillIds: [row._id],
-                    })
-                  }
+                  loading={PERImageApi.loading}
+                  onClick={() => PERImageApi.run({ waybillIds: [row._id] })}
                 >
                   {intlWaybill('permit')}
                 </Button>

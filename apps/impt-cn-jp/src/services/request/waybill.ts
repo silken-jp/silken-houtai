@@ -18,7 +18,8 @@ export async function getAllWaybills(params?: GetAllWaybills) {
 
 // 获取所有运单许可书 POST /waybills/per_download
 interface GetAllPERImagesByWaybillIds extends Partial<API.Waybill> {
-  waybillIds: API.ID[];
+  waybillIds?: API.ID[];
+  MAB?: string;
 }
 export async function getAllPERImagesByWaybillIds(
   params?: GetAllPERImagesByWaybillIds,

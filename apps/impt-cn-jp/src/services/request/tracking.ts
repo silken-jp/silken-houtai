@@ -6,6 +6,7 @@ const { ApiURL } = process.env;
 interface GetAllTrackings extends API.Tracking {
   page: number;
   perPage: number;
+  BL_: any;
 }
 export async function getAllTrackings(params?: GetAllTrackings) {
   return request<any>(ApiURL + '/trackings', {
@@ -15,11 +16,11 @@ export async function getAllTrackings(params?: GetAllTrackings) {
 }
 
 // 获取所有追踪数据 GET /api/trackings
-interface GetAllTrackings extends API.Tracking {
+interface GetAllTrackingsFull extends API.Tracking {
   MAB: string;
   category: string;
 }
-export async function getAllTrackingsFull(params?: GetAllTrackings) {
+export async function getAllTrackingsFull(params?: GetAllTrackingsFull) {
   return request<any>(ApiURL + '/trackings/full', {
     method: 'GET',
     params,

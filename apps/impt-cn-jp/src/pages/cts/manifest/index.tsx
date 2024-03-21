@@ -59,8 +59,10 @@ const ManifestWaybill: React.FC = () => {
     handleBrockCheck,
     handleBrockCheckSimple,
   } = useBrockCheck('M', state.selectedRowKeys);
-  // 导出问题件功能
-  const { PERImageApi, handlePERImage } = usePERImage(state.selectedRowKeys);
+  // 导出许可书功能
+  const { PERImageApi, handlePERImage } = usePERImage({
+    waybillIds: state.selectedRowKeys,
+  });
   // 新建问题件功能
   const issueModal = useIssueModal({ selectedRows: state.selectedRows });
   // 导出waybill表单功能

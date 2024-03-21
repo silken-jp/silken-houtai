@@ -36,7 +36,8 @@ export async function getAllWaybillsForwarder(
 
 // 获取所有运单许可书 POST /waybills/per_download
 interface GetAllPERImagesByWaybillIds {
-  waybillIds: API.ID[];
+  waybillIds?: API.ID[];
+  MAB?: string;
 }
 export async function getAllPERImagesByWaybillIds(
   params?: GetAllPERImagesByWaybillIds,
@@ -60,7 +61,10 @@ export async function getWaybill(params: GetWaybill) {
 }
 
 // 创建运单 POST /api/waybills
-interface CreateWaybill extends API.Waybill {}
+interface CreateWaybill extends API.Waybill {
+  mawb_no: string;
+  hawb_no: string;
+}
 export async function createWaybill(params: CreateWaybill) {
   return request<any>(ApiURL + '/waybills', {
     method: 'POST',
@@ -113,6 +117,8 @@ export async function updateMultiWaybill(params: UpdateMultiWaybill) {
 // 更新运单 PATCH /api/waybills/:id
 interface UpdateWaybill extends API.Waybill {
   waybillId: API.ID;
+  mawb_no: string;
+  hawb_no: string;
 }
 export async function updateWaybill(params: UpdateWaybill) {
   return request<any>(ApiURL + '/waybills/' + params.waybillId, {
